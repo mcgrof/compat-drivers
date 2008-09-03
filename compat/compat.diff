@@ -1,0 +1,159 @@
+--- a/include/net/cfg80211.h	2008-02-28 19:54:52.000000000 +0100
++++ b/include/net/cfg80211.h	2008-02-28 19:54:53.000000000 +0100
+@@ -5,6 +5,7 @@
+ #include <linux/skbuff.h>
+ #include <linux/nl80211.h>
+ #include <net/genetlink.h>
++#include <net/compat.h>
+ 
+ /*
+  * 802.11 configuration in-kernel interface
+--- a/net/wireless/Makefile	2008-02-28 19:54:52.000000000 +0100
++++ b/net/wireless/Makefile	2008-02-28 19:54:53.000000000 +0100
+@@ -1,5 +1,4 @@
+-obj-$(CONFIG_WIRELESS_EXT) += wext.o
+ obj-$(CONFIG_CFG80211) += cfg80211.o
+ 
+-cfg80211-y += core.o sysfs.o radiotap.o util.o reg.o
++cfg80211-y += core.o sysfs.o radiotap.o util.o reg.o compat.o
+ cfg80211-$(CONFIG_NL80211) += nl80211.o
+--- a/drivers/net/wireless/zd1211rw/zd_chip.c	2008-03-07 20:02:06.000000000 -0500
++++ b/drivers/net/wireless/zd1211rw/zd_chip.c	2008-03-07 20:02:07.000000000 -0500
+@@ -1281,7 +1281,7 @@
+ 	other_led = chip->link_led == LED1 ? LED2 : LED1;
+ 
+ 	switch (status) {
+-	case LED_OFF:
++	case LED_OFF_ZD:
+ 		ioreqs[0].value = FW_LINK_OFF;
+ 		ioreqs[1].value = v[1] & ~(LED1|LED2);
+ 		break;
+--- a/drivers/net/wireless/zd1211rw/zd_chip.h	2008-03-07 20:02:06.000000000 -0500
++++ b/drivers/net/wireless/zd1211rw/zd_chip.h	2008-03-07 20:02:07.000000000 -0500
+@@ -897,7 +897,7 @@
+ int zd_chip_unlock_phy_regs(struct zd_chip *chip);
+ 
+ enum led_status {
+-	LED_OFF = 0,
++	LED_OFF_ZD = 0,
+ 	LED_SCANNING = 1,
+ 	LED_ASSOCIATED = 2,
+ };
+--- a/drivers/net/wireless/zd1211rw/zd_mac.c	2008-09-02 18:42:08.000000000 -0700
++++ b/drivers/net/wireless/zd1211rw/zd_mac.c	2008-09-02 18:42:08.000000000 -0700
+@@ -994,5 +994,5 @@
+ 	dev_dbg_f(zd_mac_dev(mac), "\n");
+ 	cancel_rearming_delayed_workqueue(zd_workqueue,
+ 		&mac->housekeeping.link_led_work);
+-	zd_chip_control_leds(&mac->chip, LED_OFF);
++	zd_chip_control_leds(&mac->chip, LED_OFF_ZD);
+ }
+--- a/drivers/misc/Makefile	2008-09-02 18:44:30.000000000 -0700
++++ b/drivers/misc/Makefile	2008-09-02 18:45:23.000000000 -0700
+@@ -3,30 +3,4 @@
+ #
+ obj- := misc.o	# Dummy rule to force built-in.o to be made
+ 
+-obj-$(CONFIG_IBM_ASM)		+= ibmasm/
+-obj-$(CONFIG_HDPU_FEATURES)	+= hdpuftrs/
+-obj-$(CONFIG_ASUS_LAPTOP)	+= asus-laptop.o
+-obj-$(CONFIG_EEEPC_LAPTOP)	+= eeepc-laptop.o
+-obj-$(CONFIG_MSI_LAPTOP)	+= msi-laptop.o
+-obj-$(CONFIG_COMPAL_LAPTOP)	+= compal-laptop.o
+-obj-$(CONFIG_ACER_WMI)		+= acer-wmi.o
+-obj-$(CONFIG_ATMEL_PWM)		+= atmel_pwm.o
+-obj-$(CONFIG_ATMEL_SSC)		+= atmel-ssc.o
+-obj-$(CONFIG_ATMEL_TCLIB)	+= atmel_tclib.o
+-obj-$(CONFIG_HP_WMI)		+= hp-wmi.o
+-obj-$(CONFIG_TC1100_WMI)	+= tc1100-wmi.o
+-obj-$(CONFIG_LKDTM)		+= lkdtm.o
+-obj-$(CONFIG_TIFM_CORE)       	+= tifm_core.o
+-obj-$(CONFIG_TIFM_7XX1)       	+= tifm_7xx1.o
+-obj-$(CONFIG_PHANTOM)		+= phantom.o
+-obj-$(CONFIG_SGI_IOC4)		+= ioc4.o
+-obj-$(CONFIG_SONY_LAPTOP)	+= sony-laptop.o
+-obj-$(CONFIG_THINKPAD_ACPI)	+= thinkpad_acpi.o
+-obj-$(CONFIG_FUJITSU_LAPTOP)	+= fujitsu-laptop.o
+ obj-$(CONFIG_EEPROM_93CX6)	+= eeprom_93cx6.o
+-obj-$(CONFIG_INTEL_MENLOW)	+= intel_menlow.o
+-obj-$(CONFIG_ENCLOSURE_SERVICES) += enclosure.o
+-obj-$(CONFIG_KGDB_TESTS)	+= kgdbts.o
+-obj-$(CONFIG_SGI_XP)		+= sgi-xp/
+-obj-$(CONFIG_SGI_GRU)		+= sgi-gru/
+-obj-$(CONFIG_HP_ILO)		+= hpilo.o
+--- a/drivers/net/usb/Makefile	2008-09-02 18:45:54.000000000 -0700
++++ b/drivers/net/usb/Makefile	2008-09-02 18:47:14.000000000 -0700
+@@ -2,21 +2,8 @@
+ # Makefile for USB Network drivers
+ #
+ 
+-obj-$(CONFIG_USB_CATC)		+= catc.o
+-obj-$(CONFIG_USB_KAWETH)	+= kaweth.o
+-obj-$(CONFIG_USB_PEGASUS)	+= pegasus.o
+-obj-$(CONFIG_USB_RTL8150)	+= rtl8150.o
+-obj-$(CONFIG_USB_HSO)		+= hso.o
+-obj-$(CONFIG_USB_NET_AX8817X)	+= asix.o
+ obj-$(CONFIG_USB_NET_CDCETHER)	+= cdc_ether.o
+-obj-$(CONFIG_USB_NET_DM9601)	+= dm9601.o
+-obj-$(CONFIG_USB_NET_GL620A)	+= gl620a.o
+-obj-$(CONFIG_USB_NET_NET1080)	+= net1080.o
+-obj-$(CONFIG_USB_NET_PLUSB)	+= plusb.o
+ obj-$(CONFIG_USB_NET_RNDIS_HOST)	+= rndis_host.o
+-obj-$(CONFIG_USB_NET_CDC_SUBSET)	+= cdc_subset.o
+-obj-$(CONFIG_USB_NET_ZAURUS)	+= zaurus.o
+-obj-$(CONFIG_USB_NET_MCS7830)	+= mcs7830.o
+ obj-$(CONFIG_USB_USBNET)	+= usbnet.o
+ 
+ ifeq ($(CONFIG_USB_DEBUG),y)
+--- a/drivers/net/wireless/Makefile	2008-09-02 19:04:56.000000000 -0700
++++ b/drivers/net/wireless/Makefile	2008-09-02 19:08:25.000000000 -0700
+@@ -5,49 +5,14 @@
+ obj-$(CONFIG_IPW2100) += ipw2100.o
+ 
+ obj-$(CONFIG_IPW2200) += ipw2200.o
+-
+-obj-$(CONFIG_STRIP) += strip.o
+-obj-$(CONFIG_ARLAN) += arlan.o 
+-
+-arlan-objs := arlan-main.o arlan-proc.o
+-
+-# Obsolete cards
+-obj-$(CONFIG_WAVELAN)		+= wavelan.o
+-obj-$(CONFIG_PCMCIA_NETWAVE)	+= netwave_cs.o
+-obj-$(CONFIG_PCMCIA_WAVELAN)	+= wavelan_cs.o
+-
+-obj-$(CONFIG_HERMES)		+= orinoco.o hermes.o hermes_dld.o
+-obj-$(CONFIG_PCMCIA_HERMES)	+= orinoco_cs.o
+-obj-$(CONFIG_APPLE_AIRPORT)	+= airport.o
+-obj-$(CONFIG_PLX_HERMES)	+= orinoco_plx.o
+-obj-$(CONFIG_PCI_HERMES)	+= orinoco_pci.o
+-obj-$(CONFIG_TMD_HERMES)	+= orinoco_tmd.o
+-obj-$(CONFIG_NORTEL_HERMES)	+= orinoco_nortel.o
+-obj-$(CONFIG_PCMCIA_SPECTRUM)	+= spectrum_cs.o
+-
+-obj-$(CONFIG_AIRO)		+= airo.o
+-obj-$(CONFIG_AIRO_CS)		+= airo_cs.o airo.o
+-
+-obj-$(CONFIG_ATMEL)             += atmel.o
+-obj-$(CONFIG_PCI_ATMEL)         += atmel_pci.o 
+-obj-$(CONFIG_PCMCIA_ATMEL)      += atmel_cs.o
+-
+ obj-$(CONFIG_USB_ATMEL)	        += at76_usb.o
+ 
+-obj-$(CONFIG_PRISM54)		+= prism54/
+-
+-obj-$(CONFIG_HOSTAP)		+= hostap/
+ obj-$(CONFIG_B43)		+= b43/
+ obj-$(CONFIG_B43LEGACY)		+= b43legacy/
+ obj-$(CONFIG_ZD1211RW)		+= zd1211rw/
+ 
+-# 16-bit wireless PCMCIA client drivers
+-obj-$(CONFIG_PCMCIA_RAYCS)	+= ray_cs.o
+-obj-$(CONFIG_PCMCIA_WL3501)	+= wl3501_cs.o
+-
+ obj-$(CONFIG_USB_NET_RNDIS_WLAN)	+= rndis_wlan.o
+ 
+-obj-$(CONFIG_USB_ZD1201)	+= zd1201.o
+ obj-$(CONFIG_LIBERTAS)		+= libertas/
+ 
+ obj-$(CONFIG_LIBERTAS_THINFIRM)	+= libertas_tf/

@@ -1,0 +1,14 @@
+drivers
+include
+net
+*~
+git-describe
+compat-release
+.compat_autoconf*
+.config.md5
+.config.mk_md5sum.txt
+.tmp_versions
+Module.symvers
+module.order
+patches
+.pc

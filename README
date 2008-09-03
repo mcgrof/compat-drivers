@@ -1,0 +1,267 @@
+
+Linux Wireless compatibility package
+=====================================
+
+This is a Linux wireless compatibility package which provides the latest
+Linux wireless subsystem enhancements for kernels 2.6.22 and above. We provide
+compatibility support since 2.6.22 as that is when mac80211 was introduced
+onto the stock kernel. This adds mac80211, mac80211 drivers, and any new 
+full MAC driver which has had fairly recent updates worth getting such as 
+libertas, ipw2100 and ipw2200.
+
+If you'd like to keep the wireless-testing git repository local as well,
+please read out git-guide which explains how to achieve this:
+
+http://wireless.kernel.org/en/developers/git-guide
+
+With a local git repository you can update the compatibility package yourself. 
+For more information on how to do this please refer the Developers section below.
+
+Documenation
+------------
+
+This package is also documented online and probably has more-up-to date
+information online than on this README file.
+
+http://wireless.kernel.org/en/users/Download
+
+Where to get the latest
+-----------------------
+
+This package lets you build your own 'latest', all you need is a local git repository
+checkout of wireless-testing.git. However since not many users are expected to keep
+a local git repository of wireless-testing we provide daily snapshots of this
+package + the wireless subsystem code. You can find the latest snapshot at:
+
+http://wireless.kernel.org/download/compat-wireless-2.6/compat-wireless-2.6.tar.bz2
+
+Building, and installing
+------------------------
+
+Build: build the latest linux wireless subsystem
+
+	make
+
+Install:
+
+We use the updates/ directory so your distribution's drivers are left intact.
+
+	sudo make install
+
+Uninstall:
+
+This nukes our changes to updates/ so you can go back to using your
+distribution's supported drivers.
+
+	sudo make uninstall
+
+Load:
+
+If you know what module you need you can simply load the module using modprobe.
+Note that if you are loading a mac80211 driver you must unload your current
+mac80211 drivers as you have a new one to replace it with. Note also that 
+broadcom, zydas, and atheros devices have old legacy drivers which
+you need to be sure are removed first. We provide a mechanism to unload all
+old drivers and also load all new drivers if you are not sure what you are
+doing.
+
+So, if you simply are not sure you can use:
+
+	sudo make load
+
+This unloads your old wireless subsystem drivers and loads the new
+shiny ones. For example if ipw3945 and its proprietary daemon are found
+it'll be stopped and the module unloaded and then iwl3945 will be loaded.
+If you are simply upgrading a mac80211 driver this will unload
+the old one and the old mac80211 drivers and load the new ones.
+
+Drivers
+-------
+
+This is the list of drivers this package provides. It adds
+all new drivers or drivers which keep being updated which you might
+be interested in.
+
+Driver
+adm8211
+ath5k
+b43
+b43legacy
+iwl3945
+iwl4965
+ipw2100
+ipw2200
+libertas_cs (Libertas)
+ub8xxx      (Libertas)
+p54pci
+p54usb
+rt2400pci (rt2x00)
+rt2500pci (rt2x00)
+rt2500usb (rt2x00)
+rt61pci	  (rt2x00)
+rt73usb	  (rt2x00)
+rtl8180	(Realtek)
+rtl8187	(Realtek)
+zd1211rw
+
+Known issues
+------------
+
+* Strange wireless device names:
+
+On Ubuntu and Fedora you may end up with strange network device names,
+for example, wlan0_rename. This is a known issue and will be worked on.
+
+* nl80211:
+
+Kernels <= 2.6.22 now get nl80211 support, however, genl_multicast_group
+won't work. This compatibility cannot be extended to older
+kernels as the struct genl_family was extended on 2.6.23 to add
+the struct list_head mcast_groups.
+
+* b43:
+
+b43 and b43legacy now loads. Since there was an old softmac broadcom driver 
+we provide a load script for this driver. To load the new generation 
+drivers (b43 and b43legacy) you can run:
+
+	sudo b43load b43
+
+To revert back to bcm43xx you can run:
+
+	sudo b43load bcm43xx
+
+* MadWifi:
+
+If MadWifi is present the build system will detect this and disable it. It 
+does this by simply renaming ath_pci.ko to ath_pci.ko.ignore. This lets us
+disable the MadWifi driver without blacklisting it which could cause issues
+with users later. If you would like to enable MadWifi at a later time and
+disable ath5k you can run:
+
+	sudo athload madwifi
+
+To revert back to ath5k you can run:
+
+	sudo athload ath5k
+
+* prism54, p54pci, p54usb?
+
+We don't provide prism54 in this package because distributions already provide 
+it. p54 is its replacement. prism54 works only with full MAC cards. p54 works
+with both full MAC and soft MAC cards. p54 just doesn't yet support ad-hoc,
+and AP mode. Should prism54 get any new updates we'll start packaging it here.
+
+* What about net/ieee80211/softmac/ and their drivers?
+
+Documentation/feature-removal-schedule.txt is being updated to
+mark this for removal. Here is the relevant text:
+
+---
+What:  iee80211 softmac wireless networking component
+When:  2.6.26 (or after removal of bcm43xx and port of zd1211rw to mac80211)
+Files: net/ieee80211/softmac
+Why:   No in-kernel drivers will depend on it any longer.
+Who:   John W. Linville <linville@tuxdriver.com>
+---
+
+* Firmware:
+
+If your driver needs firmware please be sure to check the driver page
+for that driver here:
+
+http://wireless.kernel.org/en/users/Drivers
+
+Why?
+----
+
+For users or developers stuck on older kernels that want to help test or 
+patch wireless work. Additionally if you're on a recent kernel this lets
+you get the latest and greatest wireless-testing git work without much effort.
+This may mean new drivers for some users. Last but not least we hope this
+will encourage vendors and developers to post patches upstream first
+rather than forking or maintaining their own mac80211 releases with
+their own patches for their own drivers.
+
+How about compatibility work for kernels < 2.6.22 ?
+---------------------------------------------------
+
+Sure, feel free to send patches. The main work was designed to support 
+kernels >= 2.6.22 as that was when mac80211 was introduced.
+
+Building for external kernels
+----------------------------------
+
+If you have a kernel you do not have installed but yet want to build the
+compat-wireless-2.6 drivers for it you can use this syntax:
+
+make KLIB=/home/mcgrof/kernels/linux-2.6.23.9 KLIB_BUILD=/home/mcgrof/kernels/linux-2.6.23.9
+
+Bugs
+-----
+
+If you've found a bug please report it to our linux-wireless mailing list:
+
+linux-wireless@vger.kernel.org
+
+Report the bug because you are working with the latest and greatest.
+If your bug is compatibility-related then we should still try to fix
+it within the compat.[ch] work.
+
+ChangeLog
+---------
+
+Here you see the list of changes to all wireless drivers, the wireless core and mac80211.
+
+http://git.kernel.org/?p=linux/kernel/git/linville/wireless-testing.git;a=log;
+
+This views all the changes on the 'everything' branch of wireless-testing.git.
+
+License
+-------
+
+This work is a subset of the Linux kernel as such we keep the kernel's
+Copyright practice. Some files have their own copyright and in those
+cases the license is mentioned in the file. All additional work made
+to building this package is licensed under the GPLv2.
+
+Developers
+----------
+
+Compatibility work goes into compat/compat.[ch]. If using those files do 
+not suffice additional actual code changes can go into compat/compat.diff.
+
+If you have your own wireless-testing git tree, before running admin-update.sh
+be sure to set your GIT_TREE variable. For example:
+
+export GIT_TREE=/home/mcgrof/wireless-testing/
+
+scripts/admin-clean.sh		- Cleans the compat-wireless-2.6 tree
+scripts/admin-update.sh		- Updates compat-wireless-2.6 with your git tree
+scripts/admin-refresh.sh	- Does the above two
+
+TODO
+----
+
+* Compatibilty work for 2.6.18 --> 2.6.21
+* Dialog (make menuconfig) option for this package 
+
+Patches for compatibility work
+------------------------------
+
+Please send patches against:
+
+git://git.kernel.org/pub/scm/linux/kernel/git/mcgrof/compat-wireless-2.6.git
+
+To: Luis R. Rodriguez <mcgrof@winlab.rutgers.edu>
+CC: compat-masters@lists.madwifi.org
+Subject: [PATCH] compat-2.6: add driver foo
+
+Patches for drivers
+-------------------
+
+If you'd like to send patches for a driver though you can send it using our 
+Submitting Patches guideline:
+
+http://wireless.kernel.org/en/developers/SubmittingPatches
+
