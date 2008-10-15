@@ -105,13 +105,12 @@
  obj-$(CONFIG_USB_USBNET)	+= usbnet.o
  
  ifeq ($(CONFIG_USB_DEBUG),y)
---- a/drivers/net/wireless/Makefile	2008-09-02 19:04:56.000000000 -0700
-+++ b/drivers/net/wireless/Makefile	2008-09-02 19:08:25.000000000 -0700
-@@ -5,49 +5,14 @@
- obj-$(CONFIG_IPW2100) += ipw2100.o
+--- a/drivers/net/wireless/Makefile	2008-10-15 12:19:31.000000000 -0600
++++ b/drivers/net/wireless/Makefile	2008-10-15 12:24:13.000000000 -0600
+@@ -6,46 +6,12 @@
  
  obj-$(CONFIG_IPW2200) += ipw2200.o
--
+ 
 -obj-$(CONFIG_STRIP) += strip.o
 -obj-$(CONFIG_ARLAN) += arlan.o 
 -
@@ -138,8 +137,6 @@
 -obj-$(CONFIG_PCI_ATMEL)         += atmel_pci.o 
 -obj-$(CONFIG_PCMCIA_ATMEL)      += atmel_cs.o
 -
- obj-$(CONFIG_USB_ATMEL)	        += at76_usb.o
- 
 -obj-$(CONFIG_PRISM54)		+= prism54/
 -
 -obj-$(CONFIG_HOSTAP)		+= hostap/
