@@ -52,6 +52,9 @@ CONFIG_MAC80211_MESH=y
 CONFIG_CFG80211=m
 CONFIG_LIB80211=m
 CONFIG_NL80211=y
+# We'll disable this as soon major distributions
+# start shipping this
+CONFIG_WIRELESS_OLD_REGULATORY=y
 
 # mac80211 test driver
 CONFIG_MAC80211_HWSIM=m
