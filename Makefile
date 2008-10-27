@@ -84,6 +84,7 @@ install: uninstall modules
 	@$(MODPROBE) -l mac80211
 	@# rc80211_simple is a module only on 2.6.22 and 2.6.23
 	@$(MODPROBE) -l cfg80211
+	@$(MODPROBE) -l lib80211
 	@$(MODPROBE) -l adm8211
 	@$(MODPROBE) -l at76_usb
 	@$(MODPROBE) -l ath5k
@@ -140,6 +141,7 @@ uninstall:
 	@echo 
 	@$(MODPROBE) -l mac80211
 	@$(MODPROBE) -l cfg80211
+	@$(MODPROBE) -l lib80211
 	@$(MODPROBE) -l adm8211
 	@$(MODPROBE) -l ath5k
 	@$(MODPROBE) -l ath9k

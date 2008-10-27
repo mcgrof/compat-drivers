@@ -8,18 +8,19 @@
  
  /*
   * 802.11 configuration in-kernel interface
---- a/net/wireless/Makefile	2008-02-28 19:54:52.000000000 +0100
-+++ b/net/wireless/Makefile	2008-02-28 19:54:53.000000000 +0100
-@@ -1,5 +1,4 @@
+--- a/net/wireless/Makefile	2008-10-27 19:54:52.000000000 +0100
++++ b/net/wireless/Makefile	2008-10-27 19:54:53.000000000 +0100
+@@ -1,6 +1,5 @@
 -obj-$(CONFIG_WIRELESS_EXT) += wext.o
  obj-$(CONFIG_CFG80211) += cfg80211.o
+ obj-$(CONFIG_LIB80211) += lib80211.o
  
 -cfg80211-y += core.o sysfs.o radiotap.o util.o reg.o
 +cfg80211-y += core.o sysfs.o radiotap.o util.o reg.o compat.o
  cfg80211-$(CONFIG_NL80211) += nl80211.o
---- a/drivers/net/wireless/zd1211rw/zd_chip.c	2008-03-07 20:02:06.000000000 -0500
-+++ b/drivers/net/wireless/zd1211rw/zd_chip.c	2008-03-07 20:02:07.000000000 -0500
-@@ -1281,7 +1281,7 @@
+--- a/drivers/net/wireless/zd1211rw/zd_chip.c	2008-10-27 09:24:30.000000000 -0700
++++ b/drivers/net/wireless/zd1211rw/zd_chip.c	2008-10-27 09:24:31.000000000 -0700
+@@ -1280,7 +1280,7 @@
  	other_led = chip->link_led == LED1 ? LED2 : LED1;
  
  	switch (status) {
@@ -39,18 +40,18 @@
  	LED_SCANNING = 1,
  	LED_ASSOCIATED = 2,
  };
---- a/drivers/net/wireless/zd1211rw/zd_mac.c	2008-09-02 18:42:08.000000000 -0700
-+++ b/drivers/net/wireless/zd1211rw/zd_mac.c	2008-09-02 18:42:08.000000000 -0700
-@@ -994,5 +994,5 @@
+--- a/drivers/net/wireless/zd1211rw/zd_mac.c	2008-10-27 09:24:30.000000000 -0700
++++ b/drivers/net/wireless/zd1211rw/zd_mac.c	2008-10-27 09:24:31.000000000 -0700
+@@ -1033,5 +1033,5 @@
  	dev_dbg_f(zd_mac_dev(mac), "\n");
  	cancel_rearming_delayed_workqueue(zd_workqueue,
  		&mac->housekeeping.link_led_work);
 -	zd_chip_control_leds(&mac->chip, LED_OFF);
 +	zd_chip_control_leds(&mac->chip, LED_OFF_ZD);
  }
---- a/drivers/misc/Makefile	2008-09-02 18:44:30.000000000 -0700
-+++ b/drivers/misc/Makefile	2008-09-02 18:45:23.000000000 -0700
-@@ -3,30 +3,4 @@
+--- a/drivers/misc/Makefile	2008-10-27 09:27:13.000000000 -0700
++++ b/drivers/misc/Makefile	2008-10-27 09:40:43.000000000 -0700
+@@ -3,31 +3,4 @@
  #
  obj- := misc.o	# Dummy rule to force built-in.o to be made
  
@@ -74,6 +75,7 @@
 -obj-$(CONFIG_SONY_LAPTOP)	+= sony-laptop.o
 -obj-$(CONFIG_THINKPAD_ACPI)	+= thinkpad_acpi.o
 -obj-$(CONFIG_FUJITSU_LAPTOP)	+= fujitsu-laptop.o
+-obj-$(CONFIG_PANASONIC_LAPTOP)	+= panasonic-laptop.o
  obj-$(CONFIG_EEPROM_93CX6)	+= eeprom_93cx6.o
 -obj-$(CONFIG_INTEL_MENLOW)	+= intel_menlow.o
 -obj-$(CONFIG_ENCLOSURE_SERVICES) += enclosure.o
@@ -81,9 +83,9 @@
 -obj-$(CONFIG_SGI_XP)		+= sgi-xp/
 -obj-$(CONFIG_SGI_GRU)		+= sgi-gru/
 -obj-$(CONFIG_HP_ILO)		+= hpilo.o
---- a/drivers/net/usb/Makefile	2008-09-02 18:45:54.000000000 -0700
-+++ b/drivers/net/usb/Makefile	2008-09-02 18:47:14.000000000 -0700
-@@ -2,21 +2,8 @@
+--- a/drivers/net/usb/Makefile	2008-10-27 09:41:27.000000000 -0700
++++ b/drivers/net/usb/Makefile	2008-10-27 09:43:01.000000000 -0700
+@@ -2,21 +2,7 @@
  # Makefile for USB Network drivers
  #
  
@@ -95,6 +97,7 @@
 -obj-$(CONFIG_USB_NET_AX8817X)	+= asix.o
  obj-$(CONFIG_USB_NET_CDCETHER)	+= cdc_ether.o
 -obj-$(CONFIG_USB_NET_DM9601)	+= dm9601.o
+-obj-$(CONFIG_USB_NET_SMSC95XX)	+= smsc95xx.o
 -obj-$(CONFIG_USB_NET_GL620A)	+= gl620a.o
 -obj-$(CONFIG_USB_NET_NET1080)	+= net1080.o
 -obj-$(CONFIG_USB_NET_PLUSB)	+= plusb.o
@@ -104,7 +107,6 @@
 -obj-$(CONFIG_USB_NET_MCS7830)	+= mcs7830.o
  obj-$(CONFIG_USB_USBNET)	+= usbnet.o
  
- ifeq ($(CONFIG_USB_DEBUG),y)
 --- a/drivers/net/wireless/Makefile	2008-10-15 12:19:31.000000000 -0600
 +++ b/drivers/net/wireless/Makefile	2008-10-15 12:24:13.000000000 -0600
 @@ -6,46 +6,12 @@
