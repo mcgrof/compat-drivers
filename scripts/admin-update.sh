@@ -27,7 +27,7 @@ INCLUDE_LINUX_USB="usbnet.h rndis_host.h"
 INCLUDE_NET_OLD="ieee80211.h ieee80211_crypt.h"
 # The good new yummy stuff
 INCLUDE_NET="$INCLUDE_NET_OLD cfg80211.h ieee80211_radiotap.h iw_handler.h"
-INCLUDE_NET="$INCLUDE_NET mac80211.h wext.h wireless.h"
+INCLUDE_NET="$INCLUDE_NET mac80211.h wext.h wireless.h lib80211.h"
 
 NET_DIRS="wireless mac80211 ieee80211"
 # User exported this variable
