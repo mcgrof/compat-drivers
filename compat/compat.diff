@@ -188,3 +188,75 @@ index 842a08d..079c1fd 100644
  	{
  		lbs_pr_err("error in pcmcia_get_first_tuple etc\n");
  		goto out1;
+diff --git a/net/mac80211/main.c b/net/mac80211/main.c
+index fa0cc7a..3987576 100644
+--- a/net/mac80211/main.c
++++ b/net/mac80211/main.c
+@@ -432,6 +432,7 @@ static void ieee80211_handle_filtered_frame(struct ieee80211_local *local,
+ 		return;
+ 	}
+ 
++#if (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,27))
+ 	if (!test_sta_flags(sta, WLAN_STA_PS) && !skb->requeue) {
+ 		/* Software retry the packet once */
+ 		skb->requeue = 1;
+@@ -439,6 +440,7 @@ static void ieee80211_handle_filtered_frame(struct ieee80211_local *local,
+ 		dev_queue_xmit(skb);
+ 		return;
+ 	}
++#endif
+ 
+ #ifdef CONFIG_MAC80211_VERBOSE_DEBUG
+ 	if (net_ratelimit())
+diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
+index 5a1a60f..e062c97 100644
+--- a/net/mac80211/rx.c
++++ b/net/mac80211/rx.c
+@@ -686,12 +686,17 @@ static int ap_sta_ps_end(struct sta_info *sta)
+ 
+ 	/* Send all buffered frames to the station */
+ 	while ((skb = skb_dequeue(&sta->tx_filtered)) != NULL) {
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,28))
++		dev_kfree_skb(skb);
++#else
+ 		sent++;
+ 		skb->requeue = 1;
+ 		dev_queue_xmit(skb);
++#endif
+ 	}
+ 	while ((skb = skb_dequeue(&sta->ps_tx_buf)) != NULL) {
+ 		local->total_ps_buffered--;
++#if (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,27))
+ 		sent++;
+ #ifdef CONFIG_MAC80211_VERBOSE_PS_DEBUG
+ 		printk(KERN_DEBUG "%s: STA %s aid %d send PS frame "
+@@ -700,6 +705,9 @@ static int ap_sta_ps_end(struct sta_info *sta)
+ #endif /* CONFIG_MAC80211_VERBOSE_PS_DEBUG */
+ 		skb->requeue = 1;
+ 		dev_queue_xmit(skb);
++#else
++		dev_kfree_skb(skb);
++#endif
+ 	}
+ 
+ 	return sent;
+diff --git a/net/mac80211/wme.c b/net/mac80211/wme.c
+index a0c860f..9c6f214 100644
+--- a/net/mac80211/wme.c
++++ b/net/mac80211/wme.c
+@@ -124,6 +124,7 @@ u16 ieee80211_select_queue(struct net_device *dev, struct sk_buff *skb)
+ 	if (unlikely(queue >= local->hw.queues))
+ 		queue = local->hw.queues - 1;
+ 
++#if (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,27))
+ 	if (skb->requeue) {
+ 		if (!hw->ampdu_queues)
+ 			return queue;
+@@ -142,6 +143,7 @@ u16 ieee80211_select_queue(struct net_device *dev, struct sk_buff *skb)
+ 
+ 		return queue;
+ 	}
++#endif
+ 
+ 	/* Now we know the 1d priority, fill in the QoS header if
+ 	 * there is one.
