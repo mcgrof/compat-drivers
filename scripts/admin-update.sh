@@ -162,6 +162,11 @@ echo "Updated from ${GIT_TREE}, git-describe says:"
 cat git-describe
 if [ -d ./.git ]; then
 	git describe > compat-release
+	cd $GIT_TREE && git tag -l| grep master | tail -1 > $DIR/master-tag && cd $DIR
+	if [ -f master-tag ]; then
+		echo "wireless-testing latest tag:"
+		cat master-tag
+	fi
 fi
 echo "This is compat-release:"
 cat compat-release
