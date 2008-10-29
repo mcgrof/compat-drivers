@@ -157,11 +157,11 @@ if [[ $RET -ne 0 ]]; then
 	exit $RET
 fi
 DIR="$PWD"
-cd $GIT_TREE && git-describe > $DIR/git-describe && cd $DIR
+cd $GIT_TREE && git describe > $DIR/git-describe && cd $DIR
 echo "Updated from ${GIT_TREE}, git-describe says:"
 cat git-describe
 if [ -d ./.git ]; then
-	git-describe > compat-release
+	git describe > compat-release
 fi
 echo "This is compat-release:"
 cat compat-release
