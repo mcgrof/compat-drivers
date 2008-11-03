@@ -126,6 +126,10 @@ for i in $RNDIS_REQS; do
 	cp $GIT_TREE/$DIR/$i $DIR/
 done
 
+# b44 is dependent on ssb, so its has to be rebuilt as well.
+DIR="drivers/net"
+cp $GIT_TREE/$DIR/b44.[ch] $DIR
+
 # Misc
 mkdir -p drivers/misc/
 cp $GIT_TREE/drivers/misc/eeprom_93cx6.c drivers/misc/
