@@ -28,6 +28,15 @@ ifeq ($(shell test $(KERNEL_SUBLEVEL) -lt 27 && echo yes),yes)
 $(error "ERROR: You should use compat-wireless-2.6-old for older kernels, this one is for kenrels >= 2.6.27")
 endif
 
+# 2.6.27 has FTRACE_DYNAMIC borked, so we will complain if
+# you have it enabled, otherwise you will very likely run into
+# a kernel panic.
+ifeq ($(shell test $(KERNEL_SUBLEVEL) -eq 27 && echo yes),yes)
+ifeq ($(CONFIG_DYNAMIC_FTRACE),y)
+$(error "ERROR: Your 2.6.27 kernel has CONFIG_DYNAMIC_FTRACE, please upgrade your distribution kernel as newer ones should not have this enabled (and if so report a bug) or remove this warning if you know what you are doing")
+endif
+endif
+
 ifneq ($(KERNELRELEASE),) # This prevents a warning
 
 ifeq ($(CONFIG_NET_SCHED),)
