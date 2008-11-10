@@ -54,6 +54,7 @@ endif # kernel Makefile check
 
 CONFIG_MAC80211_RC_DEFAULT=pid
 CONFIG_MAC80211_RC_PID=y
+CONFIG_MAC80211_RC_MINSTREL=y
 
 # enable mesh networking too
 CONFIG_MAC80211_MESH=y
