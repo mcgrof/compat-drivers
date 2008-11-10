@@ -209,11 +209,9 @@ index a0c860f..9c6f214 100644
  
  	/* Now we know the 1d priority, fill in the QoS header if
  	 * there is one.
-diff --git a/drivers/net/wireless/Makefile b/drivers/net/wireless/Makefile
-index 7882084..e65e8b4 100644
---- a/drivers/net/wireless/Makefile
-+++ b/drivers/net/wireless/Makefile
-@@ -6,39 +6,12 @@ obj-$(CONFIG_IPW2100) += ipw2100.o
+--- a/drivers/net/wireless/Makefile	2008-11-10 12:55:55.000000000 -0800
++++ b/drivers/net/wireless/Makefile	2008-11-10 12:57:30.000000000 -0800
+@@ -6,41 +6,14 @@
  
  obj-$(CONFIG_IPW2200) += ipw2200.o
  
@@ -242,6 +240,8 @@ index 7882084..e65e8b4 100644
  obj-$(CONFIG_B43)		+= b43/
  obj-$(CONFIG_B43LEGACY)		+= b43legacy/
  obj-$(CONFIG_ZD1211RW)		+= zd1211rw/
+ obj-$(CONFIG_RTL8180)		+= rtl818x/
+ obj-$(CONFIG_RTL8187)		+= rtl818x/
  
 -# 16-bit wireless PCMCIA client drivers
 -obj-$(CONFIG_PCMCIA_RAYCS)	+= ray_cs.o
