@@ -9,6 +9,7 @@ export KLIB_BUILD ?=	$(KLIB)/build
 # Sometimes not available in the path
 MODPROBE := /sbin/modprobe
 MADWIFI=$(shell $(MODPROBE) -l ath_pci)
+OLD_IWL=$(shell $(MODPROBE) -l iwl4965)
 
 ifneq ($(KERNELRELEASE),)
 
@@ -67,8 +68,10 @@ install: uninstall modules
 	@# This is to allow switching between drivers without blacklisting
 	@install scripts/athenable	/usr/sbin/
 	@install scripts/b43enable	/usr/sbin/
+	@install scripts/iwl-enable	/usr/sbin/
 	@install scripts/athload	/usr/sbin/
 	@install scripts/b43load	/usr/sbin/
+	@install scripts/iwl-load	/usr/sbin/
 	@if [ ! -z $(MADWIFI) ]; then \
 		echo ;\
 		echo -n "Note: madwifi detected, we're going to disable it. "  ;\
@@ -79,6 +82,15 @@ install: uninstall modules
 		/usr/sbin/athenable ath5k ;\
 	fi
 	@/sbin/depmod -ae
+	@if [ ! -z $(OLD_IWL) ]; then \
+		echo ;\
+		echo -n "Note: iwl4965 detected, we're going to disable it. "  ;\
+		echo "If you would like to enable it later you can run:"  ;\
+		echo "    sudo iwl-load iwl4965"  ;\
+		echo ;\
+		echo Running iwl-enable iwlagn...;\
+		/usr/sbin/iwl-enable iwlagn ;\
+	fi
 	@echo
 	@echo "Currently detected wireless subsystem modules:"
 	@echo 
@@ -95,6 +107,7 @@ install: uninstall modules
 	@$(MODPROBE) -l ssb
 	@$(MODPROBE) -l iwl3945
 	@$(MODPROBE) -l iwl4965
+	@$(MODPROBE) -l iwlagn
 	@$(MODPROBE) -l ipw2100
 	@$(MODPROBE) -l ipw2200
 	@$(MODPROBE) -l ieee80211
@@ -153,6 +166,7 @@ uninstall:
 	@$(MODPROBE) -l rc80211_simple
 	@$(MODPROBE) -l iwl3945
 	@$(MODPROBE) -l iwl4965
+	@$(MODPROBE) -l iwlagn
 	@$(MODPROBE) -l ipw2100
 	@$(MODPROBE) -l ipw2200
 	@$(MODPROBE) -l ieee80211
