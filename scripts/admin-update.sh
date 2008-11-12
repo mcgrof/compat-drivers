@@ -58,6 +58,7 @@ DRIVERS="$DRIVERS drivers/net/wireless/zd1211rw"
 DRIVERS="$DRIVERS drivers/net/wireless/libertas"
 DRIVERS="$DRIVERS drivers/net/wireless/p54"
 DRIVERS="$DRIVERS drivers/net/wireless/rtl818x"
+DRIVERS="$DRIVERS drivers/net/wireless/libertas_tf"
 
 # Drivers that belong the the wireless directory
 DRIVER_FILES="adm8211.c  adm8211.h"

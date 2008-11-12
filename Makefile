@@ -113,6 +113,8 @@ install: uninstall modules
 	@$(MODPROBE) -l ieee80211
 	@$(MODPROBE) -l ieee80211_crypt
 	@$(MODPROBE) -l libertas_cs
+	@$(MODPROBE) -l libertas_tf
+	@$(MODPROBE) -l libertas_tf_usb
 	@$(MODPROBE) -l ub8xxx
 	@$(MODPROBE) -l p54_pci
 	@$(MODPROBE) -l p54_usb
@@ -172,6 +174,8 @@ uninstall:
 	@$(MODPROBE) -l ieee80211
 	@$(MODPROBE) -l ieee80211_crypt
 	@$(MODPROBE) -l libertas_cs
+	@$(MODPROBE) -l libertas_tf
+	@$(MODPROBE) -l libertas_tf_usb
 	@$(MODPROBE) -l mac80211
 	@$(MODPROBE) -l ub8xxx
 	@$(MODPROBE) -l p54pci
