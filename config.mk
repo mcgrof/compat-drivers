@@ -31,6 +31,10 @@ ifeq ($(shell test $(KERNEL_SUBLEVEL) -lt 27 && echo yes),yes)
 $(error "ERROR: You should use compat-wireless-2.6-old for older kernels, this one is for kenrels >= 2.6.27")
 endif
 
+ifeq ($(CONFIG_CFG80211),y)
+$(error "ERROR: your kernel has CONFIG_CFG80211=y, you should have it CONFIG_CFG80211=m if you want to use this thing.")
+endif
+
 # 2.6.27 has FTRACE_DYNAMIC borked, so we will complain if
 # you have it enabled, otherwise you will very likely run into
 # a kernel panic.
