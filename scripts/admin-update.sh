@@ -24,12 +24,12 @@ INCLUDE_LINUX="$INCLUDE_LINUX pci_ids.h bitops.h eeprom_93cx6.h pm_qos_params.h"
 INCLUDE_LINUX_USB="usbnet.h rndis_host.h"
 
 # Stuff that should die or be merged, only ipw uses it
-INCLUDE_NET_OLD="ieee80211.h ieee80211_crypt.h"
+INCLUDE_NET_OLD="ieee80211.h"
 # The good new yummy stuff
 INCLUDE_NET="$INCLUDE_NET_OLD cfg80211.h ieee80211_radiotap.h iw_handler.h"
 INCLUDE_NET="$INCLUDE_NET mac80211.h wext.h wireless.h lib80211.h"
 
-NET_DIRS="wireless mac80211 ieee80211"
+NET_DIRS="wireless mac80211"
 # User exported this variable
 if [ -z $GIT_TREE ]; then
 	GIT_TREE="/home/$USER/devel/wireless-testing/"
@@ -59,16 +59,15 @@ DRIVERS="$DRIVERS drivers/net/wireless/libertas"
 DRIVERS="$DRIVERS drivers/net/wireless/p54"
 DRIVERS="$DRIVERS drivers/net/wireless/rtl818x"
 DRIVERS="$DRIVERS drivers/net/wireless/libertas_tf"
+DRIVERS="$DRIVERS drivers/net/wireless/ipw2x00"
 
 # Drivers that belong the the wireless directory
 DRIVER_FILES="adm8211.c  adm8211.h"
-DRIVER_FILES="$DRIVER_FILES ipw2100.h ipw2100.c"
-DRIVER_FILES="$DRIVER_FILES ipw2200.h ipw2200.c"
 DRIVER_FILES="$DRIVER_FILES rndis_wlan.c"
 DRIVER_FILES="$DRIVER_FILES mac80211_hwsim.c"
 
 mkdir -p include/linux/ include/net/ include/linux/usb \
-	net/mac80211/ net/wireless/ net/ieee80211/ \
+	net/mac80211/ net/wireless/ \
 	drivers/ssb/ \
 	drivers/net/usb/ \
 	drivers/net/wireless/

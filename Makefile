@@ -20,8 +20,7 @@ NOSTDINC_FLAGS := -I$(M)/include/ -include $(M)/include/net/compat.h $(CFLAGS)
 obj-y := net/wireless/ net/mac80211/
 ifeq ($(ONLY_CORE),)
 obj-$(CONFIG_B44) += drivers/net/b44.o
-obj-y += net/ieee80211/ \
-	drivers/ssb/ \
+obj-y += drivers/ssb/ \
 	drivers/misc/ \
 	drivers/net/usb/ \
 	drivers/net/wireless/
@@ -95,7 +94,6 @@ install: uninstall modules
 	@echo "Currently detected wireless subsystem modules:"
 	@echo 
 	@$(MODPROBE) -l mac80211
-	@# rc80211_simple is a module only on 2.6.22 and 2.6.23
 	@$(MODPROBE) -l cfg80211
 	@$(MODPROBE) -l lib80211
 	@$(MODPROBE) -l adm8211
@@ -110,8 +108,9 @@ install: uninstall modules
 	@$(MODPROBE) -l iwlagn
 	@$(MODPROBE) -l ipw2100
 	@$(MODPROBE) -l ipw2200
-	@$(MODPROBE) -l ieee80211
-	@$(MODPROBE) -l ieee80211_crypt
+	@$(MODPROBE) -l libipw
+	@$(MODPROBE) -l lib80211
+	@$(MODPROBE) -l lib80211_crypt
 	@$(MODPROBE) -l libertas_cs
 	@$(MODPROBE) -l libertas_tf
 	@$(MODPROBE) -l libertas_tf_usb
@@ -144,7 +143,6 @@ uninstall:
 	@# New location, matches upstream
 	@rm -rf $(KLIB)/$(KMODDIR)/net/mac80211/
 	@rm -rf $(KLIB)/$(KMODDIR)/net/wireless/
-	@rm -rf $(KLIB)/$(KMODDIR)/net/ieee80211/
 	@rm -rf $(KLIB)/$(KMODDIR)/drivers/ssb/
 	@rm -rf $(KLIB)/$(KMODDIR)/drivers/net/usb/
 	@rm -rf $(KLIB)/$(KMODDIR)/drivers/net/wireless/
@@ -171,8 +169,9 @@ uninstall:
 	@$(MODPROBE) -l iwlagn
 	@$(MODPROBE) -l ipw2100
 	@$(MODPROBE) -l ipw2200
-	@$(MODPROBE) -l ieee80211
-	@$(MODPROBE) -l ieee80211_crypt
+	@$(MODPROBE) -l libipw
+	@$(MODPROBE) -l lib80211
+	@$(MODPROBE) -l lib80211_crypt
 	@$(MODPROBE) -l libertas_cs
 	@$(MODPROBE) -l libertas_tf
 	@$(MODPROBE) -l libertas_tf_usb

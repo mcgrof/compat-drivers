@@ -10,10 +10,13 @@
   * 802.11 configuration in-kernel interface
 --- a/net/wireless/Makefile	2008-10-27 19:54:52.000000000 +0100
 +++ b/net/wireless/Makefile	2008-10-27 19:54:53.000000000 +0100
-@@ -1,6 +1,5 @@
+@@ -1,9 +1,8 @@
 -obj-$(CONFIG_WIRELESS_EXT) += wext.o
  obj-$(CONFIG_CFG80211) += cfg80211.o
  obj-$(CONFIG_LIB80211) += lib80211.o
+ obj-$(CONFIG_LIB80211_CRYPT_WEP) += lib80211_crypt_wep.o
+ obj-$(CONFIG_LIB80211_CRYPT_CCMP) += lib80211_crypt_ccmp.o
+ obj-$(CONFIG_LIB80211_CRYPT_TKIP) += lib80211_crypt_tkip.o
  
 -cfg80211-y += core.o sysfs.o radiotap.o util.o reg.o
 +cfg80211-y += core.o sysfs.o radiotap.o util.o reg.o compat.o
@@ -177,9 +180,9 @@ index a0c860f..9c6f214 100644
  	 * there is one.
 --- a/drivers/net/wireless/Makefile	2008-11-10 12:55:55.000000000 -0800
 +++ b/drivers/net/wireless/Makefile	2008-11-10 12:57:30.000000000 -0800
-@@ -6,41 +6,14 @@
- 
- obj-$(CONFIG_IPW2200) += ipw2200.o
+@@ -5,41 +5,14 @@
+ obj-$(CONFIG_IPW2100) += ipw2x00/
+ obj-$(CONFIG_IPW2200) += ipw2x00/
  
 -obj-$(CONFIG_STRIP) += strip.o
 -obj-$(CONFIG_ARLAN) += arlan.o 

@@ -59,15 +59,21 @@ endif
 endif # build check
 endif # kernel Makefile check
 
-CONFIG_MAC80211_RC_DEFAULT=pid
+# choose between pid and minstrel as default rate control algorithm
+CONFIG_MAC80211_RC_DEFAULT=minstrel
 CONFIG_MAC80211_RC_PID=y
 CONFIG_MAC80211_RC_MINSTREL=y
+CONFIG_MAC80211_LEDS=y
 
 # enable mesh networking too
 CONFIG_MAC80211_MESH=y
 
 CONFIG_CFG80211=m
 CONFIG_LIB80211=m
+CONFIG_LIB80211_CRYPT_WEP=m
+CONFIG_LIB80211_CRYPT_CCMP=m
+CONFIG_LIB80211_CRYPT_TKIP=m
+
 CONFIG_NL80211=y
 # We'll disable this as soon major distributions
 # start shipping this
@@ -96,11 +102,9 @@ CONFIG_B43=m
 # Example, bcm4318:
 # http://www.multicap.biz/wireless-lan/indoor-wlan-hardware/sdc-cf10g-80211g-compact-flash-module
 CONFIG_B43_PCMCIA=y
-CONFIG_B43_DMA=y
 CONFIG_B43_PIO=y
 # B43_PIO selects SSB_BLOCKIO
 CONFIG_SSB_BLOCKIO=y
-CONFIG_B43_DMA_AND_PIO_MODE=y
 CONFIG_B43_PCI_AUTOSELECT=y
 CONFIG_B43_PCICORE_AUTOSELECT=y
 #CONFIG_B43_RFKILL=n
@@ -115,6 +119,7 @@ CONFIG_B43LEGACY_PIO=y
 CONFIG_B43LEGACY_DMA_AND_PIO_MODE=y
 
 # The Intel ipws
+CONFIG_LIBIPW=m
 CONFIG_IPW2100=m
 CONFIG_IPW2100_MONITOR=y
 CONFIG_IPW2200=m
@@ -134,8 +139,6 @@ CONFIG_IPW2200_PROMISCUOUS=y
 #
 # % echo 1 > /sys/bus/pci/drivers/ipw2200/*/rtap_iface
 CONFIG_IPW2200_QOS=y
-
-NEED_IEEE80211=y
 
 CONFIG_P54_PCI=m
 
@@ -247,16 +250,5 @@ ifeq ($(NEED_LIBERTAS),y)
 CONFIG_LIBERTAS=m
 # Libertas uses the old stack but not fully, it will soon 
 # be cleaned.
-NEED_IEEE80211=y
 endif
 
-ifeq ($(NEED_IEEE80211),y)
-# Old ieee80211 "stack"
-# Note: old softmac is scheduled for removal so we
-# ignore that stuff
-CONFIG_IEEE80211=m
-CONFIG_IEEE80211_CRYPT_CCMP=m
-CONFIG_IEEE80211_CRYPT_TKIP=m
-CONFIG_IEEE80211_CRYPT_WEP=m
-CONFIG_IEEE80211_SOFTMAC=n
-endif
