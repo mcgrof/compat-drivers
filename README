@@ -149,21 +149,11 @@ To revert back to ath5k you can run:
 
 We don't provide prism54 in this package because distributions already provide 
 it. p54 is its replacement. prism54 works only with full MAC cards. p54 works
-with both full MAC and soft MAC cards. p54 just doesn't yet support ad-hoc,
-and AP mode. Should prism54 get any new updates we'll start packaging it here.
+with both full MAC and soft MAC cards.
 
 * What about net/ieee80211/softmac/ and their drivers?
 
-Documentation/feature-removal-schedule.txt is being updated to
-mark this for removal. Here is the relevant text:
-
----
-What:  iee80211 softmac wireless networking component
-When:  2.6.26 (or after removal of bcm43xx and port of zd1211rw to mac80211)
-Files: net/ieee80211/softmac
-Why:   No in-kernel drivers will depend on it any longer.
-Who:   John W. Linville <linville@tuxdriver.com>
----
+This stuff is long gone.
 
 * Firmware:
 
