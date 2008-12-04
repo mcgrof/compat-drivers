@@ -1,16 +1,16 @@
 --- a/include/net/cfg80211.h	2008-02-28 19:54:52.000000000 +0100
 +++ b/include/net/cfg80211.h	2008-02-28 19:54:53.000000000 +0100
-@@ -5,6 +5,7 @@
- #include <linux/skbuff.h>
- #include <linux/nl80211.h>
+@@ -7,6 +7,7 @@
  #include <net/genetlink.h>
+ /* remove once we remove the wext stuff */
+ #include <net/iw_handler.h>
 +#include <net/compat.h>
  
  /*
   * 802.11 configuration in-kernel interface
 --- a/net/wireless/Makefile	2008-10-27 19:54:52.000000000 +0100
 +++ b/net/wireless/Makefile	2008-10-27 19:54:53.000000000 +0100
-@@ -1,9 +1,8 @@
+@@ -1,10 +1,9 @@
 -obj-$(CONFIG_WIRELESS_EXT) += wext.o
  obj-$(CONFIG_CFG80211) += cfg80211.o
  obj-$(CONFIG_LIB80211) += lib80211.o
@@ -20,6 +20,7 @@
  
 -cfg80211-y += core.o sysfs.o radiotap.o util.o reg.o
 +cfg80211-y += core.o sysfs.o radiotap.o util.o reg.o compat.o
+ cfg80211-$(CONFIG_WIRELESS_EXT) += wext-compat.o
  cfg80211-$(CONFIG_NL80211) += nl80211.o
 --- a/drivers/net/wireless/zd1211rw/zd_chip.c	2008-10-27 09:24:30.000000000 -0700
 +++ b/drivers/net/wireless/zd1211rw/zd_chip.c	2008-10-27 09:24:31.000000000 -0700
@@ -110,7 +111,7 @@ index 842a08d..079c1fd 100644
  		goto out1;
 --- a/net/mac80211/main.c	2008-11-03 09:54:12.000000000 -0800
 +++ b/net/mac80211/main.c	2008-11-03 09:54:13.000000000 -0800
-@@ -423,6 +423,7 @@
+@@ -445,6 +445,7 @@ static void ieee80211_handle_filtered_frame(struct ieee80211_local *local,
  		return;
  	}
  
@@ -118,7 +119,7 @@ index 842a08d..079c1fd 100644
  	if (!test_sta_flags(sta, WLAN_STA_PS) && !skb->requeue) {
  		/* Software retry the packet once */
  		skb->requeue = 1;
-@@ -430,6 +431,7 @@
+@@ -452,6 +453,7 @@ static void ieee80211_handle_filtered_frame(struct ieee80211_local *local,
  		dev_queue_xmit(skb);
  		return;
  	}
@@ -130,7 +131,7 @@ diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
 index 5a1a60f..e062c97 100644
 --- a/net/mac80211/rx.c
 +++ b/net/mac80211/rx.c
-@@ -686,12 +686,17 @@ static int ap_sta_ps_end(struct sta_info *sta)
+@@ -693,12 +693,17 @@ static int ap_sta_ps_end(struct sta_info *sta)
  
  	/* Send all buffered frames to the station */
  	while ((skb = skb_dequeue(&sta->tx_filtered)) != NULL) {
@@ -148,7 +149,7 @@ index 5a1a60f..e062c97 100644
  		sent++;
  #ifdef CONFIG_MAC80211_VERBOSE_PS_DEBUG
  		printk(KERN_DEBUG "%s: STA %s aid %d send PS frame "
-@@ -700,6 +705,9 @@ static int ap_sta_ps_end(struct sta_info *sta)
+@@ -707,6 +712,9 @@ static int ap_sta_ps_end(struct sta_info *sta)
  #endif /* CONFIG_MAC80211_VERBOSE_PS_DEBUG */
  		skb->requeue = 1;
  		dev_queue_xmit(skb);
