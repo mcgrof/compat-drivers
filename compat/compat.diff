@@ -115,7 +115,7 @@ index 842a08d..079c1fd 100644
  		return;
  	}
  
-+#if (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,27))
++#if (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,28))
  	if (!test_sta_flags(sta, WLAN_STA_PS) && !skb->requeue) {
  		/* Software retry the packet once */
  		skb->requeue = 1;
@@ -145,7 +145,7 @@ index 5a1a60f..e062c97 100644
  	}
  	while ((skb = skb_dequeue(&sta->ps_tx_buf)) != NULL) {
  		local->total_ps_buffered--;
-+#if (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,27))
++#if (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,28))
  		sent++;
  #ifdef CONFIG_MAC80211_VERBOSE_PS_DEBUG
  		printk(KERN_DEBUG "%s: STA %s aid %d send PS frame "
@@ -167,7 +167,7 @@ index a0c860f..9c6f214 100644
  	if (unlikely(queue >= local->hw.queues))
  		queue = local->hw.queues - 1;
  
-+#if (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,27))
++#if (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,28))
  	if (skb->requeue) {
  		if (!hw->ampdu_queues)
  			return queue;
