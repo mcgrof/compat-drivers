@@ -135,7 +135,7 @@ index 5a1a60f..e062c97 100644
  
  	/* Send all buffered frames to the station */
  	while ((skb = skb_dequeue(&sta->tx_filtered)) != NULL) {
-+#if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,28))
++#if (LINUX_VERSION_CODE <= KERNEL_VERSION(2,6,28))
 +		dev_kfree_skb(skb);
 +#else
  		sent++;
