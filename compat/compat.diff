@@ -111,7 +111,7 @@ index 842a08d..079c1fd 100644
  		goto out1;
 --- a/net/mac80211/main.c	2008-12-09 05:36:29.000000000 -0800
 +++ b/net/mac80211/main.c	2008-12-09 05:36:34.000000000 -0800
-@@ -455,6 +455,7 @@
+@@ -448,6 +448,7 @@
  		return;
  	}
  
@@ -119,7 +119,7 @@ index 842a08d..079c1fd 100644
  	if (!test_sta_flags(sta, WLAN_STA_PS) && !skb->requeue) {
  		/* Software retry the packet once */
  		skb->requeue = 1;
-@@ -462,6 +463,7 @@
+@@ -455,6 +456,7 @@
  		dev_queue_xmit(skb);
  		return;
  	}
@@ -131,7 +131,7 @@ diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
 index 5a1a60f..e062c97 100644
 --- a/net/mac80211/rx.c
 +++ b/net/mac80211/rx.c
-@@ -693,12 +693,17 @@ static int ap_sta_ps_end(struct sta_info *sta)
+@@ -704,12 +704,17 @@ static int ap_sta_ps_end(struct sta_info *sta)
  
  	/* Send all buffered frames to the station */
  	while ((skb = skb_dequeue(&sta->tx_filtered)) != NULL) {
@@ -149,7 +149,7 @@ index 5a1a60f..e062c97 100644
  		sent++;
  #ifdef CONFIG_MAC80211_VERBOSE_PS_DEBUG
  		printk(KERN_DEBUG "%s: STA %s aid %d send PS frame "
-@@ -707,6 +712,9 @@ static int ap_sta_ps_end(struct sta_info *sta)
+@@ -718,6 +723,9 @@ static int ap_sta_ps_end(struct sta_info *sta)
  #endif /* CONFIG_MAC80211_VERBOSE_PS_DEBUG */
  		skb->requeue = 1;
  		dev_queue_xmit(skb);
