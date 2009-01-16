@@ -15,12 +15,6 @@
 
 /* 2.6.27 compat code goes here */
 
-#endif /* LINUX_VERSION_CODE < KERNEL_VERSION(2,6,28) */
-
-#if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,29))
-
-/* 2.6.28 compat code goes here */
-
 void __iomem *pci_ioremap_bar(struct pci_dev *pdev, int bar)
 {
 	/*
@@ -34,6 +28,12 @@ void __iomem *pci_ioremap_bar(struct pci_dev *pdev, int bar)
 				     pci_resource_len(pdev, bar));
 }
 EXPORT_SYMBOL_GPL(pci_ioremap_bar);
+
+#endif /* LINUX_VERSION_CODE < KERNEL_VERSION(2,6,28) */
+
+#if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,29))
+
+/* 2.6.28 compat code goes here */
 
 #endif /* LINUX_VERSION_CODE < KERNEL_VERSION(2,6,29) */
 
