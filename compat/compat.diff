@@ -22,17 +22,6 @@
 +cfg80211-y += core.o sysfs.o radiotap.o util.o reg.o compat.o
  cfg80211-$(CONFIG_WIRELESS_EXT) += wext-compat.o
  cfg80211-$(CONFIG_NL80211) += nl80211.o
---- a/drivers/net/wireless/zd1211rw/zd_chip.c	2008-10-27 09:24:30.000000000 -0700
-+++ b/drivers/net/wireless/zd1211rw/zd_chip.c	2008-10-27 09:24:31.000000000 -0700
-@@ -1280,7 +1280,7 @@
- 	other_led = chip->link_led == LED1 ? LED2 : LED1;
- 
- 	switch (status) {
--	case LED_OFF:
-+	case LED_OFF_ZD:
- 		ioreqs[0].value = FW_LINK_OFF;
- 		ioreqs[1].value = v[1] & ~(LED1|LED2);
- 		break;
 --- a/drivers/net/wireless/zd1211rw/zd_chip.h	2008-03-07 20:02:06.000000000 -0500
 +++ b/drivers/net/wireless/zd1211rw/zd_chip.h	2008-03-07 20:02:07.000000000 -0500
 @@ -897,7 +897,7 @@
@@ -44,15 +33,6 @@
  	LED_SCANNING = 1,
  	LED_ASSOCIATED = 2,
  };
---- a/drivers/net/wireless/zd1211rw/zd_mac.c	2008-10-27 09:24:30.000000000 -0700
-+++ b/drivers/net/wireless/zd1211rw/zd_mac.c	2008-10-27 09:24:31.000000000 -0700
-@@ -1033,5 +1033,5 @@
- 	dev_dbg_f(zd_mac_dev(mac), "\n");
- 	cancel_rearming_delayed_workqueue(zd_workqueue,
- 		&mac->housekeeping.link_led_work);
--	zd_chip_control_leds(&mac->chip, LED_OFF);
-+	zd_chip_control_leds(&mac->chip, LED_OFF_ZD);
- }
 --- a/drivers/net/usb/Makefile	2008-10-27 09:41:27.000000000 -0700
 +++ b/drivers/net/usb/Makefile	2008-10-27 09:43:01.000000000 -0700
 @@ -2,21 +2,7 @@
@@ -109,56 +89,6 @@ index 842a08d..079c1fd 100644
  	{
  		lbs_pr_err("error in pcmcia_get_first_tuple etc\n");
  		goto out1;
---- a/net/mac80211/main.c	2008-12-09 05:36:29.000000000 -0800
-+++ b/net/mac80211/main.c	2008-12-09 05:36:34.000000000 -0800
-@@ -449,6 +449,7 @@
- 		return;
- 	}
- 
-+#if (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,28))
- 	if (!test_sta_flags(sta, WLAN_STA_PS) && !skb->requeue) {
- 		/* Software retry the packet once */
- 		skb->requeue = 1;
-@@ -456,6 +457,7 @@
- 		dev_queue_xmit(skb);
- 		return;
- 	}
-+#endif
- 
- #ifdef CONFIG_MAC80211_VERBOSE_DEBUG
- 	if (net_ratelimit())
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index 5a1a60f..e062c97 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -704,12 +704,17 @@ static int ap_sta_ps_end(struct sta_info *sta)
- 
- 	/* Send all buffered frames to the station */
- 	while ((skb = skb_dequeue(&sta->tx_filtered)) != NULL) {
-+#if (LINUX_VERSION_CODE <= KERNEL_VERSION(2,6,28))
-+		dev_kfree_skb(skb);
-+#else
- 		sent++;
- 		skb->requeue = 1;
- 		dev_queue_xmit(skb);
-+#endif
- 	}
- 	while ((skb = skb_dequeue(&sta->ps_tx_buf)) != NULL) {
- 		local->total_ps_buffered--;
-+#if (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,28))
- 		sent++;
- #ifdef CONFIG_MAC80211_VERBOSE_PS_DEBUG
- 		printk(KERN_DEBUG "%s: STA %s aid %d send PS frame "
-@@ -718,6 +723,9 @@ static int ap_sta_ps_end(struct sta_info *sta)
- #endif /* CONFIG_MAC80211_VERBOSE_PS_DEBUG */
- 		skb->requeue = 1;
- 		dev_queue_xmit(skb);
-+#else
-+		dev_kfree_skb(skb);
-+#endif
- 	}
- 
- 	return sent;
 diff --git a/net/mac80211/wme.c b/net/mac80211/wme.c
 index a0c860f..9c6f214 100644
 --- a/net/mac80211/wme.c
@@ -223,41 +153,96 @@ index a0c860f..9c6f214 100644
  obj-$(CONFIG_LIBERTAS)		+= libertas/
  
  obj-$(CONFIG_LIBERTAS_THINFIRM)	+= libertas_tf/
-diff --git a/drivers/misc/Makefile b/drivers/misc/Makefile
-index 817f7f5..0c3f8fd 100644
---- a/drivers/misc/Makefile
-+++ b/drivers/misc/Makefile
-@@ -3,33 +3,4 @@
+--- a/drivers/misc/Makefile	2009-01-15 16:46:04.000000000 -0800
++++ b/drivers/misc/Makefile	2009-01-15 16:46:39.000000000 -0800
+@@ -2,22 +2,4 @@
+ # Makefile for misc devices that really don't fit anywhere else.
  #
- obj- := misc.o	# Dummy rule to force built-in.o to be made
  
 -obj-$(CONFIG_IBM_ASM)		+= ibmasm/
 -obj-$(CONFIG_HDPU_FEATURES)	+= hdpuftrs/
--obj-$(CONFIG_ASUS_LAPTOP)	+= asus-laptop.o
--obj-$(CONFIG_EEEPC_LAPTOP)	+= eeepc-laptop.o
--obj-$(CONFIG_MSI_LAPTOP)	+= msi-laptop.o
--obj-$(CONFIG_COMPAL_LAPTOP)	+= compal-laptop.o
--obj-$(CONFIG_ACER_WMI)		+= acer-wmi.o
 -obj-$(CONFIG_ATMEL_PWM)		+= atmel_pwm.o
 -obj-$(CONFIG_ATMEL_SSC)		+= atmel-ssc.o
 -obj-$(CONFIG_ATMEL_TCLIB)	+= atmel_tclib.o
--obj-$(CONFIG_HP_WMI)		+= hp-wmi.o
 -obj-$(CONFIG_ICS932S401)	+= ics932s401.o
--obj-$(CONFIG_TC1100_WMI)	+= tc1100-wmi.o
 -obj-$(CONFIG_LKDTM)		+= lkdtm.o
 -obj-$(CONFIG_TIFM_CORE)       	+= tifm_core.o
+-obj-$(CONFIG_DELL_LAPTOP)	+= dell-laptop.o
 -obj-$(CONFIG_TIFM_7XX1)       	+= tifm_7xx1.o
 -obj-$(CONFIG_PHANTOM)		+= phantom.o
 -obj-$(CONFIG_SGI_IOC4)		+= ioc4.o
--obj-$(CONFIG_SONY_LAPTOP)	+= sony-laptop.o
--obj-$(CONFIG_THINKPAD_ACPI)	+= thinkpad_acpi.o
--obj-$(CONFIG_FUJITSU_LAPTOP)	+= fujitsu-laptop.o
--obj-$(CONFIG_PANASONIC_LAPTOP)	+= panasonic-laptop.o
  obj-$(CONFIG_EEPROM_93CX6)	+= eeprom_93cx6.o
--obj-$(CONFIG_INTEL_MENLOW)	+= intel_menlow.o
 -obj-$(CONFIG_ENCLOSURE_SERVICES) += enclosure.o
 -obj-$(CONFIG_KGDB_TESTS)	+= kgdbts.o
 -obj-$(CONFIG_SGI_XP)		+= sgi-xp/
 -obj-$(CONFIG_SGI_GRU)		+= sgi-gru/
 -obj-$(CONFIG_HP_ILO)		+= hpilo.o
 -obj-$(CONFIG_C2PORT)		+= c2port/
+--- a/drivers/net/wireless/zd1211rw/zd_chip.c	2009-01-15 16:35:33.000000000 -0800
++++ b/drivers/net/wireless/zd1211rw/zd_chip.c	2009-01-15 16:35:33.000000000 -0800
+@@ -1278,7 +1278,7 @@
+ 	other_led = chip->link_led == LED1 ? LED2 : LED1;
+ 
+ 	switch (status) {
+-	case LED_OFF:
++	case LED_OFF_ZD:
+ 		ioreqs[0].value = FW_LINK_OFF;
+ 		ioreqs[1].value = v[1] & ~(LED1|LED2);
+ 		break;
+--- a/drivers/net/wireless/zd1211rw/zd_mac.c	2009-01-15 16:35:33.000000000 -0800
++++ b/drivers/net/wireless/zd1211rw/zd_mac.c	2009-01-15 16:35:33.000000000 -0800
+@@ -1031,5 +1031,5 @@
+ 	dev_dbg_f(zd_mac_dev(mac), "\n");
+ 	cancel_rearming_delayed_workqueue(zd_workqueue,
+ 		&mac->housekeeping.link_led_work);
+-	zd_chip_control_leds(&mac->chip, LED_OFF);
++	zd_chip_control_leds(&mac->chip, LED_OFF_ZD);
+ }
+--- a/net/mac80211/main.c	2009-01-15 16:35:33.000000000 -0800
++++ b/net/mac80211/main.c	2009-01-15 16:35:33.000000000 -0800
+@@ -445,6 +445,7 @@
+ 		return;
+ 	}
+ 
++#if (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,28))
+ 	if (!test_sta_flags(sta, WLAN_STA_PS) && !skb->requeue) {
+ 		/* Software retry the packet once */
+ 		skb->requeue = 1;
+@@ -452,6 +453,7 @@
+ 		dev_queue_xmit(skb);
+ 		return;
+ 	}
++#endif
+ 
+ #ifdef CONFIG_MAC80211_VERBOSE_DEBUG
+ 	if (net_ratelimit())
+--- a/net/mac80211/rx.c	2009-01-15 16:35:33.000000000 -0800
++++ b/net/mac80211/rx.c	2009-01-15 16:35:33.000000000 -0800
+@@ -780,12 +780,17 @@
+ 
+ 	/* Send all buffered frames to the station */
+ 	while ((skb = skb_dequeue(&sta->tx_filtered)) != NULL) {
++#if (LINUX_VERSION_CODE <= KERNEL_VERSION(2,6,28))
++		dev_kfree_skb(skb);
++#else
+ 		sent++;
+ 		skb->requeue = 1;
+ 		dev_queue_xmit(skb);
++#endif
+ 	}
+ 	while ((skb = skb_dequeue(&sta->ps_tx_buf)) != NULL) {
+ 		local->total_ps_buffered--;
++#if (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,28))
+ 		sent++;
+ #ifdef CONFIG_MAC80211_VERBOSE_PS_DEBUG
+ 		printk(KERN_DEBUG "%s: STA %pM aid %d send PS frame "
+@@ -794,6 +799,9 @@
+ #endif /* CONFIG_MAC80211_VERBOSE_PS_DEBUG */
+ 		skb->requeue = 1;
+ 		dev_queue_xmit(skb);
++#else
++		dev_kfree_skb(skb);
++#endif
+ 	}
+ 
+ 	return sent;
