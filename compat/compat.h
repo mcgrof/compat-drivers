@@ -13,4 +13,12 @@
 #endif
 #endif /* (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,28)) */
 
+#if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,29))
+
+#include <linux/pci.h>
+
+void __iomem *pci_ioremap_bar(struct pci_dev *pdev, int bar);
+
+#endif /* (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,29)) */
+
 #endif /* LINUX_26_COMPAT_H */

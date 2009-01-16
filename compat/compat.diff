@@ -246,3 +246,92 @@ index a0c860f..9c6f214 100644
  	}
  
  	return sent;
+--- a/drivers/net/b44.c
++++ b/drivers/net/b44.c
+@@ -846,6 +846,9 @@ static int b44_rx(struct b44 *bp, int budget)
+ static int b44_poll(struct napi_struct *napi, int budget)
+ {
+ 	struct b44 *bp = container_of(napi, struct b44, napi);
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,29))
++	struct net_device *netdev = bp->dev;
++#endif
+ 	int work_done;
+ 
+ 	spin_lock_irq(&bp->lock);
+@@ -874,7 +877,11 @@ static int b44_poll(struct napi_struct *napi, int budget)
+ 	}
+ 
+ 	if (work_done < budget) {
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,29))
++		netif_rx_complete(netdev, napi);
++#else
+ 		netif_rx_complete(napi);
++#endif
+ 		b44_enable_ints(bp);
+ 	}
+ 
+@@ -906,13 +913,21 @@ static irqreturn_t b44_interrupt(int irq, void *dev_id)
+ 			goto irq_ack;
+ 		}
+ 
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,29))
++		if (netif_rx_schedule_prep(dev, &bp->napi)) {
++#else
+ 		if (netif_rx_schedule_prep(&bp->napi)) {
++#endif
+ 			/* NOTE: These writes are posted by the readback of
+ 			 *       the ISTAT register below.
+ 			 */
+ 			bp->istat = istat;
+ 			__b44_disable_ints(bp);
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,29))
++			__netif_rx_schedule(dev, &bp->napi);
++#else
+ 			__netif_rx_schedule(&bp->napi);
++#endif
+ 		} else {
+ 			printk(KERN_ERR PFX "%s: Error, poll already scheduled\n",
+ 			       dev->name);
+@@ -2108,6 +2123,7 @@ static int __devinit b44_get_invariants(struct b44 *bp)
+ 	return err;
+ }
+ 
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
+ static const struct net_device_ops b44_netdev_ops = {
+ 	.ndo_open		= b44_open,
+ 	.ndo_stop		= b44_close,
+@@ -2123,6 +2139,7 @@ static const struct net_device_ops b44_netdev_ops = {
+ 	.ndo_poll_controller	= b44_poll_controller,
+ #endif
+ };
++#endif
+ 
+ static int __devinit b44_init_one(struct ssb_device *sdev,
+ 				  const struct ssb_device_id *ent)
+@@ -2161,9 +2178,26 @@ static int __devinit b44_init_one(struct ssb_device *sdev,
+ 	bp->rx_pending = B44_DEF_RX_RING_PENDING;
+ 	bp->tx_pending = B44_DEF_TX_RING_PENDING;
+ 
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,29))
++	dev->open = b44_open;
++	dev->stop = b44_close;
++	dev->hard_start_xmit = b44_start_xmit;
++	dev->get_stats = b44_get_stats;
++	dev->set_multicast_list = b44_set_rx_mode;
++	dev->set_mac_address = b44_set_mac_addr;
++	dev->do_ioctl = b44_ioctl;
++	dev->tx_timeout = b44_tx_timeout;
++	netif_napi_add(dev, &bp->napi, b44_poll, 64);
++	dev->watchdog_timeo = B44_TX_TIMEOUT;
++#ifdef CONFIG_NET_POLL_CONTROLLER
++	dev->poll_controller = b44_poll_controller;
++#endif
++	dev->change_mtu = b44_change_mtu;
++#else
+ 	dev->netdev_ops = &b44_netdev_ops;
+ 	netif_napi_add(dev, &bp->napi, b44_poll, 64);
+ 	dev->watchdog_timeo = B44_TX_TIMEOUT;
++#endif
+ 	dev->irq = sdev->irq;
+ 	SET_ETHTOOL_OPS(dev, &b44_ethtool_ops);
+ 
