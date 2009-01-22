@@ -153,9 +153,9 @@ index a0c860f..9c6f214 100644
  obj-$(CONFIG_LIBERTAS)		+= libertas/
  
  obj-$(CONFIG_LIBERTAS_THINFIRM)	+= libertas_tf/
---- a/drivers/misc/Makefile	2009-01-15 16:46:04.000000000 -0800
-+++ b/drivers/misc/Makefile	2009-01-15 16:46:39.000000000 -0800
-@@ -2,22 +2,4 @@
+--- a/drivers/misc/Makefile	2009-01-22 07:51:17.000000000 -0800
++++ b/drivers/misc/Makefile	2009-01-22 07:51:26.000000000 -0800
+@@ -2,21 +2,4 @@
  # Makefile for misc devices that really don't fit anywhere else.
  #
  
@@ -167,7 +167,6 @@ index a0c860f..9c6f214 100644
 -obj-$(CONFIG_ICS932S401)	+= ics932s401.o
 -obj-$(CONFIG_LKDTM)		+= lkdtm.o
 -obj-$(CONFIG_TIFM_CORE)       	+= tifm_core.o
--obj-$(CONFIG_DELL_LAPTOP)	+= dell-laptop.o
 -obj-$(CONFIG_TIFM_7XX1)       	+= tifm_7xx1.o
 -obj-$(CONFIG_PHANTOM)		+= phantom.o
 -obj-$(CONFIG_SGI_IOC4)		+= ioc4.o
@@ -246,9 +245,9 @@ index a0c860f..9c6f214 100644
  	}
  
  	return sent;
---- a/drivers/net/b44.c
-+++ b/drivers/net/b44.c
-@@ -846,6 +846,9 @@ static int b44_rx(struct b44 *bp, int budget)
+--- a/drivers/net/b44.c	2009-01-22 07:52:14.000000000 -0800
++++ b/drivers/net/b44.c	2009-01-22 07:52:14.000000000 -0800
+@@ -846,6 +846,9 @@
  static int b44_poll(struct napi_struct *napi, int budget)
  {
  	struct b44 *bp = container_of(napi, struct b44, napi);
@@ -258,7 +257,7 @@ index a0c860f..9c6f214 100644
  	int work_done;
  
  	spin_lock_irq(&bp->lock);
-@@ -874,7 +877,11 @@ static int b44_poll(struct napi_struct *napi, int budget)
+@@ -874,7 +877,11 @@
  	}
  
  	if (work_done < budget) {
@@ -270,7 +269,7 @@ index a0c860f..9c6f214 100644
  		b44_enable_ints(bp);
  	}
  
-@@ -906,13 +913,21 @@ static irqreturn_t b44_interrupt(int irq, void *dev_id)
+@@ -906,13 +913,21 @@
  			goto irq_ack;
  		}
  
@@ -292,7 +291,7 @@ index a0c860f..9c6f214 100644
  		} else {
  			printk(KERN_ERR PFX "%s: Error, poll already scheduled\n",
  			       dev->name);
-@@ -2108,6 +2123,7 @@ static int __devinit b44_get_invariants(struct b44 *bp)
+@@ -2108,6 +2123,7 @@
  	return err;
  }
  
@@ -300,7 +299,7 @@ index a0c860f..9c6f214 100644
  static const struct net_device_ops b44_netdev_ops = {
  	.ndo_open		= b44_open,
  	.ndo_stop		= b44_close,
-@@ -2123,6 +2139,7 @@ static const struct net_device_ops b44_netdev_ops = {
+@@ -2123,6 +2139,7 @@
  	.ndo_poll_controller	= b44_poll_controller,
  #endif
  };
@@ -308,7 +307,7 @@ index a0c860f..9c6f214 100644
  
  static int __devinit b44_init_one(struct ssb_device *sdev,
  				  const struct ssb_device_id *ent)
-@@ -2161,9 +2178,26 @@ static int __devinit b44_init_one(struct ssb_device *sdev,
+@@ -2162,9 +2179,26 @@
  	bp->rx_pending = B44_DEF_RX_RING_PENDING;
  	bp->tx_pending = B44_DEF_TX_RING_PENDING;
  
