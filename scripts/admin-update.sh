@@ -19,6 +19,7 @@ GIT_URL="git://git.kernel.org/pub/scm/linux/kernel/git/linville/wireless-testing
 
 INCLUDE_LINUX="ieee80211.h nl80211.h wireless.h"
 INCLUDE_LINUX="$INCLUDE_LINUX pci_ids.h bitops.h eeprom_93cx6.h pm_qos_params.h"
+INCLUDE_LINUX="$INCLUDE_LINUX ath9k_platform.h"
 
 # For rndis_wext
 INCLUDE_LINUX_USB="usbnet.h rndis_host.h"
