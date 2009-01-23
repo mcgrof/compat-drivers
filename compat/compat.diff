@@ -197,9 +197,9 @@ index a0c860f..9c6f214 100644
 -	zd_chip_control_leds(&mac->chip, LED_OFF);
 +	zd_chip_control_leds(&mac->chip, LED_OFF_ZD);
  }
---- a/net/mac80211/main.c	2009-01-15 16:35:33.000000000 -0800
-+++ b/net/mac80211/main.c	2009-01-15 16:35:33.000000000 -0800
-@@ -445,6 +445,7 @@
+--- a/net/mac80211/main.c	2009-01-23 12:56:18.000000000 -0800
++++ b/net/mac80211/main.c	2009-01-23 12:56:24.000000000 -0800
+@@ -485,6 +485,7 @@
  		return;
  	}
  
@@ -207,7 +207,7 @@ index a0c860f..9c6f214 100644
  	if (!test_sta_flags(sta, WLAN_STA_PS) && !skb->requeue) {
  		/* Software retry the packet once */
  		skb->requeue = 1;
-@@ -452,6 +453,7 @@
+@@ -492,6 +493,7 @@
  		dev_queue_xmit(skb);
  		return;
  	}
