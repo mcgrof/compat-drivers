@@ -334,3 +334,39 @@ index a0c860f..9c6f214 100644
  	dev->irq = sdev->irq;
  	SET_ETHTOOL_OPS(dev, &b44_ethtool_ops);
  
+--- a/net/mac80211/iface.c	2009-01-28 11:38:45.000000000 -0800
++++ b/net/mac80211/iface.c	2009-01-28 11:42:08.000000000 -0800
+@@ -591,6 +591,7 @@
+ 	dev_mc_sync(local->mdev, dev);
+ }
+ 
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
+ static const struct net_device_ops ieee80211_netdev_ops = {
+ 	.ndo_open		= ieee80211_open,
+ 	.ndo_stop		= ieee80211_stop,
+@@ -599,13 +600,25 @@
+ 	.ndo_change_mtu 	= ieee80211_change_mtu,
+ 	.ndo_set_mac_address 	= eth_mac_addr,
+ };
++#endif
+ 
+ static void ieee80211_if_setup(struct net_device *dev)
+ {
+ 	ether_setup(dev);
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
+ 	dev->netdev_ops = &ieee80211_netdev_ops;
++#else
++	dev->hard_start_xmit = ieee80211_subif_start_xmit;
++	dev->set_multicast_list = ieee80211_set_multicast_list;
++	dev->change_mtu = ieee80211_change_mtu;
++	dev->open = ieee80211_open;
++	dev->stop = ieee80211_stop;
++	/* we will validate the address ourselves in ->open */
++	dev->validate_addr = NULL;
++#endif
+ 	dev->wireless_handlers = &ieee80211_iw_handler_def;
+ 	dev->destructor = free_netdev;
++
+ }
+ /*
+  * Called when the netdev is removed or, by the code below, before
