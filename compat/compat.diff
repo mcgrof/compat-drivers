@@ -153,30 +153,13 @@ index a0c860f..9c6f214 100644
  obj-$(CONFIG_LIBERTAS)		+= libertas/
  
  obj-$(CONFIG_LIBERTAS_THINFIRM)	+= libertas_tf/
---- a/drivers/misc/Makefile	2009-01-22 07:51:17.000000000 -0800
-+++ b/drivers/misc/Makefile	2009-01-22 07:51:26.000000000 -0800
-@@ -2,21 +2,4 @@
- # Makefile for misc devices that really don't fit anywhere else.
- #
- 
--obj-$(CONFIG_IBM_ASM)		+= ibmasm/
--obj-$(CONFIG_HDPU_FEATURES)	+= hdpuftrs/
--obj-$(CONFIG_ATMEL_PWM)		+= atmel_pwm.o
--obj-$(CONFIG_ATMEL_SSC)		+= atmel-ssc.o
--obj-$(CONFIG_ATMEL_TCLIB)	+= atmel_tclib.o
--obj-$(CONFIG_ICS932S401)	+= ics932s401.o
--obj-$(CONFIG_LKDTM)		+= lkdtm.o
--obj-$(CONFIG_TIFM_CORE)       	+= tifm_core.o
--obj-$(CONFIG_TIFM_7XX1)       	+= tifm_7xx1.o
--obj-$(CONFIG_PHANTOM)		+= phantom.o
--obj-$(CONFIG_SGI_IOC4)		+= ioc4.o
+--- a/drivers/misc/eeprom/Makefile	2009-01-22 07:51:17.000000000 -0800
++++ b/drivers/misc/eeprom/Makefile	2009-01-22 07:51:26.000000000 -0800
+@@ -1,4 +1 @@
+-obj-$(CONFIG_EEPROM_AT24)	+= at24.o
+-obj-$(CONFIG_EEPROM_AT25)	+= at25.o
+-obj-$(CONFIG_EEPROM_LEGACY)	+= eeprom.o
  obj-$(CONFIG_EEPROM_93CX6)	+= eeprom_93cx6.o
--obj-$(CONFIG_ENCLOSURE_SERVICES) += enclosure.o
--obj-$(CONFIG_KGDB_TESTS)	+= kgdbts.o
--obj-$(CONFIG_SGI_XP)		+= sgi-xp/
--obj-$(CONFIG_SGI_GRU)		+= sgi-gru/
--obj-$(CONFIG_HP_ILO)		+= hpilo.o
--obj-$(CONFIG_C2PORT)		+= c2port/
 --- a/drivers/net/wireless/zd1211rw/zd_chip.c	2009-01-15 16:35:33.000000000 -0800
 +++ b/drivers/net/wireless/zd1211rw/zd_chip.c	2009-01-15 16:35:33.000000000 -0800
 @@ -1278,7 +1278,7 @@

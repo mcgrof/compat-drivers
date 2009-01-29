@@ -125,9 +125,9 @@ DIR="drivers/net"
 cp $GIT_TREE/$DIR/b44.[ch] $DIR
 
 # Misc
-mkdir -p drivers/misc/
-cp $GIT_TREE/drivers/misc/eeprom_93cx6.c drivers/misc/
-cp $GIT_TREE/drivers/misc/Makefile drivers/misc/
+mkdir -p drivers/misc/eeprom/
+cp $GIT_TREE/drivers/misc/eeprom/eeprom_93cx6.c drivers/misc/eeprom/
+cp $GIT_TREE/drivers/misc/eeprom/Makefile drivers/misc/eeprom/
 
 DIR="drivers/net/wireless"
 # Drivers part of the wireless directory

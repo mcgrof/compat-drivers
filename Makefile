@@ -21,7 +21,7 @@ obj-y := net/wireless/ net/mac80211/
 ifeq ($(ONLY_CORE),)
 obj-$(CONFIG_B44) += drivers/net/b44.o
 obj-y += drivers/ssb/ \
-	drivers/misc/ \
+	drivers/misc/eeprom/ \
 	drivers/net/usb/ \
 	drivers/net/wireless/
 endif
@@ -148,6 +148,7 @@ uninstall:
 	@rm -rf $(KLIB)/$(KMODDIR)/drivers/net/wireless/
 	@# Lets only remove the stuff we are sure we are providing
 	@# on the misc directory.
+	@rm -f $(KLIB)/$(KMODDIR)/drivers/misc/eeprom/eeprom_93cx6.ko
 	@rm -f $(KLIB)/$(KMODDIR)/drivers/misc/eeprom_93cx6.ko
 	@/sbin/depmod -ae
 	@echo
