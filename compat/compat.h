@@ -14,6 +14,18 @@
 
 #include <linux/pci.h>
 
+#ifndef WARN_ONCE
+#define WARN_ONCE(condition, format...) ({                      \
+	static int __warned;                                    \
+	int __ret_warn_once = !!(condition);                    \
+								\
+	if (unlikely(__ret_warn_once))                          \
+		if (WARN(!__warned, format))                    \
+			__warned = 1;                           \
+	unlikely(__ret_warn_once);                              \
+})
+#endif /* From include/asm-generic/bug.h */
+
 void __iomem *pci_ioremap_bar(struct pci_dev *pdev, int bar);
 
 #endif /* (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,28)) */
