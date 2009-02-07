@@ -46,6 +46,7 @@ all: modules
 modules: $(CREL_CHECK)
 	@./scripts/check_config.sh
 	$(MAKE) -C $(KLIB_BUILD) M=$(PWD) modules
+	@touch $@
 
 # With the above and this we make sure we generate a new compat autoconf per
 # new relase of compat-wireless-2.6 OR when the user updates the 
@@ -215,4 +216,4 @@ load: unload
 
 endif
 
-clean-files += Module.symvers modules.order $(CREL_CHECK) $(CONFIG_CHECK)
+clean-files += Module.symvers modules modules.order $(CREL_CHECK) $(CONFIG_CHECK)
