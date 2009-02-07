@@ -62,6 +62,9 @@ endif # kernel Makefile check
 
 # choose between pid and minstrel as default rate control algorithm
 CONFIG_MAC80211_RC_DEFAULT=minstrel
+# This is the one used by our compat-wireless net/mac80211/rate.c
+# in case you have and old kernel which is overriding this to pid.
+CONFIG_COMPAT_MAC80211_RC_DEFAULT=minstrel
 CONFIG_MAC80211_RC_PID=y
 CONFIG_MAC80211_RC_MINSTREL=y
 CONFIG_MAC80211_LEDS=y

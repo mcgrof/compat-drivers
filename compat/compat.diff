@@ -416,3 +416,25 @@ index a0c860f..9c6f214 100644
  	mdev->tx_queue_len = 1000;
  	mdev->addr_len = ETH_ALEN;
  }
+--- a/net/mac80211/rate.c	2009-02-06 17:12:28.000000000 -0800
++++ b/net/mac80211/rate.c	2009-02-06 17:12:51.000000000 -0800
+@@ -22,7 +22,7 @@
+ static LIST_HEAD(rate_ctrl_algs);
+ static DEFINE_MUTEX(rate_ctrl_mutex);
+ 
+-static char *ieee80211_default_rc_algo = CONFIG_MAC80211_RC_DEFAULT;
++static char *ieee80211_default_rc_algo = CONFIG_COMPAT_MAC80211_RC_DEFAULT;
+ module_param(ieee80211_default_rc_algo, charp, 0644);
+ MODULE_PARM_DESC(ieee80211_default_rc_algo,
+ 		 "Default rate control algorithm for mac80211 to use");
+@@ -117,8 +117,8 @@
+ 		ops = ieee80211_try_rate_control_ops_get(ieee80211_default_rc_algo);
+ 
+ 	/* try built-in one if specific alg requested but not found */
+-	if (!ops && strlen(CONFIG_MAC80211_RC_DEFAULT))
+-		ops = ieee80211_try_rate_control_ops_get(CONFIG_MAC80211_RC_DEFAULT);
++	if (!ops && strlen(CONFIG_COMPAT_MAC80211_RC_DEFAULT))
++		ops = ieee80211_try_rate_control_ops_get(CONFIG_COMPAT_MAC80211_RC_DEFAULT);
+ 
+ 	return ops;
+ }
