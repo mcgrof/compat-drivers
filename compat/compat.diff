@@ -180,9 +180,9 @@ index a0c860f..9c6f214 100644
 -	zd_chip_control_leds(&mac->chip, LED_OFF);
 +	zd_chip_control_leds(&mac->chip, LED_OFF_ZD);
  }
---- a/net/mac80211/rx.c	2009-02-04 00:21:05.000000000 -0800
-+++ b/net/mac80211/rx.c	2009-02-04 00:20:41.000000000 -0800
-@@ -771,12 +771,17 @@
+--- a/net/mac80211/rx.c	2009-02-10 23:51:58.000000000 -0800
++++ b/net/mac80211/rx.c	2009-02-10 23:52:04.000000000 -0800
+@@ -804,12 +804,17 @@
  
  	/* Send all buffered frames to the station */
  	while ((skb = skb_dequeue(&sta->tx_filtered)) != NULL) {
@@ -200,7 +200,7 @@ index a0c860f..9c6f214 100644
  		sent++;
  #ifdef CONFIG_MAC80211_VERBOSE_PS_DEBUG
  		printk(KERN_DEBUG "%s: STA %pM aid %d send PS frame "
-@@ -785,6 +790,9 @@
+@@ -818,6 +823,9 @@
  #endif /* CONFIG_MAC80211_VERBOSE_PS_DEBUG */
  		skb->requeue = 1;
  		dev_queue_xmit(skb);
