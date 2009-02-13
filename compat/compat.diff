@@ -1,6 +1,6 @@
---- a/include/net/cfg80211.h	2008-02-28 19:54:52.000000000 +0100
-+++ b/include/net/cfg80211.h	2008-02-28 19:54:53.000000000 +0100
-@@ -7,6 +7,7 @@
+--- a/include/net/cfg80211.h	2009-02-13 14:28:03.000000000 -0800
++++ b/include/net/cfg80211.h	2009-02-13 14:28:04.000000000 -0800
+@@ -11,6 +11,7 @@
  #include <net/genetlink.h>
  /* remove once we remove the wext stuff */
  #include <net/iw_handler.h>
@@ -171,9 +171,9 @@ index a0c860f..9c6f214 100644
  		ioreqs[0].value = FW_LINK_OFF;
  		ioreqs[1].value = v[1] & ~(LED1|LED2);
  		break;
---- a/drivers/net/wireless/zd1211rw/zd_mac.c	2009-01-15 16:35:33.000000000 -0800
-+++ b/drivers/net/wireless/zd1211rw/zd_mac.c	2009-01-15 16:35:33.000000000 -0800
-@@ -1031,5 +1031,5 @@
+--- a/drivers/net/wireless/zd1211rw/zd_mac.c	2009-02-13 14:25:08.000000000 -0800
++++ b/drivers/net/wireless/zd1211rw/zd_mac.c	2009-02-13 14:25:08.000000000 -0800
+@@ -1040,5 +1040,5 @@
  	dev_dbg_f(zd_mac_dev(mac), "\n");
  	cancel_rearming_delayed_workqueue(zd_workqueue,
  		&mac->housekeeping.link_led_work);
@@ -299,9 +299,9 @@ index a0c860f..9c6f214 100644
  	dev->irq = sdev->irq;
  	SET_ETHTOOL_OPS(dev, &b44_ethtool_ops);
  
---- a/net/mac80211/iface.c	2009-02-04 00:14:56.000000000 -0800
-+++ b/net/mac80211/iface.c	2009-02-04 00:19:28.000000000 -0800
-@@ -658,6 +658,7 @@
+--- a/net/mac80211/iface.c	2009-02-13 14:25:06.000000000 -0800
++++ b/net/mac80211/iface.c	2009-02-13 14:25:08.000000000 -0800
+@@ -657,6 +657,7 @@
  	WARN_ON(flushed);
  }
  
@@ -309,7 +309,7 @@ index a0c860f..9c6f214 100644
  static const struct net_device_ops ieee80211_dataif_ops = {
  	.ndo_open		= ieee80211_open,
  	.ndo_stop		= ieee80211_stop,
-@@ -677,11 +678,22 @@
+@@ -676,11 +677,22 @@
  	.ndo_change_mtu 	= ieee80211_change_mtu,
  	.ndo_set_mac_address 	= eth_mac_addr,
  };
@@ -332,7 +332,7 @@ index a0c860f..9c6f214 100644
  	dev->wireless_handlers = &ieee80211_iw_handler_def;
  	dev->destructor = free_netdev;
  }
-@@ -697,7 +709,11 @@
+@@ -696,7 +708,11 @@
  
  	/* and set some type-dependent values */
  	sdata->vif.type = type;
@@ -344,7 +344,7 @@ index a0c860f..9c6f214 100644
  	sdata->wdev.iftype = type;
  
  	/* only monitor differs */
-@@ -718,7 +734,11 @@
+@@ -717,7 +733,11 @@
  		break;
  	case NL80211_IFTYPE_MONITOR:
  		sdata->dev->type = ARPHRD_IEEE80211_RADIOTAP;
@@ -356,7 +356,7 @@ index a0c860f..9c6f214 100644
  		sdata->u.mntr_flags = MONITOR_FLAG_CONTROL |
  				      MONITOR_FLAG_OTHER_BSS;
  		break;
-@@ -824,6 +844,10 @@
+@@ -823,6 +843,10 @@
  	if (ret)
  		goto fail;
  
@@ -367,9 +367,9 @@ index a0c860f..9c6f214 100644
  	if (ieee80211_vif_is_mesh(&sdata->vif) &&
  	    params && params->mesh_id_len)
  		ieee80211_sdata_set_mesh_id(sdata,
---- a/net/mac80211/main.c	2009-02-04 00:10:33.000000000 -0800
-+++ b/net/mac80211/main.c	2009-02-04 00:07:50.000000000 -0800
-@@ -485,6 +485,7 @@
+--- a/net/mac80211/main.c	2009-02-13 14:25:06.000000000 -0800
++++ b/net/mac80211/main.c	2009-02-13 14:25:08.000000000 -0800
+@@ -487,6 +487,7 @@
  		return;
  	}
  
@@ -377,7 +377,7 @@ index a0c860f..9c6f214 100644
  	if (!test_sta_flags(sta, WLAN_STA_PS) && !skb->requeue) {
  		/* Software retry the packet once */
  		skb->requeue = 1;
-@@ -492,6 +493,7 @@
+@@ -494,6 +495,7 @@
  		dev_queue_xmit(skb);
  		return;
  	}
@@ -385,7 +385,7 @@ index a0c860f..9c6f214 100644
  
  #ifdef CONFIG_MAC80211_VERBOSE_DEBUG
  	if (net_ratelimit())
-@@ -791,6 +793,7 @@
+@@ -797,6 +799,7 @@
  }
  EXPORT_SYMBOL(ieee80211_alloc_hw);
  
@@ -393,7 +393,7 @@ index a0c860f..9c6f214 100644
  static const struct net_device_ops ieee80211_master_ops = {
  	.ndo_start_xmit = ieee80211_master_start_xmit,
  	.ndo_open = ieee80211_master_open,
-@@ -798,12 +801,22 @@
+@@ -804,12 +807,22 @@
  	.ndo_set_multicast_list = ieee80211_master_set_multicast_list,
  	.ndo_select_queue = ieee80211_select_queue,
  };
