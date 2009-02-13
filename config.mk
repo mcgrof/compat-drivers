@@ -16,8 +16,6 @@ endif
 ifeq ($(CONFIG_MAC80211),y)
 $(error "ERROR: you have MAC80211 compiled into the kernel, CONFIG_MAC80211=y, as such you cannot replace its mac80211 driver. You need this set to CONFIG_MAC80211=m. If you are using Fedora upgrade your kernel as later version should this set as modular. For further information on Fedora see https://bugzilla.redhat.com/show_bug.cgi?id=470143. If you are using your own kernel recompile it and make mac80211 modular")
 endif
-# Wireless subsystem stuff
-CONFIG_MAC80211=m
 
 # We will warn when you don't have MQ support or NET_SCHED enabled.
 #
@@ -44,6 +42,21 @@ $(error "ERROR: Your 2.6.27 kernel has CONFIG_DYNAMIC_FTRACE, please upgrade you
 endif
 endif
 
+# This is because with CONFIG_MAC80211 include/linux/skbuff.h will
+# enable on 2.6.27 a new attribute:
+#
+# skb->do_not_encrypt
+#
+# and on 2.6.28 another new attribute:
+#
+# skb->requeue
+#
+ifeq ($(shell test $(KERNEL_SUBLEVEL) -ge 27 && echo yes),yes)
+ifeq ($(CONFIG_MAC80211),)
+$(error "ERROR: Your >=2.6.27 kernel has CONFIG_MAC80211 disabled, you should have it CONFIG_MAC80211=m if you want to use this thing.")
+endif
+endif
+
 ifneq ($(KERNELRELEASE),) # This prevents a warning
 
 ifeq ($(CONFIG_NET_SCHED),)
@@ -59,6 +72,8 @@ endif
 endif # build check
 endif # kernel Makefile check
 
+# Wireless subsystem stuff
+CONFIG_MAC80211=m
 
 # choose between pid and minstrel as default rate control algorithm
 CONFIG_MAC80211_RC_DEFAULT=minstrel
