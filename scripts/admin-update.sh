@@ -24,10 +24,8 @@ INCLUDE_LINUX="$INCLUDE_LINUX ath9k_platform.h"
 # For rndis_wext
 INCLUDE_LINUX_USB="usbnet.h rndis_host.h"
 
-# Stuff that should die or be merged, only ipw uses it
-INCLUDE_NET_OLD="ieee80211.h"
 # The good new yummy stuff
-INCLUDE_NET="$INCLUDE_NET_OLD cfg80211.h ieee80211_radiotap.h iw_handler.h"
+INCLUDE_NET="cfg80211.h ieee80211_radiotap.h iw_handler.h"
 INCLUDE_NET="$INCLUDE_NET mac80211.h wext.h wireless.h lib80211.h"
 
 NET_DIRS="wireless mac80211"
@@ -66,6 +64,7 @@ DRIVERS="$DRIVERS drivers/net/wireless/ipw2x00"
 DRIVER_FILES="adm8211.c  adm8211.h"
 DRIVER_FILES="$DRIVER_FILES rndis_wlan.c"
 DRIVER_FILES="$DRIVER_FILES mac80211_hwsim.c"
+DRIVER_FILES="$DRIVER_FILES at76c50x-usb.c at76c50x-usb.h"
 
 mkdir -p include/linux/ include/net/ include/linux/usb \
 	net/mac80211/ net/wireless/ \

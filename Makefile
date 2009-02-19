@@ -104,14 +104,16 @@ install: uninstall modules
 	@$(MODPROBE) -l cfg80211
 	@$(MODPROBE) -l lib80211
 	@$(MODPROBE) -l adm8211
-	@$(MODPROBE) -l at76_usb
+	@$(MODPROBE) -l at76c50x-usb
 	@$(MODPROBE) -l ath5k
 	@$(MODPROBE) -l ath9k
 	@$(MODPROBE) -l b43
 	@$(MODPROBE) -l b43legacy
+	@$(MODPROBE) -l b44
 	@$(MODPROBE) -l ssb
+	@$(MODPROBE) -l rc80211_simple
+	@$(MODPROBE) -l iwlcore
 	@$(MODPROBE) -l iwl3945
-	@$(MODPROBE) -l iwl4965
 	@$(MODPROBE) -l iwlagn
 	@$(MODPROBE) -l ipw2100
 	@$(MODPROBE) -l ipw2200
@@ -122,8 +124,8 @@ install: uninstall modules
 	@$(MODPROBE) -l libertas_tf
 	@$(MODPROBE) -l libertas_tf_usb
 	@$(MODPROBE) -l ub8xxx
-	@$(MODPROBE) -l p54_pci
-	@$(MODPROBE) -l p54_usb
+	@$(MODPROBE) -l p54pci
+	@$(MODPROBE) -l p54usb
 	@$(MODPROBE) -l rt2400pci
 	@$(MODPROBE) -l rt2500pci
 	@$(MODPROBE) -l rt2500usb
@@ -164,15 +166,16 @@ uninstall:
 	@$(MODPROBE) -l cfg80211
 	@$(MODPROBE) -l lib80211
 	@$(MODPROBE) -l adm8211
+	@$(MODPROBE) -l at76c50x-usb
 	@$(MODPROBE) -l ath5k
 	@$(MODPROBE) -l ath9k
-	@$(MODPROBE) -l at76_usb
 	@$(MODPROBE) -l b43
 	@$(MODPROBE) -l b43legacy
+	@$(MODPROBE) -l b44
 	@$(MODPROBE) -l ssb
 	@$(MODPROBE) -l rc80211_simple
+	@$(MODPROBE) -l iwlcore
 	@$(MODPROBE) -l iwl3945
-	@$(MODPROBE) -l iwl4965
 	@$(MODPROBE) -l iwlagn
 	@$(MODPROBE) -l ipw2100
 	@$(MODPROBE) -l ipw2200
@@ -182,7 +185,6 @@ uninstall:
 	@$(MODPROBE) -l libertas_cs
 	@$(MODPROBE) -l libertas_tf
 	@$(MODPROBE) -l libertas_tf_usb
-	@$(MODPROBE) -l mac80211
 	@$(MODPROBE) -l ub8xxx
 	@$(MODPROBE) -l p54pci
 	@$(MODPROBE) -l p54usb
