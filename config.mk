@@ -74,6 +74,7 @@ endif # kernel Makefile check
 
 # Wireless subsystem stuff
 CONFIG_MAC80211=m
+# CONFIG_MAC80211_DEBUGFS is not set
 
 # choose between pid and minstrel as default rate control algorithm
 CONFIG_MAC80211_RC_DEFAULT=minstrel
