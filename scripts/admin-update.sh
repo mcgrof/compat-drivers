@@ -67,6 +67,7 @@ DRIVER_FILES="$DRIVER_FILES mac80211_hwsim.c"
 DRIVER_FILES="$DRIVER_FILES at76c50x-usb.c at76c50x-usb.h"
 
 mkdir -p include/linux/ include/net/ include/linux/usb \
+	include/linux/unaligned \
 	net/mac80211/ net/wireless/ \
 	drivers/ssb/ \
 	drivers/net/usb/ \
@@ -139,7 +140,7 @@ cp $GIT_TREE/$DIR/Makefile $DIR
 
 DIR="include/linux/unaligned"
 echo "Copying $GIT_TREE/$DIR/*"
-cp -a $GIT_TREE/$DIR $DIR
+cp $GIT_TREE/$DIR/* $DIR
 
 
 # Compat stuff
