@@ -65,6 +65,7 @@ DRIVER_FILES="adm8211.c  adm8211.h"
 DRIVER_FILES="$DRIVER_FILES rndis_wlan.c"
 DRIVER_FILES="$DRIVER_FILES mac80211_hwsim.c"
 DRIVER_FILES="$DRIVER_FILES at76c50x-usb.c at76c50x-usb.h"
+DRIVER_FILES="$DRIVER_FILES mwl8k.c"
 
 mkdir -p include/linux/ include/net/ include/linux/usb \
 	include/linux/unaligned \

@@ -229,6 +229,8 @@ endif
 CONFIG_ATMEL=m
 CONFIG_PCI_ATMEL=m
 
+CONFIG_MWL8K=m
+
 endif
 ## end of PCI
 
