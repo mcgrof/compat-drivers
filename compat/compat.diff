@@ -10,7 +10,7 @@
   * 802.11 configuration in-kernel interface
 --- a/net/wireless/Makefile	2008-10-27 19:54:52.000000000 +0100
 +++ b/net/wireless/Makefile	2008-10-27 19:54:53.000000000 +0100
-@@ -1,10 +1,9 @@
+@@ -1,11 +1,10 @@
 -obj-$(CONFIG_WIRELESS_EXT) += wext.o
  obj-$(CONFIG_CFG80211) += cfg80211.o
  obj-$(CONFIG_LIB80211) += lib80211.o
@@ -18,10 +18,11 @@
  obj-$(CONFIG_LIB80211_CRYPT_CCMP) += lib80211_crypt_ccmp.o
  obj-$(CONFIG_LIB80211_CRYPT_TKIP) += lib80211_crypt_tkip.o
  
--cfg80211-y += core.o sysfs.o radiotap.o util.o reg.o scan.o
-+cfg80211-y += core.o sysfs.o radiotap.o util.o reg.o scan.o compat.o
+-cfg80211-y += core.o sysfs.o radiotap.o util.o reg.o scan.o nl80211.o
++cfg80211-y += core.o sysfs.o radiotap.o util.o reg.o scan.o nl80211.o compat.o
  cfg80211-$(CONFIG_WIRELESS_EXT) += wext-compat.o
- cfg80211-$(CONFIG_NL80211) += nl80211.o
+ 
+ ccflags-y += -D__CHECK_ENDIAN__
 --- a/drivers/net/wireless/zd1211rw/zd_chip.h	2008-03-07 20:02:06.000000000 -0500
 +++ b/drivers/net/wireless/zd1211rw/zd_chip.h	2008-03-07 20:02:07.000000000 -0500
 @@ -897,7 +897,7 @@
@@ -93,7 +94,7 @@ diff --git a/net/mac80211/wme.c b/net/mac80211/wme.c
 index a0c860f..9c6f214 100644
 --- a/net/mac80211/wme.c
 +++ b/net/mac80211/wme.c
-@@ -122,6 +122,7 @@ u16 ieee80211_select_queue(struct net_device *dev, struct sk_buff *skb)
+@@ -125,6 +125,7 @@ u16 ieee80211_select_queue(struct net_device *dev, struct sk_buff *skb)
  	if (unlikely(queue >= local->hw.queues))
  		queue = local->hw.queues - 1;
  
@@ -101,7 +102,7 @@ index a0c860f..9c6f214 100644
  	/*
  	 * Now we know the 1d priority, fill in the QoS header if
  	 * there is one (and we haven't done this before).
-@@ -137,6 +138,7 @@ u16 ieee80211_select_queue(struct net_device *dev, struct sk_buff *skb)
+@@ -140,6 +141,7 @@ u16 ieee80211_select_queue(struct net_device *dev, struct sk_buff *skb)
  		*p++ = ack_policy | tid;
  		*p = 0;
  	}
@@ -175,7 +176,7 @@ index a0c860f..9c6f214 100644
  		break;
 --- a/drivers/net/wireless/zd1211rw/zd_mac.c	2009-03-02 12:40:07.000000000 -0800
 +++ b/drivers/net/wireless/zd1211rw/zd_mac.c	2009-03-02 12:40:09.000000000 -0800
-@@ -1047,5 +1047,5 @@
+@@ -1051,5 +1051,5 @@
  	dev_dbg_f(zd_mac_dev(mac), "\n");
  	cancel_rearming_delayed_workqueue(zd_workqueue,
  		&mac->housekeeping.link_led_work);
@@ -184,7 +185,7 @@ index a0c860f..9c6f214 100644
  }
 --- a/net/mac80211/rx.c	2009-02-10 23:51:58.000000000 -0800
 +++ b/net/mac80211/rx.c	2009-02-10 23:52:04.000000000 -0800
-@@ -804,12 +804,17 @@
+@@ -805,12 +805,17 @@
  
  	/* Send all buffered frames to the station */
  	while ((skb = skb_dequeue(&sta->tx_filtered)) != NULL) {
@@ -202,7 +203,7 @@ index a0c860f..9c6f214 100644
  		sent++;
  #ifdef CONFIG_MAC80211_VERBOSE_PS_DEBUG
  		printk(KERN_DEBUG "%s: STA %pM aid %d send PS frame "
-@@ -818,6 +823,9 @@
+@@ -819,6 +824,9 @@
  #endif /* CONFIG_MAC80211_VERBOSE_PS_DEBUG */
  		skb->requeue = 1;
  		dev_queue_xmit(skb);
@@ -258,7 +259,7 @@ index a0c860f..9c6f214 100644
  		} else {
  			printk(KERN_ERR PFX "%s: Error, poll already scheduled\n",
  			       dev->name);
-@@ -2108,6 +2123,7 @@
+@@ -2112,6 +2127,7 @@
  	return err;
  }
  
@@ -266,7 +267,7 @@ index a0c860f..9c6f214 100644
  static const struct net_device_ops b44_netdev_ops = {
  	.ndo_open		= b44_open,
  	.ndo_stop		= b44_close,
-@@ -2123,6 +2139,7 @@
+@@ -2127,6 +2143,7 @@
  	.ndo_poll_controller	= b44_poll_controller,
  #endif
  };
@@ -274,7 +275,7 @@ index a0c860f..9c6f214 100644
  
  static int __devinit b44_init_one(struct ssb_device *sdev,
  				  const struct ssb_device_id *ent)
-@@ -2162,9 +2179,26 @@
+@@ -2166,9 +2183,26 @@
  	bp->rx_pending = B44_DEF_RX_RING_PENDING;
  	bp->tx_pending = B44_DEF_TX_RING_PENDING;
  
@@ -303,7 +304,7 @@ index a0c860f..9c6f214 100644
  
 --- a/net/mac80211/iface.c	2009-02-13 14:25:06.000000000 -0800
 +++ b/net/mac80211/iface.c	2009-02-13 14:25:08.000000000 -0800
-@@ -667,6 +667,7 @@
+@@ -675,6 +675,7 @@
  	WARN_ON(flushed);
  }
  
@@ -311,7 +312,7 @@ index a0c860f..9c6f214 100644
  static const struct net_device_ops ieee80211_dataif_ops = {
  	.ndo_open		= ieee80211_open,
  	.ndo_stop		= ieee80211_stop,
-@@ -686,11 +687,22 @@
+@@ -694,11 +695,22 @@
  	.ndo_change_mtu 	= ieee80211_change_mtu,
  	.ndo_set_mac_address 	= eth_mac_addr,
  };
@@ -334,7 +335,7 @@ index a0c860f..9c6f214 100644
  	dev->wireless_handlers = &ieee80211_iw_handler_def;
  	dev->destructor = free_netdev;
  }
-@@ -706,7 +718,11 @@
+@@ -714,7 +726,11 @@
  
  	/* and set some type-dependent values */
  	sdata->vif.type = type;
@@ -346,7 +347,7 @@ index a0c860f..9c6f214 100644
  	sdata->wdev.iftype = type;
  
  	/* only monitor differs */
-@@ -729,7 +745,11 @@
+@@ -737,7 +753,11 @@
  		break;
  	case NL80211_IFTYPE_MONITOR:
  		sdata->dev->type = ARPHRD_IEEE80211_RADIOTAP;
@@ -358,7 +359,7 @@ index a0c860f..9c6f214 100644
  		sdata->u.mntr_flags = MONITOR_FLAG_CONTROL |
  				      MONITOR_FLAG_OTHER_BSS;
  		break;
-@@ -836,6 +856,10 @@
+@@ -844,6 +864,10 @@
  	if (ret)
  		goto fail;
  
@@ -371,7 +372,7 @@ index a0c860f..9c6f214 100644
  		ieee80211_sdata_set_mesh_id(sdata,
 --- a/net/mac80211/main.c	2009-02-13 14:25:06.000000000 -0800
 +++ b/net/mac80211/main.c	2009-02-13 14:25:08.000000000 -0800
-@@ -488,6 +488,7 @@
+@@ -482,6 +482,7 @@
  		return;
  	}
  
@@ -379,7 +380,7 @@ index a0c860f..9c6f214 100644
  	if (!test_sta_flags(sta, WLAN_STA_PS) && !skb->requeue) {
  		/* Software retry the packet once */
  		skb->requeue = 1;
-@@ -495,6 +496,7 @@
+@@ -489,6 +490,7 @@
  		dev_queue_xmit(skb);
  		return;
  	}
@@ -387,7 +388,7 @@ index a0c860f..9c6f214 100644
  
  #ifdef CONFIG_MAC80211_VERBOSE_DEBUG
  	if (net_ratelimit())
-@@ -803,6 +805,7 @@
+@@ -797,6 +799,7 @@
  }
  EXPORT_SYMBOL(ieee80211_alloc_hw);
  
@@ -395,7 +396,7 @@ index a0c860f..9c6f214 100644
  static const struct net_device_ops ieee80211_master_ops = {
  	.ndo_start_xmit = ieee80211_master_start_xmit,
  	.ndo_open = ieee80211_master_open,
-@@ -810,12 +813,22 @@
+@@ -804,12 +807,22 @@
  	.ndo_set_multicast_list = ieee80211_master_set_multicast_list,
  	.ndo_select_queue = ieee80211_select_queue,
  };
@@ -440,9 +441,9 @@ index a0c860f..9c6f214 100644
  
  	return ops;
  }
---- wireless-testing/net/wireless/nl80211.c	2009-02-27 18:27:32.000000000 -0500
-+++ compat-wireless-2.6/net/wireless/nl80211.c	2009-02-27 19:51:08.000000000 -0500
-@@ -614,15 +614,17 @@
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -641,15 +641,17 @@
  		if (!err)
  			flags = &_flags;
  	}
@@ -462,7 +463,7 @@ index a0c860f..9c6f214 100644
   unlock:
  	cfg80211_put_dev(drv);
  	return err;
-@@ -662,16 +664,18 @@
+@@ -689,16 +691,18 @@
  		params.mesh_id = nla_data(info->attrs[NL80211_ATTR_MESH_ID]);
  		params.mesh_id_len = nla_len(info->attrs[NL80211_ATTR_MESH_ID]);
  	}
@@ -483,7 +484,7 @@ index a0c860f..9c6f214 100644
  
   unlock:
  	cfg80211_put_dev(drv);
-@@ -694,11 +698,13 @@
+@@ -721,11 +725,13 @@
  		err = -EOPNOTSUPP;
  		goto out;
  	}
@@ -499,7 +500,7 @@ index a0c860f..9c6f214 100644
   out:
  	cfg80211_put_dev(drv);
  	return err;
-@@ -782,11 +788,15 @@
+@@ -809,11 +815,15 @@
  	if (mac_addr)
  		NLA_PUT(msg, NL80211_ATTR_MAC, ETH_ALEN, mac_addr);
  
@@ -516,7 +517,7 @@ index a0c860f..9c6f214 100644
  	if (err)
  		goto out;
  
-@@ -844,11 +854,13 @@
+@@ -871,11 +881,13 @@
  		err = -EOPNOTSUPP;
  		goto out;
  	}
@@ -532,7 +533,7 @@ index a0c860f..9c6f214 100644
   out:
  	cfg80211_put_dev(drv);
  	dev_put(dev);
-@@ -929,10 +941,13 @@
+@@ -956,10 +968,13 @@
  		err = -EOPNOTSUPP;
  		goto out;
  	}
@@ -547,7 +548,7 @@ index a0c860f..9c6f214 100644
  
   out:
  	cfg80211_put_dev(drv);
-@@ -965,10 +980,13 @@
+@@ -992,10 +1007,13 @@
  		err = -EOPNOTSUPP;
  		goto out;
  	}
@@ -562,7 +563,7 @@ index a0c860f..9c6f214 100644
  
   out:
  	cfg80211_put_dev(drv);
-@@ -1048,11 +1066,13 @@
+@@ -1075,11 +1093,13 @@
  		err = -EINVAL;
  		goto out;
  	}
@@ -578,7 +579,7 @@ index a0c860f..9c6f214 100644
   out:
  	cfg80211_put_dev(drv);
  	dev_put(dev);
-@@ -1073,11 +1093,13 @@
+@@ -1100,11 +1120,13 @@
  		err = -EOPNOTSUPP;
  		goto out;
  	}
@@ -594,7 +595,7 @@ index a0c860f..9c6f214 100644
   out:
  	cfg80211_put_dev(drv);
  	dev_put(dev);
-@@ -1260,16 +1282,20 @@
+@@ -1287,16 +1309,20 @@
  		err = -ENOSYS;
  		goto out_err;
  	}
@@ -617,7 +618,7 @@ index a0c860f..9c6f214 100644
  
  		if (nl80211_send_station(skb,
  				NETLINK_CB(cb->skb).pid,
-@@ -1285,8 +1311,10 @@
+@@ -1312,8 +1338,10 @@
   out:
  	cb->args[1] = sta_idx;
  	err = skb->len;
@@ -628,7 +629,7 @@ index a0c860f..9c6f214 100644
   out_err:
  	cfg80211_put_dev(dev);
   out_put_netdev:
-@@ -1320,9 +1348,13 @@
+@@ -1347,9 +1375,13 @@
  		goto out;
  	}
  
@@ -642,7 +643,7 @@ index a0c860f..9c6f214 100644
  
  	if (err)
  		goto out;
-@@ -1424,9 +1456,13 @@
+@@ -1451,9 +1483,13 @@
  		goto out;
  	}
  
@@ -656,7 +657,7 @@ index a0c860f..9c6f214 100644
  
   out:
  	if (params.vlan)
-@@ -1487,9 +1523,13 @@
+@@ -1514,9 +1550,13 @@
  		goto out;
  	}
  
@@ -670,7 +671,7 @@ index a0c860f..9c6f214 100644
  
   out:
  	if (params.vlan)
-@@ -1518,9 +1558,13 @@
+@@ -1545,9 +1585,13 @@
  		goto out;
  	}
  
@@ -684,7 +685,7 @@ index a0c860f..9c6f214 100644
  
   out:
  	cfg80211_put_dev(drv);
-@@ -1620,7 +1664,9 @@
+@@ -1647,7 +1691,9 @@
  		goto out_err;
  	}
  
@@ -694,7 +695,7 @@ index a0c860f..9c6f214 100644
  
  	while (1) {
  		err = dev->ops->dump_mpath(&dev->wiphy, netdev, path_idx,
-@@ -1628,7 +1674,11 @@
+@@ -1655,7 +1701,11 @@
  		if (err == -ENOENT)
  			break;
  		if (err)
@@ -706,7 +707,7 @@ index a0c860f..9c6f214 100644
  
  		if (nl80211_send_mpath(skb, NETLINK_CB(cb->skb).pid,
  				       cb->nlh->nlmsg_seq, NLM_F_MULTI,
-@@ -1643,8 +1693,10 @@
+@@ -1670,8 +1720,10 @@
   out:
  	cb->args[1] = path_idx;
  	err = skb->len;
@@ -717,7 +718,7 @@ index a0c860f..9c6f214 100644
   out_err:
  	cfg80211_put_dev(dev);
   out_put_netdev:
-@@ -1679,9 +1731,13 @@
+@@ -1706,9 +1758,13 @@
  		goto out;
  	}
  
@@ -731,7 +732,7 @@ index a0c860f..9c6f214 100644
  
  	if (err)
  		goto out;
-@@ -1732,9 +1788,13 @@
+@@ -1759,9 +1815,13 @@
  		goto out;
  	}
  
@@ -745,7 +746,7 @@ index a0c860f..9c6f214 100644
  
   out:
  	cfg80211_put_dev(drv);
-@@ -1767,9 +1827,13 @@
+@@ -1794,9 +1854,13 @@
  		goto out;
  	}
  
@@ -759,7 +760,7 @@ index a0c860f..9c6f214 100644
  
   out:
  	cfg80211_put_dev(drv);
-@@ -1796,9 +1860,13 @@
+@@ -1823,9 +1887,13 @@
  		goto out;
  	}
  
@@ -773,7 +774,7 @@ index a0c860f..9c6f214 100644
  
   out:
  	cfg80211_put_dev(drv);
-@@ -1844,9 +1912,13 @@
+@@ -1871,9 +1939,13 @@
  		goto out;
  	}
  
@@ -787,7 +788,7 @@ index a0c860f..9c6f214 100644
  
   out:
  	cfg80211_put_dev(drv);
-@@ -1951,9 +2023,13 @@
+@@ -1978,9 +2050,13 @@
  		return err;
  
  	/* Get the mesh params */
@@ -801,7 +802,7 @@ index a0c860f..9c6f214 100644
  	if (err)
  		goto out;
  
-@@ -2099,9 +2175,13 @@
+@@ -2126,9 +2202,13 @@
  			nla_get_u16);
  
  	/* Apply changes */
@@ -815,7 +816,7 @@ index a0c860f..9c6f214 100644
  
  	/* cleanup */
  	cfg80211_put_dev(drv);
-@@ -2277,9 +2357,13 @@
+@@ -2304,9 +2384,13 @@
  		return err;
  
  	if (drv->ops->set_mgmt_extra_ie) {
@@ -829,7 +830,7 @@ index a0c860f..9c6f214 100644
  	} else
  		err = -EOPNOTSUPP;
  
-@@ -2311,9 +2395,9 @@
+@@ -2338,9 +2422,9 @@
  		err = -EOPNOTSUPP;
  		goto out;
  	}
@@ -841,7 +842,7 @@ index a0c860f..9c6f214 100644
  	if (drv->scan_req) {
  		err = -EBUSY;
  		goto out_unlock;
-@@ -2424,7 +2508,9 @@
+@@ -2451,7 +2535,9 @@
  		kfree(request);
  	}
   out_unlock:
