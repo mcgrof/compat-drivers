@@ -23,17 +23,6 @@
  cfg80211-$(CONFIG_WIRELESS_EXT) += wext-compat.o
  
  ccflags-y += -D__CHECK_ENDIAN__
---- a/drivers/net/wireless/zd1211rw/zd_chip.h	2008-03-07 20:02:06.000000000 -0500
-+++ b/drivers/net/wireless/zd1211rw/zd_chip.h	2008-03-07 20:02:07.000000000 -0500
-@@ -897,7 +897,7 @@
- int zd_chip_unlock_phy_regs(struct zd_chip *chip);
- 
- enum led_status {
--	LED_OFF = 0,
-+	LED_OFF_ZD = 0,
- 	LED_SCANNING = 1,
- 	LED_ASSOCIATED = 2,
- };
 --- a/drivers/net/usb/Makefile	2008-10-27 09:41:27.000000000 -0700
 +++ b/drivers/net/usb/Makefile	2008-10-27 09:43:01.000000000 -0700
 @@ -2,21 +2,7 @@
@@ -163,26 +152,6 @@ index a0c860f..9c6f214 100644
 -obj-$(CONFIG_EEPROM_AT25)	+= at25.o
 -obj-$(CONFIG_EEPROM_LEGACY)	+= eeprom.o
  obj-$(CONFIG_EEPROM_93CX6)	+= eeprom_93cx6.o
---- a/drivers/net/wireless/zd1211rw/zd_chip.c	2009-01-15 16:35:33.000000000 -0800
-+++ b/drivers/net/wireless/zd1211rw/zd_chip.c	2009-01-15 16:35:33.000000000 -0800
-@@ -1278,7 +1278,7 @@
- 	other_led = chip->link_led == LED1 ? LED2 : LED1;
- 
- 	switch (status) {
--	case LED_OFF:
-+	case LED_OFF_ZD:
- 		ioreqs[0].value = FW_LINK_OFF;
- 		ioreqs[1].value = v[1] & ~(LED1|LED2);
- 		break;
---- a/drivers/net/wireless/zd1211rw/zd_mac.c	2009-03-02 12:40:07.000000000 -0800
-+++ b/drivers/net/wireless/zd1211rw/zd_mac.c	2009-03-02 12:40:09.000000000 -0800
-@@ -1051,5 +1051,5 @@
- 	dev_dbg_f(zd_mac_dev(mac), "\n");
- 	cancel_rearming_delayed_workqueue(zd_workqueue,
- 		&mac->housekeeping.link_led_work);
--	zd_chip_control_leds(&mac->chip, LED_OFF);
-+	zd_chip_control_leds(&mac->chip, LED_OFF_ZD);
- }
 --- a/net/mac80211/rx.c	2009-02-10 23:51:58.000000000 -0800
 +++ b/net/mac80211/rx.c	2009-02-10 23:52:04.000000000 -0800
 @@ -805,12 +805,17 @@
