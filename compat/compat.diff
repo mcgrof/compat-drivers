@@ -271,9 +271,9 @@ index a0c860f..9c6f214 100644
  	dev->irq = sdev->irq;
  	SET_ETHTOOL_OPS(dev, &b44_ethtool_ops);
  
---- a/net/mac80211/iface.c	2009-02-13 14:25:06.000000000 -0800
-+++ b/net/mac80211/iface.c	2009-02-13 14:25:08.000000000 -0800
-@@ -675,6 +675,7 @@
+--- a/net/mac80211/iface.c	2009-03-20 19:55:10.000000000 -0700
++++ b/net/mac80211/iface.c	2009-03-20 19:55:18.000000000 -0700
+@@ -669,6 +669,7 @@
  	WARN_ON(flushed);
  }
  
@@ -281,7 +281,7 @@ index a0c860f..9c6f214 100644
  static const struct net_device_ops ieee80211_dataif_ops = {
  	.ndo_open		= ieee80211_open,
  	.ndo_stop		= ieee80211_stop,
-@@ -694,11 +695,22 @@
+@@ -688,11 +689,22 @@
  	.ndo_change_mtu 	= ieee80211_change_mtu,
  	.ndo_set_mac_address 	= eth_mac_addr,
  };
@@ -304,7 +304,7 @@ index a0c860f..9c6f214 100644
  	dev->wireless_handlers = &ieee80211_iw_handler_def;
  	dev->destructor = free_netdev;
  }
-@@ -714,7 +726,11 @@
+@@ -708,7 +720,11 @@
  
  	/* and set some type-dependent values */
  	sdata->vif.type = type;
@@ -316,7 +316,7 @@ index a0c860f..9c6f214 100644
  	sdata->wdev.iftype = type;
  
  	/* only monitor differs */
-@@ -737,7 +753,11 @@
+@@ -731,7 +747,11 @@
  		break;
  	case NL80211_IFTYPE_MONITOR:
  		sdata->dev->type = ARPHRD_IEEE80211_RADIOTAP;
@@ -328,7 +328,7 @@ index a0c860f..9c6f214 100644
  		sdata->u.mntr_flags = MONITOR_FLAG_CONTROL |
  				      MONITOR_FLAG_OTHER_BSS;
  		break;
-@@ -844,6 +864,10 @@
+@@ -838,6 +858,10 @@
  	if (ret)
  		goto fail;
  
