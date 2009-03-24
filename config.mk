@@ -259,6 +259,14 @@ CONFIG_RTL8187=m
 
 CONFIG_AT76C50X_USB=m
 
+# Activate AR9170 support only on kernel >= 2.6.28.
+# The needed USB poison feature was added in this kernel release.
+ifeq ($(shell test $(KERNEL_SUBLEVEL) -ge 28 && echo yes),yes)
+CONFIG_AR9170_COMMON=m
+CONFIG_AR9170_USB=m
+CONFIG_AR9170_LEDS=y
+endif
+
 # RT2500USB does not require firmware
 CONFIG_RT2500USB=m
 CONFIG_RT2800USB=m
