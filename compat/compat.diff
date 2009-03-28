@@ -357,7 +357,7 @@ index a0c860f..9c6f214 100644
  
  #ifdef CONFIG_MAC80211_VERBOSE_DEBUG
  	if (net_ratelimit())
-@@ -797,6 +799,7 @@
+@@ -796,6 +798,7 @@
  }
  EXPORT_SYMBOL(ieee80211_alloc_hw);
  
@@ -365,7 +365,7 @@ index a0c860f..9c6f214 100644
  static const struct net_device_ops ieee80211_master_ops = {
  	.ndo_start_xmit = ieee80211_master_start_xmit,
  	.ndo_open = ieee80211_master_open,
-@@ -804,12 +807,22 @@
+@@ -803,12 +806,22 @@
  	.ndo_set_multicast_list = ieee80211_master_set_multicast_list,
  	.ndo_select_queue = ieee80211_select_queue,
  };
