@@ -17,3 +17,9 @@ drivers on kernels >= 2.6.27.
 For more information please see:
 
 http://wireless.kernel.org/en/users/Download
+
+Install
+======
+
+make
+sudo make install
