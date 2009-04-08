@@ -182,8 +182,8 @@ index a0c860f..9c6f214 100644
  	}
  
  	return sent;
---- a/drivers/net/b44.c	2009-01-22 07:52:14.000000000 -0800
-+++ b/drivers/net/b44.c	2009-01-22 07:52:14.000000000 -0800
+--- a/drivers/net/b44.c	2009-04-07 17:34:28.000000000 -0700
++++ b/drivers/net/b44.c	2009-04-07 17:37:48.000000000 -0700
 @@ -846,6 +846,9 @@
  static int b44_poll(struct napi_struct *napi, int budget)
  {
@@ -201,34 +201,12 @@ index a0c860f..9c6f214 100644
 +#if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,29))
 +		netif_rx_complete(netdev, napi);
 +#else
- 		netif_rx_complete(napi);
+ 		napi_complete(napi);
 +#endif
  		b44_enable_ints(bp);
  	}
  
-@@ -906,13 +913,21 @@
- 			goto irq_ack;
- 		}
- 
-+#if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,29))
-+		if (netif_rx_schedule_prep(dev, &bp->napi)) {
-+#else
- 		if (netif_rx_schedule_prep(&bp->napi)) {
-+#endif
- 			/* NOTE: These writes are posted by the readback of
- 			 *       the ISTAT register below.
- 			 */
- 			bp->istat = istat;
- 			__b44_disable_ints(bp);
-+#if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,29))
-+			__netif_rx_schedule(dev, &bp->napi);
-+#else
- 			__netif_rx_schedule(&bp->napi);
-+#endif
- 		} else {
- 			printk(KERN_ERR PFX "%s: Error, poll already scheduled\n",
- 			       dev->name);
-@@ -2112,6 +2127,7 @@
+@@ -2112,6 +2119,7 @@
  	return err;
  }
  
@@ -236,7 +214,7 @@ index a0c860f..9c6f214 100644
  static const struct net_device_ops b44_netdev_ops = {
  	.ndo_open		= b44_open,
  	.ndo_stop		= b44_close,
-@@ -2127,6 +2143,7 @@
+@@ -2127,6 +2135,7 @@
  	.ndo_poll_controller	= b44_poll_controller,
  #endif
  };
@@ -244,7 +222,7 @@ index a0c860f..9c6f214 100644
  
  static int __devinit b44_init_one(struct ssb_device *sdev,
  				  const struct ssb_device_id *ent)
-@@ -2166,9 +2183,26 @@
+@@ -2166,9 +2175,26 @@
  	bp->rx_pending = B44_DEF_RX_RING_PENDING;
  	bp->tx_pending = B44_DEF_TX_RING_PENDING;
  
