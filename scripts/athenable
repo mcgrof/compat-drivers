@@ -13,6 +13,7 @@ if [[ $UID -ne 0 ]]; then
 fi
 
 ATH5K="ath5k"
+ATH9K="ath9k"
 MADWIFI="ath_pci"
 # Appended to module file at the end when we want to ignore one
 IGNORE_SUFFIX=".ignore"
@@ -23,6 +24,7 @@ USAGE="Usage: $0 [ ath5k | madwifi ]"
 if [ $# -eq 0 ]; then
 	module_disable $MADWIFI
 	module_enable $ATH5K
+	module_enable $ATH9K
 	exit
 elif [ $# -ne 1 ]; then
 	echo "$USAGE"
@@ -33,8 +35,10 @@ MODULE=$1
 if [ "$MODULE" == "ath5k" ]; then
 	module_disable $MADWIFI
 	module_enable $ATH5K
+	module_enable $ATH9K
 elif [ "$MODULE" == "madwifi" ]; then
 	module_disable $ATH5K
+	module_disable $ATH9K
 	module_enable $MADWIFI
 else
 	echo "$USAGE"

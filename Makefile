@@ -104,39 +104,52 @@ install: uninstall modules
 	@$(MODPROBE) -l cfg80211
 	@$(MODPROBE) -l lib80211
 	@$(MODPROBE) -l adm8211
+	@$(MODPROBE) -l ar9170usb
 	@$(MODPROBE) -l at76c50x-usb
+	@$(MODPROBE) -l ath
 	@$(MODPROBE) -l ath5k
 	@$(MODPROBE) -l ath9k
 	@$(MODPROBE) -l b43
 	@$(MODPROBE) -l b43legacy
 	@$(MODPROBE) -l b44
-	@$(MODPROBE) -l ssb
-	@$(MODPROBE) -l rc80211_simple
-	@$(MODPROBE) -l iwlcore
-	@$(MODPROBE) -l iwl3945
-	@$(MODPROBE) -l iwlagn
+	@$(MODPROBE) -l cdc_ether
+	@$(MODPROBE) -l eeprom_93cx6
 	@$(MODPROBE) -l ipw2100
 	@$(MODPROBE) -l ipw2200
-	@$(MODPROBE) -l libipw
-	@$(MODPROBE) -l lib80211
-	@$(MODPROBE) -l lib80211_crypt
+	@$(MODPROBE) -l iwl3945
+	@$(MODPROBE) -l iwlagn
+	@$(MODPROBE) -l iwlcore
+	@$(MODPROBE) -l lib80211_crypt_ccmp
+	@$(MODPROBE) -l lib80211_crypt_tkip
+	@$(MODPROBE) -l lib80211_crypt_wep
+	@$(MODPROBE) -l libertas
 	@$(MODPROBE) -l libertas_cs
+	@$(MODPROBE) -l libertas_sdio
+	@$(MODPROBE) -l libertas_spi
 	@$(MODPROBE) -l libertas_tf
 	@$(MODPROBE) -l libertas_tf_usb
-	@$(MODPROBE) -l ub8xxx
+	@$(MODPROBE) -l libipw
+	@$(MODPROBE) -l mac80211_hwsim
+	@$(MODPROBE) -l mwl8k
+	@$(MODPROBE) -l p54common
 	@$(MODPROBE) -l p54pci
+	@$(MODPROBE) -l p54spi
 	@$(MODPROBE) -l p54usb
+	@$(MODPROBE) -l rndis_host
+	@$(MODPROBE) -l rndis_wlan
 	@$(MODPROBE) -l rt2400pci
 	@$(MODPROBE) -l rt2500pci
 	@$(MODPROBE) -l rt2500usb
+	@$(MODPROBE) -l rt2x00lib
+	@$(MODPROBE) -l rt2x00pci
+	@$(MODPROBE) -l rt2x00usb
 	@$(MODPROBE) -l rt61pci
 	@$(MODPROBE) -l rt73usb
-	@$(MODPROBE) -l usbnet
-	@$(MODPROBE) -l cdc_ether
-	@$(MODPROBE) -l rndis_host
-	@$(MODPROBE) -l rndis_wlan
 	@$(MODPROBE) -l rtl8180
 	@$(MODPROBE) -l rtl8187
+	@$(MODPROBE) -l ssb
+	@$(MODPROBE) -l usb8xxx
+	@$(MODPROBE) -l usbnet
 	@$(MODPROBE) -l zd1211rw
 	@echo 
 	@echo Now run:
@@ -166,39 +179,52 @@ uninstall:
 	@$(MODPROBE) -l cfg80211
 	@$(MODPROBE) -l lib80211
 	@$(MODPROBE) -l adm8211
+	@$(MODPROBE) -l ar9170usb
 	@$(MODPROBE) -l at76c50x-usb
+	@$(MODPROBE) -l ath
 	@$(MODPROBE) -l ath5k
 	@$(MODPROBE) -l ath9k
 	@$(MODPROBE) -l b43
 	@$(MODPROBE) -l b43legacy
 	@$(MODPROBE) -l b44
-	@$(MODPROBE) -l ssb
-	@$(MODPROBE) -l rc80211_simple
-	@$(MODPROBE) -l iwlcore
-	@$(MODPROBE) -l iwl3945
-	@$(MODPROBE) -l iwlagn
+	@$(MODPROBE) -l cdc_ether
+	@$(MODPROBE) -l eeprom_93cx6
 	@$(MODPROBE) -l ipw2100
 	@$(MODPROBE) -l ipw2200
-	@$(MODPROBE) -l libipw
-	@$(MODPROBE) -l lib80211
-	@$(MODPROBE) -l lib80211_crypt
+	@$(MODPROBE) -l iwl3945
+	@$(MODPROBE) -l iwlagn
+	@$(MODPROBE) -l iwlcore
+	@$(MODPROBE) -l lib80211_crypt_ccmp
+	@$(MODPROBE) -l lib80211_crypt_tkip
+	@$(MODPROBE) -l lib80211_crypt_wep
+	@$(MODPROBE) -l libertas
 	@$(MODPROBE) -l libertas_cs
+	@$(MODPROBE) -l libertas_sdio
+	@$(MODPROBE) -l libertas_spi
 	@$(MODPROBE) -l libertas_tf
 	@$(MODPROBE) -l libertas_tf_usb
-	@$(MODPROBE) -l ub8xxx
+	@$(MODPROBE) -l libipw
+	@$(MODPROBE) -l mac80211_hwsim
+	@$(MODPROBE) -l mwl8k
+	@$(MODPROBE) -l p54common
 	@$(MODPROBE) -l p54pci
+	@$(MODPROBE) -l p54spi
 	@$(MODPROBE) -l p54usb
+	@$(MODPROBE) -l rndis_host
+	@$(MODPROBE) -l rndis_wlan
 	@$(MODPROBE) -l rt2400pci
 	@$(MODPROBE) -l rt2500pci
 	@$(MODPROBE) -l rt2500usb
+	@$(MODPROBE) -l rt2x00lib
+	@$(MODPROBE) -l rt2x00pci
+	@$(MODPROBE) -l rt2x00usb
 	@$(MODPROBE) -l rt61pci
 	@$(MODPROBE) -l rt73usb
-	@$(MODPROBE) -l usbnet
-	@$(MODPROBE) -l cdc_ether
-	@$(MODPROBE) -l rndis_host
-	@$(MODPROBE) -l rndis_wlan
 	@$(MODPROBE) -l rtl8180
 	@$(MODPROBE) -l rtl8187
+	@$(MODPROBE) -l ssb
+	@$(MODPROBE) -l usb8xxx
+	@$(MODPROBE) -l usbnet
 	@$(MODPROBE) -l zd1211rw
 	@
 	@echo 

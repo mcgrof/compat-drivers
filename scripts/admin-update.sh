@@ -46,8 +46,10 @@ else
 	echo "You said your wireless-testing git tree is: $GIT_TREE"
 fi
 # Drivers that have their own directory
-DRIVERS="drivers/net/wireless/ath5k"
-DRIVERS="$DRIVERS drivers/net/wireless/ath9k"
+DRIVERS="drivers/net/wireless/ath"
+DRIVERS="$DRIVERS drivers/net/wireless/ath/ar9170"
+DRIVERS="$DRIVERS drivers/net/wireless/ath/ath5k"
+DRIVERS="$DRIVERS drivers/net/wireless/ath/ath9k"
 DRIVERS="$DRIVERS drivers/ssb"
 DRIVERS="$DRIVERS drivers/net/wireless/b43"
 DRIVERS="$DRIVERS drivers/net/wireless/b43legacy"
@@ -59,7 +61,6 @@ DRIVERS="$DRIVERS drivers/net/wireless/p54"
 DRIVERS="$DRIVERS drivers/net/wireless/rtl818x"
 DRIVERS="$DRIVERS drivers/net/wireless/libertas_tf"
 DRIVERS="$DRIVERS drivers/net/wireless/ipw2x00"
-DRIVERS="$DRIVERS drivers/net/wireless/ar9170"
 
 # Drivers that belong the the wireless directory
 DRIVER_FILES="adm8211.c  adm8211.h"

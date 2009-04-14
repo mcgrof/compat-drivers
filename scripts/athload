@@ -31,6 +31,11 @@ if [ "$MODULE" == "ath5k" ]; then
 	if [ ! -z $CHECK ]; then
 		echo "ath5k loaded successfully"
 	fi
+	modprobe ath9k
+	CHECK=`modprobe -l ath9k`
+	if [ ! -z $CHECK ]; then
+		echo "ath9k loaded successfully"
+	fi
 elif [ "$MODULE" == "madwifi" ]; then
 	CHECK=`modprobe -l ath5k`
 	if [ ! -z $CHECK ]; then

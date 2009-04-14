@@ -38,7 +38,7 @@ function module_disable {
 		else
 			echo -en "Disabling $MODULE ..."
 		fi
-		mv -f $CHECK ${CHECK}${IGNORE_SUFFIX}
+		mv -f /lib/modules/$VER/$CHECK /lib/modules/$VER/${CHECK}${IGNORE_SUFFIX}
 		depmod -ae
 		CHECK_AGAIN=`modprobe -l $MODULE`
 		if [ "$CHECK" != "$CHECK_AGAIN" ]; then

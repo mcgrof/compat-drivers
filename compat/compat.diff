@@ -429,7 +429,7 @@
  	dev->tx_queue_len = 0;
 --- a/drivers/net/wireless/rndis_wlan.c
 +++ b/drivers/net/wireless/rndis_wlan.c
-@@ -2524,6 +2524,7 @@ static int bcm4320_early_init(struct usbnet *usbdev)
+@@ -2381,6 +2381,7 @@ static int bcm4320_early_init(struct usbnet *usbdev)
  	return 0;
  }
  
@@ -437,7 +437,7 @@
  /* same as rndis_netdev_ops but with local multicast handler */
  static const struct net_device_ops rndis_wext_netdev_ops = {
  	.ndo_open		= usbnet_open,
-@@ -2534,6 +2535,7 @@ static const struct net_device_ops rndis_wext_netdev_ops = {
+@@ -2391,6 +2392,7 @@ static const struct net_device_ops rndis_wext_netdev_ops = {
  	.ndo_validate_addr	= eth_validate_addr,
  	.ndo_set_multicast_list	= rndis_wext_set_multicast_list,
  };
@@ -445,7 +445,7 @@
  
  
  static int rndis_wext_bind(struct usbnet *usbdev, struct usb_interface *intf)
-@@ -2570,7 +2572,11 @@ static int rndis_wext_bind(struct usbnet *usbdev, struct usb_interface *intf)
+@@ -2435,7 +2437,11 @@ static int rndis_wext_bind(struct usbnet *usbdev, struct usb_interface *intf)
  	 * rndis_host wants to avoid all OID as much as possible
  	 * so do promisc/multicast handling in rndis_wext.
  	 */
@@ -553,7 +553,7 @@
  
  #ifdef CONFIG_MAC80211_VERBOSE_DEBUG
  	if (net_ratelimit())
-@@ -811,6 +813,7 @@ struct ieee80211_hw *ieee80211_alloc_hw(size_t priv_data_len,
+@@ -797,6 +799,7 @@ struct ieee80211_hw *ieee80211_alloc_hw(size_t priv_data_len,
  }
  EXPORT_SYMBOL(ieee80211_alloc_hw);
  
@@ -561,7 +561,7 @@
  static const struct net_device_ops ieee80211_master_ops = {
  	.ndo_start_xmit = ieee80211_master_start_xmit,
  	.ndo_open = ieee80211_master_open,
-@@ -818,12 +821,22 @@ static const struct net_device_ops ieee80211_master_ops = {
+@@ -804,12 +807,22 @@ static const struct net_device_ops ieee80211_master_ops = {
  	.ndo_set_multicast_list = ieee80211_master_set_multicast_list,
  	.ndo_select_queue = ieee80211_select_queue,
  };
