@@ -535,9 +535,9 @@
  	if (ieee80211_vif_is_mesh(&sdata->vif) &&
  	    params && params->mesh_id_len)
  		ieee80211_sdata_set_mesh_id(sdata,
---- a/net/mac80211/main.c
-+++ b/net/mac80211/main.c
-@@ -482,6 +482,7 @@ static void ieee80211_handle_filtered_frame(struct ieee80211_local *local,
+--- a/net/mac80211/main.c	2009-04-16 10:01:30.000000000 -0700
++++ b/net/mac80211/main.c	2009-04-16 10:01:37.000000000 -0700
+@@ -482,6 +482,7 @@
  		return;
  	}
  
@@ -545,7 +545,7 @@
  	if (!test_sta_flags(sta, WLAN_STA_PS) && !skb->requeue) {
  		/* Software retry the packet once */
  		skb->requeue = 1;
-@@ -489,6 +490,7 @@ static void ieee80211_handle_filtered_frame(struct ieee80211_local *local,
+@@ -489,6 +490,7 @@
  		dev_queue_xmit(skb);
  		return;
  	}
@@ -553,7 +553,7 @@
  
  #ifdef CONFIG_MAC80211_VERBOSE_DEBUG
  	if (net_ratelimit())
-@@ -797,6 +799,7 @@ struct ieee80211_hw *ieee80211_alloc_hw(size_t priv_data_len,
+@@ -821,6 +823,7 @@
  }
  EXPORT_SYMBOL(ieee80211_alloc_hw);
  
@@ -561,7 +561,7 @@
  static const struct net_device_ops ieee80211_master_ops = {
  	.ndo_start_xmit = ieee80211_master_start_xmit,
  	.ndo_open = ieee80211_master_open,
-@@ -804,12 +807,22 @@ static const struct net_device_ops ieee80211_master_ops = {
+@@ -828,12 +831,22 @@
  	.ndo_set_multicast_list = ieee80211_master_set_multicast_list,
  	.ndo_select_queue = ieee80211_select_queue,
  };
