@@ -83,4 +83,16 @@ static inline void skb_queue_splice_tail_init(struct sk_buff_head *list,
 
 #endif /* (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,29)) */
 
+#if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,30))
+
+#endif /* (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,30)) */
+
+#if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,31))
+
+#ifndef SDIO_DEVICE_ID_MARVELL_8688WLAN
+#define SDIO_DEVICE_ID_MARVELL_8688WLAN		0x9104
+#endif
+
+#endif /* (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,31)) */
+
 #endif /* LINUX_26_COMPAT_H */
