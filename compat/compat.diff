@@ -669,3 +669,67 @@
  cfg80211-$(CONFIG_WIRELESS_EXT) += wext-compat.o
  
  ccflags-y += -D__CHECK_ENDIAN__
+--- a/net/wireless/core.h
++++ b/net/wireless/core.h
+@@ -85,7 +85,11 @@ struct cfg80211_internal_bss {
+ 	struct rb_node rbn;
+ 	unsigned long ts;
+ 	struct kref ref;
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
+ 	bool hold, ies_allocated;
++#else
++	bool hold;
++#endif
+ 
+ 	/* must be last because of priv member */
+ 	struct cfg80211_bss pub;
+--- a/net/wireless/scan.c
++++ b/net/wireless/scan.c
+@@ -58,10 +58,12 @@ static void bss_release(struct kref *ref)
+ 	bss = container_of(ref, struct cfg80211_internal_bss, ref);
+ 	if (bss->pub.free_priv)
+ 		bss->pub.free_priv(&bss->pub);
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
+ 
+ 	if (bss->ies_allocated)
+ 		kfree(bss->pub.information_elements);
+ 
++#endif
+ 	kfree(bss);
+ }
+ 
+@@ -364,13 +366,26 @@ cfg80211_bss_update(struct cfg80211_registered_device *dev,
+ 
+ 	found = rb_find_bss(dev, res);
+ 
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
+ 	if (found) {
++#else
++	if (found && overwrite) {
++		list_replace(&found->list, &res->list);
++		rb_replace_node(&found->rbn, &res->rbn,
++				&dev->bss_tree);
++		/* XXX: workaround */
++		res->hold = found->hold;
++		kref_put(&found->ref, bss_release);
++		found = res;
++	} else if (found) {
++#endif
+ 		kref_get(&found->ref);
+ 		found->pub.beacon_interval = res->pub.beacon_interval;
+ 		found->pub.tsf = res->pub.tsf;
+ 		found->pub.signal = res->pub.signal;
+ 		found->pub.capability = res->pub.capability;
+ 		found->ts = res->ts;
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
+ 
+ 		/* overwrite IEs */
+ 		if (overwrite) {
+@@ -399,6 +414,7 @@ cfg80211_bss_update(struct cfg80211_registered_device *dev,
+ 			}
+ 		}
+ 
++#endif
+ 		kref_put(&res->ref, bss_release);
+ 	} else {
+ 		/* this "consumes" the reference */
