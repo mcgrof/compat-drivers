@@ -23,9 +23,9 @@
  cfg80211-$(CONFIG_WIRELESS_EXT) += wext-compat.o
  
  ccflags-y += -D__CHECK_ENDIAN__
---- a/drivers/net/usb/Makefile	2008-10-27 09:41:27.000000000 -0700
-+++ b/drivers/net/usb/Makefile	2008-10-27 09:43:01.000000000 -0700
-@@ -2,21 +2,7 @@
+--- a/drivers/net/usb/Makefile	2009-05-06 20:37:38.000000000 -0700
++++ b/drivers/net/usb/Makefile	2009-05-06 20:38:20.000000000 -0700
+@@ -2,22 +2,6 @@
  # Makefile for USB Network drivers
  #
  
@@ -36,6 +36,7 @@
 -obj-$(CONFIG_USB_HSO)		+= hso.o
 -obj-$(CONFIG_USB_NET_AX8817X)	+= asix.o
  obj-$(CONFIG_USB_NET_CDCETHER)	+= cdc_ether.o
+-obj-$(CONFIG_USB_NET_CDC_EEM)	+= cdc_eem.o
 -obj-$(CONFIG_USB_NET_DM9601)	+= dm9601.o
 -obj-$(CONFIG_USB_NET_SMSC95XX)	+= smsc95xx.o
 -obj-$(CONFIG_USB_NET_GL620A)	+= gl620a.o
@@ -46,7 +47,7 @@
 -obj-$(CONFIG_USB_NET_ZAURUS)	+= zaurus.o
 -obj-$(CONFIG_USB_NET_MCS7830)	+= mcs7830.o
  obj-$(CONFIG_USB_USBNET)	+= usbnet.o
- 
+-
 diff --git a/drivers/net/wireless/b43/pcmcia.c b/drivers/net/wireless/b43/pcmcia.c
 index 3cfc303..33c76b0 100644
 --- a/drivers/net/wireless/b43/pcmcia.c
@@ -152,9 +153,9 @@ index a0c860f..9c6f214 100644
 -obj-$(CONFIG_EEPROM_AT25)	+= at25.o
 -obj-$(CONFIG_EEPROM_LEGACY)	+= eeprom.o
  obj-$(CONFIG_EEPROM_93CX6)	+= eeprom_93cx6.o
---- a/net/mac80211/rx.c	2009-02-10 23:51:58.000000000 -0800
-+++ b/net/mac80211/rx.c	2009-02-10 23:52:04.000000000 -0800
-@@ -805,12 +805,17 @@
+--- a/net/mac80211/rx.c	2009-05-06 20:39:38.000000000 -0700
++++ b/net/mac80211/rx.c	2009-05-06 20:39:38.000000000 -0700
+@@ -806,12 +806,17 @@
  
  	/* Send all buffered frames to the station */
  	while ((skb = skb_dequeue(&sta->tx_filtered)) != NULL) {
@@ -172,7 +173,7 @@ index a0c860f..9c6f214 100644
  		sent++;
  #ifdef CONFIG_MAC80211_VERBOSE_PS_DEBUG
  		printk(KERN_DEBUG "%s: STA %pM aid %d send PS frame "
-@@ -819,6 +824,9 @@
+@@ -820,6 +825,9 @@
  #endif /* CONFIG_MAC80211_VERBOSE_PS_DEBUG */
  		skb->requeue = 1;
  		dev_queue_xmit(skb);
@@ -317,8 +318,8 @@ index a0c860f..9c6f214 100644
  	if (ieee80211_vif_is_mesh(&sdata->vif) &&
  	    params && params->mesh_id_len)
  		ieee80211_sdata_set_mesh_id(sdata,
---- a/net/mac80211/main.c	2009-02-13 14:25:06.000000000 -0800
-+++ b/net/mac80211/main.c	2009-02-13 14:25:08.000000000 -0800
+--- a/net/mac80211/main.c	2009-05-06 20:39:38.000000000 -0700
++++ b/net/mac80211/main.c	2009-05-06 20:39:38.000000000 -0700
 @@ -482,6 +482,7 @@
  		return;
  	}
@@ -335,7 +336,7 @@ index a0c860f..9c6f214 100644
  
  #ifdef CONFIG_MAC80211_VERBOSE_DEBUG
  	if (net_ratelimit())
-@@ -796,6 +798,7 @@
+@@ -797,6 +799,7 @@
  }
  EXPORT_SYMBOL(ieee80211_alloc_hw);
  
@@ -343,7 +344,7 @@ index a0c860f..9c6f214 100644
  static const struct net_device_ops ieee80211_master_ops = {
  	.ndo_start_xmit = ieee80211_master_start_xmit,
  	.ndo_open = ieee80211_master_open,
-@@ -803,12 +806,22 @@
+@@ -804,12 +807,22 @@
  	.ndo_set_multicast_list = ieee80211_master_set_multicast_list,
  	.ndo_select_queue = ieee80211_select_queue,
  };
