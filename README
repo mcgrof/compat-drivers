@@ -17,9 +17,28 @@ drivers on kernels >= 2.6.27.
 For more information please see:
 
 http://wireless.kernel.org/en/users/Download
+http://wireless.kernel.org/en/users/Download/stable
 
 Install
 ======
 
 make
 sudo make install
+sudo make unload
+
+Loading
+=======
+
+To load just modprobe the module you want or reboot. To
+verify you are picking up the new modules you can use
+modprobe -l. The new modules will come from the updates/
+directory instead of the kernel/ directory. For example to
+test if ath9k is being picked up correctly you would run:
+
+$ for i in cfg80211 mac80211 ath9k; do modprobe -l $i; done
+/lib/modules/2.6.27-11-generic/updates/net/wireless/cfg80211.ko
+/lib/modules/2.6.27-11-generic/updates/net/mac80211/mac80211.ko
+/lib/modules/2.6.27-11-generic/updates/drivers/net/wireless/ath9k/ath9k.ko
+
+Note that the make install command will output this for you so you
+can just look at that. 
