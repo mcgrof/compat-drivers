@@ -218,4 +218,5 @@ load: unload
 
 endif
 
-clean-files += Module.symvers modules modules.order $(CREL_CHECK) $(CONFIG_CHECK)
+clean-files += Module.symvers Module.markers modules modules.order
+clean-files += $(CREL_CHECK) $(CONFIG_CHECK)
