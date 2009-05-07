@@ -114,7 +114,7 @@ CONFIG_NL80211=y
 
 # We'll disable this as soon major distributions
 # start shipping this
-CONFIG_WIRELESS_OLD_REGULATORY=y
+CONFIG_WIRELESS_OLD_REGULATORY=n
 
 # mac80211 test driver
 CONFIG_MAC80211_HWSIM=m
