@@ -235,6 +235,14 @@ CONFIG_MWL8K=m
 endif
 ## end of PCI
 
+ifneq ($(CONFIG_PCMCIA),)
+
+CONFIG_LIBERTAS_CS=m
+NEED_LIBERTAS=y
+
+endif
+## end of PCMCIA
+
 # This is required for some cards
 CONFIG_EEPROM_93CX6=m
 
@@ -278,13 +286,26 @@ CONFIG_RT73USB=m
 NEED_RT2X00_FIRMWARE=y
 endif
 
+CONFIG_LIBERTAS_THINFIRM_USB=m
+CONFIG_LIBERTAS_USB=m
+NEED_LIBERTAS=y
+
 endif # end of USB driver list
 
 ifneq ($(CONFIG_SPI_MASTER),)
 
 CONFIG_WL12XX=m
+CONFIG_LIBERTAS_SPI=m
+NEED_LIBERTAS=y
 
 endif # end of SPI driver list
+
+ifneq ($(CONFIG_MMC),)
+
+CONFIG_LIBERTAS_SDIO=m
+NEED_LIBERTAS=y
+
+endif # end of SDIO driver list
 
 # Common rt2x00 requirements
 ifeq ($(NEED_RT2X00),y)
@@ -317,19 +338,9 @@ CONFIG_SSB=m
 CONFIG_SSB_SPROM=y
 # CONFIG_SSB_DEBUG=y
 
-ifneq ($(CONFIG_USB),)
-ifneq ($(CONFIG_LIBERTAS_THINFIRM_USB),m)
-CONFIG_LIBERTAS_USB=m
-NEED_LIBERTAS=y
-endif
-endif
-ifneq ($(CONFIG_PCMCIA),)
-CONFIG_LIBERTAS_CS=m
-NEED_LIBERTAS=y
-endif
 ifeq ($(NEED_LIBERTAS),y)
+CONFIG_LIBERTAS_THINFIRM=m
 CONFIG_LIBERTAS=m
-# Libertas uses the old stack but not fully, it will soon 
-# be cleaned.
+# CONFIG_LIBERTAS_DEBUG=y
 endif
 

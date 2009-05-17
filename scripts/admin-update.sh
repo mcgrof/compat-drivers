@@ -24,7 +24,7 @@ INCLUDE_LINUX="$INCLUDE_LINUX ath9k_platform.h"
 # For rndis_wext
 INCLUDE_LINUX_USB="usbnet.h rndis_host.h"
 
-INCLUDE_LINUX_SPI="wl12xx.h"
+INCLUDE_LINUX_SPI="wl12xx.h libertas_spi.h"
 
 # The good new yummy stuff
 INCLUDE_NET="cfg80211.h ieee80211_radiotap.h iw_handler.h"
