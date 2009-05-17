@@ -542,6 +542,18 @@
  	if (ieee80211_vif_is_mesh(&sdata->vif) &&
  	    params && params->mesh_id_len)
  		ieee80211_sdata_set_mesh_id(sdata,
+--- a/net/mac80211/key.c
++++ b/net/mac80211/key.c
+@@ -21,6 +21,9 @@
+ #include "aes_ccm.h"
+ #include "aes_cmac.h"
+ 
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,29))
++#include <asm/unaligned.h>
++#endif
+ 
+ /**
+  * DOC: Key handling basics
 --- a/net/mac80211/main.c	2009-04-28 15:34:50.000000000 -0700
 +++ b/net/mac80211/main.c	2009-04-28 15:35:06.000000000 -0700
 @@ -469,6 +469,7 @@
