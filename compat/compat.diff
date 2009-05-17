@@ -181,12 +181,6 @@
  obj-$(CONFIG_LIBERTAS)		+= libertas/
  
  obj-$(CONFIG_LIBERTAS_THINFIRM)	+= libertas_tf/
-@@ -58,5 +32,3 @@ obj-$(CONFIG_P54_COMMON)	+= p54/
- obj-$(CONFIG_ATH_COMMON)	+= ath/
- 
- obj-$(CONFIG_MAC80211_HWSIM)	+= mac80211_hwsim.o
--
--obj-$(CONFIG_WL12XX)	+= wl12xx/
 --- a/drivers/net/wireless/b43/pcmcia.c
 +++ b/drivers/net/wireless/b43/pcmcia.c
 @@ -87,7 +87,11 @@ static int __devinit b43_pcmcia_probe(struct pcmcia_device *dev)
@@ -464,6 +458,30 @@
  
  	tmp = RNDIS_PACKET_TYPE_DIRECTED | RNDIS_PACKET_TYPE_BROADCAST;
  	retval = rndis_set_oid(usbdev, OID_GEN_CURRENT_PACKET_FILTER, &tmp,
+--- a/drivers/net/wireless/wl12xx/main.c
++++ b/drivers/net/wireless/wl12xx/main.c
+@@ -26,6 +26,9 @@
+ #include <linux/firmware.h>
+ #include <linux/delay.h>
+ #include <linux/irq.h>
++#if (LINUX_VERSION_CODE == KERNEL_VERSION(2,6,28))
++#include <linux/device.h>
++#endif
+ #include <linux/spi/spi.h>
+ #include <linux/crc32.h>
+ #include <linux/etherdevice.h>
+--- a/drivers/net/wireless/wl12xx/spi.c
++++ b/drivers/net/wireless/wl12xx/spi.c
+@@ -23,6 +23,9 @@
+ 
+ #include <linux/module.h>
+ #include <linux/crc7.h>
++#if (LINUX_VERSION_CODE == KERNEL_VERSION(2,6,28))
++#include <linux/device.h>
++#endif
+ #include <linux/spi/spi.h>
+ 
+ #include "wl12xx.h"
 --- a/include/net/cfg80211.h
 +++ b/include/net/cfg80211.h
 @@ -23,6 +23,7 @@

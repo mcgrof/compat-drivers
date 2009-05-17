@@ -280,6 +280,12 @@ endif
 
 endif # end of USB driver list
 
+ifneq ($(CONFIG_SPI_MASTER),)
+
+CONFIG_WL12XX=m
+
+endif # end of SPI driver list
+
 # Common rt2x00 requirements
 ifeq ($(NEED_RT2X00),y)
 CONFIG_RT2X00=m

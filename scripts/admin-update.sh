@@ -24,6 +24,8 @@ INCLUDE_LINUX="$INCLUDE_LINUX ath9k_platform.h"
 # For rndis_wext
 INCLUDE_LINUX_USB="usbnet.h rndis_host.h"
 
+INCLUDE_LINUX_SPI="wl12xx.h"
+
 # The good new yummy stuff
 INCLUDE_NET="cfg80211.h ieee80211_radiotap.h iw_handler.h"
 INCLUDE_NET="$INCLUDE_NET mac80211.h wext.h lib80211.h regulatory.h"
@@ -61,6 +63,7 @@ DRIVERS="$DRIVERS drivers/net/wireless/p54"
 DRIVERS="$DRIVERS drivers/net/wireless/rtl818x"
 DRIVERS="$DRIVERS drivers/net/wireless/libertas_tf"
 DRIVERS="$DRIVERS drivers/net/wireless/ipw2x00"
+DRIVERS="$DRIVERS drivers/net/wireless/wl12xx"
 
 # Drivers that belong the the wireless directory
 DRIVER_FILES="adm8211.c  adm8211.h"
@@ -71,6 +74,7 @@ DRIVER_FILES="$DRIVER_FILES mwl8k.c"
 
 mkdir -p include/linux/ include/net/ include/linux/usb \
 	include/linux/unaligned \
+	include/linux/spi \
 	net/mac80211/ net/wireless/ \
 	drivers/ssb/ \
 	drivers/net/usb/ \
@@ -94,6 +98,12 @@ done
 
 DIR="include/linux/usb"
 for i in $INCLUDE_LINUX_USB; do
+	echo "Copying $GIT_TREE/$DIR/$i"
+	cp $GIT_TREE/$DIR/$i $DIR/
+done
+
+DIR="include/linux/spi"
+for i in $INCLUDE_LINUX_SPI; do
 	echo "Copying $GIT_TREE/$DIR/$i"
 	cp $GIT_TREE/$DIR/$i $DIR/
 done
