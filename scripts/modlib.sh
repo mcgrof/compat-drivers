@@ -28,7 +28,7 @@ function module_disable {
 	ALL_MODULES=`find /lib/modules/$VER/ -name $MODULE_KO`
 	COUNT=1
 	CHECK=`modprobe -l $MODULE`
-	while  [ ! -z $CHECK ]; do
+	for i in $ALL_MODULES; do
 		if [[ $MODULE_COUNT -gt 1 ]]; then
 			if [[ $COUNT -eq 1 ]]; then
 				echo -en "$MODULE_COUNT $MODULE modules found "
@@ -38,7 +38,7 @@ function module_disable {
 		else
 			echo -en "Disabling $MODULE ..."
 		fi
-		mv -f /lib/modules/$VER/$CHECK /lib/modules/$VER/${CHECK}${IGNORE_SUFFIX}
+		mv -f $i ${i}${IGNORE_SUFFIX}
 		depmod -ae
 		CHECK_AGAIN=`modprobe -l $MODULE`
 		if [ "$CHECK" != "$CHECK_AGAIN" ]; then
@@ -49,7 +49,6 @@ function module_disable {
 			echo "$CHECK"
 		fi
 		let COUNT=$COUNT+1
-		CHECK=$CHECK_AGAIN
 	done
 }
 
