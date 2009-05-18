@@ -1,0 +1,56 @@
+#!/bin/bash
+# Copyright 2009	Luis R. Rodriguez <mcgrof@gmail.com>
+# 
+# Ensures your distribution likes to prefer updates/ over the kernel/
+# search updates built-in
+
+# Seems Mandriva has an $DEPMOD_DIR but it doesn't have any files,
+# so lets deal with those distributions.
+DEPMOD_CONF="/etc/depmod.conf"
+DEPMOD_DIR="/etc/depmod.d/"
+COMPAT_DEPMOD_FILE=compat-wireless.conf
+
+function add_compat_depmod_conf {
+	echo "NOTE: Your distribution lacks an $DEPMOD_DIR directory with "
+	echo "updates/ directory being prioritized for mouldes, we're adding "
+	echo "one for you."
+	mkdir -p $DEPMOD_DIR
+	echo "search updates extra built-in" > $DEPMOD_DIR/$COMPAT_DEPMOD_FILE
+}
+
+function depmod_updates_ok {
+	echo "depmod will prefer updates/ over kernel/ -- OK!"
+}
+
+function check_depmod_conf {
+	if [ -f $DEPMOD_CONF ]; then
+		grep -q updates $DEPMOD_CONF
+		return $?
+	fi
+	return 1
+}
+
+function add_depmod_conf_if_missing {
+	check_depmod_conf
+	if [[ $? -ne 0 ]]; then
+		add_compat_depmod_conf
+	else
+		depmod_updates_ok
+	fi
+}
+
+if [ -d $DEPMOD_DIR ]; then
+	DEPMOD_FILE_COUNT=$(ls $DEPMOD_DIR | wc -l)
+	if [[ $DEPMOD_FILE_COUNT -eq 0 ]]; then
+		add_depmod_conf_if_missing
+	else
+		grep -q updates $DEPMOD_DIR/*
+		if [[ $? -ne 0 ]]; then
+			add_depmod_conf_if_missing
+		else
+			depmod_updates_ok
+		fi
+	fi
+else
+	add_depmod_conf_if_missing
+fi

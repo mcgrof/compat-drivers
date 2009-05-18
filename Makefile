@@ -96,6 +96,10 @@ install: uninstall modules
 	@# won't know mac80211.ko should be used instead of
 	@# mac80211.ko.gz
 	@./scripts/compress_modules
+	@# Mandrake doesn't have a depmod.d/ conf file to prefer
+	@# the updates/ dir which is what we use so we add one for it
+	@# (or any other distribution that doens't have this).
+	@./scripts/check_depmod
 	@/sbin/depmod -ae
 	@echo
 	@echo "Currently detected wireless subsystem modules:"
