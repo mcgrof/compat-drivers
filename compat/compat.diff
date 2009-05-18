@@ -403,9 +403,9 @@
  	rtap_dev->ml_priv = priv;
  	SET_NETDEV_DEV(rtap_dev, priv->dev->dev.parent);
  
---- a/drivers/net/wireless/mac80211_hwsim.c	2009-04-28 15:35:05.000000000 -0700
-+++ b/drivers/net/wireless/mac80211_hwsim.c	2009-04-28 15:35:06.000000000 -0700
-@@ -734,16 +734,22 @@
+--- a/drivers/net/wireless/mac80211_hwsim.c	2009-05-18 14:35:29.000000000 -0700
++++ b/drivers/net/wireless/mac80211_hwsim.c	2009-05-18 14:35:29.000000000 -0700
+@@ -744,16 +744,22 @@
  	.name = "mac80211_hwsim"
  };
  
@@ -693,7 +693,7 @@
  }
 --- a/net/wireless/Makefile
 +++ b/net/wireless/Makefile
-@@ -1,11 +1,10 @@
+@@ -1,12 +1,11 @@
 -obj-$(CONFIG_WIRELESS_EXT) += wext.o
  obj-$(CONFIG_CFG80211) += cfg80211.o
  obj-$(CONFIG_LIB80211) += lib80211.o
@@ -703,12 +703,14 @@
  
 -cfg80211-y += core.o sysfs.o radiotap.o util.o reg.o scan.o nl80211.o mlme.o ibss.o
 +cfg80211-y += core.o sysfs.o radiotap.o util.o reg.o scan.o nl80211.o mlme.o ibss.o compat.o
+ cfg80211-$(CONFIG_CFG80211_DEBUGFS) += debugfs.o
  cfg80211-$(CONFIG_WIRELESS_EXT) += wext-compat.o
  
  ccflags-y += -D__CHECK_ENDIAN__
 --- a/net/wireless/core.h
-+++ b/net/wireless/core.h
-@@ -85,7 +85,11 @@ struct cfg80211_internal_bss {
+--- a/net/wireless/core.h	2009-05-18 14:36:20.000000000 -0700
++++ b/net/wireless/core.h	2009-05-18 14:36:20.000000000 -0700
+@@ -97,7 +97,11 @@
  	struct rb_node rbn;
  	unsigned long ts;
  	struct kref ref;
