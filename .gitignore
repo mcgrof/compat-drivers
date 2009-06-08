@@ -4,6 +4,7 @@ net
 *~
 git-describe
 compat-release
+master-tag
 .compat_autoconf*
 .config.md5
 .config.mk_md5sum.txt
