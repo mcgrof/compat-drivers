@@ -17,7 +17,7 @@ include $(M)/$(COMPAT_CONFIG)
 
 NOSTDINC_FLAGS := -I$(M)/include/ -include $(M)/include/net/compat.h $(CFLAGS)
 
-obj-y := net/wireless/ net/mac80211/
+obj-y := net/wireless/ net/mac80211/ net/rfkill/
 ifeq ($(ONLY_CORE),)
 obj-$(CONFIG_B44) += drivers/net/b44.o
 obj-y += drivers/ssb/ \
@@ -166,6 +166,7 @@ install: uninstall modules
 uninstall:
 	@# New location, matches upstream
 	@rm -rf $(KLIB)/$(KMODDIR)/net/mac80211/
+	@rm -rf $(KLIB)/$(KMODDIR)/net/rfkill/
 	@rm -rf $(KLIB)/$(KMODDIR)/net/wireless/
 	@rm -rf $(KLIB)/$(KMODDIR)/drivers/ssb/
 	@rm -rf $(KLIB)/$(KMODDIR)/drivers/net/usb/

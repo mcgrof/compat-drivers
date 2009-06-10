@@ -30,7 +30,7 @@ INCLUDE_LINUX_SPI="wl12xx.h libertas_spi.h"
 INCLUDE_NET="cfg80211.h ieee80211_radiotap.h iw_handler.h"
 INCLUDE_NET="$INCLUDE_NET mac80211.h wext.h lib80211.h regulatory.h"
 
-NET_DIRS="wireless mac80211"
+NET_DIRS="wireless mac80211 rfkill"
 # User exported this variable
 if [ -z $GIT_TREE ]; then
 	GIT_TREE="/home/$USER/devel/wireless-testing/"
@@ -77,6 +77,7 @@ mkdir -p include/linux/ include/net/ include/linux/usb \
 	include/linux/unaligned \
 	include/linux/spi \
 	net/mac80211/ net/wireless/ \
+	net/rfkill/ \
 	drivers/ssb/ \
 	drivers/net/usb/ \
 	drivers/net/wireless/
@@ -89,6 +90,7 @@ for i in $INCLUDE_LINUX; do
 done
 
 cp -a $GIT_TREE/include/linux/ssb include/linux/
+cp -a $GIT_TREE/include/linux/rfkill.h include/linux/rfkill_backport.h
 
 # include/net
 DIR="include/net"
