@@ -295,6 +295,7 @@ endif # end of USB driver list
 ifneq ($(CONFIG_SPI_MASTER),)
 
 CONFIG_WL12XX=m
+CONFIG_P54_SPI=m
 CONFIG_LIBERTAS_SPI=m
 NEED_LIBERTAS=y
 
