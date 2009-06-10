@@ -181,12 +181,6 @@
  obj-$(CONFIG_LIBERTAS)		+= libertas/
  
  obj-$(CONFIG_LIBERTAS_THINFIRM)	+= libertas_tf/
-@@ -60,5 +34,3 @@
- obj-$(CONFIG_MAC80211_HWSIM)	+= mac80211_hwsim.o
- 
- obj-$(CONFIG_WL12XX)	+= wl12xx/
--
--obj-$(CONFIG_IWM)	+= iwmc3200wifi/
 --- a/drivers/net/wireless/b43/pcmcia.c
 +++ b/drivers/net/wireless/b43/pcmcia.c
 @@ -87,7 +87,11 @@ static int __devinit b43_pcmcia_probe(struct pcmcia_device *dev)

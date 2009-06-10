@@ -305,6 +305,13 @@ ifneq ($(CONFIG_MMC),)
 CONFIG_LIBERTAS_SDIO=m
 NEED_LIBERTAS=y
 
+# Activate iwmc3200wifi support only on kernel >= 2.6.29.
+# iwmc3200wifi uses new netdev_ops api no supported by old kernel.
+ifeq ($(shell test $(KERNEL_SUBLEVEL) -ge 29 && echo yes),yes)
+CONFIG_IWM=m
+# CONFIG_IWM_DEBUG=y
+endif
+
 endif # end of SDIO driver list
 
 # Common rt2x00 requirements
