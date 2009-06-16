@@ -353,7 +353,11 @@ CONFIG_LIBERTAS=m
 # CONFIG_LIBERTAS_DEBUG=y
 endif
 
+# We need the backported rfkill module on kernel < 2.6.31.
+# In more recent kernel versions use the in kernel rfkill module.
+ifeq ($(shell test $(KERNEL_SUBLEVEL) -le 30 && echo yes),yes)
 CONFIG_RFKILL_BACKPORT=m
 CONFIG_RFKILL_BACKPORT_LEDS=y
 CONFIG_RFKILL_BACKPORT_INPUT=y
+endif
 
