@@ -295,7 +295,7 @@ endif # end of USB driver list
 
 ifneq ($(CONFIG_SPI_MASTER),)
 
-CONFIG_WL12XX=m
+CONFIG_WL1251=m
 CONFIG_P54_SPI=m
 CONFIG_LIBERTAS_SPI=m
 NEED_LIBERTAS=y
@@ -340,6 +340,7 @@ CONFIG_P54_LEDS=y
 # Atheros
 CONFIG_ATH_COMMON=m
 
+CONFIG_WL12XX=y
 
 # Sonics Silicon Backplane
 CONFIG_SSB_POSSIBLE=y
