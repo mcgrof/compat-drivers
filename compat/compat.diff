@@ -1,9 +1,10 @@
---- a/drivers/misc/eeprom/Makefile
-+++ b/drivers/misc/eeprom/Makefile
-@@ -1,4 +1 @@
+--- a/drivers/misc/eeprom/Makefile	2009-07-02 00:23:37.993293412 -0700
++++ b/drivers/misc/eeprom/Makefile	2009-07-02 00:23:38.053296505 -0700
+@@ -1,5 +1,2 @@
 -obj-$(CONFIG_EEPROM_AT24)	+= at24.o
 -obj-$(CONFIG_EEPROM_AT25)	+= at25.o
 -obj-$(CONFIG_EEPROM_LEGACY)	+= eeprom.o
+ obj-$(CONFIG_EEPROM_MAX6875)	+= max6875.o
  obj-$(CONFIG_EEPROM_93CX6)	+= eeprom_93cx6.o
 --- a/drivers/net/b44.c
 +++ b/drivers/net/b44.c
@@ -50,9 +51,9 @@
  	dev->irq = sdev->irq;
  	SET_ETHTOOL_OPS(dev, &b44_ethtool_ops);
  
---- a/drivers/net/usb/Makefile
-+++ b/drivers/net/usb/Makefile
-@@ -2,22 +2,7 @@
+--- a/drivers/net/usb/Makefile	2009-07-02 00:23:37.969259980 -0700
++++ b/drivers/net/usb/Makefile	2009-07-02 00:23:38.057293452 -0700
+@@ -2,23 +2,8 @@
  # Makefile for USB Network drivers
  #
  
@@ -74,6 +75,7 @@
 -obj-$(CONFIG_USB_NET_ZAURUS)	+= zaurus.o
 -obj-$(CONFIG_USB_NET_MCS7830)	+= mcs7830.o
  obj-$(CONFIG_USB_USBNET)	+= usbnet.o
+ obj-$(CONFIG_USB_NET_INT51X1)	+= int51x1.o
  
 --- a/drivers/net/usb/rndis_host.c
 +++ b/drivers/net/usb/rndis_host.c
@@ -271,17 +273,17 @@
  	dev->ethtool_ops = &ipw2100_ethtool_ops;
  	dev->wireless_handlers = &ipw2100_wx_handler_def;
  	priv->wireless_data.ieee80211 = priv->ieee;
---- a/drivers/net/wireless/ipw2x00/ipw2200.c
-+++ b/drivers/net/wireless/ipw2x00/ipw2200.c
-@@ -11530,6 +11530,7 @@ static int ipw_prom_hard_start_xmit(struct sk_buff *skb, struct net_device *dev)
- 	return -EOPNOTSUPP;
+--- a/drivers/net/wireless/ipw2x00/ipw2200.c	2009-07-02 00:23:37.913263895 -0700
++++ b/drivers/net/wireless/ipw2x00/ipw2200.c	2009-07-02 00:23:38.065263460 -0700
+@@ -11528,6 +11528,7 @@
+ 	return NETDEV_TX_OK;
  }
  
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
  static const struct net_device_ops ipw_prom_netdev_ops = {
  	.ndo_open 		= ipw_prom_open,
  	.ndo_stop		= ipw_prom_stop,
-@@ -11538,6 +11539,7 @@ static const struct net_device_ops ipw_prom_netdev_ops = {
+@@ -11536,6 +11537,7 @@
  	.ndo_set_mac_address 	= eth_mac_addr,
  	.ndo_validate_addr	= eth_validate_addr,
  };
@@ -289,7 +291,7 @@
  
  static int ipw_prom_alloc(struct ipw_priv *priv)
  {
-@@ -11558,7 +11560,13 @@ static int ipw_prom_alloc(struct ipw_priv *priv)
+@@ -11556,7 +11558,13 @@
  	memcpy(priv->prom_net_dev->dev_addr, priv->mac_addr, ETH_ALEN);
  
  	priv->prom_net_dev->type = ARPHRD_IEEE80211_RADIOTAP;
@@ -303,7 +305,7 @@
  
  	priv->prom_priv->ieee->iw_mode = IW_MODE_MONITOR;
  	SET_NETDEV_DEV(priv->prom_net_dev, &priv->pci_dev->dev);
-@@ -11586,6 +11594,7 @@ static void ipw_prom_free(struct ipw_priv *priv)
+@@ -11584,6 +11592,7 @@
  
  #endif
  
@@ -311,7 +313,7 @@
  static const struct net_device_ops ipw_netdev_ops = {
  	.ndo_init		= ipw_net_init,
  	.ndo_open		= ipw_net_open,
-@@ -11596,6 +11605,7 @@ static const struct net_device_ops ipw_netdev_ops = {
+@@ -11594,6 +11603,7 @@
  	.ndo_change_mtu		= ieee80211_change_mtu,
  	.ndo_validate_addr	= eth_validate_addr,
  };
@@ -319,7 +321,7 @@
  
  static int __devinit ipw_pci_probe(struct pci_dev *pdev,
  				   const struct pci_device_id *ent)
-@@ -11697,7 +11707,15 @@ static int __devinit ipw_pci_probe(struct pci_dev *pdev,
+@@ -11695,7 +11705,15 @@
  	priv->ieee->perfect_rssi = -20;
  	priv->ieee->worst_rssi = -85;
  
@@ -444,9 +446,9 @@
  	rtap_dev->ml_priv = priv;
  	SET_NETDEV_DEV(rtap_dev, priv->dev->dev.parent);
  
---- a/drivers/net/wireless/mac80211_hwsim.c
-+++ b/drivers/net/wireless/mac80211_hwsim.c
-@@ -744,16 +744,22 @@ static struct device_driver mac80211_hwsim_driver = {
+--- a/drivers/net/wireless/mac80211_hwsim.c	2009-07-02 00:23:38.005263090 -0700
++++ b/drivers/net/wireless/mac80211_hwsim.c	2009-07-02 00:23:38.069262502 -0700
+@@ -743,16 +743,22 @@
  	.name = "mac80211_hwsim"
  };
  
@@ -523,9 +525,9 @@
  #include <linux/spi/spi.h>
  
  #include "wl1251.h"
---- a/include/linux/rfkill_backport.h
-+++ b/include/linux/rfkill_backport.h
-@@ -134,7 +134,7 @@ struct rfkill_ops {
+--- a/include/linux/rfkill_backport.h	2009-07-01 23:54:40.529283538 -0700
++++ b/include/linux/rfkill_backport.h	2009-07-02 00:23:38.069262502 -0700
+@@ -134,7 +134,7 @@
  	int	(*set_block)(void *data, bool blocked);
  };
  
@@ -534,7 +536,7 @@
  /**
   * rfkill_alloc - allocate rfkill structure
   * @name: name of the struct -- the string is not copied internally
-@@ -146,7 +146,7 @@ struct rfkill_ops {
+@@ -146,7 +146,7 @@
   * This function should be called by the transmitter driver to allocate an
   * rfkill structure. Returns %NULL on failure.
   */
@@ -543,7 +545,7 @@
  					  struct device *parent,
  					  const enum rfkill_type type,
  					  const struct rfkill_ops *ops,
-@@ -167,7 +167,7 @@ struct rfkill * __must_check rfkill_alloc(const char *name,
+@@ -167,7 +167,7 @@
   * If the hardware blocked state is not set before registration,
   * it is assumed to be unblocked.
   */
@@ -552,7 +554,7 @@
  
  /**
   * rfkill_pause_polling(struct rfkill *rfkill)
-@@ -176,7 +176,7 @@ int __must_check rfkill_register(struct rfkill *rfkill);
+@@ -176,7 +176,7 @@
   * NOTE: not necessary for suspend/resume -- in that case the
   * core stops polling anyway
   */
@@ -561,7 +563,7 @@
  
  /**
   * rfkill_resume_polling(struct rfkill *rfkill)
-@@ -185,7 +185,7 @@ void rfkill_pause_polling(struct rfkill *rfkill);
+@@ -185,7 +185,7 @@
   * NOTE: not necessary for suspend/resume -- in that case the
   * core stops polling anyway
   */
@@ -570,7 +572,7 @@
  
  
  /**
-@@ -196,7 +196,7 @@ void rfkill_resume_polling(struct rfkill *rfkill);
+@@ -196,7 +196,7 @@
   * teardown to destroy rfkill structure. Until it returns, the driver
   * needs to be able to service method calls.
   */
@@ -579,7 +581,7 @@
  
  /**
   * rfkill_destroy - free rfkill structure
-@@ -204,7 +204,7 @@ void rfkill_unregister(struct rfkill *rfkill);
+@@ -204,7 +204,7 @@
   *
   * Destroys the rfkill structure.
   */
@@ -588,7 +590,7 @@
  
  /**
   * rfkill_set_hw_state - Set the internal rfkill hardware block state
-@@ -225,7 +225,7 @@ void rfkill_destroy(struct rfkill *rfkill);
+@@ -225,7 +225,7 @@
   * should be blocked) so that drivers need not keep track of the soft
   * block state -- which they might not be able to.
   */
@@ -597,7 +599,7 @@
  
  /**
   * rfkill_set_sw_state - Set the internal rfkill software block state
-@@ -247,7 +247,7 @@ bool __must_check rfkill_set_hw_state(struct rfkill *rfkill, bool blocked);
+@@ -247,7 +247,7 @@
   * The function returns the combined block state (true if transmitter
   * should be blocked).
   */
@@ -606,16 +608,16 @@
  
  /**
   * rfkill_init_sw_state - Initialize persistent software block state
-@@ -263,7 +263,7 @@ bool rfkill_set_sw_state(struct rfkill *rfkill, bool blocked);
+@@ -263,7 +263,7 @@
   * can be read by userspace.  Persistent devices are expected to preserve
-  * preserve their own state when suspended.
+  * their own state when suspended.
   */
 -void rfkill_init_sw_state(struct rfkill *rfkill, bool blocked);
 +void backport_rfkill_init_sw_state(struct rfkill *rfkill, bool blocked);
  
  /**
   * rfkill_set_states - Set the internal rfkill block states
-@@ -274,17 +274,17 @@ void rfkill_init_sw_state(struct rfkill *rfkill, bool blocked);
+@@ -274,17 +274,17 @@
   * This function can be called in any context, even from within rfkill
   * callbacks.
   */
@@ -637,7 +639,7 @@
  	     struct device *parent,
  	     const enum rfkill_type type,
  	     const struct rfkill_ops *ops,
-@@ -293,61 +293,61 @@ rfkill_alloc(const char *name,
+@@ -293,61 +293,61 @@
  	return ERR_PTR(-ENODEV);
  }
  
@@ -712,7 +714,7 @@
  
  /**
   * rfkill_set_led_trigger_name -- set the LED trigger name
-@@ -358,15 +358,15 @@ const char *rfkill_get_led_trigger_name(struct rfkill *rfkill);
+@@ -358,15 +358,15 @@
   * trigger that rfkill creates. It is optional, but if called
   * must be called before rfkill_register() to be effective.
   */
