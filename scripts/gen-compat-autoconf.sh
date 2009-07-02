@@ -33,8 +33,8 @@ if [ ! -f $COMPAT_RELEASE  -o ! -f $KERNEL_RELEASE ]; then
 	exit
 fi
 
-CREL=$(cat $COMPAT_RELEASE)
-KREL=$(cat $KERNEL_RELEASE)
+CREL=$(cat $COMPAT_RELEASE | tail -1)
+KREL=$(cat $KERNEL_RELEASE | tail -1)
 DATE=$(date)
 
 # Defines a CONFIG_ option if not defined yet, this helps respect

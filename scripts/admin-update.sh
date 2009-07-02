@@ -45,7 +45,7 @@ if [ -z $GIT_TREE ]; then
 		exit 1
 	fi
 else
-	echo "You said your wireless-testing git tree is: $GIT_TREE"
+	echo "You said to use git tree at: $GIT_TREE"
 fi
 # Drivers that have their own directory
 DRIVERS="drivers/net/wireless/ath"
@@ -171,16 +171,40 @@ if [[ $RET -ne 0 ]]; then
 	exit $RET
 fi
 DIR="$PWD"
-cd $GIT_TREE && git describe > $DIR/git-describe && cd $DIR
-echo "Updated from ${GIT_TREE}, git-describe says:"
-cat git-describe
+cd $GIT_TREE
+GIT_DESCRIBE=$(git describe)
+echo "Updated from local tree: ${GIT_TREE}"
+echo "Origin remote URL: $(git config remote.origin.url)"
+cd $DIR
 if [ -d ./.git ]; then
 	git describe > compat-release
-	cd $GIT_TREE && git tag -l| grep master | tail -1 > $DIR/master-tag && cd $DIR
-	if [ -f master-tag ]; then
-		echo "wireless-testing latest tag:"
-		cat master-tag
-	fi
+
+	cd $GIT_TREE
+	TREE_NAME=$(git config remote.origin.url)
+	TREE_NAME=${TREE_NAME##*/}
+
+	echo $TREE_NAME > $DIR/git-describe
+	echo $GIT_DESCRIBE >> $DIR/git-describe
+
+	echo "git-describe for $TREE_NAME says: $GIT_DESCRIBE"
+
+	rm -f $DIR/master-tag
+	case $TREE_NAME in
+	"wireless-testing.git") # John's wireless-testing
+		MASTER_TAG=$(git tag -l| grep master | tail -1)
+		echo $MASTER_TAG > $DIR/master-tag
+		echo "This is a bleeding edge compat-wireless release based on: $MASTER_TAG"
+		;;
+	"linux-2.6-allstable.git") # HPA's all stable tree
+		echo "This is a stable compat-wireless release based on: $(git describe --abbrev=0)"
+		;;
+	"linux-2.6.git") # Linus' 2.6 tree
+		;;
+	*)
+		;;
+	esac
+
+	cd $DIR
 fi
-echo "This is compat-release:"
-cat compat-release
+
+echo "This is compat-release: $(cat compat-release)"
