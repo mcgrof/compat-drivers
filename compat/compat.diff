@@ -105,9 +105,9 @@
  
  	retval = rndis_command(dev, u.header, CONTROL_BUFFER_SIZE);
  	if (unlikely(retval < 0)) {
---- a/drivers/net/usb/usbnet.c
-+++ b/drivers/net/usb/usbnet.c
-@@ -1120,6 +1120,7 @@ void usbnet_disconnect (struct usb_interface *intf)
+--- a/drivers/net/usb/usbnet.c	2009-07-02 00:16:46.300294574 -0700
++++ b/drivers/net/usb/usbnet.c	2009-07-02 00:20:34.717101235 -0700
+@@ -1151,6 +1151,7 @@
  }
  EXPORT_SYMBOL_GPL(usbnet_disconnect);
  
@@ -115,7 +115,7 @@
  static const struct net_device_ops usbnet_netdev_ops = {
  	.ndo_open		= usbnet_open,
  	.ndo_stop		= usbnet_stop,
-@@ -1129,6 +1130,7 @@ static const struct net_device_ops usbnet_netdev_ops = {
+@@ -1160,6 +1161,7 @@
  	.ndo_set_mac_address 	= eth_mac_addr,
  	.ndo_validate_addr	= eth_validate_addr,
  };
@@ -123,18 +123,22 @@
  
  /*-------------------------------------------------------------------------*/
  
-@@ -1198,8 +1200,10 @@ usbnet_probe (struct usb_interface *udev, const struct usb_device_id *prod)
+@@ -1229,7 +1231,15 @@
  		net->features |= NETIF_F_HIGHDMA;
  #endif
  
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
  	net->netdev_ops = &usbnet_netdev_ops;
--#ifdef CONFIG_COMPAT_NET_DEV_OPS
 +#else
 +	net->change_mtu = usbnet_change_mtu;
- 	net->hard_start_xmit = usbnet_start_xmit;
- 	net->open = usbnet_open;
- 	net->stop = usbnet_stop;
++	net->hard_start_xmit = usbnet_start_xmit;
++	net->open = usbnet_open;
++	net->stop = usbnet_stop;
++	net->tx_timeout = usbnet_tx_timeout;
++#endif
+ 	net->watchdog_timeo = TX_TIMEOUT_JIFFIES;
+ 	net->ethtool_ops = &usbnet_ethtool_ops;
+ 
 --- a/drivers/net/wireless/Makefile
 +++ b/drivers/net/wireless/Makefile
 @@ -5,43 +5,17 @@
