@@ -9,6 +9,41 @@
 
 #include <linux/list.h>
 #include <linux/rfkill.h>
+#include <linux/pci.h>
+#include <linux/dma-mapping.h>
+#include <linux/mmc/sdio.h>
+#include <linux/mmc/sdio_func.h>
+
+#include <asm-generic/bug.h>
+
+bool pci_pme_capable(struct pci_dev *dev, pci_power_t state);
+
+/*
+ * The net_device has a spin_lock on newer kernels, on older kernels we're out of luck
+ */
+#define netif_addr_lock_bh
+#define netif_addr_unlock_bh
+
+/*
+ * To port this properly we'd have to port warn_slowpath_null(),
+ * which I'm lazy to do so just do a regular print for now. If you
+ * want to port this read kernel/panic.c
+ */
+#define __WARN_printf(arg...)   do { printk(arg); __WARN(); } while (0)
+
+/* This is ported directly as-is on newer kernels */
+#ifndef WARN
+#define WARN(condition, format...) ({					\
+	int __ret_warn_on = !!(condition);				\
+	if (unlikely(__ret_warn_on))					\
+		__WARN_printf(format);					\
+	unlikely(__ret_warn_on);					\
+})
+#endif
+
+/* On 2.6.27 a second argument was added, on older kernels we ignore it */
+#define dma_mapping_error(pdev, dma_addr) dma_mapping_error(dma_addr)
+#define pci_dma_mapping_error(pdev, dma_addr) dma_mapping_error(pdev, dma_addr)
 
 /* This is from include/linux/rfkill.h */
 #define RFKILL_STATE_SOFT_BLOCKED	RFKILL_STATE_OFF
@@ -105,6 +140,9 @@ static inline void list_splice_tail_init(struct list_head *list,
 		INIT_LIST_HEAD(list);
 	}
 }
+
+extern unsigned int mmc_align_data_size(struct mmc_card *, unsigned int);
+extern unsigned int sdio_align_size(struct sdio_func *func, unsigned int sz);
 
 #endif /* (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,27)) */
 

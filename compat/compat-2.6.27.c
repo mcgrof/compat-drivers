@@ -12,94 +12,156 @@
 
 #if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,27))
 
+#include <linux/pci.h>
+#include <linux/mmc/sdio.h>
+#include <linux/mmc/sdio_func.h>
+
 /* rfkill notification chain */
 #define RFKILL_STATE_CHANGED            0x0001  /* state of a normal rfkill
 							switch has changed */
 
-static BLOCKING_NOTIFIER_HEAD(rfkill_notifier_list);
+/*
+ * e5899e1b7d73e67de758a32174a859cc2586c0b9 made pci_pme_capable() external,
+ * it was defined internally, some drivers want access to this information.
+ */
 
 /**
- * register_rfkill_notifier - Add notifier to rfkill notifier chain
- * @nb: pointer to the new entry to add to the chain
- *
- * See blocking_notifier_chain_register() for return value and further
- * observations.
- *
- * Adds a notifier to the rfkill notifier chain.  The chain will be
- * called with a pointer to the relevant rfkill structure as a parameter,
- * refer to include/linux/rfkill.h for the possible events.
- *
- * Notifiers added to this chain are to always return NOTIFY_DONE.  This
- * chain is a blocking notifier chain: notifiers can sleep.
- *
- * Calls to this chain may have been done through a workqueue.  One must
- * assume unordered asynchronous behaviour, there is no way to know if
- * actions related to the event that generated the notification have been
- * carried out already.
+ * pci_pme_capable - check the capability of PCI device to generate PME#
+ * @dev: PCI device to handle.
+ * @state: PCI state from which device will issue PME#.
  */
-int register_rfkill_notifier(struct notifier_block *nb)
+bool pci_pme_capable(struct pci_dev *dev, pci_power_t state)
 {
-	return blocking_notifier_chain_register(&rfkill_notifier_list, nb);
-}
-EXPORT_SYMBOL_GPL(register_rfkill_notifier);
+	if (!dev->pm_cap)
+		return false;
 
-/**
- * unregister_rfkill_notifier - remove notifier from rfkill notifier chain
- * @nb: pointer to the entry to remove from the chain
- *
- * See blocking_notifier_chain_unregister() for return value and further
- * observations.
- *
- * Removes a notifier from the rfkill notifier chain.
- */
-int unregister_rfkill_notifier(struct notifier_block *nb)
-{
-	return blocking_notifier_chain_unregister(&rfkill_notifier_list, nb);
-}
-EXPORT_SYMBOL_GPL(unregister_rfkill_notifier);
-
-
-static void notify_rfkill_state_change(struct rfkill *rfkill)
-{
-	blocking_notifier_call_chain(&rfkill_notifier_list,
-			RFKILL_STATE_CHANGED,
-			rfkill);
+	return !!(dev->pme_support & (1 << state));
 }
 
 /**
- * rfkill_force_state - Force the internal rfkill radio state
- * @rfkill: pointer to the rfkill class to modify.
- * @state: the current radio state the class should be forced to.
+ *	mmc_align_data_size - pads a transfer size to a more optimal value
+ *	@card: the MMC card associated with the data transfer
+ *	@sz: original transfer size
  *
- * This function updates the internal state of the radio cached
- * by the rfkill class.  It should be used when the driver gets
- * a notification by the firmware/hardware of the current *real*
- * state of the radio rfkill switch.
+ *	Pads the original data size with a number of extra bytes in
+ *	order to avoid controller bugs and/or performance hits
+ *	(e.g. some controllers revert to PIO for certain sizes).
  *
- * It may not be called from an atomic context.
+ *	Returns the improved size, which might be unmodified.
+ *
+ *	Note that this function is only relevant when issuing a
+ *	single scatter gather entry.
  */
-int rfkill_force_state(struct rfkill *rfkill, enum rfkill_state state)
+unsigned int mmc_align_data_size(struct mmc_card *card, unsigned int sz)
 {
-	enum rfkill_state oldstate;
+	/*
+	* FIXME: We don't have a system for the controller to tell
+	* the core about its problems yet, so for now we just 32-bit
+	* align the size.
+	*/
+	sz = ((sz + 3) / 4) * 4;
 
-	if (state != RFKILL_STATE_SOFT_BLOCKED &&
-	    state != RFKILL_STATE_UNBLOCKED &&
-	    state != RFKILL_STATE_HARD_BLOCKED)
-		return -EINVAL;
-
-	mutex_lock(&rfkill->mutex);
-
-	oldstate = rfkill->state;
-	rfkill->state = state;
-
-	if (state != oldstate)
-		notify_rfkill_state_change(rfkill);
-
-	mutex_unlock(&rfkill->mutex);
-
-	return 0;
+	return sz;
 }
-EXPORT_SYMBOL(rfkill_force_state);
+EXPORT_SYMBOL(mmc_align_data_size);
+
+/**
+ *	sdio_align_size - pads a transfer size to a more optimal value
+ *	@func: SDIO function
+ *	@sz: original transfer size
+ *
+ *	Pads the original data size with a number of extra bytes in
+ *	order to avoid controller bugs and/or performance hits
+ *	(e.g. some controllers revert to PIO for certain sizes).
+ *
+ *	If possible, it will also adjust the size so that it can be
+ *	handled in just a single request.
+ *
+ *	Returns the improved size, which might be unmodified.
+ */
+unsigned int sdio_align_size(struct sdio_func *func, unsigned int sz)
+{
+	unsigned int orig_sz;
+	unsigned int blk_sz, byte_sz;
+	unsigned chunk_sz;
+
+	orig_sz = sz;
+
+	/*
+	 * Do a first check with the controller, in case it
+	 * wants to increase the size up to a point where it
+	 * might need more than one block.
+	 */
+	sz = mmc_align_data_size(func->card, sz);
+
+	/*
+	 * If we can still do this with just a byte transfer, then
+	 * we're done.
+	 */
+	if (sz <= sdio_max_byte_size(func))
+		return sz;
+
+	if (func->card->cccr.multi_block) {
+		/*
+		 * Check if the transfer is already block aligned
+		 */
+		if ((sz % func->cur_blksize) == 0)
+			return sz;
+
+		/*
+		 * Realign it so that it can be done with one request,
+		 * and recheck if the controller still likes it.
+		 */
+		blk_sz = ((sz + func->cur_blksize - 1) /
+			func->cur_blksize) * func->cur_blksize;
+		blk_sz = mmc_align_data_size(func->card, blk_sz);
+
+		/*
+		 * This value is only good if it is still just
+		 * one request.
+		 */
+		if ((blk_sz % func->cur_blksize) == 0)
+			return blk_sz;
+
+		/*
+		 * We failed to do one request, but at least try to
+		 * pad the remainder properly.
+		 */
+		byte_sz = mmc_align_data_size(func->card,
+				sz % func->cur_blksize);
+		if (byte_sz <= sdio_max_byte_size(func)) {
+			blk_sz = sz / func->cur_blksize;
+			return blk_sz * func->cur_blksize + byte_sz;
+		}
+	} else {
+		/*
+		 * We need multiple requests, so first check that the
+		 * controller can handle the chunk size;
+		 */
+		chunk_sz = mmc_align_data_size(func->card,
+				sdio_max_byte_size(func));
+		if (chunk_sz == sdio_max_byte_size(func)) {
+			/*
+			 * Fix up the size of the remainder (if any)
+			 */
+			byte_sz = orig_sz % chunk_sz;
+			if (byte_sz) {
+				byte_sz = mmc_align_data_size(func->card,
+						byte_sz);
+			}
+
+			return (orig_sz / chunk_sz) * chunk_sz + byte_sz;
+		}
+	}
+
+	/*
+	 * The controller is simply incapable of transferring the size
+	 * we want in decent manner, so just return the original size.
+	 */
+	return orig_sz;
+}
+EXPORT_SYMBOL_GPL(sdio_align_size);
+
 
 #endif /* LINUX_VERSION_CODE < KERNEL_VERSION(2,6,27) */
 

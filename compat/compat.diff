@@ -141,19 +141,20 @@
  	net->watchdog_timeo = TX_TIMEOUT_JIFFIES;
  	net->ethtool_ops = &usbnet_ethtool_ops;
  
---- a/net/wireless/Makefile	2009-07-06 10:20:59.511191302 -0700
-+++ b/net/wireless/Makefile	2009-07-06 10:28:11.310193540 -0700
-@@ -1,11 +1,17 @@
+--- a/net/wireless/Makefile	2009-07-06 15:04:31.423241610 -0700
++++ b/net/wireless/Makefile	2009-07-06 14:58:11.298205326 -0700
+@@ -1,4 +1,3 @@
 -obj-$(CONFIG_WIRELESS_EXT) += wext.o
  obj-$(CONFIG_CFG80211) += cfg80211.o
  obj-$(CONFIG_LIB80211) += lib80211.o
  obj-$(CONFIG_LIB80211_CRYPT_WEP) += lib80211_crypt_wep.o
- obj-$(CONFIG_LIB80211_CRYPT_CCMP) += lib80211_crypt_ccmp.o
+@@ -6,6 +5,14 @@
  obj-$(CONFIG_LIB80211_CRYPT_TKIP) += lib80211_crypt_tkip.o
  
  cfg80211-y += core.o sysfs.o radiotap.o util.o reg.o scan.o nl80211.o mlme.o ibss.o
 +
 +# Compat-wireless kernel compatibility code
++cfg80211-y += compat-2.6.27.o
 +cfg80211-y += compat-2.6.28.o
 +cfg80211-y += compat-2.6.29.o
 +cfg80211-y += compat-2.6.30.o
@@ -1442,3 +1443,73 @@
  obj-$(CONFIG_LIBERTAS)		+= libertas/
  
  obj-$(CONFIG_LIBERTAS_THINFIRM)	+= libertas_tf/
+--- a/drivers/net/wireless/p54/p54usb.c	2009-07-06 16:05:47.263198670 -0700
++++ b/drivers/net/wireless/p54/p54usb.c	2009-07-06 16:06:32.298597357 -0700
+@@ -1049,7 +1049,9 @@
+ 	.resume = p54u_resume,
+ 	.reset_resume = p54u_resume,
+ #endif /* CONFIG_PM */
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,27))
+ 	.soft_unbind = 1,
++#endif
+ };
+ 
+ static int __init p54u_init(void)
+--- a/drivers/net/wireless/zd1211rw/zd_chip.h	2009-07-06 16:09:14.934197004 -0700
++++ b/drivers/net/wireless/zd1211rw/zd_chip.h	2009-07-06 16:10:01.570226234 -0700
+@@ -897,9 +897,9 @@
+ int zd_chip_unlock_phy_regs(struct zd_chip *chip);
+ 
+ enum led_status {
+-	LED_OFF = 0,
+-	LED_SCANNING = 1,
+-	LED_ASSOCIATED = 2,
++	ZD_LED_OFF = 0,
++	ZD_LED_SCANNING = 1,
++	ZD_LED_ASSOCIATED = 2,
+ };
+ 
+ int zd_chip_control_leds(struct zd_chip *chip, enum led_status status);
+--- a/drivers/net/wireless/zd1211rw/zd_chip.c	2009-07-06 16:09:24.986198445 -0700
++++ b/drivers/net/wireless/zd1211rw/zd_chip.c	2009-07-06 16:10:19.898624742 -0700
+@@ -1278,11 +1278,11 @@
+ 	other_led = chip->link_led == LED1 ? LED2 : LED1;
+ 
+ 	switch (status) {
+-	case LED_OFF:
++	case ZD_LED_OFF:
+ 		ioreqs[0].value = FW_LINK_OFF;
+ 		ioreqs[1].value = v[1] & ~(LED1|LED2);
+ 		break;
+-	case LED_SCANNING:
++	case ZD_LED_SCANNING:
+ 		ioreqs[0].value = FW_LINK_OFF;
+ 		ioreqs[1].value = v[1] & ~other_led;
+ 		if (get_seconds() % 3 == 0) {
+@@ -1291,7 +1291,7 @@
+ 			ioreqs[1].value |= chip->link_led;
+ 		}
+ 		break;
+-	case LED_ASSOCIATED:
++	case ZD_LED_ASSOCIATED:
+ 		ioreqs[0].value = FW_LINK_TX;
+ 		ioreqs[1].value = v[1] & ~other_led;
+ 		ioreqs[1].value |= chip->link_led;
+--- a/drivers/net/wireless/zd1211rw/zd_mac.c	2009-07-06 16:09:30.382198435 -0700
++++ b/drivers/net/wireless/zd1211rw/zd_mac.c	2009-07-06 16:11:36.778629948 -0700
+@@ -1013,7 +1013,7 @@
+ 	spin_unlock_irq(&mac->lock);
+ 
+ 	r = zd_chip_control_leds(chip,
+-		                 is_associated ? LED_ASSOCIATED : LED_SCANNING);
++		                 is_associated ? ZD_LED_ASSOCIATED : ZD_LED_SCANNING);
+ 	if (r)
+ 		dev_dbg_f(zd_mac_dev(mac), "zd_chip_control_leds error %d\n", r);
+ 
+@@ -1038,5 +1038,5 @@
+ 	dev_dbg_f(zd_mac_dev(mac), "\n");
+ 	cancel_rearming_delayed_workqueue(zd_workqueue,
+ 		&mac->housekeeping.link_led_work);
+-	zd_chip_control_leds(&mac->chip, LED_OFF);
++	zd_chip_control_leds(&mac->chip, ZD_LED_OFF);
+ }
