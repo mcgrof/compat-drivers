@@ -141,52 +141,28 @@
  	net->watchdog_timeo = TX_TIMEOUT_JIFFIES;
  	net->ethtool_ops = &usbnet_ethtool_ops;
  
---- a/drivers/net/wireless/Makefile
-+++ b/drivers/net/wireless/Makefile
-@@ -5,43 +5,17 @@
- obj-$(CONFIG_IPW2100) += ipw2x00/
- obj-$(CONFIG_IPW2200) += ipw2x00/
+--- a/net/wireless/Makefile	2009-07-06 10:20:59.511191302 -0700
++++ b/net/wireless/Makefile	2009-07-06 10:28:11.310193540 -0700
+@@ -1,11 +1,17 @@
+-obj-$(CONFIG_WIRELESS_EXT) += wext.o
+ obj-$(CONFIG_CFG80211) += cfg80211.o
+ obj-$(CONFIG_LIB80211) += lib80211.o
+ obj-$(CONFIG_LIB80211_CRYPT_WEP) += lib80211_crypt_wep.o
+ obj-$(CONFIG_LIB80211_CRYPT_CCMP) += lib80211_crypt_ccmp.o
+ obj-$(CONFIG_LIB80211_CRYPT_TKIP) += lib80211_crypt_tkip.o
  
--obj-$(CONFIG_STRIP) += strip.o
--obj-$(CONFIG_ARLAN) += arlan.o 
--
--arlan-objs := arlan-main.o arlan-proc.o
--
--# Obsolete cards
--obj-$(CONFIG_WAVELAN)		+= wavelan.o
--obj-$(CONFIG_PCMCIA_NETWAVE)	+= netwave_cs.o
--obj-$(CONFIG_PCMCIA_WAVELAN)	+= wavelan_cs.o
--
--obj-$(CONFIG_HERMES)		+= orinoco/
--
--obj-$(CONFIG_AIRO)		+= airo.o
--obj-$(CONFIG_AIRO_CS)		+= airo_cs.o airo.o
--
--obj-$(CONFIG_ATMEL)             += atmel.o
--obj-$(CONFIG_PCI_ATMEL)         += atmel_pci.o 
--obj-$(CONFIG_PCMCIA_ATMEL)      += atmel_cs.o
--
- obj-$(CONFIG_AT76C50X_USB)      += at76c50x-usb.o
+-cfg80211-y += core.o sysfs.o radiotap.o util.o reg.o scan.o nl80211.o mlme.o ibss.o
++cfg80211-y += core.o sysfs.o radiotap.o util.o reg.o scan.o nl80211.o mlme.o ibss.o compat.o
++
++# Compat-wireless kernel compatibility code
++cfg80211-y += compat-2.6.28.o
++cfg80211-y += compat-2.6.29.o
++cfg80211-y += compat-2.6.30.o
++cfg80211-y += compat-2.6.31.o
++
+ cfg80211-$(CONFIG_CFG80211_DEBUGFS) += debugfs.o
+ cfg80211-$(CONFIG_WIRELESS_EXT) += wext-compat.o
  
--obj-$(CONFIG_PRISM54)		+= prism54/
--
--obj-$(CONFIG_HOSTAP)		+= hostap/
- obj-$(CONFIG_B43)		+= b43/
- obj-$(CONFIG_B43LEGACY)		+= b43legacy/
- obj-$(CONFIG_ZD1211RW)		+= zd1211rw/
- obj-$(CONFIG_RTL8180)		+= rtl818x/
- obj-$(CONFIG_RTL8187)		+= rtl818x/
- 
--# 16-bit wireless PCMCIA client drivers
--obj-$(CONFIG_PCMCIA_RAYCS)	+= ray_cs.o
--obj-$(CONFIG_PCMCIA_WL3501)	+= wl3501_cs.o
- 
- obj-$(CONFIG_USB_NET_RNDIS_WLAN)	+= rndis_wlan.o
- 
--obj-$(CONFIG_USB_ZD1201)	+= zd1201.o
- obj-$(CONFIG_LIBERTAS)		+= libertas/
- 
- obj-$(CONFIG_LIBERTAS_THINFIRM)	+= libertas_tf/
 --- a/drivers/net/wireless/ath/ath5k/base.h
 +++ b/drivers/net/wireless/ath/ath5k/base.h
 @@ -46,7 +46,11 @@
