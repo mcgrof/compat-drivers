@@ -5,14 +5,14 @@
  * it under the terms of the GNU General Public License version 2 as
  * published by the Free Software Foundation.
  *
- * Compatibility file for Linux wireless for kernels 2.6.30.
+ * Compatibility file for Linux wireless for kernels 2.6.22.
  */
 
 #include <net/compat.h>
 
-#if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,30))
+#if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,22))
 
-/* 2.6.28 compat code goes here */
+/* 2.6.22 compat code goes here */
 
-#endif /* LINUX_VERSION_CODE < KERNEL_VERSION(2,6,30) */
+#endif /* LINUX_VERSION_CODE < KERNEL_VERSION(2,6,22) */
 
