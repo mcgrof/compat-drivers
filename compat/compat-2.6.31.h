@@ -7,6 +7,10 @@
 
 #if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,31))
 
+#include <linux/skbuff.h>
+#include <net/dst.h>
+#include <net/genetlink.h>
+
 #ifndef SDIO_DEVICE_ID_MARVELL_8688WLAN
 #define SDIO_DEVICE_ID_MARVELL_8688WLAN		0x9104
 #endif
@@ -32,6 +36,21 @@
 #ifndef NETDEV_PRE_UP
 #define NETDEV_PRE_UP		0x000D
 #endif
+
+/*
+ * Added via adf30907d63893e4208dfe3f5c88ae12bc2f25d5
+ *
+ * There is no _sk_dst on older kernels, so just set the
+ * old dst to NULL and release it directly.
+ */
+static inline void skb_dst_drop(struct sk_buff *skb)
+{
+	dst_release(skb->dst);
+	skb->dst = NULL;
+}
+
+extern int genl_register_family_with_ops(struct genl_family *family,
+	struct genl_ops *ops, size_t n_ops);
 
 #endif /* (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,31)) */
 
