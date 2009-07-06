@@ -8,6 +8,11 @@
 /* Compat work for < 2.6.23 */
 #if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,23))
 
+#include <linux/netdevice.h>
+#include <linux/sched.h>
+#include <linux/workqueue.h>
+#include <linux/genetlink.h>
+
 /*
  * Tell gcc if a function is cold. The compiler will assume any path
  * directly leading to the call is unlikely.
@@ -57,12 +62,6 @@ static inline void tcf_destroy_chain_compat(struct tcf_proto **fl)
 		kfree(tp);
 	}
 }
-
-#else
-
-#define tcf_destroy_chain_compat tcf_destroy_chain
-
-#endif /* (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,23)) */
 
 /* dev_mc_list was replaced with dev_addr_list as of 2.6.23,
  * only new member added is da_synced. */
@@ -131,6 +130,8 @@ static inline void set_freezable(void)
 static inline void set_freezable(void) {}
 #endif /* CONFIG_PM_SLEEP */
 
+#else
+#define tcf_destroy_chain_compat tcf_destroy_chain
 #endif /* (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,23)) */
 
 #endif /* LINUX_26_23_COMPAT_H */
