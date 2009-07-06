@@ -151,8 +151,7 @@
  obj-$(CONFIG_LIB80211_CRYPT_CCMP) += lib80211_crypt_ccmp.o
  obj-$(CONFIG_LIB80211_CRYPT_TKIP) += lib80211_crypt_tkip.o
  
--cfg80211-y += core.o sysfs.o radiotap.o util.o reg.o scan.o nl80211.o mlme.o ibss.o
-+cfg80211-y += core.o sysfs.o radiotap.o util.o reg.o scan.o nl80211.o mlme.o ibss.o compat.o
+ cfg80211-y += core.o sysfs.o radiotap.o util.o reg.o scan.o nl80211.o mlme.o ibss.o
 +
 +# Compat-wireless kernel compatibility code
 +cfg80211-y += compat-2.6.28.o
@@ -1169,21 +1168,6 @@
  
  	/* causes rfkill_start() to be called */
  	error = input_register_handle(handle);
---- a/net/wireless/Makefile
-+++ b/net/wireless/Makefile
-@@ -1,11 +1,10 @@
--obj-$(CONFIG_WIRELESS_EXT) += wext.o
- obj-$(CONFIG_CFG80211) += cfg80211.o
- obj-$(CONFIG_LIB80211) += lib80211.o
- obj-$(CONFIG_LIB80211_CRYPT_WEP) += lib80211_crypt_wep.o
- obj-$(CONFIG_LIB80211_CRYPT_CCMP) += lib80211_crypt_ccmp.o
- obj-$(CONFIG_LIB80211_CRYPT_TKIP) += lib80211_crypt_tkip.o
- 
--cfg80211-y += core.o sysfs.o radiotap.o util.o reg.o scan.o nl80211.o mlme.o ibss.o
-+cfg80211-y += core.o sysfs.o radiotap.o util.o reg.o scan.o nl80211.o mlme.o ibss.o compat.o
- cfg80211-$(CONFIG_CFG80211_DEBUGFS) += debugfs.o
- cfg80211-$(CONFIG_WIRELESS_EXT) += wext-compat.o
- 
 --- a/net/wireless/core.c
 +++ b/net/wireless/core.c
 @@ -260,7 +260,11 @@ static void cfg80211_rfkill_sync_work(struct work_struct *work)
