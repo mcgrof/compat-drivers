@@ -163,7 +163,6 @@ cp $GIT_TREE/$DIR/* $DIR
 cp compat/compat-2.6.*.c net/wireless/
 cp compat/compat-2.6.*.h include/net/
 cp compat/compat.h include/net/
-cp compat/mq_compat.h net/mac80211/
 
 patch -p1 -N -t < compat/compat.diff
 RET=$?
