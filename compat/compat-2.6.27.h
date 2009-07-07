@@ -8,13 +8,34 @@
 #if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,27))
 
 #include <linux/list.h>
-#include <linux/rfkill.h>
 #include <linux/pci.h>
 #include <linux/dma-mapping.h>
 #include <linux/mmc/sdio.h>
 #include <linux/mmc/sdio_func.h>
+#include <linux/netdevice.h>
 
 #include <asm-generic/bug.h>
+
+#define PCI_PM_CAP_PME_SHIFT	11
+
+/*
+ * On older kernels we do not have net_device Multi Queue support, but
+ * since we no longer use MQ on mac80211 we can simply use the 0 queue.
+ * Note that if other fullmac drivers make use of this they then need
+ * to be backported somehow or deal with just 1 queueue from MQ.
+ */
+static inline void netif_tx_wake_all_queues(struct net_device *dev)
+{
+	netif_wake_queue(dev);
+}
+static inline void netif_tx_start_all_queues(struct net_device *dev)
+{
+	netif_start_queue(dev);
+}
+static inline void netif_tx_stop_all_queues(struct net_device *dev)
+{
+	netif_stop_queue(dev);
+}
 
 bool pci_pme_capable(struct pci_dev *dev, pci_power_t state);
 
@@ -44,12 +65,6 @@ bool pci_pme_capable(struct pci_dev *dev, pci_power_t state);
 /* On 2.6.27 a second argument was added, on older kernels we ignore it */
 #define dma_mapping_error(pdev, dma_addr) dma_mapping_error(dma_addr)
 #define pci_dma_mapping_error(pdev, dma_addr) dma_mapping_error(pdev, dma_addr)
-
-/* This is from include/linux/rfkill.h */
-#define RFKILL_STATE_SOFT_BLOCKED	RFKILL_STATE_OFF
-#define RFKILL_STATE_UNBLOCKED		RFKILL_STATE_ON
-/* This one is new */
-#define RFKILL_STATE_HARD_BLOCKED	2
 
 /* This is from include/linux/ieee80211.h */
 #define IEEE80211_HT_CAP_DSSSCCK40		0x1000

@@ -15,6 +15,9 @@
 #include <linux/pci.h>
 #include <linux/mmc/sdio.h>
 #include <linux/mmc/sdio_func.h>
+#include <linux/mmc/card.h>
+#include <linux/mmc/host.h>
+
 
 /* rfkill notification chain */
 #define RFKILL_STATE_CHANGED            0x0001  /* state of a normal rfkill
@@ -23,20 +26,47 @@
 /*
  * e5899e1b7d73e67de758a32174a859cc2586c0b9 made pci_pme_capable() external,
  * it was defined internally, some drivers want access to this information.
+ *
+ * Unfortunately the old kernels do not have ->pm_cap or ->pme_support so
+ * we have to call the PCI routines directly.
  */
 
 /**
  * pci_pme_capable - check the capability of PCI device to generate PME#
  * @dev: PCI device to handle.
  * @state: PCI state from which device will issue PME#.
+ *
+ * This is the backport code for older kernels for compat-wireless, we read stuff
+ * from the initialization stuff from pci_pm_init().
  */
 bool pci_pme_capable(struct pci_dev *dev, pci_power_t state)
 {
-	if (!dev->pm_cap)
+	int pm;
+	u16 pmc = 0;
+	u16 pme_support; /* as from the pci dev */
+	/* find PCI PM capability in list */
+	pm = pci_find_capability(dev, PCI_CAP_ID_PM);
+	if (!pm)
 		return false;
 
-	return !!(dev->pme_support & (1 << state));
+        if ((pmc & PCI_PM_CAP_VER_MASK) > 3) {
+		dev_err(&dev->dev, "unsupported PM cap regs version (%u)\n",
+			pmc & PCI_PM_CAP_VER_MASK);
+		return false;
+        }
+
+	pmc &= PCI_PM_CAP_PME_MASK;
+
+	if (!pmc)
+		return false;
+
+	pme_support = pmc >> PCI_PM_CAP_PME_SHIFT;
+
+	/* Check device's ability to generate PME# */
+
+	return !!(pme_support & (1 << state));
 }
+EXPORT_SYMBOL(pci_pme_capable);
 
 /**
  *	mmc_align_data_size - pads a transfer size to a more optimal value
@@ -64,6 +94,17 @@ unsigned int mmc_align_data_size(struct mmc_card *card, unsigned int sz)
 	return sz;
 }
 EXPORT_SYMBOL(mmc_align_data_size);
+
+/*
+ * Calculate the maximum byte mode transfer size
+ */
+static inline unsigned int sdio_max_byte_size(struct sdio_func *func)
+{
+	unsigned int mval = (unsigned int) min(func->card->host->max_seg_size,
+			    func->card->host->max_blk_size);
+	mval = min(mval, func->max_blksize);
+	return min(mval, 512u); /* maximum size for byte mode */
+}
 
 /**
  *	sdio_align_size - pads a transfer size to a more optimal value
