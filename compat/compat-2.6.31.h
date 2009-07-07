@@ -12,11 +12,11 @@
 #include <net/genetlink.h>
 
 /*
- * This is our backported header, we map actual rfkill calls
- * to backported calls.
+ * These macros allow us to backport rfkill without any
+ * changes on cfg80211 through compat.diff. Note that this
+ * file will be included by rfkill_backport.h so we must
+ * not conflict with things there.
  */
-#include <linux/rfkill_backport.h>
-
 #define rfkill_blocked		backport_rfkill_blocked
 #define rfkill_alloc		backport_rfkill_alloc
 #define rfkill_register		backport_rfkill_register
