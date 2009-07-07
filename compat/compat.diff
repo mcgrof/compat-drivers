@@ -638,8 +638,8 @@
 +rfkill_backport-y			+= core.o
 +rfkill_backport-$(CONFIG_RFKILL_BACKPORT_INPUT)	+= input.o
 +obj-$(CONFIG_RFKILL_BACKPORT)		+= rfkill_backport.o
---- a/net/rfkill/core.c	2009-07-07 13:31:17.014683241 -0700
-+++ b/net/rfkill/core.c	2009-07-07 13:31:17.490677888 -0700
+--- a/net/rfkill/core.c	2009-07-07 16:29:01.419679544 -0700
++++ b/net/rfkill/core.c	2009-07-07 16:28:14.298778487 -0700
 @@ -26,7 +26,7 @@
  #include <linux/capability.h>
  #include <linux/list.h>
@@ -649,7 +649,7 @@
  #include <linux/spinlock.h>
  #include <linux/miscdevice.h>
  #include <linux/wait.h>
-@@ -61,7 +61,7 @@
+@@ -61,7 +61,7 @@ struct rfkill {
  	const struct rfkill_ops	*ops;
  	void			*data;
  
@@ -658,7 +658,7 @@
  	struct led_trigger	led_trigger;
  	const char		*ledtrigname;
  #endif
-@@ -122,7 +122,7 @@
+@@ -122,7 +122,7 @@ static struct {
  static bool rfkill_epo_lock_active;
  
  
@@ -667,40 +667,7 @@
  static void rfkill_led_trigger_event(struct rfkill *rfkill)
  {
  	struct led_trigger *trigger;
-@@ -147,19 +147,19 @@
- 	rfkill_led_trigger_event(rfkill);
- }
- 
--const char *rfkill_get_led_trigger_name(struct rfkill *rfkill)
-+const char *backport_rfkill_get_led_trigger_name(struct rfkill *rfkill)
- {
- 	return rfkill->led_trigger.name;
- }
--EXPORT_SYMBOL(rfkill_get_led_trigger_name);
-+EXPORT_SYMBOL(backport_rfkill_get_led_trigger_name);
- 
--void rfkill_set_led_trigger_name(struct rfkill *rfkill, const char *name)
-+void backport_rfkill_set_led_trigger_name(struct rfkill *rfkill, const char *name)
- {
- 	BUG_ON(!rfkill);
- 
- 	rfkill->ledtrigname = name;
- }
--EXPORT_SYMBOL(rfkill_set_led_trigger_name);
-+EXPORT_SYMBOL(backport_rfkill_set_led_trigger_name);
- 
- static int rfkill_led_trigger_register(struct rfkill *rfkill)
- {
-@@ -186,7 +186,7 @@
- static inline void rfkill_led_trigger_unregister(struct rfkill *rfkill)
- {
- }
--#endif /* CONFIG_RFKILL_LEDS */
-+#endif /* CONFIG_RFKILL_BACKPORT_LEDS */
- 
- static void rfkill_fill_event(struct rfkill_event *ev, struct rfkill *rfkill,
- 			      enum rfkill_operation op)
-@@ -316,7 +316,7 @@
+@@ -316,7 +316,7 @@ static void rfkill_set_block(struct rfki
  	rfkill_event(rfkill);
  }
  
@@ -709,104 +676,7 @@
  static atomic_t rfkill_input_disabled = ATOMIC_INIT(0);
  
  /**
-@@ -463,7 +463,7 @@
- #endif
- 
- 
--bool rfkill_set_hw_state(struct rfkill *rfkill, bool blocked)
-+bool backport_rfkill_set_hw_state(struct rfkill *rfkill, bool blocked)
- {
- 	bool ret, change;
- 
-@@ -477,7 +477,7 @@
- 
- 	return ret;
- }
--EXPORT_SYMBOL(rfkill_set_hw_state);
-+EXPORT_SYMBOL(backport_rfkill_set_hw_state);
- 
- static void __rfkill_set_sw_state(struct rfkill *rfkill, bool blocked)
- {
-@@ -493,7 +493,7 @@
- 		rfkill->state &= ~bit;
- }
- 
--bool rfkill_set_sw_state(struct rfkill *rfkill, bool blocked)
-+bool backport_rfkill_set_sw_state(struct rfkill *rfkill, bool blocked)
- {
- 	unsigned long flags;
- 	bool prev, hwblock;
-@@ -517,9 +517,9 @@
- 
- 	return blocked;
- }
--EXPORT_SYMBOL(rfkill_set_sw_state);
-+EXPORT_SYMBOL(backport_rfkill_set_sw_state);
- 
--void rfkill_init_sw_state(struct rfkill *rfkill, bool blocked)
-+void backport_rfkill_init_sw_state(struct rfkill *rfkill, bool blocked)
- {
- 	unsigned long flags;
- 
-@@ -531,9 +531,9 @@
- 	rfkill->persistent = true;
- 	spin_unlock_irqrestore(&rfkill->lock, flags);
- }
--EXPORT_SYMBOL(rfkill_init_sw_state);
-+EXPORT_SYMBOL(backport_rfkill_init_sw_state);
- 
--void rfkill_set_states(struct rfkill *rfkill, bool sw, bool hw)
-+void backport_rfkill_set_states(struct rfkill *rfkill, bool sw, bool hw)
- {
- 	unsigned long flags;
- 	bool swprev, hwprev;
-@@ -561,7 +561,7 @@
- 		rfkill_led_trigger_event(rfkill);
- 	}
- }
--EXPORT_SYMBOL(rfkill_set_states);
-+EXPORT_SYMBOL(backport_rfkill_set_states);
- 
- static ssize_t rfkill_name_show(struct device *dev,
- 				struct device_attribute *attr,
-@@ -712,7 +712,7 @@
- 	return error;
- }
- 
--void rfkill_pause_polling(struct rfkill *rfkill)
-+void backport_rfkill_pause_polling(struct rfkill *rfkill)
- {
- 	BUG_ON(!rfkill);
- 
-@@ -721,9 +721,9 @@
- 
- 	cancel_delayed_work_sync(&rfkill->poll_work);
- }
--EXPORT_SYMBOL(rfkill_pause_polling);
-+EXPORT_SYMBOL(backport_rfkill_pause_polling);
- 
--void rfkill_resume_polling(struct rfkill *rfkill)
-+void backport_rfkill_resume_polling(struct rfkill *rfkill)
- {
- 	BUG_ON(!rfkill);
- 
-@@ -732,13 +732,13 @@
- 
- 	schedule_work(&rfkill->poll_work.work);
- }
--EXPORT_SYMBOL(rfkill_resume_polling);
-+EXPORT_SYMBOL(backport_rfkill_resume_polling);
- 
- static int rfkill_suspend(struct device *dev, pm_message_t state)
- {
- 	struct rfkill *rfkill = to_rfkill(dev);
- 
--	rfkill_pause_polling(rfkill);
-+	backport_rfkill_pause_polling(rfkill);
- 
- 	return 0;
- }
-@@ -753,13 +753,13 @@
+@@ -753,13 +753,13 @@ static int rfkill_resume(struct device *
  		rfkill_set_block(rfkill, cur);
  	}
  
@@ -822,47 +692,7 @@
  	.dev_release	= rfkill_release,
  	.dev_attrs	= rfkill_dev_attrs,
  	.dev_uevent	= rfkill_dev_uevent,
-@@ -767,7 +767,7 @@
- 	.resume		= rfkill_resume,
- };
- 
--bool rfkill_blocked(struct rfkill *rfkill)
-+bool backport_rfkill_blocked(struct rfkill *rfkill)
- {
- 	unsigned long flags;
- 	u32 state;
-@@ -778,10 +778,10 @@
- 
- 	return !!(state & RFKILL_BLOCK_ANY);
- }
--EXPORT_SYMBOL(rfkill_blocked);
-+EXPORT_SYMBOL(backport_rfkill_blocked);
- 
- 
--struct rfkill * __must_check rfkill_alloc(const char *name,
-+struct rfkill * __must_check backport_rfkill_alloc(const char *name,
- 					  struct device *parent,
- 					  const enum rfkill_type type,
- 					  const struct rfkill_ops *ops,
-@@ -820,7 +820,7 @@
- 
- 	return rfkill;
- }
--EXPORT_SYMBOL(rfkill_alloc);
-+EXPORT_SYMBOL(backport_rfkill_alloc);
- 
- static void rfkill_poll(struct work_struct *work)
- {
-@@ -863,7 +863,7 @@
- 	mutex_unlock(&rfkill_global_mutex);
- }
- 
--int __must_check rfkill_register(struct rfkill *rfkill)
-+int __must_check backport_rfkill_register(struct rfkill *rfkill)
- {
- 	static unsigned long rfkill_no;
- 	struct device *dev = &rfkill->dev;
-@@ -905,7 +905,7 @@
+@@ -905,7 +905,7 @@ int __must_check rfkill_register(struct 
  	if (!rfkill->persistent || rfkill_epo_lock_active) {
  		schedule_work(&rfkill->sync_work);
  	} else {
@@ -871,37 +701,7 @@
  		bool soft_blocked = !!(rfkill->state & RFKILL_BLOCK_SW);
  
  		if (!atomic_read(&rfkill_input_disabled))
-@@ -926,9 +926,9 @@
- 	mutex_unlock(&rfkill_global_mutex);
- 	return error;
- }
--EXPORT_SYMBOL(rfkill_register);
-+EXPORT_SYMBOL(backport_rfkill_register);
- 
--void rfkill_unregister(struct rfkill *rfkill)
-+void backport_rfkill_unregister(struct rfkill *rfkill)
- {
- 	BUG_ON(!rfkill);
- 
-@@ -949,14 +949,14 @@
- 
- 	rfkill_led_trigger_unregister(rfkill);
- }
--EXPORT_SYMBOL(rfkill_unregister);
-+EXPORT_SYMBOL(backport_rfkill_unregister);
- 
--void rfkill_destroy(struct rfkill *rfkill)
-+void backport_rfkill_destroy(struct rfkill *rfkill)
- {
- 	if (rfkill)
- 		put_device(&rfkill->dev);
- }
--EXPORT_SYMBOL(rfkill_destroy);
-+EXPORT_SYMBOL(backport_rfkill_destroy);
- 
- static int rfkill_fop_open(struct inode *inode, struct file *file)
- {
-@@ -1133,7 +1133,7 @@
+@@ -1133,7 +1133,7 @@ static int rfkill_fop_release(struct ino
  	list_for_each_entry_safe(ev, tmp, &data->events, list)
  		kfree(ev);
  
@@ -910,7 +710,7 @@
  	if (data->input_handler)
  		if (atomic_dec_return(&rfkill_input_disabled) == 0)
  			printk(KERN_DEBUG "rfkill: input handler enabled\n");
-@@ -1144,7 +1144,7 @@
+@@ -1144,7 +1144,7 @@ static int rfkill_fop_release(struct ino
  	return 0;
  }
  
@@ -919,7 +719,7 @@
  static long rfkill_fop_ioctl(struct file *file, unsigned int cmd,
  			     unsigned long arg)
  {
-@@ -1176,14 +1176,14 @@
+@@ -1176,14 +1176,14 @@ static const struct file_operations rfki
  	.write		= rfkill_fop_write,
  	.poll		= rfkill_fop_poll,
  	.release	= rfkill_fop_release,
@@ -936,7 +736,7 @@
  	.fops	= &rfkill_fops,
  	.minor	= MISC_DYNAMIC_MINOR,
  };
-@@ -1206,7 +1206,7 @@
+@@ -1206,7 +1206,7 @@ static int __init rfkill_init(void)
  		goto out;
  	}
  
@@ -945,7 +745,7 @@
  	error = rfkill_handler_init();
  	if (error) {
  		misc_deregister(&rfkill_miscdev);
-@@ -1222,7 +1222,7 @@
+@@ -1222,7 +1222,7 @@ subsys_initcall(rfkill_init);
  
  static void __exit rfkill_exit(void)
  {
