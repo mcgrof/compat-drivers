@@ -11,9 +11,21 @@
 #include <net/dst.h>
 #include <net/genetlink.h>
 
-#ifndef SDIO_DEVICE_ID_MARVELL_8688WLAN
-#define SDIO_DEVICE_ID_MARVELL_8688WLAN		0x9104
-#endif
+/*
+ * This is our backported header, we map actual rfkill calls
+ * to backported calls.
+ */
+#include <linux/rfkill_backport.h>
+
+#define rfkill_blocked		backport_rfkill_blocked
+#define rfkill_alloc		backport_rfkill_alloc
+#define rfkill_register		backport_rfkill_register
+#define rfkill_resume_polling	backport_rfkill_resume_polling
+#define rfkill_pause_polling	backport_rfkill_pause_polling
+#define rfkill_unregister	backport_rfkill_unregister
+#define rfkill_destroy		backport_rfkill_destroy
+#define rfkill_set_hw_state	backport_rfkill_set_hw_state
+#define rfkill_blocked		backport_rfkill_blocked
 
 #ifndef ERFKILL
 #if !defined(CONFIG_ALPHA) && !defined(CONFIG_MIPS) && !defined(CONFIG_PARISC) && !defined(CONFIG_SPARC)
@@ -35,6 +47,10 @@
 
 #ifndef NETDEV_PRE_UP
 #define NETDEV_PRE_UP		0x000D
+#endif
+
+#ifndef SDIO_DEVICE_ID_MARVELL_8688WLAN
+#define SDIO_DEVICE_ID_MARVELL_8688WLAN		0x9104
 #endif
 
 /*
