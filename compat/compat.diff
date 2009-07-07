@@ -1505,3 +1505,19 @@
 -	zd_chip_control_leds(&mac->chip, LED_OFF);
 +	zd_chip_control_leds(&mac->chip, ZD_LED_OFF);
  }
+--- a/net/wireless/wext.c	2009-07-07 15:03:28.803678550 -0700
++++ b/net/wireless/wext.c	2009-07-07 15:03:11.011682437 -0700
+@@ -1103,8 +1103,13 @@
+ 			return private(dev, iwr, cmd, info, handler);
+ 	}
+ 	/* Old driver API : call driver ioctl handler */
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
+ 	if (dev->netdev_ops->ndo_do_ioctl)
+ 		return dev->netdev_ops->ndo_do_ioctl(dev, ifr, cmd);
++#else
++	if (dev->do_ioctl)
++		return dev->do_ioctl(dev, ifr, cmd);
++#endif
+ 	return -EOPNOTSUPP;
+ }
+ 
