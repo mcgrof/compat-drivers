@@ -638,8 +638,8 @@
 +rfkill_backport-y			+= core.o
 +rfkill_backport-$(CONFIG_RFKILL_BACKPORT_INPUT)	+= input.o
 +obj-$(CONFIG_RFKILL_BACKPORT)		+= rfkill_backport.o
---- a/net/rfkill/core.c	2009-07-07 16:29:01.419679544 -0700
-+++ b/net/rfkill/core.c	2009-07-07 16:28:14.298778487 -0700
+--- a/net/rfkill/core.c	2009-07-07 16:36:36.087678337 -0700
++++ b/net/rfkill/core.c	2009-07-07 16:36:22.462708547 -0700
 @@ -26,7 +26,7 @@
  #include <linux/capability.h>
  #include <linux/list.h>
@@ -676,14 +676,7 @@
  static atomic_t rfkill_input_disabled = ATOMIC_INIT(0);
  
  /**
-@@ -753,13 +753,13 @@ static int rfkill_resume(struct device *
- 		rfkill_set_block(rfkill, cur);
- 	}
- 
--	rfkill_resume_polling(rfkill);
-+	backport_rfkill_resume_polling(rfkill);
- 
- 	return 0;
+@@ -759,7 +759,7 @@ static int rfkill_resume(struct device *
  }
  
  static struct class rfkill_class = {
