@@ -1277,8 +1277,8 @@
  			return notifier_from_errno(-ERFKILL);
  		break;
  	}
---- a/net/wireless/core.h
-+++ b/net/wireless/core.h
+--- a/net/wireless/core.h	2009-07-07 11:44:30.030681143 -0700
++++ b/net/wireless/core.h	2009-07-07 11:45:37.915006107 -0700
 @@ -11,7 +11,11 @@
  #include <linux/kref.h>
  #include <linux/rbtree.h>
@@ -1291,21 +1291,19 @@
  #include <linux/workqueue.h>
  #include <net/genetlink.h>
  #include <net/cfg80211.h>
-@@ -104,7 +108,11 @@ struct cfg80211_internal_bss {
- 	struct rb_node rbn;
+@@ -111,7 +115,9 @@
  	unsigned long ts;
  	struct kref ref;
+ 	atomic_t hold;
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
- 	bool hold, ies_allocated;
-+#else
-+	bool hold;
+ 	bool ies_allocated;
 +#endif
  
  	/* must be last because of priv member */
  	struct cfg80211_bss pub;
---- a/net/wireless/scan.c	2009-04-28 15:34:48.000000000 -0700
-+++ b/net/wireless/scan.c	2009-04-28 15:35:06.000000000 -0700
-@@ -59,10 +59,12 @@
+--- a/net/wireless/scan.c	2009-07-07 11:21:19.854680906 -0700
++++ b/net/wireless/scan.c	2009-07-07 13:15:30.822719375 -0700
+@@ -66,10 +66,12 @@
  	bss = container_of(ref, struct cfg80211_internal_bss, ref);
  	if (bss->pub.free_priv)
  		bss->pub.free_priv(&bss->pub);
@@ -1315,27 +1313,27 @@
  		kfree(bss->pub.information_elements);
  
 +#endif
- 	kfree(bss);
- }
+ 	BUG_ON(atomic_read(&bss->hold));
  
-@@ -365,13 +367,26 @@
+ 	kfree(bss);
+@@ -375,12 +377,25 @@
  
  	found = rb_find_bss(dev, res);
  
+-	if (found) {
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
- 	if (found) {
-+#else
-+	if (found && overwrite) {
-+		list_replace(&found->list, &res->list);
-+		rb_replace_node(&found->rbn, &res->rbn,
-+				&dev->bss_tree);
-+		/* XXX: workaround */
-+		res->hold = found->hold;
-+		kref_put(&found->ref, bss_release);
-+		found = res;
-+	} else if (found) {
++        if (found) {
++#else 
++        if (found && overwrite) {
++                list_replace(&found->list, &res->list);
++                rb_replace_node(&found->rbn, &res->rbn,
++                                &dev->bss_tree);
++                /* XXX: workaround */
++                res->hold = found->hold;
++                kref_put(&found->ref, bss_release);
++                found = res;
++        } else if (found) {
 +#endif
- 		kref_get(&found->ref);
  		found->pub.beacon_interval = res->pub.beacon_interval;
  		found->pub.tsf = res->pub.tsf;
  		found->pub.signal = res->pub.signal;
@@ -1345,7 +1343,7 @@
  
  		/* overwrite IEs */
  		if (overwrite) {
-@@ -399,6 +414,7 @@
+@@ -408,6 +423,7 @@
  			}
  		}
  
