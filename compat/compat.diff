@@ -141,18 +141,15 @@
  	net->watchdog_timeo = TX_TIMEOUT_JIFFIES;
  	net->ethtool_ops = &usbnet_ethtool_ops;
  
---- a/net/wireless/Makefile	2009-07-06 15:04:31.423241610 -0700
-+++ b/net/wireless/Makefile	2009-07-06 14:58:11.298205326 -0700
-@@ -1,4 +1,3 @@
--obj-$(CONFIG_WIRELESS_EXT) += wext.o
- obj-$(CONFIG_CFG80211) += cfg80211.o
- obj-$(CONFIG_LIB80211) += lib80211.o
- obj-$(CONFIG_LIB80211_CRYPT_WEP) += lib80211_crypt_wep.o
-@@ -6,6 +5,14 @@
- obj-$(CONFIG_LIB80211_CRYPT_TKIP) += lib80211_crypt_tkip.o
+--- a/net/wireless/Makefile	2009-07-06 18:47:30.510225526 -0700
++++ b/net/wireless/Makefile	2009-07-06 18:47:31.619237712 -0700
+@@ -7,6 +7,12 @@
  
- cfg80211-y += core.o sysfs.o radiotap.o util.o reg.o scan.o nl80211.o mlme.o ibss.o
-+
+ cfg80211-y += core.o sysfs.o radiotap.o util.o reg.o scan.o nl80211.o mlme.o ibss.o sme.o
+ cfg80211-$(CONFIG_CFG80211_DEBUGFS) += debugfs.o
+-cfg80211-$(CONFIG_WIRELESS_EXT) += wext-compat.o wext-sme.o
+ 
+ ccflags-y += -D__CHECK_ENDIAN__
 +# Compat-wireless kernel compatibility code
 +cfg80211-y += compat-2.6.27.o
 +cfg80211-y += compat-2.6.28.o
@@ -160,9 +157,6 @@
 +cfg80211-y += compat-2.6.30.o
 +cfg80211-y += compat-2.6.31.o
 +
- cfg80211-$(CONFIG_CFG80211_DEBUGFS) += debugfs.o
- cfg80211-$(CONFIG_WIRELESS_EXT) += wext-compat.o
- 
 --- a/drivers/net/wireless/ath/ath5k/base.h
 +++ b/drivers/net/wireless/ath/ath5k/base.h
 @@ -46,7 +46,11 @@
@@ -422,9 +416,9 @@
  	rtap_dev->ml_priv = priv;
  	SET_NETDEV_DEV(rtap_dev, priv->dev->dev.parent);
  
---- a/drivers/net/wireless/mac80211_hwsim.c	2009-07-02 00:23:38.005263090 -0700
-+++ b/drivers/net/wireless/mac80211_hwsim.c	2009-07-02 00:23:38.069262502 -0700
-@@ -743,16 +743,22 @@
+--- a/drivers/net/wireless/mac80211_hwsim.c	2009-07-06 18:49:03.282196473 -0700
++++ b/drivers/net/wireless/mac80211_hwsim.c	2009-07-06 18:49:03.358190423 -0700
+@@ -811,16 +811,22 @@
  	.name = "mac80211_hwsim"
  };
  
@@ -719,9 +713,9 @@
  
  
  /*
---- a/net/mac80211/iface.c
-+++ b/net/mac80211/iface.c
-@@ -670,6 +670,7 @@ static void ieee80211_teardown_sdata(struct net_device *dev)
+--- a/net/mac80211/iface.c	2009-07-06 18:50:48.027196683 -0700
++++ b/net/mac80211/iface.c	2009-07-06 18:50:48.495223982 -0700
+@@ -668,6 +668,7 @@
  	WARN_ON(flushed);
  }
  
@@ -729,7 +723,7 @@
  static const struct net_device_ops ieee80211_dataif_ops = {
  	.ndo_open		= ieee80211_open,
  	.ndo_stop		= ieee80211_stop,
-@@ -689,11 +690,22 @@ static const struct net_device_ops ieee80211_monitorif_ops = {
+@@ -687,11 +688,22 @@
  	.ndo_change_mtu 	= ieee80211_change_mtu,
  	.ndo_set_mac_address 	= eth_mac_addr,
  };
@@ -752,7 +746,7 @@
  	dev->wireless_handlers = &ieee80211_iw_handler_def;
  	dev->destructor = free_netdev;
  }
-@@ -709,7 +721,11 @@ static void ieee80211_setup_sdata(struct ieee80211_sub_if_data *sdata,
+@@ -707,7 +719,11 @@
  
  	/* and set some type-dependent values */
  	sdata->vif.type = type;
@@ -764,7 +758,7 @@
  	sdata->wdev.iftype = type;
  
  	/* only monitor differs */
-@@ -732,7 +748,11 @@ static void ieee80211_setup_sdata(struct ieee80211_sub_if_data *sdata,
+@@ -730,7 +746,11 @@
  		break;
  	case NL80211_IFTYPE_MONITOR:
  		sdata->dev->type = ARPHRD_IEEE80211_RADIOTAP;
@@ -776,7 +770,7 @@
  		sdata->u.mntr_flags = MONITOR_FLAG_CONTROL |
  				      MONITOR_FLAG_OTHER_BSS;
  		break;
-@@ -839,6 +859,10 @@ int ieee80211_if_add(struct ieee80211_local *local, const char *name,
+@@ -837,6 +857,10 @@
  	if (ret)
  		goto fail;
  
@@ -1169,9 +1163,9 @@
  
  	/* causes rfkill_start() to be called */
  	error = input_register_handle(handle);
---- a/net/wireless/core.c
-+++ b/net/wireless/core.c
-@@ -260,7 +260,11 @@ static void cfg80211_rfkill_sync_work(struct work_struct *work)
+--- a/net/wireless/core.c	2009-07-06 18:49:45.482199823 -0700
++++ b/net/wireless/core.c	2009-07-06 18:49:46.295190798 -0700
+@@ -260,7 +260,11 @@
  	struct cfg80211_registered_device *drv;
  
  	drv = container_of(work, struct cfg80211_registered_device, rfkill_sync);
@@ -1183,7 +1177,7 @@
  }
  
  /* exported functions */
-@@ -311,9 +315,15 @@ struct wiphy *wiphy_new(const struct cfg80211_ops *ops, int sizeof_priv)
+@@ -311,9 +315,15 @@
  	drv->wiphy.dev.platform_data = drv;
  
  	drv->rfkill_ops.set_block = cfg80211_rfkill_set_block;
@@ -1199,7 +1193,7 @@
  
  	if (!drv->rfkill) {
  		kfree(drv);
-@@ -396,7 +406,11 @@ int wiphy_register(struct wiphy *wiphy)
+@@ -397,7 +407,11 @@
  	if (res)
  		return res;
  
@@ -1211,7 +1205,7 @@
  	if (res)
  		goto out_rm_dev;
  
-@@ -444,7 +458,11 @@ void wiphy_rfkill_start_polling(struct wiphy *wiphy)
+@@ -445,7 +459,11 @@
  	if (!drv->ops->rfkill_poll)
  		return;
  	drv->rfkill_ops.poll = cfg80211_rfkill_poll;
@@ -1223,7 +1217,7 @@
  }
  EXPORT_SYMBOL(wiphy_rfkill_start_polling);
  
-@@ -452,7 +470,11 @@ void wiphy_rfkill_stop_polling(struct wiphy *wiphy)
+@@ -453,7 +471,11 @@
  {
  	struct cfg80211_registered_device *drv = wiphy_to_dev(wiphy);
  
@@ -1235,7 +1229,7 @@
  }
  EXPORT_SYMBOL(wiphy_rfkill_stop_polling);
  
-@@ -460,7 +482,11 @@ void wiphy_unregister(struct wiphy *wiphy)
+@@ -461,7 +483,11 @@
  {
  	struct cfg80211_registered_device *drv = wiphy_to_dev(wiphy);
  
@@ -1247,7 +1241,7 @@
  
  	/* protect the device list */
  	mutex_lock(&cfg80211_mutex);
-@@ -498,7 +524,11 @@ EXPORT_SYMBOL(wiphy_unregister);
+@@ -501,7 +527,11 @@
  void cfg80211_dev_free(struct cfg80211_registered_device *drv)
  {
  	struct cfg80211_internal_bss *scan, *tmp;
@@ -1259,7 +1253,7 @@
  	mutex_destroy(&drv->mtx);
  	mutex_destroy(&drv->devlist_mtx);
  	list_for_each_entry_safe(scan, tmp, &drv->bss_list, list)
-@@ -516,7 +546,11 @@ void wiphy_rfkill_set_hw_state(struct wiphy *wiphy, bool blocked)
+@@ -519,7 +549,11 @@
  {
  	struct cfg80211_registered_device *drv = wiphy_to_dev(wiphy);
  
@@ -1271,7 +1265,7 @@
  		schedule_work(&drv->rfkill_sync);
  }
  EXPORT_SYMBOL(wiphy_rfkill_set_hw_state);
-@@ -576,7 +610,11 @@ static int cfg80211_netdev_notifier_call(struct notifier_block * nb,
+@@ -616,7 +650,11 @@
  		mutex_unlock(&rdev->devlist_mtx);
  		break;
  	case NETDEV_PRE_UP:
@@ -1359,9 +1353,9 @@
  		kref_put(&res->ref, bss_release);
  	} else {
  		/* this "consumes" the reference */
---- a/net/wireless/wext-compat.c
-+++ b/net/wireless/wext-compat.c
-@@ -783,7 +783,11 @@ int cfg80211_wext_siwtxpower(struct net_device *dev,
+--- a/net/wireless/wext-compat.c	2009-07-06 18:53:30.026197522 -0700
++++ b/net/wireless/wext-compat.c	2009-07-06 18:53:31.098236302 -0700
+@@ -738,7 +738,11 @@
  
  	/* only change when not disabling */
  	if (!data->txpower.disabled) {
@@ -1373,7 +1367,7 @@
  
  		if (data->txpower.fixed) {
  			/*
-@@ -808,7 +812,11 @@ int cfg80211_wext_siwtxpower(struct net_device *dev,
+@@ -763,7 +767,11 @@
  			}
  		}
  	} else {
@@ -1385,7 +1379,7 @@
  		schedule_work(&rdev->rfkill_sync);
  		return 0;
  	}
-@@ -839,7 +847,11 @@ int cfg80211_wext_giwtxpower(struct net_device *dev,
+@@ -794,7 +802,11 @@
  
  	/* well... oh well */
  	data->txpower.fixed = 1;
