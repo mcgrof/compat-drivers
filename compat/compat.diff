@@ -747,18 +747,21 @@
  	rfkill_handler_exit();
  #endif
  	misc_deregister(&rfkill_miscdev);
---- a/net/rfkill/input.c
-+++ b/net/rfkill/input.c
-@@ -17,7 +17,7 @@
+--- a/net/rfkill/input.c	2009-07-07 17:27:09.290706860 -0700
++++ b/net/rfkill/input.c	2009-07-07 17:26:57.195684653 -0700
+@@ -17,7 +17,11 @@
  #include <linux/slab.h>
  #include <linux/workqueue.h>
  #include <linux/init.h>
--#include <linux/rfkill.h>
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,31))
+ #include <linux/rfkill.h>
++#else
 +#include <linux/rfkill_backport.h>
++#endif
  #include <linux/sched.h>
  
  #include "rfkill.h"
-@@ -229,7 +229,7 @@ static int rfkill_connect(struct input_handler *handler, struct input_dev *dev,
+@@ -229,7 +233,7 @@ static int rfkill_connect(struct input_h
  
  	handle->dev = dev;
  	handle->handler = handler;
