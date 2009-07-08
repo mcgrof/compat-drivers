@@ -141,13 +141,10 @@
  	net->watchdog_timeo = TX_TIMEOUT_JIFFIES;
  	net->ethtool_ops = &usbnet_ethtool_ops;
  
---- a/net/wireless/Makefile	2009-07-06 18:47:30.510225526 -0700
-+++ b/net/wireless/Makefile	2009-07-06 18:47:31.619237712 -0700
-@@ -7,6 +7,12 @@
- 
- cfg80211-y += core.o sysfs.o radiotap.o util.o reg.o scan.o nl80211.o mlme.o ibss.o sme.o
- cfg80211-$(CONFIG_CFG80211_DEBUGFS) += debugfs.o
--cfg80211-$(CONFIG_WIRELESS_EXT) += wext-compat.o wext-sme.o
+--- a/net/wireless/Makefile	2009-07-08 16:35:31.392259166 -0700
++++ b/net/wireless/Makefile	2009-07-08 16:35:56.036284948 -0700
+@@ -10,3 +10,10 @@
+ cfg80211-$(CONFIG_WIRELESS_EXT) += wext-compat.o wext-sme.o
  
  ccflags-y += -D__CHECK_ENDIAN__
 +# Compat-wireless kernel compatibility code
