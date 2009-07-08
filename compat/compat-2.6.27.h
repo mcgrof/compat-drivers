@@ -13,10 +13,14 @@
 #include <linux/mmc/sdio.h>
 #include <linux/mmc/sdio_func.h>
 #include <linux/netdevice.h>
+#include <linux/workqueue.h>
 
 #include <asm-generic/bug.h>
 
 #define PCI_PM_CAP_PME_SHIFT	11
+
+/* I can't find a more suitable replacement... */
+#define flush_work(work) cancel_work_sync(work)
 
 /*
  * On older kernels we do not have net_device Multi Queue support, but
