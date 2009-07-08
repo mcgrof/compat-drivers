@@ -10,7 +10,13 @@
 #include <linux/device.h>
 #include <linux/list.h>
 #include <linux/kernel.h>
+#include <net/net_namespace.h>
 
+/* This comes from include/linux/input.h */
+#define SW_RFKILL_ALL           0x03  /* rfkill master switch, type "any"
+					 set = radio enabled */
+
+/* From kernel.h */
 #define USHORT_MAX      ((u16)(~0U))
 #define SHORT_MAX       ((s16)(USHORT_MAX>>1))
 #define SHORT_MIN       (-SHORT_MAX - 1)
@@ -83,6 +89,42 @@ static inline const char *dev_name(struct device *dev)
 	typeof(val) __max = (max);              \
 	__val = __val < __min ? __min: __val;   \
 	__val > __max ? __max: __val; })
+
+/* This comes from include/net/net_namespace.h */
+
+#ifdef CONFIG_NET_NS
+static inline
+int net_eq(const struct net *net1, const struct net *net2)
+{
+	return net1 == net2;
+}
+#else
+static inline
+int net_eq(const struct net *net1, const struct net *net2)
+{
+	return 1;
+}
+#endif
+
+/* This comes from include/linux/netdevice.h */
+
+/*
+ * Net namespace inlines
+ */
+static inline
+struct net *dev_net(const struct net_device *dev)
+{
+#ifdef CONFIG_NET_NS
+	/*
+	 * compat-wirelss backport note:
+	 * For older kernels we may just need to always return init_net,
+	 * not sure when we added dev->nd_net.
+	 */
+	return dev->nd_net;
+#else
+	return &init_net;
+#endif
+}
 
 
 /*

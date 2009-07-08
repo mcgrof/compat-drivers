@@ -11,7 +11,7 @@
 
 # This indicates which is the oldest kernel we support
 # Update this if you are adding support for older kernels.
-OLDEST_KERNEL_SUPPORTED="2.6.26"
+OLDEST_KERNEL_SUPPORTED="2.6.25"
 COMPAT_RELEASE="compat-release"
 KERNEL_RELEASE="git-describe"
 MULT_DEP_FILE=".compat_pivot_dep"

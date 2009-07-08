@@ -524,8 +524,8 @@
  
  
  /*
---- a/net/mac80211/iface.c	2009-07-07 13:29:43.631717242 -0700
-+++ b/net/mac80211/iface.c	2009-07-07 13:29:44.823680886 -0700
+--- a/net/mac80211/iface.c	2009-07-08 15:46:16.452255410 -0700
++++ b/net/mac80211/iface.c	2009-07-08 15:46:06.060257895 -0700
 @@ -643,6 +643,7 @@
  	WARN_ON(flushed);
  }
@@ -581,7 +581,24 @@
  		sdata->u.mntr_flags = MONITOR_FLAG_CONTROL |
  				      MONITOR_FLAG_OTHER_BSS;
  		break;
-@@ -812,6 +832,10 @@
+@@ -771,6 +791,8 @@
+ 	if (!ndev)
+ 		return -ENOMEM;
+ 
++/* This is an optimization, just ignore for older kernels */
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,26))
+ 	ndev->needed_headroom = local->tx_headroom +
+ 				4*6 /* four MAC addresses */
+ 				+ 2 + 2 + 2 + 2 /* ctl, dur, seq, qos */
+@@ -779,6 +801,7 @@
+ 				- ETH_HLEN /* ethernet hard_header_len */
+ 				+ IEEE80211_ENCRYPT_HEADROOM;
+ 	ndev->needed_tailroom = IEEE80211_ENCRYPT_TAILROOM;
++#endif
+ 
+ 	ret = dev_alloc_name(ndev, ndev->name);
+ 	if (ret < 0)
+@@ -812,6 +835,10 @@
  	if (ret)
  		goto fail;
  

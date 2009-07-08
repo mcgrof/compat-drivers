@@ -25,8 +25,8 @@ endif
 ifeq ($(shell test -e $(KLIB_BUILD)/Makefile && echo yes),yes)
 KERNEL_SUBLEVEL = $(shell $(MAKE) -C $(KLIB_BUILD) kernelversion | sed -n 's/^2\.6\.\([0-9]\+\).*/\1/p')
 
-ifeq ($(shell test $(KERNEL_SUBLEVEL) -lt 26 && echo yes),yes)
-$(error "ERROR: You should use compat-wireless-2.6-old for older kernels, this one is for kernels >= 2.6.26")
+ifeq ($(shell test $(KERNEL_SUBLEVEL) -lt 25 && echo yes),yes)
+$(error "ERROR: You should use compat-wireless-2.6-old for older kernels, this one is for kernels >= 2.6.25")
 endif
 
 ifeq ($(CONFIG_CFG80211),y)
