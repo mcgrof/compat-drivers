@@ -237,8 +237,13 @@ endif
 
 ifneq ($(CONFIG_PCMCIA),)
 
+ifeq ($(shell test $(KERNEL_SUBLEVEL) -le 26 && echo yes),yes)
+CONFIG_LIBERTAS=n
+CONFIG_LIBERTAS_CS=n
+else
 CONFIG_LIBERTAS_CS=m
 NEED_LIBERTAS=y
+endif
 
 endif
 ## end of PCMCIA
@@ -286,9 +291,15 @@ CONFIG_RT73USB=m
 NEED_RT2X00_FIRMWARE=y
 endif
 
+ifeq ($(shell test $(KERNEL_SUBLEVEL) -le 26 && echo yes),yes)
+CONFIG_LIBERTAS_THINFIRM_USB=n
+CONFIG_LIBERTAS_USB=n
+NEED_LIBERTAS=n
+else
 CONFIG_LIBERTAS_THINFIRM_USB=m
 CONFIG_LIBERTAS_USB=m
 NEED_LIBERTAS=y
+endif
 
 endif # end of USB driver list
 
@@ -296,15 +307,26 @@ ifneq ($(CONFIG_SPI_MASTER),)
 
 CONFIG_WL1251=m
 CONFIG_P54_SPI=m
+
+ifeq ($(shell test $(KERNEL_SUBLEVEL) -le 26 && echo yes),yes)
+CONFIG_LIBERTAS_SPI=n
+NEED_LIBERTAS=n
+else
 CONFIG_LIBERTAS_SPI=m
 NEED_LIBERTAS=y
+endif
 
 endif # end of SPI driver list
 
 ifneq ($(CONFIG_MMC),)
 
+ifeq ($(shell test $(KERNEL_SUBLEVEL) -le 26 && echo yes),yes)
+CONFIG_LIBERTAS_SDIO=n
+NEED_LIBERTAS=n
+else
 CONFIG_LIBERTAS_SDIO=m
 NEED_LIBERTAS=y
+endif
 
 # Activate iwmc3200wifi support only on kernel >= 2.6.29.
 # iwmc3200wifi uses new netdev_ops api no supported by old kernel.
@@ -347,10 +369,14 @@ CONFIG_SSB=m
 CONFIG_SSB_SPROM=y
 # CONFIG_SSB_DEBUG=y
 
+ifeq ($(shell test $(KERNEL_SUBLEVEL) -le 26 && echo yes),yes)
+CONFIG_LIBERTAS=n
+else
 ifeq ($(NEED_LIBERTAS),y)
 CONFIG_LIBERTAS_THINFIRM=m
 CONFIG_LIBERTAS=m
 # CONFIG_LIBERTAS_DEBUG=y
+endif
 endif
 
 # We need the backported rfkill module on kernel < 2.6.31.

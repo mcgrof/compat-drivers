@@ -11,6 +11,31 @@
 #include <linux/list.h>
 #include <linux/kernel.h>
 
+#define USHORT_MAX      ((u16)(~0U))
+#define SHORT_MAX       ((s16)(USHORT_MAX>>1))
+#define SHORT_MIN       (-SHORT_MAX - 1)
+
+extern int dev_set_name(struct device *dev, const char *name, ...)
+			__attribute__((format(printf, 2, 3)));
+
+/**
+ * clamp_t - return a value clamped to a given range using a given type
+ * @type: the type of variable to use
+ * @val: current value
+ * @min: minimum allowable value
+ * @max: maximum allowable value
+ *
+ * This macro does no typechecking and uses temporary variables of type
+ * 'type' to make all the comparisons.
+ */
+#define clamp_t(type, val, min, max) ({		\
+	type __val = (val);			\
+	type __min = (min);			\
+	type __max = (max);			\
+	__val = __val < __min ? __min: __val;	\
+	__val > __max ? __max: __val; })
+
+
 /* from include/linux/device.h */
 /* device_create_drvdata() is new */
 extern struct device *device_create_drvdata(struct class *cls,
