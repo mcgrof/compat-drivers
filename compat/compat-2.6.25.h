@@ -8,6 +8,23 @@
 /* Compat work for 2.6.24 */
 #if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,25))
 
+#include <linux/types.h>
+#include <linux/io.h>
+#include <linux/hw_random.h>
+#include <linux/leds.h>
+#include <linux/kernel.h>
+#include <linux/device.h>
+#include <asm-generic/bug.h>
+
+#define __WARN(foo) dump_stack()
+
+#define dev_emerg(dev, format, arg...)          \
+	dev_printk(KERN_EMERG , dev , format , ## arg)
+#define dev_alert(dev, format, arg...)          \
+	dev_printk(KERN_ALERT , dev , format , ## arg)
+#define dev_crit(dev, format, arg...)           \
+	dev_printk(KERN_CRIT , dev , format , ## arg)
+
 /* The patch:
  * commit 8b5f6883683c91ad7e1af32b7ceeb604d68e2865
  * Author: Marcin Slusarz <marcin.slusarz@gmail.com>
