@@ -413,9 +413,9 @@
  	rtap_dev->ml_priv = priv;
  	SET_NETDEV_DEV(rtap_dev, priv->dev->dev.parent);
  
---- a/drivers/net/wireless/mac80211_hwsim.c	2009-07-08 23:32:17.001186494 -0700
-+++ b/drivers/net/wireless/mac80211_hwsim.c	2009-07-08 23:32:17.065187158 -0700
-@@ -813,16 +813,22 @@
+--- a/drivers/net/wireless/mac80211_hwsim.c
++++ b/drivers/net/wireless/mac80211_hwsim.c
+@@ -814,16 +814,22 @@ static struct device_driver mac80211_hwsim_driver = {
  	.name = "mac80211_hwsim"
  };
  
@@ -521,6 +521,25 @@
  
  
  /*
+--- a/net/mac80211/driver-trace.h
++++ b/net/mac80211/driver-trace.h
+@@ -1,7 +1,9 @@
+ #if !defined(__MAC80211_DRIVER_TRACE) || defined(TRACE_HEADER_MULTI_READ)
+ #define __MAC80211_DRIVER_TRACE
+ 
++#if (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,27))
+ #include <linux/tracepoint.h>
++#endif /* (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,27)) */
+ #include <net/mac80211.h>
+ #include "ieee80211_i.h"
+ 
+@@ -645,4 +647,6 @@ TRACE_EVENT(drv_ampdu_action,
+ #define TRACE_INCLUDE_PATH .
+ #undef TRACE_INCLUDE_FILE
+ #define TRACE_INCLUDE_FILE driver-trace
++#if (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,30))
+ #include <trace/define_trace.h>
++#endif /* (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,30)) */
 --- a/net/mac80211/iface.c	2009-07-08 15:46:16.452255410 -0700
 +++ b/net/mac80211/iface.c	2009-07-08 15:46:06.060257895 -0700
 @@ -643,6 +643,7 @@
