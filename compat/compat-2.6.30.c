@@ -12,7 +12,7 @@
 
 #if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,30))
 
-/* 2.6.28 compat code goes here */
+/* 2.6.30 compat code goes here */
 
 #endif /* LINUX_VERSION_CODE < KERNEL_VERSION(2,6,30) */
 

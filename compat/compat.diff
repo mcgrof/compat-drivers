@@ -1,10 +1,10 @@
---- a/drivers/misc/eeprom/Makefile	2009-07-02 00:23:37.993293412 -0700
-+++ b/drivers/misc/eeprom/Makefile	2009-07-02 00:23:38.053296505 -0700
-@@ -1,5 +1,2 @@
+--- a/drivers/misc/eeprom/Makefile
++++ b/drivers/misc/eeprom/Makefile
+@@ -1,5 +1 @@
 -obj-$(CONFIG_EEPROM_AT24)	+= at24.o
 -obj-$(CONFIG_EEPROM_AT25)	+= at25.o
 -obj-$(CONFIG_EEPROM_LEGACY)	+= eeprom.o
- obj-$(CONFIG_EEPROM_MAX6875)	+= max6875.o
+-obj-$(CONFIG_EEPROM_MAX6875)	+= max6875.o
  obj-$(CONFIG_EEPROM_93CX6)	+= eeprom_93cx6.o
 --- a/drivers/net/b44.c
 +++ b/drivers/net/b44.c
@@ -51,9 +51,9 @@
  	dev->irq = sdev->irq;
  	SET_ETHTOOL_OPS(dev, &b44_ethtool_ops);
  
---- a/drivers/net/usb/Makefile	2009-07-02 00:23:37.969259980 -0700
-+++ b/drivers/net/usb/Makefile	2009-07-02 00:23:38.057293452 -0700
-@@ -2,23 +2,8 @@
+--- a/drivers/net/usb/Makefile
++++ b/drivers/net/usb/Makefile
+@@ -2,23 +2,7 @@
  # Makefile for USB Network drivers
  #
  
@@ -75,7 +75,7 @@
 -obj-$(CONFIG_USB_NET_ZAURUS)	+= zaurus.o
 -obj-$(CONFIG_USB_NET_MCS7830)	+= mcs7830.o
  obj-$(CONFIG_USB_USBNET)	+= usbnet.o
- obj-$(CONFIG_USB_NET_INT51X1)	+= int51x1.o
+-obj-$(CONFIG_USB_NET_INT51X1)	+= int51x1.o
  
 --- a/drivers/net/usb/rndis_host.c
 +++ b/drivers/net/usb/rndis_host.c
@@ -141,9 +141,9 @@
  	net->watchdog_timeo = TX_TIMEOUT_JIFFIES;
  	net->ethtool_ops = &usbnet_ethtool_ops;
  
---- a/net/wireless/Makefile	2009-07-08 16:35:31.392259166 -0700
-+++ b/net/wireless/Makefile	2009-07-08 16:35:56.036284948 -0700
-@@ -10,3 +10,10 @@
+--- a/net/wireless/Makefile
++++ b/net/wireless/Makefile
+@@ -10,3 +10,11 @@ cfg80211-$(CONFIG_CFG80211_DEBUGFS) += debugfs.o
  cfg80211-$(CONFIG_WIRELESS_EXT) += wext-compat.o wext-sme.o
  
  ccflags-y += -D__CHECK_ENDIAN__
@@ -153,6 +153,7 @@
 +cfg80211-y += compat-2.6.29.o
 +cfg80211-y += compat-2.6.30.o
 +cfg80211-y += compat-2.6.31.o
++cfg80211-y += compat-2.6.32.o
 +
 --- a/drivers/net/wireless/ath/ath5k/base.h
 +++ b/drivers/net/wireless/ath/ath5k/base.h
