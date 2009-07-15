@@ -273,12 +273,7 @@ CONFIG_RTL8187=m
 
 CONFIG_AT76C50X_USB=m
 
-# Activate AR9170 support only on kernel >= 2.6.29.
-# You need to backport:
-# * usb_get_from_anchor()
-# * usb_poison_anchored_urbs()
-# * usb_unpoison_anchored_urbs()
-ifeq ($(shell test $(KERNEL_SUBLEVEL) -ge 29 && echo yes),yes)
+ifeq ($(shell test $(KERNEL_SUBLEVEL) -ge 27 && echo yes),yes)
 CONFIG_AR9170_USB=m
 CONFIG_AR9170_LEDS=y
 endif
