@@ -27,6 +27,9 @@
 #define rfkill_set_hw_state	backport_rfkill_set_hw_state
 #define rfkill_blocked		backport_rfkill_blocked
 
+#define rfkill_get_led_trigger_name	backport_rfkill_get_led_trigger_name
+#define rfkill_set_led_trigger_name	backport_rfkill_set_led_trigger_name
+
 #ifndef ERFKILL
 #if !defined(CONFIG_ALPHA) && !defined(CONFIG_MIPS) && !defined(CONFIG_PARISC) && !defined(CONFIG_SPARC)
 #define ERFKILL		132	/* Operation not possible due to RF-kill */
