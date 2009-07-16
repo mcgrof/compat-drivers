@@ -1,6 +1,6 @@
 export KMODDIR?=       updates
 KMODDIR_ARG:=   "INSTALL_MOD_DIR=$(KMODDIR)"
-ifneq ($(origin $(KLIB)), undefined)
+ifneq ($(origin KLIB), undefined)
 KMODPATH_ARG:=  "INSTALL_MOD_PATH=$(KLIB)"
 else
 export KLIB:=          /lib/modules/$(shell uname -r)
@@ -10,6 +10,8 @@ export KLIB_BUILD ?=	$(KLIB)/build
 MODPROBE := /sbin/modprobe
 MADWIFI=$(shell $(MODPROBE) -l ath_pci)
 OLD_IWL=$(shell $(MODPROBE) -l iwl4965)
+
+DESTDIR?=
 
 ifneq ($(KERNELRELEASE),)
 
@@ -58,21 +60,25 @@ $(CREL_CHECK):
 	@touch $@
 	@md5sum $(COMPAT_CONFIG) > $(CONFIG_CHECK)
 
-install: uninstall modules
+install: uninstall install-modules install-scripts
+
+install-modules: modules
 	$(MAKE) -C $(KLIB_BUILD) M=$(PWD) $(KMODDIR_ARG) $(KMODPATH_ARG) \
 		modules_install
+
+install-scripts:
 	@# All the scripts we can use
-	@mkdir -p /usr/lib/compat-wireless/
-	@install scripts/modlib.sh	/usr/lib/compat-wireless/
-	@install scripts/madwifi-unload	/usr/sbin/
+	@mkdir -p $(DESTDIR)/usr/lib/compat-wireless/
+	@install scripts/modlib.sh	$(DESTDIR)/usr/lib/compat-wireless/
+	@install scripts/madwifi-unload	$(DESTDIR)/usr/sbin/
 	@# This is to allow switching between drivers without blacklisting
-	@install scripts/athenable	/usr/sbin/
-	@install scripts/b43enable	/usr/sbin/
-	@install scripts/iwl-enable	/usr/sbin/
-	@install scripts/athload	/usr/sbin/
-	@install scripts/b43load	/usr/sbin/
-	@install scripts/iwl-load	/usr/sbin/
-	@if [ ! -z $(MADWIFI) ]; then \
+	@install scripts/athenable	$(DESTDIR)/usr/sbin/
+	@install scripts/b43enable	$(DESTDIR)/usr/sbin/
+	@install scripts/iwl-enable	$(DESTDIR)/usr/sbin/
+	@install scripts/athload	$(DESTDIR)/usr/sbin/
+	@install scripts/b43load	$(DESTDIR)/usr/sbin/
+	@install scripts/iwl-load	$(DESTDIR)/usr/sbin/
+	@if [ ! -z $(MADWIFI) && -z "$(DESTDIR)" ]; then \
 		echo ;\
 		echo -n "Note: madwifi detected, we're going to disable it. "  ;\
 		echo "If you would like to enable it later you can run:"  ;\
@@ -81,7 +87,7 @@ install: uninstall modules
 		echo Running athenable ath5k...;\
 		/usr/sbin/athenable ath5k ;\
 	fi
-	@if [ ! -z $(OLD_IWL) ]; then \
+	@if [ ! -z $(OLD_IWL) && -z "$(DESTDIR)" ]; then \
 		echo ;\
 		echo -n "Note: iwl4965 detected, we're going to disable it. "  ;\
 		echo "If you would like to enable it later you can run:"  ;\
