@@ -18,7 +18,6 @@
 #include <linux/mmc/card.h>
 #include <linux/mmc/host.h>
 
-
 /* rfkill notification chain */
 #define RFKILL_STATE_CHANGED            0x0001  /* state of a normal rfkill
 							switch has changed */

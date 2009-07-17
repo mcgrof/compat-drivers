@@ -8,17 +8,6 @@
 #if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,29))
 
 #include <linux/skbuff.h>
-#include <linux/usb.h>
-
-extern void usb_poison_urb(struct urb *urb);
-extern void usb_unpoison_urb(struct urb *urb);
-
-extern void usb_poison_anchored_urbs(struct usb_anchor *anchor);
-extern void usb_unpoison_anchored_urbs(struct usb_anchor *anchor);
-
-extern struct urb *usb_get_from_anchor(struct usb_anchor *anchor);
-extern void usb_scuttle_anchored_urbs(struct usb_anchor *anchor);
-extern int usb_anchor_empty(struct usb_anchor *anchor);
 
 /**
  *	skb_queue_is_first - check if skb is the first entry in the queue

@@ -9,6 +9,7 @@
 
 #include <linux/skbuff.h>
 #include <linux/if_ether.h>
+#include <linux/usb.h>
 
 #ifndef ETH_P_PAE
 #define ETH_P_PAE 0x888E      /* Port Access Entity (IEEE 802.1X) */
@@ -27,6 +28,17 @@
 	unlikely(__ret_warn_once);                              \
 })
 #endif /* From include/asm-generic/bug.h */
+
+extern void usb_poison_urb(struct urb *urb);
+extern void usb_unpoison_urb(struct urb *urb);
+
+extern void usb_poison_anchored_urbs(struct usb_anchor *anchor);
+extern void usb_unpoison_anchored_urbs(struct usb_anchor *anchor);
+
+extern struct urb *usb_get_from_anchor(struct usb_anchor *anchor);
+extern void usb_scuttle_anchored_urbs(struct usb_anchor *anchor);
+extern int usb_anchor_empty(struct usb_anchor *anchor);
+
 
 void __iomem *pci_ioremap_bar(struct pci_dev *pdev, int bar);
 
