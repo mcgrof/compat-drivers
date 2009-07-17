@@ -19,8 +19,10 @@
  */
 #define rfkill_get_led_trigger_name	backport_rfkill_get_led_trigger_name
 #define rfkill_set_led_trigger_name	backport_rfkill_set_led_trigger_name
-
 #define rfkill_set_hw_state	backport_rfkill_set_hw_state
+#define rfkill_set_sw_state	backport_rfkill_set_sw_state
+#define rfkill_init_sw_state	backport_rfkill_init_sw_state
+#define rfkill_set_states	backport_rfkill_set_states
 #define rfkill_pause_polling	backport_rfkill_pause_polling
 #define rfkill_resume_polling	backport_rfkill_resume_polling
 #define rfkill_blocked		backport_rfkill_blocked
@@ -28,7 +30,6 @@
 #define rfkill_register		backport_rfkill_register
 #define rfkill_unregister	backport_rfkill_unregister
 #define rfkill_destroy		backport_rfkill_destroy
-
 
 #ifndef ERFKILL
 #if !defined(CONFIG_ALPHA) && !defined(CONFIG_MIPS) && !defined(CONFIG_PARISC) && !defined(CONFIG_SPARC)
