@@ -273,7 +273,7 @@ CONFIG_RTL8187=m
 
 CONFIG_AT76C50X_USB=m
 
-ifeq ($(shell test $(KERNEL_SUBLEVEL) -ge 27 && echo yes),yes)
+ifeq ($(shell test $(KERNEL_SUBLEVEL) -ge 28 && echo yes),yes)
 CONFIG_AR9170_USB=m
 CONFIG_AR9170_LEDS=y
 endif

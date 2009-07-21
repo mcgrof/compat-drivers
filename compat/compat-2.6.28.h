@@ -29,10 +29,14 @@
 })
 #endif /* From include/asm-generic/bug.h */
 
+#if 0
 extern void usb_poison_urb(struct urb *urb);
+#endif
 extern void usb_unpoison_urb(struct urb *urb);
 
+#if 0
 extern void usb_poison_anchored_urbs(struct usb_anchor *anchor);
+#endif
 extern void usb_unpoison_anchored_urbs(struct usb_anchor *anchor);
 
 extern struct urb *usb_get_from_anchor(struct usb_anchor *anchor);

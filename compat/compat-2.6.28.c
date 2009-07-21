@@ -34,6 +34,7 @@
  * (TX, and RX)
  */
 
+#if 0
 /**
  * usb_poison_urb - reliably kill a transfer and prevent further use of an URB
  * @urb: pointer to URB describing a previously submitted request,
@@ -69,15 +70,25 @@ void usb_poison_urb(struct urb *urb)
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,28))
 	spin_unlock_irq(&usb_reject_lock);
 #endif
+	/*
+	 * XXX: usb_hcd_unlink_urb() needs backporting... this is defined
+	 * on usb hcd.c but urb.c gets access to it. That is, older kernels
+	 * have usb_hcd_unlink_urb() but its not exported, nor can we
+	 * re-implement it exactly. This essentially dequeues the urb from
+	 * hw, we need to figure out a way to backport this.
+	 */
+	//usb_hcd_unlink_urb(urb, -ENOENT);
 
-	usb_hcd_unlink_urb(urb, -ENOENT);
 	wait_event(usb_kill_urb_queue, atomic_read(&urb->use_count) == 0);
 }
 EXPORT_SYMBOL_GPL(usb_poison_urb);
+#endif
 
 void usb_unpoison_urb(struct urb *urb)
 {
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,28))
 	unsigned long flags;
+#endif
 
 	if (!urb)
 		return;
@@ -93,6 +104,7 @@ void usb_unpoison_urb(struct urb *urb)
 EXPORT_SYMBOL_GPL(usb_unpoison_urb);
 
 
+#if 0
 /**
  * usb_poison_anchored_urbs - cease all traffic from an anchor
  * @anchor: anchor the requests are bound to
@@ -124,6 +136,7 @@ void usb_poison_anchored_urbs(struct usb_anchor *anchor)
 	spin_unlock_irq(&anchor->lock);
 }
 EXPORT_SYMBOL_GPL(usb_poison_anchored_urbs);
+#endif
 
 /**
  * usb_get_from_anchor - get an anchor's oldest urb
