@@ -169,9 +169,9 @@
  
  #include "ath5k.h"
  #include "debug.h"
---- a/drivers/net/wireless/ath/ath9k/hw.c
-+++ b/drivers/net/wireless/ath/ath9k/hw.c
-@@ -3385,7 +3385,7 @@ void ath9k_hw_fill_cap_info(struct ath_hw *ah)
+--- a/drivers/net/wireless/ath/ath9k/hw.c	2009-07-21 13:18:14.945936434 -0700
++++ b/drivers/net/wireless/ath/ath9k/hw.c	2009-07-21 13:18:15.389946641 -0700
+@@ -3434,7 +3434,7 @@
  
  	pCap->hw_caps |= ATH9K_HW_CAP_ENHANCEDPM;
  
@@ -241,9 +241,9 @@
  	dev->ethtool_ops = &ipw2100_ethtool_ops;
  	dev->wireless_handlers = &ipw2100_wx_handler_def;
  	priv->wireless_data.ieee80211 = priv->ieee;
---- a/drivers/net/wireless/ipw2x00/ipw2200.c	2009-07-02 00:23:37.913263895 -0700
-+++ b/drivers/net/wireless/ipw2x00/ipw2200.c	2009-07-02 00:23:38.065263460 -0700
-@@ -11528,6 +11528,7 @@
+--- a/drivers/net/wireless/ipw2x00/ipw2200.c	2009-07-21 13:18:54.353940665 -0700
++++ b/drivers/net/wireless/ipw2x00/ipw2200.c	2009-07-21 13:18:54.537944910 -0700
+@@ -11525,6 +11525,7 @@
  	return NETDEV_TX_OK;
  }
  
@@ -251,7 +251,7 @@
  static const struct net_device_ops ipw_prom_netdev_ops = {
  	.ndo_open 		= ipw_prom_open,
  	.ndo_stop		= ipw_prom_stop,
-@@ -11536,6 +11537,7 @@
+@@ -11533,6 +11534,7 @@
  	.ndo_set_mac_address 	= eth_mac_addr,
  	.ndo_validate_addr	= eth_validate_addr,
  };
@@ -259,7 +259,7 @@
  
  static int ipw_prom_alloc(struct ipw_priv *priv)
  {
-@@ -11556,7 +11558,13 @@
+@@ -11553,7 +11555,13 @@
  	memcpy(priv->prom_net_dev->dev_addr, priv->mac_addr, ETH_ALEN);
  
  	priv->prom_net_dev->type = ARPHRD_IEEE80211_RADIOTAP;
@@ -273,7 +273,7 @@
  
  	priv->prom_priv->ieee->iw_mode = IW_MODE_MONITOR;
  	SET_NETDEV_DEV(priv->prom_net_dev, &priv->pci_dev->dev);
-@@ -11584,6 +11592,7 @@
+@@ -11581,6 +11589,7 @@
  
  #endif
  
@@ -281,7 +281,7 @@
  static const struct net_device_ops ipw_netdev_ops = {
  	.ndo_init		= ipw_net_init,
  	.ndo_open		= ipw_net_open,
-@@ -11594,6 +11603,7 @@
+@@ -11591,6 +11600,7 @@
  	.ndo_change_mtu		= ieee80211_change_mtu,
  	.ndo_validate_addr	= eth_validate_addr,
  };
@@ -289,7 +289,7 @@
  
  static int __devinit ipw_pci_probe(struct pci_dev *pdev,
  				   const struct pci_device_id *ent)
-@@ -11695,7 +11705,15 @@
+@@ -11692,7 +11702,15 @@
  	priv->ieee->perfect_rssi = -20;
  	priv->ieee->worst_rssi = -85;
  
@@ -541,9 +541,9 @@
 +#if (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,30))
  #include <trace/define_trace.h>
 +#endif /* (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,30)) */
---- a/net/mac80211/iface.c	2009-07-08 15:46:16.452255410 -0700
-+++ b/net/mac80211/iface.c	2009-07-08 15:46:06.060257895 -0700
-@@ -643,6 +643,7 @@
+--- a/net/mac80211/iface.c	2009-07-21 13:19:35.836937034 -0700
++++ b/net/mac80211/iface.c	2009-07-21 13:19:36.396937822 -0700
+@@ -645,6 +645,7 @@
  	WARN_ON(flushed);
  }
  
@@ -551,7 +551,7 @@
  static const struct net_device_ops ieee80211_dataif_ops = {
  	.ndo_open		= ieee80211_open,
  	.ndo_stop		= ieee80211_stop,
-@@ -662,11 +663,22 @@
+@@ -664,11 +665,22 @@
  	.ndo_change_mtu 	= ieee80211_change_mtu,
  	.ndo_set_mac_address 	= eth_mac_addr,
  };
@@ -574,7 +574,7 @@
  	dev->wireless_handlers = &ieee80211_iw_handler_def;
  	dev->destructor = free_netdev;
  }
-@@ -682,7 +694,11 @@
+@@ -684,7 +696,11 @@
  
  	/* and set some type-dependent values */
  	sdata->vif.type = type;
@@ -586,7 +586,7 @@
  	sdata->wdev.iftype = type;
  
  	/* only monitor differs */
-@@ -705,7 +721,11 @@
+@@ -707,7 +723,11 @@
  		break;
  	case NL80211_IFTYPE_MONITOR:
  		sdata->dev->type = ARPHRD_IEEE80211_RADIOTAP;
@@ -598,7 +598,7 @@
  		sdata->u.mntr_flags = MONITOR_FLAG_CONTROL |
  				      MONITOR_FLAG_OTHER_BSS;
  		break;
-@@ -771,6 +791,8 @@
+@@ -773,6 +793,8 @@
  	if (!ndev)
  		return -ENOMEM;
  
@@ -607,7 +607,7 @@
  	ndev->needed_headroom = local->tx_headroom +
  				4*6 /* four MAC addresses */
  				+ 2 + 2 + 2 + 2 /* ctl, dur, seq, qos */
-@@ -779,6 +801,7 @@
+@@ -781,6 +803,7 @@
  				- ETH_HLEN /* ethernet hard_header_len */
  				+ IEEE80211_ENCRYPT_HEADROOM;
  	ndev->needed_tailroom = IEEE80211_ENCRYPT_TAILROOM;
@@ -615,7 +615,7 @@
  
  	ret = dev_alloc_name(ndev, ndev->name);
  	if (ret < 0)
-@@ -812,6 +835,10 @@
+@@ -814,6 +837,10 @@
  	if (ret)
  		goto fail;
  
@@ -672,8 +672,8 @@
 +rfkill_backport-y			+= core.o
 +rfkill_backport-$(CONFIG_RFKILL_BACKPORT_INPUT)	+= input.o
 +obj-$(CONFIG_RFKILL_BACKPORT)		+= rfkill_backport.o
---- a/net/rfkill/core.c	2009-07-07 16:36:36.087678337 -0700
-+++ b/net/rfkill/core.c	2009-07-07 16:36:22.462708547 -0700
+--- a/net/rfkill/core.c	2009-07-21 13:20:20.385938726 -0700
++++ b/net/rfkill/core.c	2009-07-21 13:20:20.869936904 -0700
 @@ -26,7 +26,7 @@
  #include <linux/capability.h>
  #include <linux/list.h>
@@ -683,7 +683,7 @@
  #include <linux/spinlock.h>
  #include <linux/miscdevice.h>
  #include <linux/wait.h>
-@@ -61,7 +61,7 @@ struct rfkill {
+@@ -61,7 +61,7 @@
  	const struct rfkill_ops	*ops;
  	void			*data;
  
@@ -692,7 +692,7 @@
  	struct led_trigger	led_trigger;
  	const char		*ledtrigname;
  #endif
-@@ -122,7 +122,7 @@ static struct {
+@@ -122,7 +122,7 @@
  static bool rfkill_epo_lock_active;
  
  
@@ -701,7 +701,7 @@
  static void rfkill_led_trigger_event(struct rfkill *rfkill)
  {
  	struct led_trigger *trigger;
-@@ -316,7 +316,7 @@ static void rfkill_set_block(struct rfki
+@@ -316,7 +316,7 @@
  	rfkill_event(rfkill);
  }
  
@@ -710,7 +710,7 @@
  static atomic_t rfkill_input_disabled = ATOMIC_INIT(0);
  
  /**
-@@ -759,7 +759,7 @@ static int rfkill_resume(struct device *
+@@ -774,7 +774,7 @@
  }
  
  static struct class rfkill_class = {
@@ -719,7 +719,7 @@
  	.dev_release	= rfkill_release,
  	.dev_attrs	= rfkill_dev_attrs,
  	.dev_uevent	= rfkill_dev_uevent,
-@@ -905,7 +905,7 @@ int __must_check rfkill_register(struct 
+@@ -920,7 +920,7 @@
  	if (!rfkill->persistent || rfkill_epo_lock_active) {
  		schedule_work(&rfkill->sync_work);
  	} else {
@@ -728,7 +728,7 @@
  		bool soft_blocked = !!(rfkill->state & RFKILL_BLOCK_SW);
  
  		if (!atomic_read(&rfkill_input_disabled))
-@@ -1133,7 +1133,7 @@ static int rfkill_fop_release(struct ino
+@@ -1148,7 +1148,7 @@
  	list_for_each_entry_safe(ev, tmp, &data->events, list)
  		kfree(ev);
  
@@ -737,7 +737,7 @@
  	if (data->input_handler)
  		if (atomic_dec_return(&rfkill_input_disabled) == 0)
  			printk(KERN_DEBUG "rfkill: input handler enabled\n");
-@@ -1144,7 +1144,7 @@ static int rfkill_fop_release(struct ino
+@@ -1159,7 +1159,7 @@
  	return 0;
  }
  
@@ -746,7 +746,7 @@
  static long rfkill_fop_ioctl(struct file *file, unsigned int cmd,
  			     unsigned long arg)
  {
-@@ -1176,14 +1176,14 @@ static const struct file_operations rfki
+@@ -1191,14 +1191,14 @@
  	.write		= rfkill_fop_write,
  	.poll		= rfkill_fop_poll,
  	.release	= rfkill_fop_release,
@@ -763,7 +763,7 @@
  	.fops	= &rfkill_fops,
  	.minor	= MISC_DYNAMIC_MINOR,
  };
-@@ -1206,7 +1206,7 @@ static int __init rfkill_init(void)
+@@ -1221,7 +1221,7 @@
  		goto out;
  	}
  
@@ -772,7 +772,7 @@
  	error = rfkill_handler_init();
  	if (error) {
  		misc_deregister(&rfkill_miscdev);
-@@ -1222,7 +1222,7 @@ subsys_initcall(rfkill_init);
+@@ -1237,7 +1237,7 @@
  
  static void __exit rfkill_exit(void)
  {
@@ -818,9 +818,9 @@
  #include <linux/workqueue.h>
  #include <net/genetlink.h>
  #include <net/cfg80211.h>
---- a/net/wireless/scan.c
-+++ b/net/wireless/scan.c
-@@ -409,7 +409,11 @@ cfg80211_bss_update(struct cfg80211_registered_device *dev,
+--- a/net/wireless/scan.c	2009-07-21 13:21:01.952935088 -0700
++++ b/net/wireless/scan.c	2009-07-21 13:21:02.468936915 -0700
+@@ -408,7 +408,11 @@
  			size_t used = dev->wiphy.bss_priv_size + sizeof(*res);
  			size_t ielen = res->pub.len_information_elements;
  
