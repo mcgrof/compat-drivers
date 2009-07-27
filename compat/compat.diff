@@ -51,9 +51,9 @@
  	dev->irq = sdev->irq;
  	SET_ETHTOOL_OPS(dev, &b44_ethtool_ops);
  
---- a/drivers/net/usb/Makefile	2009-07-27 07:02:50.902756655 -0700
-+++ b/drivers/net/usb/Makefile	2009-07-27 07:02:27.913738494 -0700
-@@ -2,23 +2,7 @@
+--- a/drivers/net/usb/Makefile	2009-07-27 08:03:34.770077174 -0700
++++ b/drivers/net/usb/Makefile	2009-07-27 08:04:22.594143560 -0700
+@@ -2,24 +2,7 @@
  # Makefile for USB Network drivers
  #
  
@@ -76,6 +76,7 @@
 -obj-$(CONFIG_USB_NET_MCS7830)	+= mcs7830.o
  obj-$(CONFIG_USB_USBNET)	+= usbnet.o
 -obj-$(CONFIG_USB_NET_INT51X1)	+= int51x1.o
+-obj-$(CONFIG_USB_CDC_PHONET)	+= cdc-phonet.o
  
 --- a/drivers/net/usb/rndis_host.c
 +++ b/drivers/net/usb/rndis_host.c
