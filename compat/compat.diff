@@ -542,9 +542,9 @@
 +#if (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,30))
  #include <trace/define_trace.h>
 +#endif /* (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,30)) */
---- a/net/mac80211/iface.c	2009-07-27 07:58:11.781079971 -0700
-+++ b/net/mac80211/iface.c	2009-07-27 07:58:14.042068740 -0700
-@@ -660,6 +660,7 @@
+--- a/net/mac80211/iface.c	2009-07-27 13:03:30.589047026 -0700
++++ b/net/mac80211/iface.c	2009-07-27 14:39:46.521397084 -0700
+@@ -660,6 +660,7 @@ static void ieee80211_teardown_sdata(str
  	WARN_ON(flushed);
  }
  
@@ -552,7 +552,7 @@
  static const struct net_device_ops ieee80211_dataif_ops = {
  	.ndo_open		= ieee80211_open,
  	.ndo_stop		= ieee80211_stop,
-@@ -679,11 +680,22 @@
+@@ -679,11 +680,22 @@ static const struct net_device_ops ieee8
  	.ndo_change_mtu 	= ieee80211_change_mtu,
  	.ndo_set_mac_address 	= eth_mac_addr,
  };
@@ -572,10 +572,10 @@
 +	/* we will validate the address ourselves in ->open */
 +	dev->validate_addr = NULL;
 +#endif
- 	dev->wireless_handlers = &ieee80211_iw_handler_def;
  	dev->destructor = free_netdev;
  }
-@@ -699,7 +711,11 @@
+ 
+@@ -698,7 +710,11 @@ static void ieee80211_setup_sdata(struct
  
  	/* and set some type-dependent values */
  	sdata->vif.type = type;
@@ -587,7 +587,7 @@
  	sdata->wdev.iftype = type;
  
  	/* only monitor differs */
-@@ -722,7 +738,11 @@
+@@ -721,7 +737,11 @@ static void ieee80211_setup_sdata(struct
  		break;
  	case NL80211_IFTYPE_MONITOR:
  		sdata->dev->type = ARPHRD_IEEE80211_RADIOTAP;
@@ -599,7 +599,7 @@
  		sdata->u.mntr_flags = MONITOR_FLAG_CONTROL |
  				      MONITOR_FLAG_OTHER_BSS;
  		break;
-@@ -789,6 +809,8 @@
+@@ -788,6 +808,8 @@ int ieee80211_if_add(struct ieee80211_lo
  		return -ENOMEM;
  	dev_net_set(ndev, wiphy_net(local->hw.wiphy));
  
@@ -608,7 +608,7 @@
  	ndev->needed_headroom = local->tx_headroom +
  				4*6 /* four MAC addresses */
  				+ 2 + 2 + 2 + 2 /* ctl, dur, seq, qos */
-@@ -797,6 +819,7 @@
+@@ -796,6 +818,7 @@ int ieee80211_if_add(struct ieee80211_lo
  				- ETH_HLEN /* ethernet hard_header_len */
  				+ IEEE80211_ENCRYPT_HEADROOM;
  	ndev->needed_tailroom = IEEE80211_ENCRYPT_TAILROOM;
@@ -616,7 +616,7 @@
  
  	ret = dev_alloc_name(ndev, ndev->name);
  	if (ret < 0)
-@@ -829,6 +852,10 @@
+@@ -828,6 +851,10 @@ int ieee80211_if_add(struct ieee80211_lo
  	if (ret)
  		goto fail;
  
