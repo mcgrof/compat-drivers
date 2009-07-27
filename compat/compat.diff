@@ -51,8 +51,8 @@
  	dev->irq = sdev->irq;
  	SET_ETHTOOL_OPS(dev, &b44_ethtool_ops);
  
---- a/drivers/net/usb/Makefile
-+++ b/drivers/net/usb/Makefile
+--- a/drivers/net/usb/Makefile	2009-07-27 07:02:50.902756655 -0700
++++ b/drivers/net/usb/Makefile	2009-07-27 07:02:27.913738494 -0700
 @@ -2,23 +2,7 @@
  # Makefile for USB Network drivers
  #
