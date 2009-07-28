@@ -20,6 +20,12 @@
  * force this to always use the default init_net
  */
 #define genl_info_net(x) &init_net
+/* Just use init_net for older kernels */
+#define get_net_ns_by_pid(x) &init_net
+
+/* net namespace is lost */
+#define genlmsg_multicast_netns(a, b, c, d, e)	genlmsg_multicast(b, c, d, e)
+#define genlmsg_multicast_allns(a, b, c, d)	genlmsg_multicast(a, b, c, d)
 
 #endif /* (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,32)) */
 
