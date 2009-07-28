@@ -14,6 +14,13 @@
 #define SDIO_DEVICE_ID_INTEL_IWMC3200GPS	0x1405
 #define SDIO_DEVICE_ID_INTEL_IWMC3200BT		0x1406
 
+/*
+ * struct genl_multicast_group was made netns aware through
+ * patch "genetlink: make netns aware" by johannes, we just
+ * force this to always use the default init_net
+ */
+#define genl_info_net(x) &init_net
+
 #endif /* (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,32)) */
 
 #endif /* LINUX_26_32_COMPAT_H */
