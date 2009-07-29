@@ -27,6 +27,8 @@
 #define genlmsg_multicast_netns(a, b, c, d, e)	genlmsg_multicast(b, c, d, e)
 #define genlmsg_multicast_allns(a, b, c, d)	genlmsg_multicast(a, b, c, d)
 
+#define dev_change_net_namespace(a, b, c) (-EOPNOTSUPP)
+
 #endif /* (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,32)) */
 
 #endif /* LINUX_26_32_COMPAT_H */
