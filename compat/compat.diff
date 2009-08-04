@@ -57,18 +57,6 @@
  
  
  /*
---- a/net/mac80211/key.c
-+++ b/net/mac80211/key.c
-@@ -21,6 +21,9 @@
- #include "aes_ccm.h"
- #include "aes_cmac.h"
- 
-+#if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,29))
-+#include <asm/unaligned.h>
-+#endif
- 
- /**
-  * DOC: Key handling basics
 --- a/net/mac80211/rate.c
 +++ b/net/mac80211/rate.c
 @@ -22,7 +22,7 @@ struct rate_control_alg {
