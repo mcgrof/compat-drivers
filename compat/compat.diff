@@ -438,41 +438,6 @@
  
  	return ops;
  }
---- a/net/rfkill/Makefile
-+++ b/net/rfkill/Makefile
-@@ -2,6 +2,6 @@
- # Makefile for the RF switch subsystem.
- #
- 
--rfkill-y			+= core.o
--rfkill-$(CONFIG_RFKILL_INPUT)	+= input.o
--obj-$(CONFIG_RFKILL)		+= rfkill.o
-+rfkill_backport-y			+= core.o
-+rfkill_backport-$(CONFIG_RFKILL_BACKPORT_INPUT)	+= input.o
-+obj-$(CONFIG_RFKILL_BACKPORT)		+= rfkill_backport.o
---- a/net/rfkill/input.c	2009-07-07 17:27:09.290706860 -0700
-+++ b/net/rfkill/input.c	2009-07-07 17:26:57.195684653 -0700
-@@ -17,7 +17,11 @@
- #include <linux/slab.h>
- #include <linux/workqueue.h>
- #include <linux/init.h>
-+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,31))
- #include <linux/rfkill.h>
-+#else
-+#include <linux/rfkill_backport.h>
-+#endif
- #include <linux/sched.h>
- 
- #include "rfkill.h"
-@@ -229,7 +233,7 @@ static int rfkill_connect(struct input_h
- 
- 	handle->dev = dev;
- 	handle->handler = handler;
--	handle->name = "rfkill";
-+	handle->name = "rfkill_backport";
- 
- 	/* causes rfkill_start() to be called */
- 	error = input_register_handle(handle);
 --- a/net/wireless/core.h	2009-07-07 13:32:53.367707921 -0700
 +++ b/net/wireless/core.h	2009-07-07 13:32:53.943703622 -0700
 @@ -11,7 +11,11 @@
