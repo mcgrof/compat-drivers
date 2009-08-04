@@ -16,6 +16,7 @@
 #endif
 
 #include <linux/pci.h>
+#include <pcmcia/ds.h>
 
 #ifndef WARN_ONCE
 #define WARN_ONCE(condition, format...) ({                      \
@@ -28,6 +29,8 @@
 	unlikely(__ret_warn_once);                              \
 })
 #endif /* From include/asm-generic/bug.h */
+
+#define pcmcia_parse_tuple(tuple, parse) pcmcia_parse_tuple(NULL, tuple, parse)
 
 #if 0
 extern void usb_poison_urb(struct urb *urb);
