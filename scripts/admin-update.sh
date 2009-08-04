@@ -164,15 +164,6 @@ cp compat/compat-2.6.*.c net/wireless/
 cp compat/compat-2.6.*.h include/net/
 cp compat/compat.h include/net/
 
-# We'll remove this soon
-patch -p1 -N -t < compat/compat.diff
-RET=$?
-if [[ $RET -ne 0 ]]; then
-	echo "Patching compat.diff failed, update it"
-	exit $RET
-fi
-
-# This is the new way
 for i in compat/diffs/*.patch; do
 	patch -p1 -N -t < $i
 	RET=$?
