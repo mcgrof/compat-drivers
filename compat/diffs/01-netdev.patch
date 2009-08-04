@@ -484,3 +484,28 @@
  	rtap_dev->ml_priv = priv;
  	SET_NETDEV_DEV(rtap_dev, priv->dev->dev.parent);
  
+--- a/drivers/net/wireless/mac80211_hwsim.c
++++ b/drivers/net/wireless/mac80211_hwsim.c
+@@ -814,16 +814,22 @@ static struct device_driver mac80211_hwsim_driver = {
+ 	.name = "mac80211_hwsim"
+ };
+ 
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
+ static const struct net_device_ops hwsim_netdev_ops = {
+ 	.ndo_start_xmit 	= hwsim_mon_xmit,
+ 	.ndo_change_mtu		= eth_change_mtu,
+ 	.ndo_set_mac_address 	= eth_mac_addr,
+ 	.ndo_validate_addr	= eth_validate_addr,
+ };
++#endif
+ 
+ static void hwsim_mon_setup(struct net_device *dev)
+ {
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
+ 	dev->netdev_ops = &hwsim_netdev_ops;
++#else
++	dev->hard_start_xmit = hwsim_mon_xmit;
++#endif
+ 	dev->destructor = free_netdev;
+ 	ether_setup(dev);
+ 	dev->tx_queue_len = 0;
