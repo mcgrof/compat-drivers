@@ -92,20 +92,6 @@
 +cfg80211-y += compat-2.6.31.o
 +cfg80211-y += compat-2.6.32.o
 +
---- a/drivers/net/wireless/ath/ath5k/base.h
-+++ b/drivers/net/wireless/ath/ath5k/base.h
-@@ -46,7 +46,11 @@
- #include <linux/wireless.h>
- #include <linux/if_ether.h>
- #include <linux/leds.h>
-+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,31))
- #include <linux/rfkill.h>
-+#else
-+#include <linux/rfkill_backport.h>
-+#endif
- 
- #include "ath5k.h"
- #include "debug.h"
 --- a/drivers/net/wireless/b43/pcmcia.c	2009-07-08 23:31:13.028453519 -0700
 +++ b/drivers/net/wireless/b43/pcmcia.c	2009-07-08 23:31:15.213207643 -0700
 @@ -88,7 +88,11 @@ static int __devinit b43_pcmcia_probe(st

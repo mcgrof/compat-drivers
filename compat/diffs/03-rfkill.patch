@@ -137,3 +137,17 @@
  	ah->rfsilent = ah->eep_ops->get_eeprom(ah, EEP_RF_SILENT);
  	if (ah->rfsilent & EEP_RFSILENT_ENABLED) {
  		ah->rfkill_gpio =
+--- a/drivers/net/wireless/ath/ath5k/base.h
++++ b/drivers/net/wireless/ath/ath5k/base.h
+@@ -46,7 +46,11 @@
+ #include <linux/wireless.h>
+ #include <linux/if_ether.h>
+ #include <linux/leds.h>
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,31))
+ #include <linux/rfkill.h>
++#else
++#include <linux/rfkill_backport.h>
++#endif
+ 
+ #include "ath5k.h"
+ #include "debug.h"
