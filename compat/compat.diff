@@ -33,30 +33,6 @@
 -obj-$(CONFIG_USB_NET_INT51X1)	+= int51x1.o
 -obj-$(CONFIG_USB_CDC_PHONET)	+= cdc-phonet.o
  
---- a/net/wireless/Makefile
-+++ b/net/wireless/Makefile
-@@ -10,3 +10,11 @@ cfg80211-$(CONFIG_CFG80211_DEBUGFS) += debugfs.o
- cfg80211-$(CONFIG_WIRELESS_EXT) += wext-compat.o wext-sme.o
- 
- ccflags-y += -D__CHECK_ENDIAN__
-+# Compat-wireless kernel compatibility code
-+cfg80211-y += compat-2.6.27.o
-+cfg80211-y += compat-2.6.28.o
-+cfg80211-y += compat-2.6.29.o
-+cfg80211-y += compat-2.6.30.o
-+cfg80211-y += compat-2.6.31.o
-+cfg80211-y += compat-2.6.32.o
-+
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -23,6 +23,7 @@
- /* remove once we remove the wext stuff */
- #include <net/iw_handler.h>
- #include <linux/wireless.h>
-+#include <net/compat.h>
- 
- 
- /*
 --- a/net/mac80211/rate.c
 +++ b/net/mac80211/rate.c
 @@ -22,7 +22,7 @@ struct rate_control_alg {
