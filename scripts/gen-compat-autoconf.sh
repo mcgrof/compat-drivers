@@ -42,23 +42,28 @@ DATE=$(date)
 function define_config {
 	VAR=$1	
 	VALUE=$2
-	echo "#ifndef $VAR"
 	case $VALUE in
-	n) # Do nothing
+	n) # Try to undefine it
+		echo "#undef $VAR"
 		;;
 	y)
+		echo "#ifndef $VAR"
 		echo "#define $VAR 1"
+		echo "#endif /* $VAR */ "
 		;;
 	m)
+		echo "#ifndef $VAR"
 		echo "#define $VAR 1"
+		echo "#endif /* $VAR */ "
 		;;
 	*) # Assume string
 		# XXX: add better checks to make sure what was on
 		# the right was indeed a string
+		echo "#ifndef $VAR"
 		echo "#define $VAR \"$VALUE\""
+		echo "#endif /* $VAR */ "
 		;;
 	esac
-	echo "#endif /* $VAR */ "
 }
 
 # This deals with core compat-wireless kernel requirements.
