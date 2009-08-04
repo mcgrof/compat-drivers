@@ -1,0 +1,128 @@
+--- a/net/rfkill/core.c	2009-08-04 10:54:43.078999821 -0700
++++ b/net/rfkill/core.c	2009-08-04 10:54:43.555024585 -0700
+@@ -26,7 +26,7 @@
+ #include <linux/capability.h>
+ #include <linux/list.h>
+ #include <linux/mutex.h>
+-#include <linux/rfkill.h>
++#include <linux/rfkill_backport.h>
+ #include <linux/spinlock.h>
+ #include <linux/miscdevice.h>
+ #include <linux/wait.h>
+@@ -61,7 +61,7 @@
+ 	const struct rfkill_ops	*ops;
+ 	void			*data;
+ 
+-#ifdef CONFIG_RFKILL_LEDS
++#ifdef CONFIG_RFKILL_BACKPORT_LEDS
+ 	struct led_trigger	led_trigger;
+ 	const char		*ledtrigname;
+ #endif
+@@ -122,7 +122,7 @@
+ static bool rfkill_epo_lock_active;
+ 
+ 
+-#ifdef CONFIG_RFKILL_LEDS
++#ifdef CONFIG_RFKILL_BACKPORT_LEDS
+ static void rfkill_led_trigger_event(struct rfkill *rfkill)
+ {
+ 	struct led_trigger *trigger;
+@@ -316,7 +316,7 @@
+ 	rfkill_event(rfkill);
+ }
+ 
+-#ifdef CONFIG_RFKILL_INPUT
++#ifdef CONFIG_RFKILL_BACKPORT_INPUT
+ static atomic_t rfkill_input_disabled = ATOMIC_INIT(0);
+ 
+ /**
+@@ -776,7 +776,7 @@
+ }
+ 
+ static struct class rfkill_class = {
+-	.name		= "rfkill",
++	.name		= "rfkill_backport",
+ 	.dev_release	= rfkill_release,
+ 	.dev_attrs	= rfkill_dev_attrs,
+ 	.dev_uevent	= rfkill_dev_uevent,
+@@ -922,7 +922,7 @@
+ 	if (!rfkill->persistent || rfkill_epo_lock_active) {
+ 		schedule_work(&rfkill->sync_work);
+ 	} else {
+-#ifdef CONFIG_RFKILL_INPUT
++#ifdef CONFIG_RFKILL_BACKPORT_INPUT
+ 		bool soft_blocked = !!(rfkill->state & RFKILL_BLOCK_SW);
+ 
+ 		if (!atomic_read(&rfkill_input_disabled))
+@@ -1150,7 +1150,7 @@
+ 	list_for_each_entry_safe(ev, tmp, &data->events, list)
+ 		kfree(ev);
+ 
+-#ifdef CONFIG_RFKILL_INPUT
++#ifdef CONFIG_RFKILL_BACKPORT_INPUT
+ 	if (data->input_handler)
+ 		if (atomic_dec_return(&rfkill_input_disabled) == 0)
+ 			printk(KERN_DEBUG "rfkill: input handler enabled\n");
+@@ -1161,7 +1161,7 @@
+ 	return 0;
+ }
+ 
+-#ifdef CONFIG_RFKILL_INPUT
++#ifdef CONFIG_RFKILL_BACKPORT_INPUT
+ static long rfkill_fop_ioctl(struct file *file, unsigned int cmd,
+ 			     unsigned long arg)
+ {
+@@ -1193,14 +1193,14 @@
+ 	.write		= rfkill_fop_write,
+ 	.poll		= rfkill_fop_poll,
+ 	.release	= rfkill_fop_release,
+-#ifdef CONFIG_RFKILL_INPUT
++#ifdef CONFIG_RFKILL_BACKPORT_INPUT
+ 	.unlocked_ioctl	= rfkill_fop_ioctl,
+ 	.compat_ioctl	= rfkill_fop_ioctl,
+ #endif
+ };
+ 
+ static struct miscdevice rfkill_miscdev = {
+-	.name	= "rfkill",
++	.name	= "rfkill_backport",
+ 	.fops	= &rfkill_fops,
+ 	.minor	= MISC_DYNAMIC_MINOR,
+ };
+@@ -1223,7 +1223,7 @@
+ 		goto out;
+ 	}
+ 
+-#ifdef CONFIG_RFKILL_INPUT
++#ifdef CONFIG_RFKILL_BACKPORT_INPUT
+ 	error = rfkill_handler_init();
+ 	if (error) {
+ 		misc_deregister(&rfkill_miscdev);
+@@ -1239,7 +1239,7 @@
+ 
+ static void __exit rfkill_exit(void)
+ {
+-#ifdef CONFIG_RFKILL_INPUT
++#ifdef CONFIG_RFKILL_BACKPORT_INPUT
+ 	rfkill_handler_exit();
+ #endif
+ 	misc_deregister(&rfkill_miscdev);
+--- a/include/linux/rfkill_backport.h	2009-08-04 10:07:03.242018265 -0700
++++ b/include/linux/rfkill_backport.h	2009-08-04 10:58:40.933996836 -0700
+@@ -23,6 +23,7 @@
+  */
+ 
+ #include <linux/types.h>
++#include <net/compat.h>
+ 
+ /* define userspace visible states */
+ #define RFKILL_STATE_SOFT_BLOCKED	0
+@@ -148,7 +149,7 @@
+ 	int	(*set_block)(void *data, bool blocked);
+ };
+ 
+-#if defined(CONFIG_RFKILL) || defined(CONFIG_RFKILL_MODULE)
++#if defined(CONFIG_RFKILL_BACKPORT) || defined(CONFIG_RFKILL_MODULE_BACKPORT)
+ /**
+  * rfkill_alloc - allocate rfkill structure
+  * @name: name of the struct -- the string is not copied internally

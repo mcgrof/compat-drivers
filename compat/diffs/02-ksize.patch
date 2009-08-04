@@ -1,0 +1,14 @@
+--- a/net/wireless/scan.c	2009-08-04 10:39:49.110993204 -0700
++++ b/net/wireless/scan.c	2009-08-04 10:39:49.619023920 -0700
+@@ -401,7 +401,11 @@
+ 			size_t used = dev->wiphy.bss_priv_size + sizeof(*res);
+ 			size_t ielen = res->pub.len_information_elements;
+ 
++#if LINUX_VERSION_CODE <= KERNEL_VERSION(2,6,28)
++			if (0) {
++#else
+ 			if (!found->ies_allocated && ksize(found) >= used + ielen) {
++#endif
+ 				memcpy(found->pub.information_elements,
+ 				       res->pub.information_elements, ielen);
+ 				found->pub.len_information_elements = ielen;

@@ -1,0 +1,247 @@
+--- a/drivers/net/usb/rndis_host.c	2009-08-04 10:15:14.237993105 -0700
++++ b/drivers/net/usb/rndis_host.c	2009-08-04 10:15:14.614020995 -0700
+@@ -274,6 +274,7 @@ response_error:
+ 	return -EDOM;
+ }
+ 
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
+ /* same as usbnet_netdev_ops but MTU change not allowed */
+ static const struct net_device_ops rndis_netdev_ops = {
+ 	.ndo_open		= usbnet_open,
+@@ -283,6 +284,7 @@ static const struct net_device_ops rndis
+ 	.ndo_set_mac_address 	= eth_mac_addr,
+ 	.ndo_validate_addr	= eth_validate_addr,
+ };
++#endif
+ 
+ int
+ generic_rndis_bind(struct usbnet *dev, struct usb_interface *intf, int flags)
+@@ -345,7 +347,11 @@ generic_rndis_bind(struct usbnet *dev, s
+ 	dev->rx_urb_size &= ~(dev->maxpacket - 1);
+ 	u.init->max_transfer_size = cpu_to_le32(dev->rx_urb_size);
+ 
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
+ 	net->netdev_ops = &rndis_netdev_ops;
++#else
++	net->change_mtu = NULL;
++#endif
+ 
+ 	retval = rndis_command(dev, u.header, CONTROL_BUFFER_SIZE);
+ 	if (unlikely(retval < 0)) {
+--- a/drivers/net/usb/usbnet.c	2009-08-04 10:28:16.310023000 -0700
++++ b/drivers/net/usb/usbnet.c	2009-08-04 10:28:16.410010646 -0700
+@@ -1155,6 +1155,7 @@
+ }
+ EXPORT_SYMBOL_GPL(usbnet_disconnect);
+ 
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
+ static const struct net_device_ops usbnet_netdev_ops = {
+ 	.ndo_open		= usbnet_open,
+ 	.ndo_stop		= usbnet_stop,
+@@ -1164,6 +1165,7 @@
+ 	.ndo_set_mac_address 	= eth_mac_addr,
+ 	.ndo_validate_addr	= eth_validate_addr,
+ };
++#endif
+ 
+ /*-------------------------------------------------------------------------*/
+ 
+@@ -1233,7 +1235,15 @@
+ 		net->features |= NETIF_F_HIGHDMA;
+ #endif
+ 
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
+ 	net->netdev_ops = &usbnet_netdev_ops;
++#else
++	net->change_mtu = usbnet_change_mtu;
++	net->hard_start_xmit = usbnet_start_xmit;
++	net->open = usbnet_open;
++	net->stop = usbnet_stop;
++	net->tx_timeout = usbnet_tx_timeout;
++#endif
+ 	net->watchdog_timeo = TX_TIMEOUT_JIFFIES;
+ 	net->ethtool_ops = &usbnet_ethtool_ops;
+ 
+--- a/drivers/net/wireless/rndis_wlan.c	2009-08-04 10:34:57.006001381 -0700
++++ b/drivers/net/wireless/rndis_wlan.c	2009-08-04 10:34:57.065996441 -0700
+@@ -2789,6 +2789,7 @@
+ 	return 0;
+ }
+ 
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
+ /* same as rndis_netdev_ops but with local multicast handler */
+ static const struct net_device_ops rndis_wlan_netdev_ops = {
+ 	.ndo_open		= usbnet_open,
+@@ -2799,6 +2800,7 @@
+ 	.ndo_validate_addr	= eth_validate_addr,
+ 	.ndo_set_multicast_list	= rndis_wlan_set_multicast_list,
+ };
++#endif
+ 
+ 
+ static int rndis_wlan_bind(struct usbnet *usbdev, struct usb_interface *intf)
+@@ -2849,7 +2851,11 @@
+ 	 * rndis_host wants to avoid all OID as much as possible
+ 	 * so do promisc/multicast handling in rndis_wlan.
+ 	 */
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
+ 	usbdev->net->netdev_ops = &rndis_wlan_netdev_ops;
++#else
++	usbdev->net->set_multicast_list = rndis_wlan_set_multicast_list;
++#endif
+ 
+ 	tmp = RNDIS_PACKET_TYPE_DIRECTED | RNDIS_PACKET_TYPE_BROADCAST;
+ 	retval = rndis_set_oid(usbdev, OID_GEN_CURRENT_PACKET_FILTER, &tmp,
+--- a/net/mac80211/iface.c	2009-08-04 10:36:02.971020795 -0700
++++ b/net/mac80211/iface.c	2009-08-04 10:36:03.459024595 -0700
+@@ -684,6 +684,7 @@
+ 	WARN_ON(flushed);
+ }
+ 
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
+ static const struct net_device_ops ieee80211_dataif_ops = {
+ 	.ndo_open		= ieee80211_open,
+ 	.ndo_stop		= ieee80211_stop,
+@@ -703,11 +704,22 @@
+ 	.ndo_change_mtu 	= ieee80211_change_mtu,
+ 	.ndo_set_mac_address 	= eth_mac_addr,
+ };
++#endif
+ 
+ static void ieee80211_if_setup(struct net_device *dev)
+ {
+ 	ether_setup(dev);
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
+ 	dev->netdev_ops = &ieee80211_dataif_ops;
++#else
++	dev->hard_start_xmit = ieee80211_subif_start_xmit;
++	dev->set_multicast_list = ieee80211_set_multicast_list;
++	dev->change_mtu = ieee80211_change_mtu;
++	dev->open = ieee80211_open;
++	dev->stop = ieee80211_stop;
++	/* we will validate the address ourselves in ->open */
++	dev->validate_addr = NULL;
++#endif
+ 	dev->destructor = free_netdev;
+ }
+ 
+@@ -722,7 +734,11 @@
+ 
+ 	/* and set some type-dependent values */
+ 	sdata->vif.type = type;
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
+ 	sdata->dev->netdev_ops = &ieee80211_dataif_ops;
++#else
++	sdata->dev->hard_start_xmit = ieee80211_subif_start_xmit;
++#endif
+ 	sdata->wdev.iftype = type;
+ 
+ 	/* only monitor differs */
+@@ -745,7 +761,11 @@
+ 		break;
+ 	case NL80211_IFTYPE_MONITOR:
+ 		sdata->dev->type = ARPHRD_IEEE80211_RADIOTAP;
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
+ 		sdata->dev->netdev_ops = &ieee80211_monitorif_ops;
++#else
++		sdata->dev->hard_start_xmit = ieee80211_monitor_start_xmit;
++#endif
+ 		sdata->u.mntr_flags = MONITOR_FLAG_CONTROL |
+ 				      MONITOR_FLAG_OTHER_BSS;
+ 		break;
+@@ -812,6 +832,8 @@
+ 		return -ENOMEM;
+ 	dev_net_set(ndev, wiphy_net(local->hw.wiphy));
+ 
++/* This is an optimization, just ignore for older kernels */
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,26))
+ 	ndev->needed_headroom = local->tx_headroom +
+ 				4*6 /* four MAC addresses */
+ 				+ 2 + 2 + 2 + 2 /* ctl, dur, seq, qos */
+@@ -820,6 +842,7 @@
+ 				- ETH_HLEN /* ethernet hard_header_len */
+ 				+ IEEE80211_ENCRYPT_HEADROOM;
+ 	ndev->needed_tailroom = IEEE80211_ENCRYPT_TAILROOM;
++#endif
+ 
+ 	ret = dev_alloc_name(ndev, ndev->name);
+ 	if (ret < 0)
+@@ -852,6 +875,10 @@
+ 	if (ret)
+ 		goto fail;
+ 
++#if (LINUX_VERSION_CODE <= KERNEL_VERSION(2,6,28))
++	ndev->uninit = ieee80211_teardown_sdata;
++#endif
++
+ 	if (ieee80211_vif_is_mesh(&sdata->vif) &&
+ 	    params && params->mesh_id_len)
+ 		ieee80211_sdata_set_mesh_id(sdata,
+--- a/net/wireless/wext.c	2009-08-04 10:50:33.634995059 -0700
++++ b/net/wireless/wext.c	2009-08-04 10:50:34.175014901 -0700
+@@ -1118,8 +1118,13 @@
+ 			return private(dev, iwr, cmd, info, handler);
+ 	}
+ 	/* Old driver API : call driver ioctl handler */
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
+ 	if (dev->netdev_ops->ndo_do_ioctl)
+ 		return dev->netdev_ops->ndo_do_ioctl(dev, ifr, cmd);
++#else
++	if (dev->do_ioctl)
++		return dev->do_ioctl(dev, ifr, cmd);
++#endif
+ 	return -EOPNOTSUPP;
+ }
+ 
+@@ -1272,6 +1277,7 @@
+ }
+ #endif
+ 
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,32))
+ static int __net_init wext_pernet_init(struct net *net)
+ {
+ 	skb_queue_head_init(&net->wext_nlevents);
+@@ -1314,6 +1320,29 @@
+ 
+ static DECLARE_WORK(wireless_nlevent_work, wireless_nlevent_process);
+ 
++#else
++/* Older kernels get the old way of doing stuff*/
++static struct sk_buff_head wireless_nlevent_queue;
++
++static int __init wireless_nlevent_init(void)
++{
++	skb_queue_head_init(&wireless_nlevent_queue);
++	return 0;
++}
++
++subsys_initcall(wireless_nlevent_init);
++
++static void wireless_nlevent_process(unsigned long data)
++{
++	struct sk_buff *skb;
++	while ((skb = skb_dequeue(&wireless_nlevent_queue)))
++		rtnl_notify(skb, &init_net, 0, RTNLGRP_LINK, NULL, GFP_ATOMIC);
++}
++
++static DECLARE_TASKLET(wireless_nlevent_tasklet, wireless_nlevent_process, 0);
++
++#endif
++
+ static struct nlmsghdr *rtnetlink_ifinfo_prep(struct net_device *dev,
+ 					      struct sk_buff *skb)
+ {
+@@ -1524,8 +1553,13 @@
+ 
+ 	skb_shinfo(skb)->frag_list = compskb;
+ #endif
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,32))
+ 	skb_queue_tail(&dev_net(dev)->wext_nlevents, skb);
+ 	schedule_work(&wireless_nlevent_work);
++#else
++	skb_queue_tail(&wireless_nlevent_queue, skb);
++	tasklet_schedule(&wireless_nlevent_tasklet);
++#endif
+ }
+ EXPORT_SYMBOL(wireless_send_event);
+ 
