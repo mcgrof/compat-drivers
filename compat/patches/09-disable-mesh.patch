@@ -1,0 +1,214 @@
+If your kernel has an option enabled we cannot
+simply disable it for two reasons:
+
+* kconfig magic
+* autoconf
+
+We cannot disable CONFIG_MAC80211_MESH by
+using undef on linux/compat_autoconf.h,
+and even if it goes after linux/autoconf.h.
+
+Even if you solve that you still need a way
+to unset it from the kconfig somehow.
+
+Mesh is currently busted and disabled so even
+if your kernel *does* enable it we want to disable
+it for you. We do this by relabelling the mesh
+kconfig option.
+
+--- a/net/mac80211/Makefile	2009-08-04 15:46:36.454027243 -0700
++++ b/net/mac80211/Makefile	2009-08-04 15:50:01.627056156 -0700
+@@ -32,7 +32,7 @@
+ 	debugfs_netdev.o \
+ 	debugfs_key.o
+ 
+-mac80211-$(CONFIG_MAC80211_MESH) += \
++mac80211-$(CONFIG_COMPAT_MAC80211_MESH) += \
+ 	mesh.o \
+ 	mesh_pathtbl.o \
+ 	mesh_plink.o \
+--- a/net/mac80211/cfg.c	2009-08-04 15:47:03.442030609 -0700
++++ b/net/mac80211/cfg.c	2009-08-04 15:47:08.386032081 -0700
+@@ -24,7 +24,7 @@ static bool nl80211_type_check(enum nl80
+ 	case NL80211_IFTYPE_ADHOC:
+ 	case NL80211_IFTYPE_STATION:
+ 	case NL80211_IFTYPE_MONITOR:
+-#ifdef CONFIG_MAC80211_MESH
++#ifdef CONFIG_COMPAT_MAC80211_MESH
+ 	case NL80211_IFTYPE_MESH_POINT:
+ #endif
+ 	case NL80211_IFTYPE_AP:
+@@ -359,7 +359,7 @@ static void sta_set_sinfo(struct sta_inf
+ 		sinfo->txrate.mcs = sta->last_tx_rate.idx;
+ 
+ 	if (ieee80211_vif_is_mesh(&sdata->vif)) {
+-#ifdef CONFIG_MAC80211_MESH
++#ifdef CONFIG_COMPAT_MAC80211_MESH
+ 		sinfo->filled |= STATION_INFO_LLID |
+ 				 STATION_INFO_PLID |
+ 				 STATION_INFO_PLINK_STATE;
+@@ -822,7 +822,7 @@ static int ieee80211_change_station(stru
+ 	return 0;
+ }
+ 
+-#ifdef CONFIG_MAC80211_MESH
++#ifdef CONFIG_COMPAT_MAC80211_MESH
+ static int ieee80211_add_mpath(struct wiphy *wiphy, struct net_device *dev,
+ 				 u8 *dst, u8 *next_hop)
+ {
+@@ -1378,7 +1378,7 @@ struct cfg80211_ops mac80211_config_ops 
+ 	.change_station = ieee80211_change_station,
+ 	.get_station = ieee80211_get_station,
+ 	.dump_station = ieee80211_dump_station,
+-#ifdef CONFIG_MAC80211_MESH
++#ifdef CONFIG_COMPAT_MAC80211_MESH
+ 	.add_mpath = ieee80211_add_mpath,
+ 	.del_mpath = ieee80211_del_mpath,
+ 	.change_mpath = ieee80211_change_mpath,
+--- a/net/mac80211/debugfs_netdev.c	2009-08-04 15:47:21.554036613 -0700
++++ b/net/mac80211/debugfs_netdev.c	2009-08-04 15:47:27.874035797 -0700
+@@ -114,7 +114,7 @@ __IEEE80211_IF_FILE(num_buffered_multica
+ /* WDS attributes */
+ IEEE80211_IF_FILE(peer, u.wds.remote_addr, MAC);
+ 
+-#ifdef CONFIG_MAC80211_MESH
++#ifdef CONFIG_COMPAT_MAC80211_MESH
+ /* Mesh stats attributes */
+ IEEE80211_IF_FILE(fwded_frames, u.mesh.mshstats.fwded_frames, DEC);
+ IEEE80211_IF_FILE(dropped_frames_ttl, u.mesh.mshstats.dropped_frames_ttl, DEC);
+@@ -196,7 +196,7 @@ static void add_monitor_files(struct iee
+ {
+ }
+ 
+-#ifdef CONFIG_MAC80211_MESH
++#ifdef CONFIG_COMPAT_MAC80211_MESH
+ #define MESHSTATS_ADD(name)\
+ 	sdata->mesh_stats.name = debugfs_create_file(#name, 0400,\
+ 		sdata->mesh_stats_dir, sdata, &name##_ops);
+@@ -242,7 +242,7 @@ static void add_files(struct ieee80211_s
+ 
+ 	switch (sdata->vif.type) {
+ 	case NL80211_IFTYPE_MESH_POINT:
+-#ifdef CONFIG_MAC80211_MESH
++#ifdef CONFIG_COMPAT_MAC80211_MESH
+ 		add_mesh_stats(sdata);
+ 		add_mesh_config(sdata);
+ #endif
+@@ -318,7 +318,7 @@ static void del_monitor_files(struct iee
+ {
+ }
+ 
+-#ifdef CONFIG_MAC80211_MESH
++#ifdef CONFIG_COMPAT_MAC80211_MESH
+ #define MESHSTATS_DEL(name)			\
+ 	do {						\
+ 		debugfs_remove(sdata->mesh_stats.name);	\
+@@ -368,7 +368,7 @@ static void del_files(struct ieee80211_s
+ 
+ 	switch (sdata->vif.type) {
+ 	case NL80211_IFTYPE_MESH_POINT:
+-#ifdef CONFIG_MAC80211_MESH
++#ifdef CONFIG_COMPAT_MAC80211_MESH
+ 		del_mesh_stats(sdata);
+ 		del_mesh_config(sdata);
+ #endif
+--- a/net/mac80211/mesh.h	2009-08-04 15:48:36.102026931 -0700
++++ b/net/mac80211/mesh.h	2009-08-04 15:48:40.947057508 -0700
+@@ -265,7 +265,7 @@ void mesh_path_discard_frame(struct sk_b
+ void mesh_path_quiesce(struct ieee80211_sub_if_data *sdata);
+ void mesh_path_restart(struct ieee80211_sub_if_data *sdata);
+ 
+-#ifdef CONFIG_MAC80211_MESH
++#ifdef CONFIG_COMPAT_MAC80211_MESH
+ extern int mesh_allocated;
+ 
+ static inline int mesh_plink_free_count(struct ieee80211_sub_if_data *sdata)
+--- a/net/mac80211/rx.c	2009-08-04 15:47:33.135063113 -0700
++++ b/net/mac80211/rx.c	2009-08-04 15:47:37.322038053 -0700
+@@ -1472,7 +1472,7 @@ ieee80211_rx_h_amsdu(struct ieee80211_rx
+ 	return RX_QUEUED;
+ }
+ 
+-#ifdef CONFIG_MAC80211_MESH
++#ifdef CONFIG_COMPAT_MAC80211_MESH
+ static ieee80211_rx_result
+ ieee80211_rx_h_mesh_fwding(struct ieee80211_rx_data *rx)
+ {
+@@ -1978,7 +1978,7 @@ static void ieee80211_invoke_rx_handlers
+ 	/* must be after MMIC verify so header is counted in MPDU mic */
+ 	CALL_RXH(ieee80211_rx_h_remove_qos_control)
+ 	CALL_RXH(ieee80211_rx_h_amsdu)
+-#ifdef CONFIG_MAC80211_MESH
++#ifdef CONFIG_COMPAT_MAC80211_MESH
+ 	if (ieee80211_vif_is_mesh(&sdata->vif))
+ 		CALL_RXH(ieee80211_rx_h_mesh_fwding);
+ #endif
+--- a/net/mac80211/sta_info.c	2009-08-04 15:47:47.506045594 -0700
++++ b/net/mac80211/sta_info.c	2009-08-04 15:47:54.850030225 -0700
+@@ -174,7 +174,7 @@ void sta_info_destroy(struct sta_info *s
+ 	rate_control_remove_sta_debugfs(sta);
+ 	ieee80211_sta_debugfs_remove(sta);
+ 
+-#ifdef CONFIG_MAC80211_MESH
++#ifdef CONFIG_COMPAT_MAC80211_MESH
+ 	if (ieee80211_vif_is_mesh(&sta->sdata->vif))
+ 		mesh_plink_deactivate(sta);
+ #endif
+@@ -190,7 +190,7 @@ void sta_info_destroy(struct sta_info *s
+ 	 */
+ 	ieee80211_key_todo();
+ 
+-#ifdef CONFIG_MAC80211_MESH
++#ifdef CONFIG_COMPAT_MAC80211_MESH
+ 	if (ieee80211_vif_is_mesh(&sta->sdata->vif))
+ 		del_timer_sync(&sta->plink_timer);
+ #endif
+@@ -310,7 +310,7 @@ struct sta_info *sta_info_alloc(struct i
+ 	       wiphy_name(local->hw.wiphy), sta->sta.addr);
+ #endif /* CONFIG_MAC80211_VERBOSE_DEBUG */
+ 
+-#ifdef CONFIG_MAC80211_MESH
++#ifdef CONFIG_COMPAT_MAC80211_MESH
+ 	sta->plink_state = PLINK_LISTEN;
+ 	init_timer(&sta->plink_timer);
+ #endif
+@@ -498,7 +498,7 @@ static void __sta_info_unlink(struct sta
+ 
+ 	if (ieee80211_vif_is_mesh(&sdata->vif)) {
+ 		mesh_accept_plinks_update(sdata);
+-#ifdef CONFIG_MAC80211_MESH
++#ifdef CONFIG_COMPAT_MAC80211_MESH
+ 		del_timer(&(*sta)->plink_timer);
+ #endif
+ 	}
+--- a/net/mac80211/sta_info.h	2009-08-04 15:48:50.398019224 -0700
++++ b/net/mac80211/sta_info.h	2009-08-04 15:48:55.891063867 -0700
+@@ -282,7 +282,7 @@ struct sta_info {
+ 	struct sta_ampdu_mlme ampdu_mlme;
+ 	u8 timer_to_tid[STA_TID_NUM];
+ 
+-#ifdef CONFIG_MAC80211_MESH
++#ifdef CONFIG_COMPAT_MAC80211_MESH
+ 	/*
+ 	 * Mesh peer link attributes
+ 	 * TODO: move to a sub-structure that is referenced with pointer?
+@@ -333,7 +333,7 @@ struct sta_info {
+ 
+ static inline enum plink_state sta_plink_state(struct sta_info *sta)
+ {
+-#ifdef CONFIG_MAC80211_MESH
++#ifdef CONFIG_COMPAT_MAC80211_MESH
+ 	return sta->plink_state;
+ #endif
+ 	return PLINK_LISTEN;
+--- a/net/mac80211/tx.c	2009-08-04 15:48:06.970029978 -0700
++++ b/net/mac80211/tx.c	2009-08-04 15:48:12.506009905 -0700
+@@ -1615,7 +1615,7 @@ int ieee80211_subif_start_xmit(struct sk
+ 		memcpy(hdr.addr4, skb->data + ETH_ALEN, ETH_ALEN);
+ 		hdrlen = 30;
+ 		break;
+-#ifdef CONFIG_MAC80211_MESH
++#ifdef CONFIG_COMPAT_MAC80211_MESH
+ 	case NL80211_IFTYPE_MESH_POINT:
+ 		fc |= cpu_to_le16(IEEE80211_FCTL_FROMDS | IEEE80211_FCTL_TODS);
+ 		if (!sdata->u.mesh.mshcfg.dot11MeshTTL) {
