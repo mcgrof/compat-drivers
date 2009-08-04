@@ -126,3 +126,14 @@
  /**
   * rfkill_alloc - allocate rfkill structure
   * @name: name of the struct -- the string is not copied internally
+--- a/drivers/net/wireless/ath/ath9k/hw.c	2009-08-04 11:07:27.734023469 -0700
++++ b/drivers/net/wireless/ath/ath9k/hw.c	2009-08-04 11:07:28.482002411 -0700
+@@ -3601,7 +3601,7 @@
+ 
+ 	pCap->hw_caps |= ATH9K_HW_CAP_ENHANCEDPM;
+ 
+-#if defined(CONFIG_RFKILL) || defined(CONFIG_RFKILL_MODULE)
++#if ((LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,31)) && defined(CONFIG_RFKILL) || defined(CONFIG_RFKILL_MODULE)) || ((LINUX_VERSION_CODE < KERNEL_VERSION(2,6,31)) && defined(CONFIG_RFKILL_BACKPORT) || defined(CONFIG_RFKILL_BACKPORT_MODULE))
+ 	ah->rfsilent = ah->eep_ops->get_eeprom(ah, EEP_RF_SILENT);
+ 	if (ah->rfsilent & EEP_RFSILENT_ENABLED) {
+ 		ah->rfkill_gpio =

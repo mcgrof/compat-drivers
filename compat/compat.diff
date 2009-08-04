@@ -106,17 +106,6 @@
  
  #include "ath5k.h"
  #include "debug.h"
---- a/drivers/net/wireless/ath/ath9k/hw.c	2009-07-27 14:41:59.497061239 -0700
-+++ b/drivers/net/wireless/ath/ath9k/hw.c	2009-07-27 14:41:59.861073081 -0700
-@@ -3515,7 +3515,7 @@
- 
- 	pCap->hw_caps |= ATH9K_HW_CAP_ENHANCEDPM;
- 
--#if defined(CONFIG_RFKILL) || defined(CONFIG_RFKILL_MODULE)
-+#if ((LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,31)) && defined(CONFIG_RFKILL) || defined(CONFIG_RFKILL_MODULE)) || ((LINUX_VERSION_CODE < KERNEL_VERSION(2,6,31)) && defined(CONFIG_RFKILL_BACKPORT) || defined(CONFIG_RFKILL_BACKPORT_MODULE))
- 	ah->rfsilent = ah->eep_ops->get_eeprom(ah, EEP_RF_SILENT);
- 	if (ah->rfsilent & EEP_RFSILENT_ENABLED) {
- 		ah->rfkill_gpio =
 --- a/drivers/net/wireless/b43/pcmcia.c	2009-07-08 23:31:13.028453519 -0700
 +++ b/drivers/net/wireless/b43/pcmcia.c	2009-07-08 23:31:15.213207643 -0700
 @@ -88,7 +88,11 @@ static int __devinit b43_pcmcia_probe(st
