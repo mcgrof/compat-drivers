@@ -1,3 +1,22 @@
+
+This patch file includes the changes required to add
+compat-wireless support. Besides all the patches in this
+directory we have our own compat-2.6.*.[ch] files which
+help backport more.
+
+We could optimize this to not compile objects for
+kernels >= your own kernel but that may mean
+some nasty check here, feel free to add it if you
+figure out how.
+
+Lastly, the cfg80211.h change is what allows us to
+get all compat-2.6.*.h files included. Its our only
+point of entry through compat code.
+
+If your driver is not a cfg80211 driver you must
+ensure you include compat.h then. I think we
+added compat.h also for ssb, I forget.
+
 --- a/net/wireless/Makefile
 +++ b/net/wireless/Makefile
 @@ -10,3 +10,11 @@ cfg80211-$(CONFIG_CFG80211_DEBUGFS) += debugfs.o

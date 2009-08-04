@@ -1,3 +1,9 @@
+
+Every kernel release there are a few changes to headers
+made. Some code gets shifted around between headers or
+new headers are defined. This patch deals with such
+cases.
+
 --- a/drivers/net/wireless/b43/phy_common.h
 +++ b/drivers/net/wireless/b43/phy_common.h
 @@ -2,6 +2,9 @@

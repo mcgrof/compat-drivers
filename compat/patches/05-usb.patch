@@ -1,3 +1,5 @@
+USB opt soft_unbid was added as of 2.6.27.
+
 --- a/drivers/net/wireless/p54/p54usb.c	2009-07-07 13:36:49.523678591 -0700
 +++ b/drivers/net/wireless/p54/p54usb.c	2009-07-07 13:36:49.831718432 -0700
 @@ -1047,7 +1047,9 @@

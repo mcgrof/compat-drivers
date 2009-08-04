@@ -1,3 +1,8 @@
+
+This patch removes all drivers we do not support
+or do not want to support. This lets us build
+only the wireless stuff.
+
 --- a/drivers/misc/eeprom/Makefile
 +++ b/drivers/misc/eeprom/Makefile
 @@ -1,5 +1 @@

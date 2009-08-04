@@ -1,3 +1,5 @@
+The only other namespace change.
+
 --- a/net/wireless/nl80211.c	2009-07-27 16:22:30.301045695 -0700
 +++ b/net/wireless/nl80211.c	2009-07-27 18:17:28.445046102 -0700
 @@ -29,7 +29,9 @@

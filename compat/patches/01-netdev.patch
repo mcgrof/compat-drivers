@@ -1,3 +1,11 @@
+
+This patch backports the struct net_device_ops changes added
+on 2.6.29. It also backports the namespace changes added
+through net/wireless/wext.c. Note that there is another
+patch file which also addresses netns changes, we leave
+them separate as there is no easy way to split the stuff
+without creating a headache on maintenance of the pathes.
+
 --- a/drivers/net/usb/rndis_host.c	2009-08-04 10:15:14.237993105 -0700
 +++ b/drivers/net/usb/rndis_host.c	2009-08-04 10:15:14.614020995 -0700
 @@ -274,6 +274,7 @@ response_error:

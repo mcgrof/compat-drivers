@@ -1,3 +1,15 @@
+
+Your current kernels configuration (.config and linux/autoconf.h)
+are always respected when compiling external modules. Because
+of this if you are using an old kernel which preferred the
+PID rate control algorithm we cannot force it to use minstrel
+instead. Minstrel is now the default rate control algorithm
+and we want you to use it. To let you use it we redefine here
+the CONFIG_MAC80211_RC_DEFAULT to CONFIG_COMPAT_MAC80211_RC_DEFAULT
+and define CONFIG_COMPAT_MAC80211_RC_DEFAULT on config.mk.
+Through the compat autoconf we then get it also defined there
+at compilation time.
+
 --- a/net/mac80211/rate.c
 +++ b/net/mac80211/rate.c
 @@ -22,7 +22,7 @@ struct rate_control_alg {

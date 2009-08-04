@@ -1,3 +1,15 @@
+ksize() was added as of 2.6.29, it gives you the actual
+size of the allocated data. Since we have no support for
+this we simply do not optimize for it and deal with
+large alloocations for the IEs.
+
+We technically could backport this as
+
+define ksize(bleh) SOME_LARGE_NUMBER
+
+but doing it this way emphasis careful review
+of the situation.
+
 --- a/net/wireless/scan.c	2009-08-04 10:39:49.110993204 -0700
 +++ b/net/wireless/scan.c	2009-08-04 10:39:49.619023920 -0700
 @@ -401,7 +401,11 @@
