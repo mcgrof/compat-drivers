@@ -47,18 +47,6 @@
 +cfg80211-y += compat-2.6.31.o
 +cfg80211-y += compat-2.6.32.o
 +
---- a/drivers/net/wireless/b43/phy_common.h
-+++ b/drivers/net/wireless/b43/phy_common.h
-@@ -2,6 +2,9 @@
- #define LINUX_B43_PHY_COMMON_H_
- 
- #include <linux/types.h>
-+#if (LINUX_VERSION_CODE == KERNEL_VERSION(2,6,28))
-+#include <asm/atomic.h>
-+#endif
- 
- struct b43_wldev;
- 
 --- a/drivers/net/wireless/wl12xx/wl1251_main.c
 +++ b/drivers/net/wireless/wl12xx/wl1251_main.c
 @@ -26,6 +26,9 @@
