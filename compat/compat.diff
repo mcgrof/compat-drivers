@@ -438,20 +438,6 @@
  
  	return ops;
  }
---- a/net/wireless/core.h	2009-07-07 13:32:53.367707921 -0700
-+++ b/net/wireless/core.h	2009-07-07 13:32:53.943703622 -0700
-@@ -11,7 +11,11 @@
- #include <linux/kref.h>
- #include <linux/rbtree.h>
- #include <linux/debugfs.h>
-+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,31))
- #include <linux/rfkill.h>
-+#else
-+#include <linux/rfkill_backport.h>
-+#endif
- #include <linux/workqueue.h>
- #include <net/genetlink.h>
- #include <net/cfg80211.h>
 --- a/drivers/net/wireless/Makefile	2009-07-06 12:53:07.479194884 -0700
 +++ b/drivers/net/wireless/Makefile	2009-07-06 12:54:42.026195576 -0700
 @@ -5,43 +5,16 @@
