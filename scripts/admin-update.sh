@@ -30,6 +30,16 @@ INCLUDE_LINUX_SPI="wl12xx.h libertas_spi.h"
 INCLUDE_NET="cfg80211.h ieee80211_radiotap.h iw_handler.h"
 INCLUDE_NET="$INCLUDE_NET mac80211.h wext.h lib80211.h regulatory.h"
 
+# Pretty colors
+GREEN="\033[01;32m"
+YELLOW="\033[01;33m"
+NORMAL="\033[00m"
+BLUE="\033[34m"
+RED="\033[31m"
+PURPLE="\033[35m"
+CYAN="\033[36m"
+UNDERLINE="\033[02m"
+
 NET_DIRS="wireless mac80211 rfkill"
 # User exported this variable
 if [ -z $GIT_TREE ]; then
@@ -165,10 +175,11 @@ cp compat/compat-2.6.*.h include/net/
 cp compat/compat.h include/net/
 
 for i in compat/patches/*.patch; do
+	echo -e "${GREEN}Applying backport patch${NORMAL}: ${BLUE}$i${NORMAL}"
 	patch -p1 -N -t < $i
 	RET=$?
 	if [[ $RET -ne 0 ]]; then
-		echo "Patching $i failed, update it"
+		echo "${RED}Patching $i failed${NORMAL}, update it"
 		exit $RET
 	fi
 done
@@ -176,8 +187,8 @@ done
 DIR="$PWD"
 cd $GIT_TREE
 GIT_DESCRIBE=$(git describe)
-echo "Updated from local tree: ${GIT_TREE}"
-echo "Origin remote URL: $(git config remote.origin.url)"
+echo -e "${GREEN}Updated${NORMAL} from local tree: ${BLUE}${GIT_TREE}${NORMAL}"
+echo -e "Origin remote URL: ${CYAN}$(git config remote.origin.url)${NORMAL}"
 cd $DIR
 if [ -d ./.git ]; then
 	git describe > compat-release
@@ -189,17 +200,17 @@ if [ -d ./.git ]; then
 	echo $TREE_NAME > $DIR/git-describe
 	echo $GIT_DESCRIBE >> $DIR/git-describe
 
-	echo "git-describe for $TREE_NAME says: $GIT_DESCRIBE"
+	echo -e "git-describe for $TREE_NAME says: ${PURPLE}$GIT_DESCRIBE${NORMAL}"
 
 	rm -f $DIR/master-tag
 	case $TREE_NAME in
 	"wireless-testing.git") # John's wireless-testing
 		MASTER_TAG=$(git tag -l| grep master | tail -1)
 		echo $MASTER_TAG > $DIR/master-tag
-		echo "This is a bleeding edge compat-wireless release based on: $MASTER_TAG"
+		echo -e "This is a ${RED}bleeding edge${NORMAL} compat-wireless release based on: ${PURPLE}$MASTER_TAG${NORMAL}"
 		;;
 	"linux-2.6-allstable.git") # HPA's all stable tree
-		echo "This is a stable compat-wireless release based on: $(git describe --abbrev=0)"
+		echo "This is a ${GREEN}stable${NORMAL} compat-wireless release based on: ${PURPLE}$(git describe --abbrev=0)${NORMAL}"
 		;;
 	"linux-2.6.git") # Linus' 2.6 tree
 		;;
@@ -210,4 +221,4 @@ if [ -d ./.git ]; then
 	cd $DIR
 fi
 
-echo "This is compat-release: $(cat compat-release)"
+echo -e "This is compat-release: ${YELLOW}$(cat compat-release)${NORMAL}"
