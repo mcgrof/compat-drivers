@@ -99,7 +99,8 @@ CONFIG_MAC80211_RC_MINSTREL=y
 CONFIG_MAC80211_LEDS=y
 
 # enable mesh networking too
-CONFIG_MAC80211_MESH=y
+# Mesh is currently busted on wireless-testing
+#CONFIG_MAC80211_MESH=y
 
 CONFIG_CFG80211=m
 CONFIG_CFG80211_DEFAULT_PS=y
