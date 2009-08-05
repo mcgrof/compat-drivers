@@ -40,7 +40,8 @@ function usage {
 	echo -e "Supported group drivers:"
 	echo -e "\t${CYAN}atheros${NORMAL} < ${PURPLE} ath5k ath9k ar9170 zd1211rw ${NORMAL}>"
 	echo -e "\t${CYAN}ath${NORMAL} < ${PURPLE} ath5k ath9k ar9170 ${NORMAL}>"
-	#echo -e "\t${CYAN}iwlwifi${NORMAL} < ${PURPLE} iwl3945 iwlagn${NORMAL}>"
+	echo -e "\t${CYAN}intel${NORMAL} < ${PURPLE} iwl3945 iwlagn ipw2100 ipw2200 ${NORMAL}>"
+	echo -e "\t${CYAN}iwlwifi${NORMAL} < ${PURPLE} iwl3945 iwlagn ${NORMAL}>"
 
 	echo -e "Restoring compat-wireless:"
 	echo -e "\t${GREEN}restore${NORMAL}: you can use this option to restore compat-wireless to the original state"
@@ -79,7 +80,6 @@ function select_drivers
 			CONFIGS="${CONFIGS}|$i"
 		fi
 	done
-	echo -e "Configs: $CONFIGS"
 	egrep "$CONFIGS" $DRIVERS_MAKEFILE > ${DRIVERS_MAKEFILE}.tmp
 	mv ${DRIVERS_MAKEFILE}.tmp ${DRIVERS_MAKEFILE}
 }
@@ -113,12 +113,16 @@ function disable_usbnet
 	perl -i -ne 'print if ! /drivers\/net\/usb\/ \\/' Makefile
 }
 
-function disable_var_01 {
-	disable_lib80211
+function disable_var {
 	disable_ssb
 	disable_usbnet
 	disable_eeprom
 } 
+
+function disable_var_01 {
+	disable_lib80211
+	disable_var
+}
 
 function select_ath_driver 
 {
@@ -193,6 +197,15 @@ case $1 in
 		;;
 	ath)
 		select_drivers		CONFIG_ATH_COMMON
+		disable_var_01
+		;;
+	intel)
+		select_drivers		CONFIG_IWLWIFI \
+					CONFIG_IPW
+		disable_var
+		;;
+	iwlwifi)
+		select_driver		CONFIG_IWLWIFI
 		disable_var_01
 		;;
 	ath5k)
