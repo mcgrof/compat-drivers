@@ -142,8 +142,10 @@ if [ ! -f compat-release ]; then
 	exit
 fi
 
-# Always backup the top level Makefile
-backup_file Makefile
+# Always backup the top level Makefile, unless restoring
+if [[ "$1" != "restore" ]]; then
+	backup_file Makefile
+fi
 
 case $1 in
 	restore)

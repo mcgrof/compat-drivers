@@ -221,4 +221,6 @@ if [ -d ./.git ]; then
 	cd $DIR
 fi
 
+./scripts/driver-select restore
+
 echo -e "This is compat-release: ${YELLOW}$(cat compat-release)${NORMAL}"
