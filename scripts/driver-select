@@ -120,7 +120,8 @@ function restore_file {
 	#ORIG=$(shell ${1%%.${BACKUP_EXT}})
 	ORIG=${1%%.bk}
 	cp $1 $ORIG
-	echo -e "Restored makefile: ${CYAN}${ORIG}${NORMAL}"
+	rm -f $1
+	echo -e "Restored makefile: ${CYAN}${ORIG}${NORMAL} (and removed backup)"
 }
 
 function restore_compat {
