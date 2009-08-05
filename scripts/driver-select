@@ -86,13 +86,13 @@ function disable_ssb
 function disable_eeprom
 {
 	disable_makefile ${EEPROM_MAKEFILE}
-	perl -i -ne 'print if ! /drivers\/misc\/eeprom\// \\' Makefile
+	perl -i -ne 'print if ! /drivers\/misc\/eeprom\/ \\/' Makefile
 }
 
 function disable_usbnet
 {
 	disable_makefile ${DRIVERS_NET_USB_MAKEFILE}
-	perl -i -ne 'print if ! /drivers\/net\/usb\// \\' Makefile
+	perl -i -ne 'print if ! /drivers\/net\/usb\/ \\/' Makefile
 }
 
 function disable_var_01 {
