@@ -3,11 +3,9 @@ Linux Wireless compatibility package
 =====================================
 
 This is a Linux wireless compatibility package which provides the latest
-Linux wireless subsystem enhancements for kernels 2.6.22 and above. We provide
-compatibility support since 2.6.22 as that is when mac80211 was introduced
-onto the stock kernel. This adds mac80211, mac80211 drivers, and any new 
-full MAC driver which has had fairly recent updates worth getting such as 
-libertas, ipw2100 and ipw2200.
+Linux wireless subsystem enhancements for kernels 2.6.25 and above.
+It is technically possible to support kernels < 2.6.25 but more
+work is required for that.
 
 If you'd like to keep the wireless-testing git repository local as well,
 please read out git-guide which explains how to achieve this:
@@ -26,6 +24,8 @@ and not rely on this README:
 
 http://wireless.kernel.org/en/users/Download
 
+Subscribe to the wiki page to get updates on the documentation.
+
 Where to get the latest
 -----------------------
 
@@ -34,7 +34,17 @@ checkout of wireless-testing.git. However since not many users are expected to k
 a local git repository of wireless-testing we provide daily snapshots of this
 package + the wireless subsystem code. You can find the latest snapshot at:
 
-http://wireless.kernel.org/download/compat-wireless-2.6/compat-wireless-2.6.tar.bz2
+http://wireless.kernel.org/en/users/Download
+
+Selecting your driver
+---------------------
+
+If you know the driver you want you can select it with our
+helper script:
+
+./scripts/driver-select
+
+Run that script to see more information.
 
 Building, and installing
 ------------------------
@@ -58,23 +68,7 @@ distribution's supported drivers.
 
 Load:
 
-If you know what module you need you can simply load the module using modprobe.
-Note that if you are loading a mac80211 driver you must unload your current
-mac80211 drivers as you have a new one to replace it with. Note also that 
-broadcom, zydas, and atheros devices have old legacy drivers which
-you need to be sure are removed first. We provide a mechanism to unload all
-old drivers and also load all new drivers if you are not sure what you are
-doing.
-
-So, if you simply are not sure you can use:
-
-	sudo make load
-
-This unloads your old wireless subsystem drivers and loads the new
-shiny ones. For example if ipw3945 and its proprietary daemon are found
-it'll be stopped and the module unloaded and then iwl3945 will be loaded.
-If you are simply upgrading a mac80211 driver this will unload
-the old one and the old mac80211 drivers and load the new ones.
+Reboot unless you know what you are doing.
 
 Drivers
 -------
@@ -86,10 +80,12 @@ be interested in.
 Driver
 adm8211
 ath5k
+ath9h
+ar9170
 b43
 b43legacy
 iwl3945
-iwl4965
+iwlagn
 ipw2100
 ipw2200
 libertas_cs (Libertas)
@@ -105,58 +101,22 @@ rtl8180	(Realtek)
 rtl8187	(Realtek)
 zd1211rw
 
-Known issues
-------------
+This package also provides more drivers which may be documented here
 
-* Strange wireless device names:
+For a complete list see:
 
-On Ubuntu and Fedora you may end up with strange network device names,
-for example, wlan0_rename. This is a known issue and will be worked on.
+http://wireless.kernel.org/en/users/Download
 
-* nl80211:
+Non-wireless drivers
+--------------------
 
-Kernels <= 2.6.22 now get nl80211 support, however, genl_multicast_group
-won't work. This compatibility cannot be extended to older
-kernels as the struct genl_family was extended on 2.6.23 to add
-the struct list_head mcast_groups.
+To support b43 ssb is also provided, and since ssb is also provided
+we provide b44 (the ethernet driverl).
 
-* b43:
+The new rfkill drivers also provided and backported.
 
-b43 and b43legacy now loads. Since there was an old softmac broadcom driver 
-we provide a load script for this driver. To load the new generation 
-drivers (b43 and b43legacy) you can run:
-
-	sudo b43load b43
-
-To revert back to bcm43xx you can run:
-
-	sudo b43load bcm43xx
-
-* MadWifi:
-
-If MadWifi is present the build system will detect this and disable it. It 
-does this by simply renaming ath_pci.ko to ath_pci.ko.ignore. This lets us
-disable the MadWifi driver without blacklisting it which could cause issues
-with users later. If you would like to enable MadWifi at a later time and
-disable ath5k you can run:
-
-	sudo athload madwifi
-
-To revert back to ath5k you can run:
-
-	sudo athload ath5k
-
-* prism54, p54pci, p54usb?
-
-We don't provide prism54 in this package because distributions already provide 
-it. p54 is its replacement. prism54 works only with full MAC cards. p54 works
-with both full MAC and soft MAC cards.
-
-* What about net/ieee80211/softmac/ and their drivers?
-
-This stuff is long gone.
-
-* Firmware:
+Firmware:
+---------
 
 If your driver needs firmware please be sure to check the driver page
 for that driver here:
@@ -173,12 +133,6 @@ This may mean new drivers for some users. Last but not least we hope this
 will encourage vendors and developers to post patches upstream first
 rather than forking or maintaining their own mac80211 releases with
 their own patches for their own drivers.
-
-How about compatibility work for kernels < 2.6.22 ?
----------------------------------------------------
-
-Sure, feel free to send patches. The main work was designed to support 
-kernels >= 2.6.22 as that was when mac80211 was introduced.
 
 Building for external kernels
 ----------------------------------
@@ -235,7 +189,6 @@ TODO
 ----
 
 * Compatibilty work for 2.6.18 --> 2.6.21
-* Dialog (make menuconfig) option for this package 
 
 Patches for compatibility work
 ------------------------------
@@ -245,8 +198,8 @@ Please send patches against:
 git://git.kernel.org/pub/scm/linux/kernel/git/mcgrof/compat-wireless-2.6.git
 
 To: Luis R. Rodriguez <mcgrof@winlab.rutgers.edu>
-CC: compat-masters@lists.madwifi.org
-Subject: [PATCH] compat-2.6: add driver foo
+CC: linux-wireless@vger.kernel.org
+Subject: [PATCH] compat-2.6: backport foo
 
 Patches for drivers
 -------------------

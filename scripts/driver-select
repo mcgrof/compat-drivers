@@ -1,0 +1,170 @@
+#!/bin/bash
+# Copyright 2009        Luis R. Rodriguez <mcgrof@gmail.com>
+#
+# This this to select your compat-wireless driver and
+# reduce compilation time.
+
+DRIVERS_MAKEFILE="drivers/net/wireless/Makefile"
+ATH_MAKEFILE="drivers/net/wireless/ath/Makefile"
+NET_WIRELESS_MAKEFILE="net/wireless/Makefile"
+EEPROM_MAKEFILE="drivers/misc/eeprom/Makefile"
+DRIVERS_NET_USB_MAKEFILE="drivers/net/usb/Makefile"
+SSB_MAKEFILE="drivers/ssb/Makefile"
+
+# used to backup files from foo to foo.${BACKUP_EXT}
+# If you change this also modify restore_compat() and
+# restore_file() below I couldn't find a way to use
+# the $BACKUP_EXT there.
+BACKUP_EXT="bk"
+
+# Pretty colors
+GREEN="\033[01;32m"
+YELLOW="\033[01;33m"
+NORMAL="\033[00m"
+BLUE="\033[34m"
+RED="\033[31m"
+PURPLE="\033[35m"
+CYAN="\033[36m"
+UNDERLINE="\033[02m"
+
+SUPPORTED_DRIVERS="ath5k ath9k ar9170 zd1211rw"
+
+function usage {
+	echo -e "${GREEN}Usage${NORMAL}: ${CYAN}$0${NORMAL} [ ${PURPLE}<driver-name>${NORMAL} | ${PURPLE}<driver-group-name>${NORMAL} | ${GREEN}restore${NORMAL} ]"
+
+	echo -e "Supported drivers:"
+	for i in $SUPPORTED_DRIVERS; do
+		echo -e "\t${PURPLE}${i}${NORMAL}"
+	done
+
+	echo -e "Supported group drivers:"
+	echo -e "\t${CYAN}ath${NORMAL} < ${PURPLE} ath5k ath9k ar9170 zd1211rw ${NORMAL}>"
+	#echo -e "\t${CYAN}iwlwifi${NORMAL} < ${PURPLE} iwl3945 iwlagn${NORMAL}>"
+
+	echo -e "Restoring compat-wireless:"
+	echo -e "\t${GREEN}restore${NORMAL}: you can use this option to restore compat-wireless to the original state"
+}
+
+if [ $# -ne 1 ]; then
+	usage
+	exit
+fi
+
+if [ ! -f compat-release ]; then
+	echo "Must run $0 from the compat-wireless top level directory"
+	exit
+fi
+
+function backup_file {
+	if [ -f $1.${BACKUP_EXT} ]; then
+		echo -e "Backup exists: ${CYAN}${1}.${BACKUP_EXT}${NORMAL}"
+		return
+	fi
+	echo -e "Backing up makefile: ${CYAN}${1}.${BACKUP_EXT}${NORMAL}"
+	cp $1 $1.bk
+}
+
+function disable_makefile
+{
+	backup_file $1
+	echo > $1
+}
+
+function select_driver 
+{
+	backup_file $DRIVERS_MAKEFILE
+	perl -i -ne 'print if /'$1'/ ' $DRIVERS_MAKEFILE
+}
+
+function disable_lib80211
+{
+	backup_file $NET_WIRELESS_MAKEFILE
+	perl -i -ne 'print if ! /LIB80211/ ' $NET_WIRELESS_MAKEFILE
+}
+
+function disable_b44 {
+	backup_file Makefile
+	perl -i -ne 'print if ! /CONFIG_B44/ ' Makefile
+}
+
+function disable_ssb
+{
+	disable_b44
+	disable_makefile ${SSB_MAKEFILE}
+}
+
+function disable_eeprom
+{
+	disable_makefile ${EEPROM_MAKEFILE}
+}
+
+function disable_usbnet
+{
+	disable_makefile ${DRIVERS_NET_USB_MAKEFILE}
+}
+
+function disable_var_01 {
+	disable_lib80211
+	disable_ssb
+	disable_usbnet
+	disable_eeprom
+} 
+
+function select_ath_driver 
+{
+	backup_file $ATH_MAKEFILE
+	perl -i -ne 'print if /'$1'/ || /CONFIG_ATH_COMMON/ || /ath-objs/ ' $ATH_MAKEFILE
+	disable_var_01
+}
+
+# iwlwifi stuff needs more work
+function select_iwl_driver 
+{
+	perl -i -ne 'print if /'$1'/ || /CONFIG_BLEH/ ' drivers/net/wireless/iwlwifi/Makefile
+	disable_var_01
+}
+
+function restore_file {
+	#ORIG=$(shell ${1%%.${BACKUP_EXT}})
+	ORIG=${1%%.bk}
+	cp $1 $ORIG
+	echo -e "Restored makefile: ${CYAN}${ORIG}${NORMAL}"
+}
+
+function restore_compat {
+	#FILES=$(find ./ -type f -name *.$BACKUP_EXT)
+	FILES=$(find ./ -type f -name *.bk)
+	for i in $FILES; do
+		restore_file $i
+	done
+}
+
+case $1 in
+	restore)
+		restore_compat
+		;;
+	ath)
+		select_driver		CONFIG_ATH_COMMON
+		disable_var_01
+		;;
+	ath5k)
+		select_driver		CONFIG_ATH_COMMON
+		select_ath_driver	CONFIG_ATH5K
+		;;
+	ath9k)
+		select_driver		CONFIG_ATH_COMMON
+		select_ath_driver	CONFIG_ATH9K
+		;;
+	ar9170)
+		select_driver		CONFIG_ATH_COMMON
+		select_ath_driver	CONFIG_AR9170_USB
+		;;
+	zd1211rw)
+		select_driver		CONFIG_ZD1211RW
+		disable_var_01
+		;;
+	*)
+		echo "Unsupported driver"
+		exit
+		;;
+esac
