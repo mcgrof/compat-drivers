@@ -21,7 +21,8 @@ NOSTDINC_FLAGS := -I$(M)/include/ -include $(M)/include/net/compat.h $(CFLAGS)
 
 obj-y := net/wireless/ net/mac80211/ net/rfkill/
 ifeq ($(ONLY_CORE),)
-obj-y += drivers/ssb/ \
+obj-y += \
+	drivers/ssb/ \
 	drivers/misc/eeprom/ \
 	drivers/net/usb/ \
 	drivers/net/wireless/

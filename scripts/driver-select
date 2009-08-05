@@ -45,16 +45,6 @@ function usage {
 	echo -e "\t${GREEN}restore${NORMAL}: you can use this option to restore compat-wireless to the original state"
 }
 
-if [ $# -ne 1 ]; then
-	usage
-	exit
-fi
-
-if [ ! -f compat-release ]; then
-	echo "Must run $0 from the compat-wireless top level directory"
-	exit
-fi
-
 function backup_file {
 	if [ -f $1.${BACKUP_EXT} ]; then
 		echo -e "Backup exists: ${CYAN}${1}.${BACKUP_EXT}${NORMAL}"
@@ -83,7 +73,6 @@ function disable_lib80211
 }
 
 function disable_b44 {
-	backup_file Makefile
 	perl -i -ne 'print if ! /CONFIG_B44/ ' Makefile
 }
 
@@ -91,16 +80,19 @@ function disable_ssb
 {
 	disable_b44
 	disable_makefile ${SSB_MAKEFILE}
+	perl -i -ne 'print if ! /drivers\/ssb\/ \\/ ' Makefile
 }
 
 function disable_eeprom
 {
 	disable_makefile ${EEPROM_MAKEFILE}
+	perl -i -ne 'print if ! /drivers\/misc\/eeprom\// \\' Makefile
 }
 
 function disable_usbnet
 {
 	disable_makefile ${DRIVERS_NET_USB_MAKEFILE}
+	perl -i -ne 'print if ! /drivers\/net\/usb\// \\' Makefile
 }
 
 function disable_var_01 {
@@ -138,6 +130,19 @@ function restore_compat {
 		restore_file $i
 	done
 }
+
+if [ $# -ne 1 ]; then
+	usage
+	exit
+fi
+
+if [ ! -f compat-release ]; then
+	echo "Must run $0 from the compat-wireless top level directory"
+	exit
+fi
+
+# Always backup the top level Makefile
+backup_file Makefile
 
 case $1 in
 	restore)
