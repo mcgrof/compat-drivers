@@ -38,7 +38,8 @@ function usage {
 	done
 
 	echo -e "Supported group drivers:"
-	echo -e "\t${CYAN}ath${NORMAL} < ${PURPLE} ath5k ath9k ar9170 zd1211rw ${NORMAL}>"
+	echo -e "\t${CYAN}atheros${NORMAL} < ${PURPLE} ath5k ath9k ar9170 zd1211rw ${NORMAL}>"
+	echo -e "\t${CYAN}ath${NORMAL} < ${PURPLE} ath5k ath9k ar9170 ${NORMAL}>"
 	#echo -e "\t${CYAN}iwlwifi${NORMAL} < ${PURPLE} iwl3945 iwlagn${NORMAL}>"
 
 	echo -e "Restoring compat-wireless:"
@@ -64,6 +65,23 @@ function select_driver
 {
 	backup_file $DRIVERS_MAKEFILE
 	perl -i -ne 'print if /'$1'/ ' $DRIVERS_MAKEFILE
+}
+
+function select_drivers
+{
+	backup_file $DRIVERS_MAKEFILE
+	CONFIGS=""
+	COUNT=0
+	for i in $@; do
+		if [[ "$CONFIGS" = "" ]]; then
+			CONFIGS="$i"
+		else
+			CONFIGS="${CONFIGS}|$i"
+		fi
+	done
+	echo -e "Configs: $CONFIGS"
+	egrep "$CONFIGS" $DRIVERS_MAKEFILE > ${DRIVERS_MAKEFILE}.tmp
+	mv ${DRIVERS_MAKEFILE}.tmp ${DRIVERS_MAKEFILE}
 }
 
 function disable_lib80211
@@ -168,8 +186,13 @@ case $1 in
 	restore)
 		restore_compat
 		;;
+	atheros)
+		select_drivers		CONFIG_ATH_COMMON \
+					CONFIG_ZD1211RW
+		disable_var_01
+		;;
 	ath)
-		select_driver		CONFIG_ATH_COMMON
+		select_drivers		CONFIG_ATH_COMMON
 		disable_var_01
 		;;
 	ath5k)
