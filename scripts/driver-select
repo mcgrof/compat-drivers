@@ -142,9 +142,26 @@ if [ ! -f compat-release ]; then
 	exit
 fi
 
+if [[ ! -f built-in.o ]]; then
+	if [[ "$1" != "restore" ]]; then
+		echo -e "${YELLOW}Processing new driver-select request...${NORMAL}"
+	fi
+fi
+
 # Always backup the top level Makefile, unless restoring
 if [[ "$1" != "restore" ]]; then
 	backup_file Makefile
+fi
+
+# If a user selects a new driver make sure we clean up for them
+# first and also restore the backup makefiles then. Otherwise
+# we'll be trying to leave drivers on Makefiles which are not
+# already there from a previous run.
+if [ -f built-in.o ]; then
+	echo -e "${YELLOW}Old build found, going to clean this up first...${NORMAL}"
+	make clean
+	echo -e "${YELLOW}Restoring Makefiles...${NORMAL}"
+	./$0 restore
 fi
 
 case $1 in
