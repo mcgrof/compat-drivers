@@ -179,7 +179,7 @@ for i in compat/patches/*.patch; do
 	patch -p1 -N -t < $i
 	RET=$?
 	if [[ $RET -ne 0 ]]; then
-		echo "${RED}Patching $i failed${NORMAL}, update it"
+		echo -e "${RED}Patching $i failed${NORMAL}, update it"
 		exit $RET
 	fi
 done
