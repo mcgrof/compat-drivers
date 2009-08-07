@@ -28,18 +28,18 @@ cases.
  #include <linux/crc32.h>
  #include <linux/etherdevice.h>
  
---- a/drivers/net/wireless/wl12xx/wl1251_spi.c
-+++ b/drivers/net/wireless/wl12xx/wl1251_spi.c
-@@ -23,6 +23,9 @@
- 
+--- a/drivers/net/wireless/wl12xx/wl1251_spi.c	2009-08-07 12:24:58.907526225 -0700
++++ b/drivers/net/wireless/wl12xx/wl1251_spi.c	2009-08-07 12:24:59.199494403 -0700
+@@ -24,6 +24,9 @@
+ #include <linux/irq.h>
  #include <linux/module.h>
  #include <linux/crc7.h>
 +#if (LINUX_VERSION_CODE == KERNEL_VERSION(2,6,28))
 +#include <linux/device.h>
 +#endif
  #include <linux/spi/spi.h>
+ #include <linux/spi/wl12xx.h>
  
- #include "wl1251.h"
 --- a/net/mac80211/driver-trace.h
 +++ b/net/mac80211/driver-trace.h
 @@ -1,7 +1,9 @@
