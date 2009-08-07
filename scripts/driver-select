@@ -32,16 +32,19 @@ SUPPORTED_DRIVERS="ath5k ath9k ar9170 zd1211rw"
 function usage {
 	echo -e "${GREEN}Usage${NORMAL}: ${CYAN}$0${NORMAL} [ ${PURPLE}<driver-name>${NORMAL} | ${PURPLE}<driver-group-name>${NORMAL} | ${GREEN}restore${NORMAL} ]"
 
+	# These should match the switch below.
 	echo -e "Supported drivers:"
 	for i in $SUPPORTED_DRIVERS; do
 		echo -e "\t${PURPLE}${i}${NORMAL}"
 	done
 
+	# These should match the switch below.
 	echo -e "Supported group drivers:"
 	echo -e "\t${CYAN}atheros${NORMAL} < ${PURPLE} ath5k ath9k ar9170 zd1211rw ${NORMAL}>"
 	echo -e "\t${CYAN}ath${NORMAL} < ${PURPLE} ath5k ath9k ar9170 ${NORMAL}>"
 	echo -e "\t${CYAN}intel${NORMAL} < ${PURPLE} iwl3945 iwlagn ipw2100 ipw2200 ${NORMAL}>"
 	echo -e "\t${CYAN}iwlwifi${NORMAL} < ${PURPLE} iwl3945 iwlagn ${NORMAL}>"
+	echo -e "\t${CYAN}wl12xx${NORMAL} < ${PURPLE} wl1251 (SPI and SDIO) wl1271 ${NORMAL}>"
 
 	echo -e "Restoring compat-wireless:"
 	echo -e "\t${GREEN}restore${NORMAL}: you can use this option to restore compat-wireless to the original state"
@@ -206,6 +209,10 @@ case $1 in
 		;;
 	iwlwifi)
 		select_driver		CONFIG_IWLWIFI
+		disable_var_01
+		;;
+	wl12xx)
+		select_drivers		CONFIG_WL12XX
 		disable_var_01
 		;;
 	ath5k)
