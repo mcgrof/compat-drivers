@@ -16,8 +16,8 @@ cases.
  
  struct b43_wldev;
  
---- a/drivers/net/wireless/wl12xx/wl1251_main.c
-+++ b/drivers/net/wireless/wl12xx/wl1251_main.c
+--- a/drivers/net/wireless/wl12xx/wl1251_main.c	2009-08-07 11:42:12.532495607 -0700
++++ b/drivers/net/wireless/wl12xx/wl1251_main.c	2009-08-07 12:08:31.167548696 -0700
 @@ -26,6 +26,9 @@
  #include <linux/firmware.h>
  #include <linux/delay.h>
@@ -25,9 +25,9 @@ cases.
 +#if (LINUX_VERSION_CODE == KERNEL_VERSION(2,6,28))
 +#include <linux/device.h>
 +#endif
- #include <linux/spi/spi.h>
  #include <linux/crc32.h>
  #include <linux/etherdevice.h>
+ 
 --- a/drivers/net/wireless/wl12xx/wl1251_spi.c
 +++ b/drivers/net/wireless/wl12xx/wl1251_spi.c
 @@ -23,6 +23,9 @@
