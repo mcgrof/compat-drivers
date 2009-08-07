@@ -10,7 +10,26 @@
 #include <linux/device.h>
 #include <linux/list.h>
 #include <linux/kernel.h>
+#include <linux/jiffies.h>
 #include <net/net_namespace.h>
+
+/* These jiffie helpers added as of 2.6.26 */
+
+/*
+ * These four macros compare jiffies and 'a' for convenience.
+ */
+
+/* time_is_before_jiffies(a) return true if a is before jiffies */
+#define time_is_before_jiffies(a) time_after(jiffies, a)
+
+/* time_is_after_jiffies(a) return true if a is after jiffies */
+#define time_is_after_jiffies(a) time_before(jiffies, a)
+
+/* time_is_before_eq_jiffies(a) return true if a is before or equal to jiffies*/
+#define time_is_before_eq_jiffies(a) time_after_eq(jiffies, a)
+
+/* time_is_after_eq_jiffies(a) return true if a is after or equal to jiffies*/
+#define time_is_after_eq_jiffies(a) time_before_eq(jiffies, a)
 
 /* This comes from include/linux/input.h */
 #define SW_RFKILL_ALL           0x03  /* rfkill master switch, type "any"
@@ -105,6 +124,25 @@ int net_eq(const struct net *net1, const struct net *net2)
 	return 1;
 }
 #endif
+
+static inline
+void dev_net_set(struct net_device *dev, struct net *net)
+{
+#ifdef CONFIG_NET_NS
+	release_net(dev->nd_net);
+	dev->nd_net = hold_net(net);
+#endif
+}
+
+static inline
+struct net *sock_net(const struct sock *sk)
+{
+#ifdef CONFIG_NET_NS
+	return sk->sk_net;
+#else
+	return &init_net;
+#endif
+}
 
 /* This comes from include/linux/netdevice.h */
 
