@@ -13,7 +13,7 @@
 #include <linux/hw_random.h>
 #include <linux/leds.h>
 #include <linux/kernel.h>
-#include <linux/device.h>
+#include <linux/netdevice.h>
 #include <asm-generic/bug.h>
 
 #define __WARN(foo) dump_stack()
@@ -24,6 +24,11 @@
 	dev_printk(KERN_ALERT , dev , format , ## arg)
 #define dev_crit(dev, format, arg...)           \
 	dev_printk(KERN_CRIT , dev , format , ## arg)
+
+extern int		__dev_addr_sync(struct dev_addr_list **to, int *to_count, struct dev_addr_list **from, int *from_count);
+extern void		__dev_addr_unsync(struct dev_addr_list **to, int *to_count, struct dev_addr_list **from, int *from_count);
+
+#define seq_file_net &init_net;
 
 /* The patch:
  * commit 8b5f6883683c91ad7e1af32b7ceeb604d68e2865

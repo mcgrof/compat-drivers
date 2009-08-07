@@ -11,6 +11,7 @@
 #include <linux/list.h>
 #include <linux/kernel.h>
 #include <linux/jiffies.h>
+#include <net/sock.h>
 #include <net/net_namespace.h>
 
 /* These jiffie helpers added as of 2.6.26 */
