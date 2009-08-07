@@ -27,9 +27,9 @@ kconfig option.
  	mesh.o \
  	mesh_pathtbl.o \
  	mesh_plink.o \
---- a/net/mac80211/cfg.c	2009-08-04 15:47:03.442030609 -0700
-+++ b/net/mac80211/cfg.c	2009-08-04 15:47:08.386032081 -0700
-@@ -24,7 +24,7 @@ static bool nl80211_type_check(enum nl80
+--- a/net/mac80211/cfg.c	2009-08-07 12:13:38.492495191 -0700
++++ b/net/mac80211/cfg.c	2009-08-07 12:13:39.500495940 -0700
+@@ -24,7 +24,7 @@
  	case NL80211_IFTYPE_ADHOC:
  	case NL80211_IFTYPE_STATION:
  	case NL80211_IFTYPE_MONITOR:
@@ -38,7 +38,7 @@ kconfig option.
  	case NL80211_IFTYPE_MESH_POINT:
  #endif
  	case NL80211_IFTYPE_AP:
-@@ -359,7 +359,7 @@ static void sta_set_sinfo(struct sta_inf
+@@ -361,7 +361,7 @@
  		sinfo->txrate.mcs = sta->last_tx_rate.idx;
  
  	if (ieee80211_vif_is_mesh(&sdata->vif)) {
@@ -47,7 +47,7 @@ kconfig option.
  		sinfo->filled |= STATION_INFO_LLID |
  				 STATION_INFO_PLID |
  				 STATION_INFO_PLINK_STATE;
-@@ -822,7 +822,7 @@ static int ieee80211_change_station(stru
+@@ -824,7 +824,7 @@
  	return 0;
  }
  
@@ -56,7 +56,7 @@ kconfig option.
  static int ieee80211_add_mpath(struct wiphy *wiphy, struct net_device *dev,
  				 u8 *dst, u8 *next_hop)
  {
-@@ -1378,7 +1378,7 @@ struct cfg80211_ops mac80211_config_ops 
+@@ -1382,7 +1382,7 @@
  	.change_station = ieee80211_change_station,
  	.get_station = ieee80211_get_station,
  	.dump_station = ieee80211_dump_station,
@@ -112,11 +112,11 @@ kconfig option.
  		del_mesh_stats(sdata);
  		del_mesh_config(sdata);
  #endif
---- a/net/mac80211/mesh.h	2009-08-04 15:48:36.102026931 -0700
-+++ b/net/mac80211/mesh.h	2009-08-04 15:48:40.947057508 -0700
-@@ -265,7 +265,7 @@ void mesh_path_discard_frame(struct sk_b
- void mesh_path_quiesce(struct ieee80211_sub_if_data *sdata);
- void mesh_path_restart(struct ieee80211_sub_if_data *sdata);
+--- a/net/mac80211/mesh.h	2009-08-07 12:13:38.500500259 -0700
++++ b/net/mac80211/mesh.h	2009-08-07 12:13:39.504493864 -0700
+@@ -267,7 +267,7 @@ void mesh_path_restart(struct ieee80211_
+ 
+ extern int mesh_paths_generation;
  
 -#ifdef CONFIG_MAC80211_MESH
 +#ifdef CONFIG_COMPAT_MAC80211_MESH
@@ -143,8 +143,8 @@ kconfig option.
  	if (ieee80211_vif_is_mesh(&sdata->vif))
  		CALL_RXH(ieee80211_rx_h_mesh_fwding);
  #endif
---- a/net/mac80211/sta_info.c	2009-08-04 15:47:47.506045594 -0700
-+++ b/net/mac80211/sta_info.c	2009-08-04 15:47:54.850030225 -0700
+--- a/net/mac80211/sta_info.c	2009-08-07 12:13:38.504498533 -0700
++++ b/net/mac80211/sta_info.c	2009-08-07 12:13:39.508496538 -0700
 @@ -174,7 +174,7 @@ void sta_info_destroy(struct sta_info *s
  	rate_control_remove_sta_debugfs(sta);
  	ieee80211_sta_debugfs_remove(sta);
@@ -172,7 +172,7 @@ kconfig option.
  	sta->plink_state = PLINK_LISTEN;
  	init_timer(&sta->plink_timer);
  #endif
-@@ -498,7 +498,7 @@ static void __sta_info_unlink(struct sta
+@@ -500,7 +500,7 @@ static void __sta_info_unlink(struct sta
  
  	if (ieee80211_vif_is_mesh(&sdata->vif)) {
  		mesh_accept_plinks_update(sdata);
@@ -201,9 +201,9 @@ kconfig option.
  	return sta->plink_state;
  #endif
  	return PLINK_LISTEN;
---- a/net/mac80211/tx.c	2009-08-04 15:48:06.970029978 -0700
-+++ b/net/mac80211/tx.c	2009-08-04 15:48:12.506009905 -0700
-@@ -1615,7 +1615,7 @@ int ieee80211_subif_start_xmit(struct sk
+--- a/net/mac80211/tx.c	2009-08-07 12:13:38.504498533 -0700
++++ b/net/mac80211/tx.c	2009-08-07 12:13:39.512496138 -0700
+@@ -1618,7 +1618,7 @@ int ieee80211_subif_start_xmit(struct sk
  		memcpy(hdr.addr4, skb->data + ETH_ALEN, ETH_ALEN);
  		hdrlen = 30;
  		break;
