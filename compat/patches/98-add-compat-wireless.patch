@@ -17,9 +17,9 @@ If your driver is not a cfg80211 driver you must
 ensure you include compat.h then. I think we
 added compat.h also for ssb, I forget.
 
---- a/net/wireless/Makefile
-+++ b/net/wireless/Makefile
-@@ -10,3 +10,11 @@ cfg80211-$(CONFIG_CFG80211_DEBUGFS) += debugfs.o
+--- a/net/wireless/Makefile	2009-08-07 12:27:50.836497001 -0700
++++ b/net/wireless/Makefile	2009-08-07 12:27:51.952497240 -0700
+@@ -11,3 +11,11 @@
  cfg80211-$(CONFIG_WIRELESS_EXT) += wext-compat.o wext-sme.o
  
  ccflags-y += -D__CHECK_ENDIAN__
