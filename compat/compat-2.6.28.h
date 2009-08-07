@@ -16,7 +16,6 @@
 #endif
 
 #include <linux/pci.h>
-#include <pcmcia/ds.h>
 
 #ifndef WARN_ONCE
 #define WARN_ONCE(condition, format...) ({                      \
