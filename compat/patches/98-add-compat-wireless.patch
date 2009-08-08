@@ -19,11 +19,16 @@ added compat.h also for ssb, I forget.
 
 --- a/net/wireless/Makefile	2009-08-07 12:27:50.836497001 -0700
 +++ b/net/wireless/Makefile	2009-08-07 12:27:51.952497240 -0700
-@@ -11,3 +11,11 @@
+@@ -11,3 +11,16 @@
  cfg80211-$(CONFIG_WIRELESS_EXT) += wext-compat.o wext-sme.o
  
  ccflags-y += -D__CHECK_ENDIAN__
 +# Compat-wireless kernel compatibility code
++cfg80211-y += compat-2.6.22.o
++cfg80211-y += compat-2.6.23.o
++cfg80211-y += compat-2.6.24.o
++cfg80211-y += compat-2.6.25.o
++cfg80211-y += compat-2.6.26.o
 +cfg80211-y += compat-2.6.27.o
 +cfg80211-y += compat-2.6.28.o
 +cfg80211-y += compat-2.6.29.o
