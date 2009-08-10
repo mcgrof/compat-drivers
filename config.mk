@@ -33,6 +33,53 @@ ifeq ($(CONFIG_CFG80211),y)
 $(error "ERROR: your kernel has CONFIG_CFG80211=y, you should have it CONFIG_CFG80211=m if you want to use this thing.")
 endif
 
+
+# Compat wireless compat-2.6.2x.c files gets selected here
+
+ifeq ($(shell test $(KERNEL_SUBLEVEL) -le 21 && echo yes),yes)
+CONFIG_COMPAT_WIRELESS_22=y
+endif
+
+ifeq ($(shell test $(KERNEL_SUBLEVEL) -le 22 && echo yes),yes)
+CONFIG_COMPAT_WIRELESS_23=y
+endif
+
+ifeq ($(shell test $(KERNEL_SUBLEVEL) -le 23 && echo yes),yes)
+CONFIG_COMPAT_WIRELESS_24=y
+endif
+
+ifeq ($(shell test $(KERNEL_SUBLEVEL) -le 24 && echo yes),yes)
+CONFIG_COMPAT_WIRELESS_25=y
+endif
+
+ifeq ($(shell test $(KERNEL_SUBLEVEL) -le 25 && echo yes),yes)
+CONFIG_COMPAT_WIRELESS_26=y
+endif
+
+ifeq ($(shell test $(KERNEL_SUBLEVEL) -le 26 && echo yes),yes)
+CONFIG_COMPAT_WIRELESS_27=y
+endif
+
+ifeq ($(shell test $(KERNEL_SUBLEVEL) -le 27 && echo yes),yes)
+CONFIG_COMPAT_WIRELESS_28=y
+endif
+
+ifeq ($(shell test $(KERNEL_SUBLEVEL) -le 28 && echo yes),yes)
+CONFIG_COMPAT_WIRELESS_29=y
+endif
+
+ifeq ($(shell test $(KERNEL_SUBLEVEL) -le 29 && echo yes),yes)
+CONFIG_COMPAT_WIRELESS_30=y
+endif
+
+ifeq ($(shell test $(KERNEL_SUBLEVEL) -le 30 && echo yes),yes)
+CONFIG_COMPAT_WIRELESS_31=y
+endif
+
+ifeq ($(shell test $(KERNEL_SUBLEVEL) -le 31 && echo yes),yes)
+CONFIG_COMPAT_WIRELESS_32=y
+endif
+
 # 2.6.27 has FTRACE_DYNAMIC borked, so we will complain if
 # you have it enabled, otherwise you will very likely run into
 # a kernel panic.

@@ -2,16 +2,17 @@
 This patch file includes the changes required to add
 compat-wireless support. Besides all the patches in this
 directory we have our own compat-2.6.*.[ch] files which
-help backport more.
-
-We could optimize this to not compile objects for
-kernels >= your own kernel but that may mean
-some nasty check here, feel free to add it if you
-figure out how.
+help backport more. These the respective compat-2.6.2x.c
+files get compiled and enabled if you are on older kernels
+to bring in support for new features when possible.
 
 Lastly, the cfg80211.h change is what allows us to
 get all compat-2.6.*.h files included. Its our only
-point of entry through compat code.
+point of entry through compat code. It works because
+all drivers we are supporting through there one way
+or another depend on cfg80211. New wireless drivers
+are either mac80211 drivers or cfg80211 drivers, and
+all mac80211 drivesr are cfg80211 drivers.
 
 If your driver is not a cfg80211 driver you must
 ensure you include compat.h then. I think we
@@ -24,17 +25,17 @@ added compat.h also for ssb, I forget.
  
  ccflags-y += -D__CHECK_ENDIAN__
 +# Compat-wireless kernel compatibility code
-+cfg80211-y += compat-2.6.22.o
-+cfg80211-y += compat-2.6.23.o
-+cfg80211-y += compat-2.6.24.o
-+cfg80211-y += compat-2.6.25.o
-+cfg80211-y += compat-2.6.26.o
-+cfg80211-y += compat-2.6.27.o
-+cfg80211-y += compat-2.6.28.o
-+cfg80211-y += compat-2.6.29.o
-+cfg80211-y += compat-2.6.30.o
-+cfg80211-y += compat-2.6.31.o
-+cfg80211-y += compat-2.6.32.o
++cfg80211-$(CONFIG_COMPAT_WIRELESS_22) += compat-2.6.22.o
++cfg80211-$(CONFIG_COMPAT_WIRELESS_23) += compat-2.6.23.o
++cfg80211-$(CONFIG_COMPAT_WIRELESS_24) += compat-2.6.24.o
++cfg80211-$(CONFIG_COMPAT_WIRELESS_25) += compat-2.6.25.o
++cfg80211-$(CONFIG_COMPAT_WIRELESS_26) += compat-2.6.26.o
++cfg80211-$(CONFIG_COMPAT_WIRELESS_27) += compat-2.6.27.o
++cfg80211-$(CONFIG_COMPAT_WIRELESS_28) += compat-2.6.28.o
++cfg80211-$(CONFIG_COMPAT_WIRELESS_29) += compat-2.6.29.o
++cfg80211-$(CONFIG_COMPAT_WIRELESS_30) += compat-2.6.30.o
++cfg80211-$(CONFIG_COMPAT_WIRELESS_31) += compat-2.6.31.o
++cfg80211-$(CONFIG_COMPAT_WIRELESS_32) += compat-2.6.32.o
 +
 --- a/include/net/cfg80211.h
 +++ b/include/net/cfg80211.h
