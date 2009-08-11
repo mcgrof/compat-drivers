@@ -286,9 +286,9 @@ kconfig option.
  	return sta->plink_state;
  #endif
  	return PLINK_LISTEN;
---- a/net/mac80211/tx.c	2009-08-07 12:13:38.504498533 -0700
-+++ b/net/mac80211/tx.c	2009-08-07 12:13:39.512496138 -0700
-@@ -1618,7 +1618,7 @@ int ieee80211_subif_start_xmit(struct sk
+--- a/net/mac80211/tx.c	2009-08-10 17:00:18.659463104 -0700
++++ b/net/mac80211/tx.c	2009-08-10 17:00:19.903464501 -0700
+@@ -1617,7 +1617,7 @@
  		memcpy(hdr.addr4, skb->data + ETH_ALEN, ETH_ALEN);
  		hdrlen = 30;
  		break;
