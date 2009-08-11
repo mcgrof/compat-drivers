@@ -70,9 +70,9 @@ without creating a headache on maintenance of the pathes.
  	net->watchdog_timeo = TX_TIMEOUT_JIFFIES;
  	net->ethtool_ops = &usbnet_ethtool_ops;
  
---- a/drivers/net/wireless/rndis_wlan.c	2009-08-07 11:35:32.203495819 -0700
-+++ b/drivers/net/wireless/rndis_wlan.c	2009-08-07 11:39:14.227497262 -0700
-@@ -2823,6 +2823,7 @@
+--- a/drivers/net/wireless/rndis_wlan.c	2009-08-10 16:57:41.535486388 -0700
++++ b/drivers/net/wireless/rndis_wlan.c	2009-08-10 16:57:41.903464012 -0700
+@@ -2789,6 +2789,7 @@
  	return 0;
  }
  
@@ -80,7 +80,7 @@ without creating a headache on maintenance of the pathes.
  /* same as rndis_netdev_ops but with local multicast handler */
  static const struct net_device_ops rndis_wlan_netdev_ops = {
  	.ndo_open		= usbnet_open,
-@@ -2833,6 +2834,7 @@
+@@ -2799,6 +2800,7 @@
  	.ndo_validate_addr	= eth_validate_addr,
  	.ndo_set_multicast_list	= rndis_wlan_set_multicast_list,
  };
@@ -88,7 +88,7 @@ without creating a headache on maintenance of the pathes.
  
  
  static int rndis_wlan_bind(struct usbnet *usbdev, struct usb_interface *intf)
-@@ -2884,7 +2886,11 @@
+@@ -2849,7 +2851,11 @@
  	 * rndis_host wants to avoid all OID as much as possible
  	 * so do promisc/multicast handling in rndis_wlan.
  	 */
