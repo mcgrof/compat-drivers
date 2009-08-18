@@ -185,9 +185,9 @@ just keep /dev/rfkill and not /dev/rfkill_backport.
  #include <linux/workqueue.h>
  #include <net/genetlink.h>
  #include <net/cfg80211.h>
---- a/drivers/net/wireless/ath/ath9k/hw.c	2009-08-04 11:07:27.734023469 -0700
-+++ b/drivers/net/wireless/ath/ath9k/hw.c	2009-08-04 11:07:28.482002411 -0700
-@@ -3601,7 +3601,7 @@
+--- a/drivers/net/wireless/ath/ath9k/hw.c	2009-08-18 16:21:06.969354721 -0700
++++ b/drivers/net/wireless/ath/ath9k/hw.c	2009-08-18 16:21:07.893353370 -0700
+@@ -3615,7 +3615,7 @@
  
  	pCap->hw_caps |= ATH9K_HW_CAP_ENHANCEDPM;
  
