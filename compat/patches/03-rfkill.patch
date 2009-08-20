@@ -117,7 +117,7 @@ just keep /dev/rfkill and not /dev/rfkill_backport.
  static long rfkill_fop_ioctl(struct file *file, unsigned int cmd,
  			     unsigned long arg)
  {
-@@ -1193,14 +1193,14 @@
+@@ -1193,9 +1193,9 @@
  	.write		= rfkill_fop_write,
  	.poll		= rfkill_fop_poll,
  	.release	= rfkill_fop_release,
@@ -128,12 +128,6 @@ just keep /dev/rfkill and not /dev/rfkill_backport.
  #endif
  };
  
- static struct miscdevice rfkill_miscdev = {
--	.name	= "rfkill",
-+	.name	= "rfkill_backport",
- 	.fops	= &rfkill_fops,
- 	.minor	= MISC_DYNAMIC_MINOR,
- };
 @@ -1223,7 +1223,7 @@
  		goto out;
  	}
