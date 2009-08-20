@@ -43,8 +43,8 @@ just keep /dev/rfkill and not /dev/rfkill_backport.
  
  	/* causes rfkill_start() to be called */
  	error = input_register_handle(handle);
---- a/net/rfkill/core.c	2009-08-04 10:54:43.078999821 -0700
-+++ b/net/rfkill/core.c	2009-08-04 10:54:43.555024585 -0700
+--- a/net/rfkill/core.c	2009-08-20 13:48:36.083267397 -0700
++++ b/net/rfkill/core.c	2009-08-20 13:48:37.051267098 -0700
 @@ -26,7 +26,7 @@
  #include <linux/capability.h>
  #include <linux/list.h>
@@ -117,7 +117,7 @@ just keep /dev/rfkill and not /dev/rfkill_backport.
  static long rfkill_fop_ioctl(struct file *file, unsigned int cmd,
  			     unsigned long arg)
  {
-@@ -1193,9 +1193,9 @@
+@@ -1193,7 +1193,7 @@
  	.write		= rfkill_fop_write,
  	.poll		= rfkill_fop_poll,
  	.release	= rfkill_fop_release,
@@ -126,8 +126,6 @@ just keep /dev/rfkill and not /dev/rfkill_backport.
  	.unlocked_ioctl	= rfkill_fop_ioctl,
  	.compat_ioctl	= rfkill_fop_ioctl,
  #endif
- };
- 
 @@ -1223,7 +1223,7 @@
  		goto out;
  	}
