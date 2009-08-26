@@ -8,6 +8,26 @@ are the ones we could not do through compat-2.6.31.h
 Do older kernels have /dev/rfkill ? I not then we can
 just keep /dev/rfkill and not /dev/rfkill_backport.
 
+Note that 2.6.31 added netdevice notifier upon interface
+dev_open() which on cfg80211 will check if checks to see
+if rfkill is enabled (or if the mode of operation is not
+supported) on the  cfg80211_netdev_notifier_call() and if
+so deny bringing the interface up. This was added via
+commit:
+
+3b8bcfd5d31ea0fec58681d035544ace707d2536
+
+Since older kernels will not have the notifier call
+on dev_open() if we *really want* to port this we could have
+mac80211's subif_open() call :
+
+	ret = call_netdevice_notifiers(NETDEV_PRE_UP, dev);
+	ret = notifier_to_errno(ret);
+	if (ret)
+		return ret;
+
+This would do the policing from within mac80211.
+
 --- a/net/rfkill/Makefile
 +++ b/net/rfkill/Makefile
 @@ -2,6 +2,6 @@
