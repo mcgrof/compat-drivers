@@ -164,9 +164,9 @@ This would do the policing from within mac80211.
  	rfkill_handler_exit();
  #endif
  	misc_deregister(&rfkill_miscdev);
---- a/include/linux/rfkill_backport.h	2009-08-04 10:07:03.242018265 -0700
-+++ b/include/linux/rfkill_backport.h	2009-08-04 10:58:40.933996836 -0700
-@@ -23,6 +23,7 @@
+--- a/include/linux/rfkill_backport.h	2009-09-01 10:25:56.770413705 -0700
++++ b/include/linux/rfkill_backport.h	2009-09-02 14:14:12.045091842 -0700
+@@ -20,6 +20,7 @@
   */
  
  #include <linux/types.h>
@@ -174,7 +174,7 @@ This would do the policing from within mac80211.
  
  /* define userspace visible states */
  #define RFKILL_STATE_SOFT_BLOCKED	0
-@@ -148,7 +149,7 @@
+@@ -145,7 +146,7 @@
  	int	(*set_block)(void *data, bool blocked);
  };
  
@@ -197,9 +197,9 @@ This would do the policing from within mac80211.
  #include <linux/workqueue.h>
  #include <net/genetlink.h>
  #include <net/cfg80211.h>
---- a/drivers/net/wireless/ath/ath9k/hw.c	2009-08-18 16:21:06.969354721 -0700
-+++ b/drivers/net/wireless/ath/ath9k/hw.c	2009-08-18 16:21:07.893353370 -0700
-@@ -3615,7 +3615,7 @@
+--- a/drivers/net/wireless/ath/ath9k/hw.c	2009-09-02 14:15:13.145121592 -0700
++++ b/drivers/net/wireless/ath/ath9k/hw.c	2009-09-02 14:15:14.289114759 -0700
+@@ -3643,7 +3643,7 @@
  
  	pCap->hw_caps |= ATH9K_HW_CAP_ENHANCEDPM;
  
