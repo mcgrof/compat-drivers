@@ -58,6 +58,25 @@
 #endif
 
 /*
+ * kmemleak was introduced on 2.6.31, since older kernels do not have
+ * we simply ignore its tuning.
+ */
+static inline void kmemleak_ignore(const void *ptr)
+{
+	return;
+}
+
+static inline void kmemleak_not_leak(const void *ptr)
+{
+	return;
+}
+
+static inline void kmemleak_no_scan(const void *ptr)
+{
+	return;
+}
+
+/*
  * Added via adf30907d63893e4208dfe3f5c88ae12bc2f25d5
  *
  * There is no _sk_dst on older kernels, so just set the
