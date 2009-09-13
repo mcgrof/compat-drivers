@@ -164,8 +164,8 @@ This would do the policing from within mac80211.
  	rfkill_handler_exit();
  #endif
  	misc_deregister(&rfkill_miscdev);
---- a/include/linux/rfkill_backport.h	2009-09-01 10:25:56.770413705 -0700
-+++ b/include/linux/rfkill_backport.h	2009-09-02 14:14:12.045091842 -0700
+--- a/include/linux/rfkill_backport.h	2009-09-13 13:28:21.286436755 -0700
++++ b/include/linux/rfkill_backport.h	2009-09-13 13:28:54.665495610 -0700
 @@ -20,6 +20,7 @@
   */
  
@@ -183,6 +183,15 @@ This would do the policing from within mac80211.
  /**
   * rfkill_alloc - allocate rfkill structure
   * @name: name of the struct -- the string is not copied internally
+@@ -352,7 +353,7 @@
+ #endif /* RFKILL || RFKILL_MODULE */
+ 
+ 
+-#ifdef CONFIG_RFKILL_LEDS
++#ifdef CONFIG_RFKILL_BACKPORT_LEDS
+ /**
+  * rfkill_get_led_trigger_name - Get the LED trigger name for the button's LED.
+  * This function might return a NULL pointer if registering of the
 --- a/net/wireless/core.h	2009-07-07 13:32:53.367707921 -0700
 +++ b/net/wireless/core.h	2009-07-07 13:32:53.943703622 -0700
 @@ -11,7 +11,11 @@
