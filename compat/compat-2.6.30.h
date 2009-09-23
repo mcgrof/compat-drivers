@@ -14,6 +14,8 @@
 #define TP_ARGS(args...)	TPARGS(args)
 #endif
 
+#define IRQ_WAKE_THREAD	(2)
+
 #endif /* (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,30)) */
 
 #endif /* LINUX_26_30_COMPAT_H */

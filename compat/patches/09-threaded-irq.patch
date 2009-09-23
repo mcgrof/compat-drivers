@@ -25,15 +25,15 @@ thread in process context as well.
  		}
  	} else {
 +#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,31)
- 		err = request_threaded_irq(dev->dev->irq, b43_interrupt_handler,
- 					   b43_interrupt_thread_handler,
- 					   IRQF_SHARED, KBUILD_MODNAME, dev);
-+#else
 +		err = compat_request_threaded_irq(&dev->irq_compat,
 +						  dev->dev->irq,
 +						  b43_interrupt_handler,
 +						  b43_interrupt_thread_handler,
 +						  IRQF_SHARED, KBUILD_MODNAME, dev);
++#else
+ 		err = request_threaded_irq(dev->dev->irq, b43_interrupt_handler,
+ 					   b43_interrupt_thread_handler,
+ 					   IRQF_SHARED, KBUILD_MODNAME, dev);
 +#endif
  		if (err) {
  			b43err(dev->wl, "Cannot request IRQ-%d\n", dev->dev->irq);
