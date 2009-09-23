@@ -1,0 +1,63 @@
+The 2.6.31 kernel has threaded IRQ support and b43 is the first
+wireless driver that makes use of it. To support threaded IRSs
+on older kernels we built our own struct compat_threaded_irq
+to queue_work() onto it as the kernel thread be running the
+thread in process context as well.
+
+--- a/drivers/net/wireless/b43/main.c	2009-09-23 10:17:44.852134031 -0700
++++ b/drivers/net/wireless/b43/main.c	2009-09-23 10:21:45.887734082 -0700
+@@ -3908,8 +3908,13 @@ redo:
+ 	if (dev->dev->bus->bustype == SSB_BUSTYPE_SDIO) {
+ 		b43_sdio_free_irq(dev);
+ 	} else {
++#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,31)
++		compat_synchronize_threaded_irq(&dev->irq_compat);
++		compat_free_threaded_irq(&dev->irq_compat);
++#else
+ 		synchronize_irq(dev->dev->irq);
+ 		free_irq(dev->dev->irq, dev);
++#endif
+ 	}
+ 	mutex_lock(&wl->mutex);
+ 	dev = wl->current_dev;
+@@ -3948,9 +3953,17 @@ static int b43_wireless_core_start(struc
+ 			goto out;
+ 		}
+ 	} else {
++#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,31)
+ 		err = request_threaded_irq(dev->dev->irq, b43_interrupt_handler,
+ 					   b43_interrupt_thread_handler,
+ 					   IRQF_SHARED, KBUILD_MODNAME, dev);
++#else
++		err = compat_request_threaded_irq(&dev->irq_compat,
++						  dev->dev->irq,
++						  b43_interrupt_handler,
++						  b43_interrupt_thread_handler,
++						  IRQF_SHARED, KBUILD_MODNAME, dev);
++#endif
+ 		if (err) {
+ 			b43err(dev->wl, "Cannot request IRQ-%d\n", dev->dev->irq);
+ 			goto out;
+@@ -4656,6 +4669,10 @@ static int b43_setup_bands(struct b43_wl
+ 
+ static void b43_wireless_core_detach(struct b43_wldev *dev)
+ {
++#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,31)
++	if (dev->dev->bus->bustype != SSB_BUSTYPE_SDIO)
++		compat_destroy_threaded_irq(&dev->irq_compat);
++#endif
+ 	/* We release firmware that late to not be required to re-request
+ 	 * is all the time when we reinit the core. */
+ 	b43_release_firmware(dev);
+--- a/drivers/net/wireless/b43/b43.h	2009-09-23 10:17:59.383718279 -0700
++++ b/drivers/net/wireless/b43/b43.h	2009-09-23 10:22:17.127771634 -0700
+@@ -822,6 +822,9 @@ struct b43_wldev {
+ 	unsigned int tx_count;
+ 	unsigned int rx_count;
+ #endif
++#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,31)
++	struct compat_threaded_irq irq_compat;
++#endif
+ };
+ 
+ static inline struct b43_wl *hw_to_b43_wl(struct ieee80211_hw *hw)
