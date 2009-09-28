@@ -142,6 +142,15 @@ compat-wireless-2.6 drivers for it you can use this syntax:
 
 make KLIB=/home/mcgrof/kernels/linux-2.6.23.9 KLIB_BUILD=/home/mcgrof/kernels/linux-2.6.23.9
 
+If you have a kernel installed, which is not your currently running kernel (e.g. via
+distro updates; plus its corresponding kernel-dev package), you can use this syntax:
+
+make  KLIB=/lib/modules/2.6.30.6-53.fc11.x86_64
+
+  and to install to your system's root path for the non-running kernel:
+
+make  KLIB=/lib/modules/2.6.30.6-53.fc11.x86_64 KMODPATH_ARG='INSTALL_MOD_PATH=' install
+
 Bugs
 -----
 
