@@ -31,6 +31,18 @@
 
 #define dev_change_net_namespace(a, b, c) (-EOPNOTSUPP)
 
+#define SET_NETDEV_DEVTYPE(netdev, type)
+
+#ifdef __KERNEL__
+/* Driver transmit return codes */
+enum netdev_tx {
+	BACKPORT_NETDEV_TX_OK = NETDEV_TX_OK,       /* driver took care of packet */
+	BACKPORT_NETDEV_TX_BUSY = NETDEV_TX_BUSY,         /* driver tx path was busy*/
+	BACKPORT_NETDEV_TX_LOCKED = NETDEV_TX_LOCKED,  /* driver tx lock was already taken */
+};
+typedef enum netdev_tx netdev_tx_t;
+#endif /* __KERNEL__ */
+
 #endif /* (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,32)) */
 
 #endif /* LINUX_26_32_COMPAT_H */
