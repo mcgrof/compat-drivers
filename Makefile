@@ -24,6 +24,7 @@ ifeq ($(ONLY_CORE),)
 obj-m += \
 	drivers/ssb/ \
 	drivers/misc/eeprom/ \
+	drivers/net/ \
 	drivers/net/usb/ \
 	drivers/net/wireless/
 endif
