@@ -211,7 +211,7 @@ if [ -d ./.git ]; then
 		echo -e "This is a ${RED}bleeding edge${NORMAL} compat-wireless release based on: ${PURPLE}$MASTER_TAG${NORMAL}"
 		;;
 	"linux-2.6-allstable.git") # HPA's all stable tree
-		echo "This is a ${GREEN}stable${NORMAL} compat-wireless release based on: ${PURPLE}$(git describe --abbrev=0)${NORMAL}"
+		echo -e "This is a ${GREEN}stable${NORMAL} compat-wireless release based on: ${PURPLE}$(git describe --abbrev=0)${NORMAL}"
 		;;
 	"linux-2.6.git") # Linus' 2.6 tree
 		;;
