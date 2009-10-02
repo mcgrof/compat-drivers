@@ -43,6 +43,13 @@ static inline struct sk_buff *skb_queue_prev(const struct sk_buff_head *list,
 
 extern void usb_unpoison_anchored_urbs(struct usb_anchor *anchor);
 
+#define DIV_ROUND_CLOSEST(x, divisor)(			\
+{							\
+	typeof(divisor) __divisor = divisor;		\
+	(((x) + ((__divisor) / 2)) / (__divisor));	\
+}							\
+)
+
 #endif /* (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,29)) */
 
 #endif /*  LINUX_26_29_COMPAT_H */

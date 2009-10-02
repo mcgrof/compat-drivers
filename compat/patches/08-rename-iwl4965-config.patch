@@ -16,7 +16,7 @@ CONFIG_IWL4965 has to be set to y, to build correctly.
  iwlagn-$(CONFIG_IWL5000) += iwl-1000.o
 --- a/drivers/net/wireless/iwlwifi/iwl-agn.c	2009-09-02 14:16:08.061113710 -0700
 +++ b/drivers/net/wireless/iwlwifi/iwl-agn.c	2009-09-02 14:16:08.949100601 -0700
-@@ -3008,10 +3008,10 @@
+@@ -3236,10 +3236,10 @@
  
  /* Hardware specific file defines the PCI IDs table for that hardware module */
  static struct pci_device_id iwl_hw_card_ids[] = {
