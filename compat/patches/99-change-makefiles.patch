@@ -84,8 +84,8 @@ only the wireless stuff.
  obj-$(CONFIG_LIBERTAS)		+= libertas/
  
  obj-$(CONFIG_LIBERTAS_THINFIRM)	+= libertas_tf/
---- a/net/wireless/Makefile
-+++ b/net/wireless/Makefile
+--- a/net/wireless/Makefile	2009-10-06 13:00:59.000000000 -0400
++++ b/net/wireless/Makefile	2009-10-06 13:00:59.000000000 -0400
 @@ -4,11 +4,6 @@
  obj-$(CONFIG_LIB80211_CRYPT_CCMP) += lib80211_crypt_ccmp.o
  obj-$(CONFIG_LIB80211_CRYPT_TKIP) += lib80211_crypt_tkip.o
@@ -96,5 +96,5 @@ only the wireless stuff.
 -obj-$(CONFIG_WEXT_PRIV) += wext-priv.o
 -
  cfg80211-y += core.o sysfs.o radiotap.o util.o reg.o scan.o nl80211.o
- cfg80211-y += mlme.o ibss.o sme.o chan.o
+ cfg80211-y += mlme.o ibss.o sme.o chan.o ethtool.o
  cfg80211-$(CONFIG_CFG80211_DEBUGFS) += debugfs.o
