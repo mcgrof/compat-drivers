@@ -3,20 +3,20 @@ module, but now it is directly included in the iwlagn.
 
 CONFIG_IWL4965 has to be set to y, to build correctly.
 
---- a/drivers/net/wireless/iwlwifi/Makefile
-+++ b/drivers/net/wireless/iwlwifi/Makefile
-@@ -9,7 +9,7 @@ iwlcore-$(CONFIG_IWLWIFI_SPECTRUM_MEASUREMENT) += iwl-spectrum.o
+--- a/drivers/net/wireless/iwlwifi/Makefile	2009-10-06 12:57:49.000000000 -0400
++++ b/drivers/net/wireless/iwlwifi/Makefile	2009-10-06 12:57:50.000000000 -0400
+@@ -12,7 +12,7 @@
  obj-$(CONFIG_IWLAGN)	+= iwlagn.o
- iwlagn-objs		:= iwl-agn.o iwl-agn-rs.o
+ iwlagn-objs		:= iwl-agn.o iwl-agn-rs.o iwl-agn-led.o
  
 -iwlagn-$(CONFIG_IWL4965) += iwl-4965.o
 +iwlagn-$(CONFIG_COMPAT_IWL4965) += iwl-4965.o
  iwlagn-$(CONFIG_IWL5000) += iwl-5000.o
  iwlagn-$(CONFIG_IWL5000) += iwl-6000.o
  iwlagn-$(CONFIG_IWL5000) += iwl-1000.o
---- a/drivers/net/wireless/iwlwifi/iwl-agn.c	2009-09-02 14:16:08.061113710 -0700
-+++ b/drivers/net/wireless/iwlwifi/iwl-agn.c	2009-09-02 14:16:08.949100601 -0700
-@@ -3236,10 +3236,10 @@
+--- a/drivers/net/wireless/iwlwifi/iwl-agn.c	2009-10-06 12:57:49.000000000 -0400
++++ b/drivers/net/wireless/iwlwifi/iwl-agn.c	2009-10-06 12:57:50.000000000 -0400
+@@ -3244,10 +3244,10 @@
  
  /* Hardware specific file defines the PCI IDs table for that hardware module */
  static struct pci_device_id iwl_hw_card_ids[] = {
