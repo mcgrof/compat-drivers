@@ -109,8 +109,8 @@ CONFIG_MAC80211_MESH=y
 CONFIG_CFG80211=m
 CONFIG_CFG80211_DEFAULT_PS=y
 CONFIG_CFG80211_DEFAULT_PS_VALUE=1
-CONFIG_CFG80211_WEXT=y
 # CONFIG_CFG80211_REG_DEBUG=y
+# See below for wext stuff
 
 CONFIG_LIB80211=m
 CONFIG_LIB80211_CRYPT_WEP=m
@@ -120,13 +120,22 @@ CONFIG_LIB80211_CRYPT_TKIP=m
 
 CONFIG_WIRELESS_OLD_REGULATORY=n
 
+ifdef CONFIG_COMPAT_WIRELESS_32
+# Old kernels stil do depend on CONFIG_WIRELESS_EXT
+# as we add the wireless handler back to the struct
+# netdevice
 ifneq ($(CONFIG_WIRELESS_EXT),)
-CONFIG_WEXT_CORE=m
-CONFIG_WEXT_PROC=m
-CONFIG_WEXT_SPY=m
-CONFIG_WEXT_PRIV=m
 CONFIG_CFG80211_WEXT=y
 endif
+else
+# 2.6.33 and above do not need CONFIG_WIRELESS_EXT, but the
+# reality is we should select CONFIG_WIRELESS_EXT only if a
+# driver claims for it (one of the old non-cfg80211 drivers).
+# Then users could either have this on or off but we leave it
+# on in case users on >= 2.6.33 still have iwconfig and other
+# old deprecated userspace applications.
+CONFIG_CFG80211_WEXT=y
+endif # CONFIG_COMPAT_WIRELESS_32
 
 # mac80211 test driver
 CONFIG_MAC80211_HWSIM=m
