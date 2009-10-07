@@ -8,6 +8,7 @@
 #if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,32))
 
 #include <linux/netdevice.h>
+#include <linux/pm.h>
 
 #define SDIO_VENDOR_ID_INTEL			0x0089
 #define SDIO_DEVICE_ID_INTEL_IWMC3200WIMAX	0x1402
@@ -42,6 +43,31 @@ enum netdev_tx {
 };
 typedef enum netdev_tx netdev_tx_t;
 #endif /* __KERNEL__ */
+
+
+/*
+ * dev_pm_ops is only available on kernels >= 2.6.29, for
+ * older kernels we rely on reverting the work to old
+ * power management style stuff.
+ */
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
+/*
+ * Use this if you want to use the same suspend and resume callbacks for suspend
+ * to RAM and hibernation.
+ */
+#define SIMPLE_DEV_PM_OPS(name, suspend_fn, resume_fn) \
+struct dev_pm_ops name = { \
+	.suspend = suspend_fn, \
+	.resume = resume_fn, \
+	.freeze = suspend_fn, \
+	.thaw = resume_fn, \
+	.poweroff = suspend_fn, \
+	.restore = resume_fn, \
+}
+#else
+#define SIMPLE_DEV_PM_OPS(name, suspend_fn, resume_fn)
+#endif /* >= 2.6.29 */
+
 
 #endif /* (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,32)) */
 
