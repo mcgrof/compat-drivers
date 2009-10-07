@@ -4,8 +4,8 @@ on older kernels we built our own struct compat_threaded_irq
 to queue_work() onto it as the kernel thread be running the
 thread in process context as well.
 
---- a/drivers/net/wireless/b43/main.c	2009-10-06 12:59:24.000000000 -0400
-+++ b/drivers/net/wireless/b43/main.c	2009-10-06 12:59:24.000000000 -0400
+--- a/drivers/net/wireless/b43/main.c	2009-10-07 01:44:15.000000000 -0400
++++ b/drivers/net/wireless/b43/main.c	2009-10-07 01:44:16.000000000 -0400
 @@ -3909,8 +3909,13 @@
  	if (dev->dev->bus->bustype == SSB_BUSTYPE_SDIO) {
  		b43_sdio_free_irq(dev);
@@ -38,7 +38,7 @@ thread in process context as well.
  		if (err) {
  			b43err(dev->wl, "Cannot request IRQ-%d\n", dev->dev->irq);
  			goto out;
-@@ -4660,6 +4673,10 @@
+@@ -4661,6 +4674,10 @@
  
  static void b43_wireless_core_detach(struct b43_wldev *dev)
  {
@@ -49,9 +49,10 @@ thread in process context as well.
  	/* We release firmware that late to not be required to re-request
  	 * is all the time when we reinit the core. */
  	b43_release_firmware(dev);
---- a/drivers/net/wireless/b43/b43.h	2009-09-23 10:17:59.383718279 -0700
-+++ b/drivers/net/wireless/b43/b43.h	2009-09-23 10:22:17.127771634 -0700
-@@ -822,6 +822,9 @@ struct b43_wldev {
+ static inline struct b43_wl *hw_to_b43_wl(struct ieee80211_hw *hw)
+--- a/drivers/net/wireless/b43/b43.h	2009-10-07 01:45:01.000000000 -0400
++++ b/drivers/net/wireless/b43/b43.h	2009-10-07 01:45:02.000000000 -0400
+@@ -831,6 +831,9 @@
  	unsigned int tx_count;
  	unsigned int rx_count;
  #endif
