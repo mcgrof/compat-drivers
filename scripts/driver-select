@@ -229,7 +229,7 @@ case $1 in
 		;;
 	ath9k)
 		select_driver		CONFIG_ATH_COMMON
-		select_ath_driver	CONFIG_ATH9K
+		select_ath_driver	CONFIG_ATH9K_HW
 		;;
 	ar9170)
 		select_driver		CONFIG_ATH_COMMON
