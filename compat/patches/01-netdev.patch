@@ -416,9 +416,9 @@ without creating a headache on maintenance of the pathes.
  /**
   * @brief This function adds the card. it will probe the
 @@ -1270,7 +1272,16 @@
- 	priv->infra_open = 0;
+ 	wdev->netdev = dev;
+ 	priv->dev = dev;
  
- 	/* Setup the OS Interface to our functions */
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
   	dev->netdev_ops = &lbs_netdev_ops;
 +#else
