@@ -27,7 +27,7 @@ INCLUDE_LINUX_USB="usbnet.h rndis_host.h"
 INCLUDE_LINUX_SPI="wl12xx.h libertas_spi.h"
 
 # The good new yummy stuff
-INCLUDE_NET="cfg80211.h ieee80211_radiotap.h iw_handler.h"
+INCLUDE_NET="cfg80211.h ieee80211_radiotap.h"
 INCLUDE_NET="$INCLUDE_NET mac80211.h wext.h lib80211.h regulatory.h"
 
 # Pretty colors
