@@ -534,3 +534,38 @@ without creating a headache on maintenance of the pathes.
  	dev->destructor = free_netdev;
  	ether_setup(dev);
  	dev->tx_queue_len = 0;
+
+
+Remove this after John picks this up:
+
+From 8fe3f6159c61a7c88a2bd160e8281d62e3978bed Mon Sep 17 00:00:00 2001
+From: Luis R. Rodriguez <lrodriguez@atheros.com>
+Date: Thu, 8 Oct 2009 16:43:57 -0400
+Subject: [PATCH] libertas: remove double assignment of dev->netdev_ops
+
+This came in through the patch titled:
+    libertas: first stab at cfg80211 support
+
+I only noticed it because it breaks compat-wireless :)
+
+Cc: Holger Schurig <hs4233@mail.mn-solutions.de>
+Signed-off-by: Luis R. Rodriguez <lrodriguez@atheros.com>
+---
+ drivers/net/wireless/libertas/main.c |    1 -
+ 1 files changed, 0 insertions(+), 1 deletions(-)
+
+diff --git a/drivers/net/wireless/libertas/main.c b/drivers/net/wireless/libertas/main.c
+index e6da1df..87bfd17 100644
+--- a/drivers/net/wireless/libertas/main.c
++++ b/drivers/net/wireless/libertas/main.c
+@@ -1276,7 +1276,6 @@ struct lbs_private *lbs_add_card(void *card, struct device *dmdev)
+ 		goto err_adapter;
+ 	}
+ 
+-	dev->netdev_ops = &lbs_netdev_ops;
+ 	dev->ieee80211_ptr = wdev;
+ 	dev->ml_priv = priv;
+ 	SET_NETDEV_DEV(dev, dmdev);
+-- 
+1.6.0.4
+
