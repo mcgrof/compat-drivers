@@ -1,0 +1,11 @@
+--- a/drivers/net/wireless/ipw2x00/ipw2100.c	2009-10-08 11:01:52.000000000 -0400
++++ b/drivers/net/wireless/ipw2x00/ipw2100.c	2009-10-08 11:01:43.000000000 -0400
+@@ -6057,7 +6057,7 @@
+ 
+ 	dev->ethtool_ops = &ipw2100_ethtool_ops;
+ 	dev->wireless_handlers = &ipw2100_wx_handler_def;
+-	priv->wireless_data.libipw = priv->ieee;
++	priv->wireless_data.ieee80211 = priv->ieee;
+ 	dev->wireless_data = &priv->wireless_data;
+ 	dev->watchdog_timeo = 3 * HZ;
+ 	dev->irq = 0;
