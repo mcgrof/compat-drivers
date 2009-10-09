@@ -6,6 +6,7 @@
 
 DRIVERS_MAKEFILE="drivers/net/wireless/Makefile"
 ATH_MAKEFILE="drivers/net/wireless/ath/Makefile"
+ATH9K_MAKEFILE="drivers/net/wireless/ath/ath9k/Makefile"
 NET_WIRELESS_MAKEFILE="net/wireless/Makefile"
 EEPROM_MAKEFILE="drivers/misc/eeprom/Makefile"
 DRIVERS_NET="drivers/net/Makefile"
@@ -140,7 +141,13 @@ function disable_var_02 {
 function select_ath_driver 
 {
 	backup_file $ATH_MAKEFILE
-	perl -i -ne 'print if /'$1'/ || /CONFIG_ATH_COMMON/ || /ath-objs/ || regd.o || hw.o ' $ATH_MAKEFILE
+	perl -i -ne 'print if /'$1'/ || /CONFIG_ATH_COMMON/ || /ath-objs/ || /regd.o/ || /hw.o/ ' $ATH_MAKEFILE
+	disable_var_01
+}
+
+function select_ath9k_driver
+{
+	select_ath_driver CONFIG_ATH9K_HW
 	disable_var_01
 }
 
@@ -231,7 +238,7 @@ case $1 in
 		;;
 	ath9k)
 		select_driver		CONFIG_ATH_COMMON
-		select_ath_driver	CONFIG_ATH9K_HW
+		select_ath9k_driver
 		;;
 	ar9170)
 		select_driver		CONFIG_ATH_COMMON
