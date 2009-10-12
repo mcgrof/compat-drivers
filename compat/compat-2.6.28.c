@@ -275,4 +275,14 @@ unsigned long round_jiffies_up(unsigned long j)
 }
 EXPORT_SYMBOL_GPL(round_jiffies_up);
 
+void skb_add_rx_frag(struct sk_buff *skb, int i, struct page *page, int off,
+		int size)
+{
+	skb_fill_page_desc(skb, i, page, off, size);
+	skb->len += size;
+	skb->data_len += size;
+	skb->truesize += size;
+}
+EXPORT_SYMBOL(skb_add_rx_frag);
+
 #endif /* LINUX_VERSION_CODE < KERNEL_VERSION(2,6,28) */

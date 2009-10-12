@@ -178,6 +178,9 @@ static inline void skb_queue_splice_tail_init(struct sk_buff_head *list,
 
 unsigned long round_jiffies_up(unsigned long j);
 
+extern void skb_add_rx_frag(struct sk_buff *skb, int i, struct page *page,
+			    int off, int size);
+
 #endif /* (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,28)) */
 
 #endif /* LINUX_26_28_COMPAT_H */
