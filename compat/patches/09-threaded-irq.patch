@@ -52,7 +52,7 @@ thread in process context as well.
  static inline struct b43_wl *hw_to_b43_wl(struct ieee80211_hw *hw)
 --- a/drivers/net/wireless/b43/b43.h	2009-10-07 01:45:01.000000000 -0400
 +++ b/drivers/net/wireless/b43/b43.h	2009-10-07 01:45:02.000000000 -0400
-@@ -831,6 +831,9 @@
+@@ -747,6 +747,9 @@
  	unsigned int tx_count;
  	unsigned int rx_count;
  #endif
@@ -61,4 +61,4 @@ thread in process context as well.
 +#endif
  };
  
- static inline struct b43_wl *hw_to_b43_wl(struct ieee80211_hw *hw)
+ /*

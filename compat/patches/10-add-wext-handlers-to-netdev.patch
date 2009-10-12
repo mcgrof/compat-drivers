@@ -13,7 +13,7 @@ the struct wiphy wireless handler.
 
 --- a/net/wireless/core.c	2009-10-06 13:23:34.000000000 -0400
 +++ b/net/wireless/core.c	2009-10-06 13:25:31.000000000 -0400
-@@ -671,6 +671,10 @@
+@@ -672,6 +672,10 @@
  		wdev->sme_state = CFG80211_SME_IDLE;
  		mutex_unlock(&rdev->devlist_mtx);
  #ifdef CONFIG_CFG80211_WEXT
