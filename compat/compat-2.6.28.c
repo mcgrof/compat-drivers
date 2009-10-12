@@ -260,7 +260,6 @@ static unsigned long round_jiffies_common(unsigned long j, int cpu,
 	return j;
 }
 
-#if 0
 /**
  * round_jiffies_up - function to round jiffies up to a full second
  * @j: the time in (absolute) jiffies that should be rounded
@@ -275,6 +274,5 @@ unsigned long round_jiffies_up(unsigned long j)
 	return round_jiffies_common(j, raw_smp_processor_id(), true);
 }
 EXPORT_SYMBOL_GPL(round_jiffies_up);
-#endif
 
 #endif /* LINUX_VERSION_CODE < KERNEL_VERSION(2,6,28) */
