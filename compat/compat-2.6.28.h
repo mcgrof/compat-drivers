@@ -195,6 +195,11 @@ static inline void tracepoint_update_probe_range(struct tracepoint *begin,
 
 #endif
 
+/* openSuse includes round_jiffies_up in it's kernel 2.6.27.
+ * This is needed to prevent conflicts with the openSuse definition.
+ */
+#define round_jiffies_up backport_round_jiffies_up
+
 unsigned long round_jiffies_up(unsigned long j);
 
 #endif /* (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,28)) */
