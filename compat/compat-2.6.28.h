@@ -146,22 +146,6 @@ static inline void skb_queue_splice_tail_init(struct sk_buff_head *list,
 	}
 } /* From include/linux/skbuff.h */
 
-struct module;
-struct tracepoint;
-
-#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,28))
-struct tracepoint {
-	const char *name;		/* Tracepoint name */
-	int state;			/* State. */
-	void **funcs;
-} __attribute__((aligned(32)));		/*
-					 * Aligned on 32 bytes because it is
-					 * globally visible and gcc happily
-					 * align these on the structure size.
-					 * Keep in sync with vmlinux.lds.h.
-					 */
-#endif
-
 #ifndef DECLARE_TRACE
 
 #define TP_PROTO(args...)	args
@@ -181,17 +165,9 @@ struct tracepoint {
 		return -ENOSYS;						\
 	}
 
-#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,28))
-#define DEFINE_TRACE(name)
-#endif
 #define EXPORT_TRACEPOINT_SYMBOL_GPL(name)
 #define EXPORT_TRACEPOINT_SYMBOL(name)
 
-#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,28))
-static inline void tracepoint_update_probe_range(struct tracepoint *begin,
-	struct tracepoint *end)
-{ }
-#endif
 
 #endif
 
