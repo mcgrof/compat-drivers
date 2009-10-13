@@ -14,7 +14,7 @@
 #include <linux/mmc/sdio_func.h>
 #include <linux/netdevice.h>
 #include <linux/workqueue.h>
-
+#include <net/iw_handler.h>
 #include <asm-generic/bug.h>
 
 #define PCI_PM_CAP_PME_SHIFT	11
@@ -163,9 +163,6 @@ static inline void list_splice_tail_init(struct list_head *list,
 extern unsigned int mmc_align_data_size(struct mmc_card *, unsigned int);
 extern unsigned int sdio_align_size(struct sdio_func *func, unsigned int sz);
 
-/** Include iw_handler.h before we redefine some methods **/
-#include <net/iw_handler.h>
-
 #define iwe_stream_add_value(info, event, value, ends, iwe, event_len) iwe_stream_add_value(event, value, ends, iwe, event_len)
 #define iwe_stream_add_point(info, stream, ends, iwe, extra) iwe_stream_add_point(stream, ends, iwe, extra)
 #define iwe_stream_add_event(info, stream, ends, iwe, event_len) iwe_stream_add_event(stream, ends, iwe, event_len)
@@ -181,7 +178,6 @@ static inline int iwe_stream_lcp_len(struct iw_request_info *info)
 #endif
 	return IW_EV_LCP_LEN;
 }
-/** source: include/net/iw_handler.h **/
 
 #endif /* (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,27)) */
 
