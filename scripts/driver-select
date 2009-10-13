@@ -8,6 +8,7 @@ DRIVERS_MAKEFILE="drivers/net/wireless/Makefile"
 ATH_MAKEFILE="drivers/net/wireless/ath/Makefile"
 NET_WIRELESS_MAKEFILE="net/wireless/Makefile"
 EEPROM_MAKEFILE="drivers/misc/eeprom/Makefile"
+DRIVERS_NET="drivers/net/Makefile"
 DRIVERS_NET_USB_MAKEFILE="drivers/net/usb/Makefile"
 SSB_MAKEFILE="drivers/ssb/Makefile"
 
@@ -95,7 +96,8 @@ function disable_lib80211
 }
 
 function disable_b44 {
-	perl -i -ne 'print if ! /CONFIG_B44/ ' Makefile
+	backup_file $DRIVERS_NET
+	perl -i -ne 'print if ! /CONFIG_B44/ ' $DRIVERS_NET
 }
 
 function disable_ssb

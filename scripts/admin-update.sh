@@ -149,7 +149,7 @@ done
 # b44 is dependent on ssb, so its has to be rebuilt as well.
 DIR="drivers/net"
 cp $GIT_TREE/$DIR/b44.[ch] $DIR
-echo "obj-m += b44.o" > $DIR/Makefile
+echo "obj-$(CONFIG_B44) += b44.o" > $DIR/Makefile
 
 # Misc
 mkdir -p drivers/misc/eeprom/
