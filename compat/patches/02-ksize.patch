@@ -12,12 +12,13 @@ of the situation.
 
 --- a/net/wireless/scan.c	2009-09-02 14:13:33.769092519 -0700
 +++ b/net/wireless/scan.c	2009-09-02 14:13:34.925094548 -0700
-@@ -422,7 +422,11 @@
+@@ -422,7 +422,12 @@
  			size_t used = dev->wiphy.bss_priv_size + sizeof(*res);
  			size_t ielen = res->pub.len_information_elements;
  
 +#if LINUX_VERSION_CODE <= KERNEL_VERSION(2,6,28)
 +			if (0) {
++				used = 0; /* just to shut up the compiler */
 +#else
  			if (!found->ies_allocated && ksize(found) >= used + ielen) {
 +#endif
