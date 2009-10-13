@@ -1,0 +1,22 @@
+Kernels >= 2.6.32 can identify the type of device netdevice
+so that sysfs can be used to get this. We never really had a
+systematic way of doing this -- now we do through the
+SET_NETDEV_DEVTYPE() macro. For older kernels we make the
+SET_NETDEV_DEVTYPE() be a no-op this means the wireless type
+we define is unused so we ucomment it simply to avoid a
+compile warning.
+
+--- a/net/mac80211/iface.c	2009-10-08 19:17:40.000000000 -0400
++++ b/net/mac80211/iface.c	2009-10-08 19:17:48.000000000 -0400
+@@ -776,9 +776,11 @@
+ 	return 0;
+ }
+ 
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,32))
+ static struct device_type wiphy_type = {
+ 	.name	= "wlan",
+ };
++#endif
+ 
+ int ieee80211_if_add(struct ieee80211_local *local, const char *name,
+ 		     struct net_device **new_dev, enum nl80211_iftype type,
