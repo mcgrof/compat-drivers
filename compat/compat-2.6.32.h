@@ -9,6 +9,7 @@
 
 #include <linux/netdevice.h>
 #include <linux/pm.h>
+#include <net/iw_handler.h>
 
 #define SDIO_VENDOR_ID_INTEL			0x0089
 #define SDIO_DEVICE_ID_INTEL_IWMC3200WIMAX	0x1402
@@ -68,6 +69,7 @@ struct dev_pm_ops name = { \
 #define SIMPLE_DEV_PM_OPS(name, suspend_fn, resume_fn)
 #endif /* >= 2.6.29 */
 
+#define wireless_send_event(a, b, c, d) wireless_send_event(a, b, c, (char * ) d)
 
 #endif /* (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,32)) */
 
