@@ -8,6 +8,7 @@
 #if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,32))
 
 #include <linux/netdevice.h>
+#include <net/iw_handler.h>
 
 #define SDIO_VENDOR_ID_INTEL			0x0089
 #define SDIO_DEVICE_ID_INTEL_IWMC3200WIMAX	0x1402
@@ -42,6 +43,8 @@ enum netdev_tx {
 };
 typedef enum netdev_tx netdev_tx_t;
 #endif /* __KERNEL__ */
+
+#define wireless_send_event(a, b, c, d) wireless_send_event(a, b, c, (char * ) d)
 
 #endif /* (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,32)) */
 
