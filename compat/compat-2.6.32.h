@@ -46,6 +46,9 @@ typedef enum netdev_tx netdev_tx_t;
 
 #define wireless_send_event(a, b, c, d) wireless_send_event(a, b, c, (char * ) d)
 
+/* The export symbol in changed in compat/patches/15-symbol-export-conflicts.patch */
+#define ieee80211_rx(hw, skb) mac80211_ieee80211_rx(hw, skb)
+
 #endif /* (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,32)) */
 
 #endif /* LINUX_26_32_COMPAT_H */
