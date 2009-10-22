@@ -192,7 +192,6 @@ echo -e "${GREEN}Updated${NORMAL} from local tree: ${BLUE}${GIT_TREE}${NORMAL}"
 echo -e "Origin remote URL: ${CYAN}$(git config remote.origin.url)${NORMAL}"
 cd $DIR
 if [ -d ./.git ]; then
-	git describe > compat-release
 
 	cd $GIT_TREE
 	TREE_NAME=$(git config remote.origin.url)
@@ -206,14 +205,23 @@ if [ -d ./.git ]; then
 	rm -f $DIR/master-tag
 	case $TREE_NAME in
 	"wireless-testing.git") # John's wireless-testing
+		cd $DIR
+		git tag -l | grep "master" | tail -1 > compat-release
+		cd $GIT_TREE
 		MASTER_TAG=$(git tag -l| grep master | tail -1)
 		echo $MASTER_TAG > $DIR/master-tag
 		echo -e "This is a ${RED}bleeding edge${NORMAL} compat-wireless release based on: ${PURPLE}$MASTER_TAG${NORMAL}"
 		;;
 	"linux-2.6-allstable.git") # HPA's all stable tree
+		cd $DIR
+		git tag -l | grep "2.6" | tail -1 > compat-release
+		cd $GIT_TREE
 		echo -e "This is a ${GREEN}stable${NORMAL} compat-wireless release based on: ${PURPLE}$(git describe --abbrev=0)${NORMAL}"
 		;;
 	"linux-2.6.git") # Linus' 2.6 tree
+		cd $DIR
+		git tag -l | grep "2.6" > compat-release
+		cd $GIT_TREE
 		;;
 	*)
 		;;
