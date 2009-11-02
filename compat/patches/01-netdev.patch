@@ -397,9 +397,9 @@ without creating a headache on maintenance of the pathes.
  	priv->wireless_data.spy_data = &priv->ieee->spy_data;
  	net_dev->wireless_data = &priv->wireless_data;
  	net_dev->wireless_handlers = &ipw_wx_handler_def;
---- a/drivers/net/wireless/libertas/main.c	2009-10-07 01:42:20.000000000 -0400
-+++ b/drivers/net/wireless/libertas/main.c	2009-10-07 01:42:21.000000000 -0400
-@@ -1229,6 +1229,7 @@
+--- a/drivers/net/wireless/libertas/main.c	2009-11-02 08:04:43.000000000 -0800
++++ b/drivers/net/wireless/libertas/main.c	2009-11-02 08:04:44.000000000 -0800
+@@ -1109,6 +1109,7 @@
  	lbs_deb_leave(LBS_DEB_MAIN);
  }
  
@@ -407,7 +407,7 @@ without creating a headache on maintenance of the pathes.
  static const struct net_device_ops lbs_netdev_ops = {
  	.ndo_open 		= lbs_dev_open,
  	.ndo_stop		= lbs_eth_stop,
-@@ -1239,6 +1240,7 @@
+@@ -1119,6 +1120,7 @@
  	.ndo_change_mtu		= eth_change_mtu,
  	.ndo_validate_addr	= eth_validate_addr,
  };
@@ -415,7 +415,7 @@ without creating a headache on maintenance of the pathes.
  
  /**
   * @brief This function adds the card. it will probe the
-@@ -1284,7 +1286,16 @@
+@@ -1164,7 +1166,16 @@
  	wdev->netdev = dev;
  	priv->dev = dev;
  
@@ -432,7 +432,7 @@ without creating a headache on maintenance of the pathes.
  	dev->watchdog_timeo = 5 * HZ;
  	dev->ethtool_ops = &lbs_ethtool_ops;
  #ifdef	WIRELESS_EXT
-@@ -1531,6 +1542,7 @@
+@@ -1405,6 +1416,7 @@
  EXPORT_SYMBOL_GPL(lbs_stop_card);
  
  
@@ -440,7 +440,7 @@ without creating a headache on maintenance of the pathes.
  static const struct net_device_ops mesh_netdev_ops = {
  	.ndo_open		= lbs_dev_open,
  	.ndo_stop 		= lbs_mesh_stop,
-@@ -1538,6 +1550,7 @@
+@@ -1412,6 +1424,7 @@
  	.ndo_set_mac_address	= lbs_set_mac_address,
  	.ndo_set_multicast_list = lbs_set_multicast_list,
  };
@@ -448,7 +448,7 @@ without creating a headache on maintenance of the pathes.
  
  /**
   * @brief This function adds mshX interface
-@@ -1561,7 +1574,15 @@
+@@ -1435,7 +1448,15 @@
  	mesh_dev->ml_priv = priv;
  	priv->mesh_dev = mesh_dev;
  
@@ -464,7 +464,7 @@ without creating a headache on maintenance of the pathes.
  	mesh_dev->ethtool_ops = &lbs_ethtool_ops;
  	memcpy(mesh_dev->dev_addr, priv->dev->dev_addr,
  			sizeof(priv->dev->dev_addr));
-@@ -1777,11 +1798,13 @@
+@@ -1589,11 +1610,13 @@
  	lbs_deb_leave(LBS_DEB_MAIN);
  }
  
@@ -478,7 +478,7 @@ without creating a headache on maintenance of the pathes.
  
  static int lbs_add_rtap(struct lbs_private *priv)
  {
-@@ -1802,7 +1825,13 @@
+@@ -1614,7 +1637,13 @@
  
  	memcpy(rtap_dev->dev_addr, priv->current_addr, ETH_ALEN);
  	rtap_dev->type = ARPHRD_IEEE80211_RADIOTAP;

@@ -206,9 +206,9 @@ This would do the policing from within mac80211.
  #include <linux/workqueue.h>
  #include <net/genetlink.h>
  #include <net/cfg80211.h>
---- a/drivers/net/wireless/ath/ath9k/hw.c	2009-10-06 12:55:01.000000000 -0400
-+++ b/drivers/net/wireless/ath/ath9k/hw.c	2009-10-06 12:55:02.000000000 -0400
-@@ -3675,7 +3675,7 @@
+--- a/drivers/net/wireless/ath/ath9k/hw.c	2009-11-02 08:06:38.000000000 -0800
++++ b/drivers/net/wireless/ath/ath9k/hw.c	2009-11-02 08:06:39.000000000 -0800
+@@ -3254,7 +3254,7 @@
  
  	pCap->hw_caps |= ATH9K_HW_CAP_ENHANCEDPM;
  
