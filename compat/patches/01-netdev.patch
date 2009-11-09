@@ -511,7 +511,7 @@ without creating a headache on maintenance of the pathes.
  #define LBS_DEB_LEAVE	0x00000002
 --- a/drivers/net/wireless/mac80211_hwsim.c	2009-08-18 16:18:52.829350750 -0700
 +++ b/drivers/net/wireless/mac80211_hwsim.c	2009-08-18 16:18:52.977352457 -0700
-@@ -816,16 +816,22 @@
+@@ -872,16 +872,22 @@
  	.name = "mac80211_hwsim"
  };
  

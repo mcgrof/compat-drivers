@@ -51,7 +51,7 @@ thread in process context as well.
  	b43_release_firmware(dev);
 --- a/drivers/net/wireless/b43/b43.h	2009-10-19 11:36:44.000000000 +0900
 +++ b/drivers/net/wireless/b43/b43.h	2009-10-19 11:36:45.000000000 +0900
-@@ -747,6 +747,9 @@
+@@ -745,6 +745,9 @@
  	unsigned int tx_count;
  	unsigned int rx_count;
  #endif

@@ -3,7 +3,7 @@ To avoid conflicts with the other export we rename our.
 
 --- a/net/mac80211/rx.c	2009-11-02 08:08:54.000000000 -0800
 +++ b/net/mac80211/rx.c	2009-11-02 08:08:55.000000000 -0800
-@@ -2536,7 +2536,12 @@
+@@ -2480,7 +2480,12 @@
   drop:
  	kfree_skb(skb);
  }
