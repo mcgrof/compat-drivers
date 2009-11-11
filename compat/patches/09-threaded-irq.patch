@@ -4,8 +4,8 @@ on older kernels we built our own struct compat_threaded_irq
 to queue_work() onto it as the kernel thread be running the
 thread in process context as well.
 
---- a/drivers/net/wireless/b43/main.c	2009-10-22 19:29:11.000000000 +0900
-+++ b/drivers/net/wireless/b43/main.c	2009-10-22 19:29:11.000000000 +0900
+--- a/drivers/net/wireless/b43/main.c	2009-11-10 16:53:44.000000000 -0800
++++ b/drivers/net/wireless/b43/main.c	2009-11-10 16:53:47.000000000 -0800
 @@ -3909,8 +3909,13 @@
  	if (dev->dev->bus->bustype == SSB_BUSTYPE_SDIO) {
  		b43_sdio_free_irq(dev);
@@ -38,7 +38,7 @@ thread in process context as well.
  		if (err) {
  			b43err(dev->wl, "Cannot request IRQ-%d\n", dev->dev->irq);
  			goto out;
-@@ -4661,6 +4674,10 @@
+@@ -4660,6 +4673,10 @@
  
  static void b43_wireless_core_detach(struct b43_wldev *dev)
  {
