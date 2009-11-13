@@ -148,6 +148,7 @@ function select_ath_driver
 function select_ath9k_driver
 {
 	select_ath_driver CONFIG_ATH9K_HW
+	# In the future here we'll add stuff to disable ath9k_htc
 }
 
 # iwlwifi stuff needs more work
