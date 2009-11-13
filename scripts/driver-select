@@ -148,7 +148,6 @@ function select_ath_driver
 function select_ath9k_driver
 {
 	select_ath_driver CONFIG_ATH9K_HW
-	disable_var_01
 }
 
 # iwlwifi stuff needs more work
