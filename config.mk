@@ -150,6 +150,10 @@ CONFIG_ATH5K=m
 CONFIG_ATH5K_RFKILL=y
 CONFIG_ATH9K_HW=m
 CONFIG_ATH9K=m
+# Note: once ath9k_htc is added we'll have to move
+# CONFIG_ATH9K_COMMON to an area that doesn't depend on PCI
+# as you could then have ath9k disabled but ath9k_htc enabled.
+CONFIG_ATH9K_COMMON=m
 # CONFIG_ATH9K_DEBUG=y
 
 
