@@ -141,7 +141,7 @@ function disable_var_02 {
 function select_ath_driver 
 {
 	backup_file $ATH_MAKEFILE
-	perl -i -ne 'print if /'$1'/ || /CONFIG_ATH_COMMON/ || /ath-objs/ || /regd.o/ || /hw.o/ ' $ATH_MAKEFILE
+	perl -i -ne 'print if /'$1'/ || /CONFIG_ATH_/ || /ath-objs/ || /regd.o/ || /hw.o/ ' $ATH_MAKEFILE
 	disable_var_01
 }
 
