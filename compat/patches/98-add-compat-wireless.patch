@@ -20,7 +20,7 @@ added compat.h also for ssb, I forget.
 
 --- a/net/wireless/Makefile	2009-08-07 12:27:50.836497001 -0700
 +++ b/net/wireless/Makefile	2009-08-07 12:27:51.952497240 -0700
-@@ -15,3 +15,16 @@
+@@ -15,3 +15,17 @@
  cfg80211-$(CONFIG_CFG80211_WEXT) += wext-compat.o wext-sme.o
  
  ccflags-y += -D__CHECK_ENDIAN__
@@ -36,6 +36,7 @@ added compat.h also for ssb, I forget.
 +cfg80211-$(CONFIG_COMPAT_WIRELESS_30) += compat-2.6.30.o
 +cfg80211-$(CONFIG_COMPAT_WIRELESS_31) += compat-2.6.31.o
 +cfg80211-$(CONFIG_COMPAT_WIRELESS_32) += compat-2.6.32.o
++cfg80211-$(CONFIG_COMPAT_WIRELESS_33) += compat-2.6.33.o
 +
 --- a/include/net/cfg80211.h
 +++ b/include/net/cfg80211.h

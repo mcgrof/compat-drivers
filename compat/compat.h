@@ -21,5 +21,6 @@
 #include <net/compat-2.6.30.h>
 #include <net/compat-2.6.31.h>
 #include <net/compat-2.6.32.h>
+#include <net/compat-2.6.33.h>
 
 #endif /* LINUX_26_COMPAT_H */
