@@ -39,7 +39,7 @@ cases.
 +#endif
  #include <linux/crc32.h>
  #include <linux/etherdevice.h>
- 
+ #include <linux/vmalloc.h>
 --- a/drivers/net/wireless/wl12xx/wl1251_spi.c	2009-08-07 12:24:58.907526225 -0700
 +++ b/drivers/net/wireless/wl12xx/wl1251_spi.c	2009-08-07 12:24:59.199494403 -0700
 @@ -24,6 +24,9 @@

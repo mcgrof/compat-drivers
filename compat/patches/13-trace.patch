@@ -35,7 +35,7 @@ in or compat headers.
  #include <net/mac80211.h>
  #include "ieee80211_i.h"
  
-@@ -669,4 +671,6 @@ TRACE_EVENT(drv_ampdu_action,
+@@ -672,4 +674,6 @@ TRACE_EVENT(drv_ampdu_action,
  #define TRACE_INCLUDE_PATH .
  #undef TRACE_INCLUDE_FILE
  #define TRACE_INCLUDE_FILE driver-trace
