@@ -110,6 +110,15 @@ This would do the policing from within mac80211.
  	.dev_release	= rfkill_release,
  	.dev_attrs	= rfkill_dev_attrs,
  	.dev_uevent	= rfkill_dev_uevent,
+@@ -897,7 +897,7 @@ int __must_check rfkill_register(struct
+ 	}
+ 
+ 	rfkill->idx = rfkill_no;
+-	dev_set_name(dev, "rfkill%lu", rfkill_no);
++	dev_set_name(dev, "backport_rfkill%lu", rfkill_no);
+ 	rfkill_no++;
+ 
+ 	list_add_tail(&rfkill->node, &rfkill_list);
 @@ -923,7 +923,7 @@
  	if (!rfkill->persistent || rfkill_epo_lock_active) {
  		schedule_work(&rfkill->sync_work);
