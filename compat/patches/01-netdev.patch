@@ -432,38 +432,6 @@ without creating a headache on maintenance of the pathes.
  	dev->watchdog_timeo = 5 * HZ;
  	dev->ethtool_ops = &lbs_ethtool_ops;
  #ifdef	WIRELESS_EXT
-@@ -1405,6 +1416,7 @@
- EXPORT_SYMBOL_GPL(lbs_stop_card);
- 
- 
-+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
- static const struct net_device_ops mesh_netdev_ops = {
- 	.ndo_open		= lbs_dev_open,
- 	.ndo_stop 		= lbs_mesh_stop,
-@@ -1412,6 +1424,7 @@
- 	.ndo_set_mac_address	= lbs_set_mac_address,
- 	.ndo_set_multicast_list = lbs_set_multicast_list,
- };
-+#endif
- 
- /**
-  * @brief This function adds mshX interface
-@@ -1435,7 +1448,15 @@
- 	mesh_dev->ml_priv = priv;
- 	priv->mesh_dev = mesh_dev;
- 
-+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
- 	mesh_dev->netdev_ops = &mesh_netdev_ops;
-+#else
-+	mesh_dev->open = lbs_dev_open;
-+	mesh_dev->hard_start_xmit = lbs_hard_start_xmit;
-+	mesh_dev->stop = lbs_mesh_stop;
-+	mesh_dev->set_mac_address = lbs_set_mac_address;
-+	mesh_dev->set_multicast_list = lbs_set_multicast_list;
-+#endif
- 	mesh_dev->ethtool_ops = &lbs_ethtool_ops;
- 	memcpy(mesh_dev->dev_addr, priv->dev->dev_addr,
- 			sizeof(priv->dev->dev_addr));
 @@ -1589,11 +1610,13 @@
  	lbs_deb_leave(LBS_DEB_MAIN);
  }
@@ -492,6 +460,40 @@ without creating a headache on maintenance of the pathes.
  	rtap_dev->ml_priv = priv;
  	SET_NETDEV_DEV(rtap_dev, priv->dev->dev.parent);
  
+--- a/drivers/net/wireless/libertas/mesh.c	2009-11-02 08:04:43.000000000 -0800
++++ b/drivers/net/wireless/libertas/mesh.c	2009-11-02 08:04:44.000000000 -0800
+@@ -305,6 +316,7 @@
+ EXPORT_SYMBOL_GPL(lbs_stop_card);
+ 
+ 
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
+ static const struct net_device_ops mesh_netdev_ops = {
+ 	.ndo_open		= lbs_dev_open,
+ 	.ndo_stop 		= lbs_mesh_stop,
+@@ -312,6 +324,7 @@
+ 	.ndo_set_mac_address	= lbs_set_mac_address,
+ 	.ndo_set_multicast_list = lbs_set_multicast_list,
+ };
++#endif
+ 
+ /**
+  * @brief This function adds mshX interface
+@@ -335,7 +348,15 @@
+ 	mesh_dev->ml_priv = priv;
+ 	priv->mesh_dev = mesh_dev;
+ 
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
+ 	mesh_dev->netdev_ops = &mesh_netdev_ops;
++#else
++	mesh_dev->open = lbs_dev_open;
++	mesh_dev->hard_start_xmit = lbs_hard_start_xmit;
++	mesh_dev->stop = lbs_mesh_stop;
++	mesh_dev->set_mac_address = lbs_set_mac_address;
++	mesh_dev->set_multicast_list = lbs_set_multicast_list;
++#endif
+ 	mesh_dev->ethtool_ops = &lbs_ethtool_ops;
+ 	memcpy(mesh_dev->dev_addr, priv->dev->dev_addr,
+ 			sizeof(priv->dev->dev_addr));
 --- a/drivers/net/wireless/libertas/defs.h	2009-07-08 14:04:29.692256519 -0700
 +++ b/drivers/net/wireless/libertas/defs.h	2009-07-08 14:03:26.712279246 -0700
 @@ -16,6 +16,14 @@
