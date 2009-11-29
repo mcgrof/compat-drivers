@@ -16,7 +16,7 @@ in or compat headers.
  #include "iwl-dev.h"
  
  #if !defined(CONFIG_IWLWIFI_DEVICE_TRACING) || defined(__CHECKER__)
-@@ -175,4 +175,6 @@
+@@ -194,4 +196,6 @@ TRACE_EVENT(iwlwifi_dev_ucode_event,
  #define TRACE_INCLUDE_PATH .
  #undef TRACE_INCLUDE_FILE
  #define TRACE_INCLUDE_FILE iwl-devtrace
@@ -35,7 +35,7 @@ in or compat headers.
  #include <net/mac80211.h>
  #include "ieee80211_i.h"
  
-@@ -672,4 +674,6 @@ TRACE_EVENT(drv_ampdu_action,
+@@ -694,4 +696,6 @@ TRACE_EVENT(drv_ampdu_action,
  #define TRACE_INCLUDE_PATH .
  #undef TRACE_INCLUDE_FILE
  #define TRACE_INCLUDE_FILE driver-trace

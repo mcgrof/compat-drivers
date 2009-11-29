@@ -155,7 +155,7 @@ CONFIG_ATH9K=m
 # CONFIG_ATH9K_COMMON to an area that doesn't depend on PCI
 # as you could then have ath9k disabled but ath9k_htc enabled.
 CONFIG_ATH9K_COMMON=m
-# CONFIG_ATH9K_DEBUG=y
+# CONFIG_ATH9K_DEBUGFS=y
 
 
 CONFIG_IWLWIFI=m
