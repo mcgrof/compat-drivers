@@ -16,6 +16,11 @@
 # for example
 #
 GIT_URL="git://git.kernel.org/pub/scm/linux/kernel/git/linville/wireless-testing.git"
+GIT_BT_URL="git://git.kernel.org/pub/scm/linux/kernel/git/holtmann/bluetooth-testing.git"
+GIT_COMPAT_URL="git://git.kernel.org/pub/scm/linux/kernel/git/mcgrof/compat.git"
+
+INCLUDE_NET_BT="hci_core.h l2cap.h bluetooth.h rfcomm.h hci.h"
+NET_BT_DIRS="bluetooth bluetooth/bnep bluetooth/cmtp bluetooth/rfcomm bluetooth/hidp"
 
 INCLUDE_LINUX="ieee80211.h nl80211.h wireless.h"
 INCLUDE_LINUX="$INCLUDE_LINUX pci_ids.h bitops.h eeprom_93cx6.h pm_qos_params.h"
@@ -43,7 +48,7 @@ UNDERLINE="\033[02m"
 NET_DIRS="wireless mac80211 rfkill"
 # User exported this variable
 if [ -z $GIT_TREE ]; then
-	GIT_TREE="/home/$USER/devel/wireless-testing/"
+	GIT_TREE="/home/$USER/wireless-testing/"
 	if [ ! -d $GIT_TREE ]; then
 		echo "Please tell me where your wireless-testing git tree is."
 		echo "You can do this by exporting its location as follows:"
@@ -55,8 +60,41 @@ if [ -z $GIT_TREE ]; then
 		exit 1
 	fi
 else
-	echo "You said to use git tree at: $GIT_TREE"
+	echo "You said to use git tree at: $GIT_TREE for wireless"
 fi
+
+if [ -z $GIT_BT_TREE ]; then
+	GIT_BT_TREE="/home/$USER/bluetooth-testing/"
+	if [ ! -d $GIT_BT_TREE ]; then
+		echo "Please tell me where your bluetooth-testing git tree is."
+		echo "You can do this by exporting its location as follows:"
+		echo
+		echo "  export GIT_BT_TREE=/home/$USER/bluetooth-testing/"
+		echo
+		echo "If you do not have one you can clone the repository:"
+		echo "  git-clone $GIT_BT_URL"
+		exit 1
+	fi
+else
+	echo "You said to use git tree at: $GIT_BT_TREE for bluetooth"
+fi
+
+if [ -z $GIT_COMPAT_TREE ]; then
+	GIT_COMPAT_TREE="/home/$USER/compat/"
+	if [ ! -d $GIT_COMPAT_TREE ]; then
+		echo "Please tell me where your bluetooth-testing git tree is."
+		echo "You can do this by exporting its location as follows:"
+		echo
+		echo "  export GIT_COMPAT_TREE=/home/$USER/compat/"
+		echo
+		echo "If you do not have one you can clone the repository:"
+		echo "  git-clone $GIT_COMPAT_URL"
+		exit 1
+	fi
+else
+	echo "You said to use git tree at: $GIT_COMPAT_TREE for bluetooth"
+fi
+
 # Drivers that have their own directory
 DRIVERS="drivers/net/wireless/ath"
 DRIVERS="$DRIVERS drivers/net/wireless/ath/ar9170"
@@ -75,6 +113,7 @@ DRIVERS="$DRIVERS drivers/net/wireless/libertas_tf"
 DRIVERS="$DRIVERS drivers/net/wireless/ipw2x00"
 DRIVERS="$DRIVERS drivers/net/wireless/wl12xx"
 DRIVERS="$DRIVERS drivers/net/wireless/iwmc3200wifi"
+DRIVERS_BT="drivers/bluetooth"
 
 # Drivers that belong the the wireless directory
 DRIVER_FILES="adm8211.c  adm8211.h"
@@ -91,6 +130,7 @@ mkdir -p include/linux/ include/net/ include/linux/usb \
 	drivers/ssb/ \
 	drivers/net/usb/ \
 	drivers/net/wireless/
+mkdir -p include/net/bluetooth/
 
 # include/linux
 DIR="include/linux"
@@ -107,6 +147,12 @@ DIR="include/net"
 for i in $INCLUDE_NET; do
 	echo "Copying $GIT_TREE/$DIR/$i"
 	cp "$GIT_TREE/$DIR/$i" $DIR/
+done
+
+DIR="include/net/bluetooth"
+for i in $INCLUDE_NET_BT; do
+  echo "Copying $GIT_BT_TREE/$DIR/$i"
+  cp $GIT_BT_TREE/$DIR/$i $DIR/
 done
 
 DIR="include/linux/usb"
@@ -129,12 +175,29 @@ for i in $NET_DIRS; do
 	rm -f net/$i/*.mod.c
 done
 
+# net/bluetooth
+for i in $NET_BT_DIRS; do
+	mkdir -p net/$i
+	echo "Copying $GIT_BT_TREE/net/$i/*.[ch]"
+	cp $GIT_BT_TREE/net/$i/*.[ch] net/$i/
+	cp $GIT_BT_TREE/net/$i/Makefile net/$i/
+	rm -f net/$i/*.mod.c
+done
+
 # Drivers in their own directory
 for i in $DRIVERS; do
 	mkdir -p $i
 	echo "Copying $GIT_TREE/$i/*.[ch]"
 	cp $GIT_TREE/$i/*.[ch] $i/
 	cp $GIT_TREE/$i/Makefile $i/
+	rm -f $i/*.mod.c
+done
+
+for i in $DRIVERS_BT; do
+	mkdir -p $i
+	echo "Copying $GIT_BT_TREE/$i/*.[ch]"
+	cp $GIT_BT_TREE/$i/*.[ch] $i/
+	cp $GIT_BT_TREE/$i/Makefile $i/
 	rm -f $i/*.mod.c
 done
 
@@ -171,9 +234,18 @@ cp $GIT_TREE/$DIR/* $DIR
 
 
 # Compat stuff
-cp compat/compat-2.6.*.c net/wireless/
-cp compat/compat-2.6.*.h include/net/
-cp compat/compat.h include/net/
+COMPAT_BT="net/compat"
+for i in $COMPAT_BT; do
+	mkdir -p $i
+	echo "Copying $GIT_COMPAT_TREE/$i/*.[ch]"
+	cp $GIT_COMPAT_TREE/*.c $i/
+	#cp $GIT_COMPAT_TREE/*.h include/net
+	cp $GIT_COMPAT_TREE/Makefile $i/
+	rm -f $i/*.mod.c
+done
+#cp compat/*.h include/net/
+cp $GIT_COMPAT_TREE/*.h include/net/
+cp compat/compat-2.6.33.h include/net/
 
 for i in compat/patches/*.patch; do
 	echo -e "${GREEN}Applying backport patch${NORMAL}: ${BLUE}$i${NORMAL}"

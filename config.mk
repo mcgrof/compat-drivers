@@ -19,6 +19,9 @@ ifeq ($(CONFIG_MAC80211),y)
 $(error "ERROR: you have MAC80211 compiled into the kernel, CONFIG_MAC80211=y, as such you cannot replace its mac80211 driver. You need this set to CONFIG_MAC80211=m. If you are using Fedora upgrade your kernel as later version should this set as modular. For further information on Fedora see https://bugzilla.redhat.com/show_bug.cgi?id=470143. If you are using your own kernel recompile it and make mac80211 modular")
 endif
 
+ifeq ($(CONFIG_BT),y)
+$(error "ERROR: your kernel has CONFIG_BT=y, you should have it CONFIG_BT=m if you want to use compat bluetooth.")
+endif
 
 # We will warn when you don't have MQ support or NET_SCHED enabled.
 #
@@ -30,6 +33,7 @@ COMPAT_LATEST_VERSION = 32
 KERNEL_SUBLEVEL := $(shell $(MAKE) -C $(KLIB_BUILD) kernelversion | sed -n 's/^2\.6\.\([0-9]\+\).*/\1/p')
 COMPAT_VERSIONS := $(shell I=$(COMPAT_LATEST_VERSION); while [ "$$I" -gt $(KERNEL_SUBLEVEL) ]; do echo $$I; I=$$(($$I - 1)); done)
 $(foreach ver,$(COMPAT_VERSIONS),$(eval CONFIG_COMPAT_WIRELESS_$(ver)=y))
+$(foreach ver,$(COMPAT_VERSIONS),$(eval CONFIG_COMPAT_BLUETOOTH_$(ver)=y))
 
 ifdef CONFIG_COMPAT_WIRELESS_25
 $(error "ERROR: You should use compat-wireless-2.6-old for older kernels, this one is for kernels >= 2.6.25")
@@ -123,6 +127,14 @@ CONFIG_LIB80211_CRYPT_TKIP=m
 # CONFIG_LIB80211_DEBUG=y
 
 CONFIG_WIRELESS_OLD_REGULATORY=n
+
+CONFIG_BT=m
+CONFIG_BT_L2CAP=m
+CONFIG_BT_SCO=m
+CONFIG_BT_RFCOMM=m
+CONFIG_BT_BNEP=m
+CONFIG_BT_CMTP=m
+CONFIG_BT_HIDP=m
 
 ifdef CONFIG_COMPAT_WIRELESS_32
 # Old kernels stil do depend on CONFIG_WIRELESS_EXT

@@ -18,26 +18,6 @@ If your driver is not a cfg80211 driver you must
 ensure you include compat.h then. I think we
 added compat.h also for ssb, I forget.
 
---- a/net/wireless/Makefile	2009-08-07 12:27:50.836497001 -0700
-+++ b/net/wireless/Makefile	2009-08-07 12:27:51.952497240 -0700
-@@ -15,3 +15,17 @@
- cfg80211-$(CONFIG_CFG80211_WEXT) += wext-compat.o wext-sme.o
- 
- ccflags-y += -D__CHECK_ENDIAN__
-+# Compat-wireless kernel compatibility code
-+cfg80211-$(CONFIG_COMPAT_WIRELESS_22) += compat-2.6.22.o
-+cfg80211-$(CONFIG_COMPAT_WIRELESS_23) += compat-2.6.23.o
-+cfg80211-$(CONFIG_COMPAT_WIRELESS_24) += compat-2.6.24.o
-+cfg80211-$(CONFIG_COMPAT_WIRELESS_25) += compat-2.6.25.o
-+cfg80211-$(CONFIG_COMPAT_WIRELESS_26) += compat-2.6.26.o
-+cfg80211-$(CONFIG_COMPAT_WIRELESS_27) += compat-2.6.27.o
-+cfg80211-$(CONFIG_COMPAT_WIRELESS_28) += compat-2.6.28.o
-+cfg80211-$(CONFIG_COMPAT_WIRELESS_29) += compat-2.6.29.o
-+cfg80211-$(CONFIG_COMPAT_WIRELESS_30) += compat-2.6.30.o
-+cfg80211-$(CONFIG_COMPAT_WIRELESS_31) += compat-2.6.31.o
-+cfg80211-$(CONFIG_COMPAT_WIRELESS_32) += compat-2.6.32.o
-+cfg80211-$(CONFIG_COMPAT_WIRELESS_33) += compat-2.6.33.o
-+
 --- a/include/net/cfg80211.h
 +++ b/include/net/cfg80211.h
 @@ -23,6 +23,7 @@

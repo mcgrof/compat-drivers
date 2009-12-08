@@ -10,4 +10,4 @@ rm -f git-describe
 rm -f master-tag
 rm -f compat-git-release
 rm -f compat-release
-echo "Cleaned wireless-compat-2.6"
+echo "Cleaned wireless-bt-compat-2.6"

@@ -1,0 +1,340 @@
+diff -Nur orig_com/include/net/compat-2.6.28.h mod_com/include/net/compat-2.6.28.h
+--- orig_com/include/net/compat-2.6.28.h	2009-12-03 16:33:59.000000000 +0530
++++ mod_com/include/net/compat-2.6.28.h	2009-12-03 16:59:00.000000000 +0530
+@@ -36,6 +36,16 @@
+ #define pcmcia_parse_tuple(tuple, parse) pccard_parse_tuple(tuple, parse)
+ #endif
+
++/* From : include/pcmcia/ds.h */
++/* loop CIS entries for valid configuration */
++int pcmcia_loop_config(struct pcmcia_device *p_dev,
++		       int	(*conf_check)	(struct pcmcia_device *p_dev,
++						 cistpl_cftable_entry_t *cfg,
++						 cistpl_cftable_entry_t *dflt,
++						 unsigned int vcc,
++						 void *priv_data),
++		       void *priv_data);
++
+ #if 0
+ extern void usb_poison_urb(struct urb *urb);
+ #endif
+@@ -145,6 +155,20 @@
+	}
+ } /* From include/linux/skbuff.h */
+
++/**
++ *	skb_queue_splice_tail - join two skb lists, each list being a queue
++ *	@list: the new list to add
++ *	@head: the place to add it in the first list
++ */
++static inline void skb_queue_splice_tail(const struct sk_buff_head *list,
++					 struct sk_buff_head *head)
++{
++	if (!skb_queue_empty(list)) {
++		__skb_queue_splice(list, head->prev, (struct sk_buff *) head);
++		head->qlen += list->qlen;
++	}
++}
++
+ #ifndef DECLARE_TRACE
+
+ #define TP_PROTO(args...)	args
+@@ -177,6 +201,9 @@
+
+ unsigned long round_jiffies_up(unsigned long j);
+
++extern void skb_add_rx_frag(struct sk_buff *skb, int i, struct page *page,
++			    int off, int size);
++
+ #endif /* (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,28)) */
+
+ #endif /* LINUX_26_28_COMPAT_H */
+diff -Nur orig_com/include/net/compat-2.6.30.h mod_com/include/net/compat-2.6.30.h
+--- orig_com/include/net/compat-2.6.30.h	2009-12-03 16:34:27.000000000 +0530
++++ mod_com/include/net/compat-2.6.30.h	2009-12-03 16:39:53.000000000 +0530
+@@ -15,6 +15,15 @@
+
+ #define IRQ_WAKE_THREAD	(2)
+
++/* From : include/linux/pm.h */
++/* How to reorder dpm_list after device_move() */
++enum dpm_order {
++	DPM_ORDER_NONE,
++	DPM_ORDER_DEV_AFTER_PARENT,
++	DPM_ORDER_PARENT_BEFORE_DEV,
++	DPM_ORDER_DEV_LAST,
++};
++
+ #endif /* (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,30)) */
+
+ #endif /* LINUX_26_30_COMPAT_H */
+diff -Nur orig_com/include/net/compat-2.6.31.h mod_com/include/net/compat-2.6.31.h
+--- orig_com/include/net/compat-2.6.31.h	2009-12-03 11:17:03.000000000 +0530
++++ mod_com/include/net/compat-2.6.31.h	2009-12-03 13:29:41.000000000 +0530
+@@ -11,6 +11,7 @@
+ #include <linux/interrupt.h>
+ #include <net/dst.h>
+ #include <net/genetlink.h>
++#include <linux/ethtool.h>
+
+ /*
+  * These macros allow us to backport rfkill without any
+@@ -106,7 +107,7 @@
+
+ static inline void skb_dst_set(struct sk_buff *skb, struct dst_entry *dst)
+ {
+-	skb->dst = (unsigned long)dst;
++	skb->dst = dst;
+ }
+
+ static inline struct rtable *skb_rtable(const struct sk_buff *skb)
+diff -Nur orig_com/include/net/compat-2.6.32.h mod_com/include/net/compat-2.6.32.h
+--- orig_com/include/net/compat-2.6.32.h	2009-12-03 11:17:03.000000000 +0530
++++ mod_com/include/net/compat-2.6.32.h	2009-12-03 17:14:29.000000000 +0530
+@@ -43,8 +43,34 @@
+ typedef enum netdev_tx netdev_tx_t;
+ #endif /* __KERNEL__ */
+
++/*
++ * dev_pm_ops is only available on kernels >= 2.6.29, for
++ * older kernels we rely on reverting the work to old
++ * power management style stuff.
++ */
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
++/*
++ * Use this if you want to use the same suspend and resume callbacks for suspend
++ * to RAM and hibernation.
++ */
++#define SIMPLE_DEV_PM_OPS(name, suspend_fn, resume_fn) \
++struct dev_pm_ops name = { \
++	.suspend = suspend_fn, \
++	.resume = resume_fn, \
++	.freeze = suspend_fn, \
++	.thaw = resume_fn, \
++	.poweroff = suspend_fn, \
++	.restore = resume_fn, \
++}
++#else
++#define SIMPLE_DEV_PM_OPS(name, suspend_fn, resume_fn)
++#endif /* >= 2.6.29 */
++
+ #define wireless_send_event(a, b, c, d) wireless_send_event(a, b, c, (char * ) d)
+
++/* The export symbol in changed in compat/patches/15-symbol-export-conflicts.patch */
++#define ieee80211_rx(hw, skb) mac80211_ieee80211_rx(hw, skb)
++
+ #endif /* (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,32)) */
+
+ #endif /* LINUX_26_32_COMPAT_H */
+diff -Nur orig_com/include/net/compat.h mod_com/include/net/compat.h
+--- orig_com/include/net/compat.h	2009-12-03 14:10:50.000000000 +0530
++++ mod_com/include/net/compat.h	2009-12-03 14:12:00.000000000 +0530
+@@ -3,26 +3,24 @@
+
+ #include <linux/autoconf.h>
+ #include <linux/version.h>
++#include <linux/compat_autoconf.h>
+
+ /*
+  * Each compat file represents compatibility code for new kernel
+  * code introduced for *that* kernel revision.
+  */
+
+-#include "compat-2.6.14.h"
+-#include "compat-2.6.18.h"
+-#include "compat-2.6.19.h"
+-#include "compat-2.6.21.h"
+-#include "compat-2.6.22.h"
+-#include "compat-2.6.23.h"
+-#include "compat-2.6.24.h"
+-#include "compat-2.6.25.h"
+-#include "compat-2.6.26.h"
+-#include "compat-2.6.27.h"
+-#include "compat-2.6.28.h"
+-#include "compat-2.6.29.h"
+-#include "compat-2.6.30.h"
+-#include "compat-2.6.31.h"
+-#include "compat-2.6.32.h"
++#include <net/compat-2.6.22.h>
++#include <net/compat-2.6.23.h>
++#include <net/compat-2.6.24.h>
++#include <net/compat-2.6.25.h>
++#include <net/compat-2.6.26.h>
++#include <net/compat-2.6.27.h>
++#include <net/compat-2.6.28.h>
++#include <net/compat-2.6.29.h>
++#include <net/compat-2.6.30.h>
++#include <net/compat-2.6.31.h>
++#include <net/compat-2.6.32.h>
++#include <net/compat-2.6.33.h>
+
+ #endif /* LINUX_26_COMPAT_H */
+diff -Nur orig_com/net/compat/compat-2.6.27.c mod_com/net/compat/compat-2.6.27.c
+--- orig_com/net/compat/compat-2.6.27.c	2009-12-03 11:16:30.000000000 +0530
++++ mod_com/net/compat/compat-2.6.27.c	2009-12-03 12:48:22.000000000 +0530
+@@ -8,7 +8,7 @@
+  * Compatibility file for Linux wireless for kernels 2.6.27
+  */
+
+-#include "compat.h"
++#include <net/compat.h>
+
+ #if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,27))
+
+diff -Nur orig_com/net/compat/compat-2.6.28.c mod_com/net/compat/compat-2.6.28.c
+--- orig_com/net/compat/compat-2.6.28.c	2009-12-03 16:32:54.000000000 +0530
++++ mod_com/net/compat/compat-2.6.28.c	2009-12-03 17:08:15.000000000 +0530
+@@ -8,7 +8,7 @@
+  * Compatibility file for Linux wireless for kernels 2.6.28.
+  */
+
+-#include "compat.h"
++#include <net/compat.h>
+
+ #if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,28))
+
+@@ -84,6 +84,81 @@
+ EXPORT_SYMBOL_GPL(usb_poison_urb);
+ #endif
+
++#include <pcmcia/ds.h>
++struct pcmcia_cfg_mem {
++	tuple_t tuple;
++	cisparse_t parse;
++	u8 buf[256];
++	cistpl_cftable_entry_t dflt;
++};
++/**
++ * pcmcia_loop_config() - loop over configuration options
++ * @p_dev:	the struct pcmcia_device which we need to loop for.
++ * @conf_check:	function to call for each configuration option.
++ *		It gets passed the struct pcmcia_device, the CIS data
++ *		describing the configuration option, and private data
++ *		being passed to pcmcia_loop_config()
++ * @priv_data:	private data to be passed to the conf_check function.
++ *
++ * pcmcia_loop_config() loops over all configuration options, and calls
++ * the driver-specific conf_check() for each one, checking whether
++ * it is a valid one. Returns 0 on success or errorcode otherwise.
++ */
++int pcmcia_loop_config(struct pcmcia_device *p_dev,
++		       int	(*conf_check)	(struct pcmcia_device *p_dev,
++						 cistpl_cftable_entry_t *cfg,
++						 cistpl_cftable_entry_t *dflt,
++						 unsigned int vcc,
++						 void *priv_data),
++		       void *priv_data)
++{
++	struct pcmcia_cfg_mem *cfg_mem;
++
++	tuple_t *tuple;
++	int ret;
++	unsigned int vcc;
++
++	cfg_mem = kzalloc(sizeof(struct pcmcia_cfg_mem), GFP_KERNEL);
++	if (cfg_mem == NULL)
++		return -ENOMEM;
++
++	/* get the current Vcc setting */
++	vcc = p_dev->socket->socket.Vcc;
++
++	tuple = &cfg_mem->tuple;
++	tuple->TupleData = cfg_mem->buf;
++	tuple->TupleDataMax = 255;
++	tuple->TupleOffset = 0;
++	tuple->DesiredTuple = CISTPL_CFTABLE_ENTRY;
++	tuple->Attributes = 0;
++
++	ret = pcmcia_get_first_tuple(p_dev, tuple);
++	while (!ret) {
++		cistpl_cftable_entry_t *cfg = &cfg_mem->parse.cftable_entry;
++
++		if (pcmcia_get_tuple_data(p_dev, tuple))
++			goto next_entry;
++
++		if (pcmcia_parse_tuple(tuple, &cfg_mem->parse))
++			goto next_entry;
++
++		/* default values */
++		p_dev->conf.ConfigIndex = cfg->index;
++		if (cfg->flags & CISTPL_CFTABLE_DEFAULT)
++			cfg_mem->dflt = *cfg;
++
++		ret = conf_check(p_dev, cfg, &cfg_mem->dflt, vcc, priv_data);
++		if (!ret)
++			break;
++
++next_entry:
++		ret = pcmcia_get_next_tuple(p_dev, tuple);
++	}
++
++	return ret;
++}
++EXPORT_SYMBOL(pcmcia_loop_config);
++
+ void usb_unpoison_urb(struct urb *urb)
+ {
+ #if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,28))
+@@ -275,4 +350,14 @@
+ }
+ EXPORT_SYMBOL_GPL(round_jiffies_up);
+
++void skb_add_rx_frag(struct sk_buff *skb, int i, struct page *page, int off,
++		int size)
++{
++	skb_fill_page_desc(skb, i, page, off, size);
++	skb->len += size;
++	skb->data_len += size;
++	skb->truesize += size;
++}
++EXPORT_SYMBOL(skb_add_rx_frag);
++
+ #endif /* LINUX_VERSION_CODE < KERNEL_VERSION(2,6,28) */
+diff -Nur orig_com/net/compat/compat-2.6.29.c mod_com/net/compat/compat-2.6.29.c
+--- orig_com/net/compat/compat-2.6.29.c	2009-12-03 11:16:30.000000000 +0530
++++ mod_com/net/compat/compat-2.6.29.c	2009-12-03 12:48:22.000000000 +0530
+@@ -8,7 +8,7 @@
+  * Compatibility file for Linux wireless for kernels 2.6.29.
+  */
+
+-#include "compat.h"
++#include <net/compat.h>
+
+ #if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,29))
+
+diff -Nur orig_com/net/compat/compat-2.6.30.c mod_com/net/compat/compat-2.6.30.c
+--- orig_com/net/compat/compat-2.6.30.c	2009-12-03 11:16:30.000000000 +0530
++++ mod_com/net/compat/compat-2.6.30.c	2009-12-03 12:48:22.000000000 +0530
+@@ -8,7 +8,7 @@
+  * Compatibility file for Linux wireless for kernels 2.6.30.
+  */
+
+-#include "compat.h"
++#include <net/compat.h>
+
+ #if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,30))
+
+diff -Nur orig_com/net/compat/compat-2.6.31.c mod_com/net/compat/compat-2.6.31.c
+--- orig_com/net/compat/compat-2.6.31.c	2009-12-03 11:16:30.000000000 +0530
++++ mod_com/net/compat/compat-2.6.31.c	2009-12-03 12:48:22.000000000 +0530
+@@ -8,7 +8,7 @@
+  * Compatibility file for Linux wireless for kernels 2.6.31.
+  */
+
+-#include "compat.h"
++#include <net/compat.h>
+
+ #if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,31))
+
+diff -Nur orig_com/net/compat/compat-2.6.32.c mod_com/net/compat/compat-2.6.32.c
+--- orig_com/net/compat/compat-2.6.32.c	2009-12-03 11:16:30.000000000 +0530
++++ mod_com/net/compat/compat-2.6.32.c	2009-12-03 12:48:22.000000000 +0530
+@@ -8,7 +8,7 @@
+  * Compatibility file for Linux wireless for kernels 2.6.32.
+  */
+
+-#include "compat.h"
++#include <net/compat.h>
+
+ #if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,32))
+

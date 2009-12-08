@@ -19,14 +19,15 @@ include $(M)/$(COMPAT_CONFIG)
 
 NOSTDINC_FLAGS := -I$(M)/include/ -include $(M)/include/net/compat.h $(CFLAGS)
 
-obj-y := net/wireless/ net/mac80211/ net/rfkill/
+obj-y := net/bluetooth/ net/compat/ net/wireless/ net/mac80211/ net/rfkill/
 ifeq ($(ONLY_CORE),)
 obj-m += \
 	drivers/ssb/ \
 	drivers/misc/eeprom/ \
 	drivers/net/ \
 	drivers/net/usb/ \
-	drivers/net/wireless/
+	drivers/net/wireless/ \
+	drivers/bluetooth/
 endif
 
 else
@@ -163,12 +164,25 @@ install-scripts:
 	@$(MODPROBE) -l usb8xxx
 	@$(MODPROBE) -l usbnet
 	@$(MODPROBE) -l zd1211rw
+	@echo
+	@echo "Currently detected bluetooth subsystem modules:"
+	@echo
+	@$(MODPROBE) -l sco
+	@$(MODPROBE) -l l2cap
+	@$(MODPROBE) -l hidp
+	@$(MODPROBE) -l rfcomm
+	@$(MODPROBE) -l bnep
+	@$(MODPROBE) -l btusb
+	@$(MODPROBE) -l bluetooth
 	@echo 
 	@echo Now run:
 	@echo 
-	@echo make unload
+	@echo sudo make unload to unload both wireless and bluetooth modules
+	@echo sudo make wlunload to unload wireless modules
+	@echo sudo make btunload to unload bluetooth modules
 	@echo
-	@echo And then load the wireless module you need. If unsure reboot.
+	@echo And then load the wireless or bluetooth module you need. If unsure reboot.
+	@echo Alternatively use "sudo make load/wlload/btload" to load modules
 	@echo
 
 uninstall:
@@ -239,6 +253,16 @@ uninstall:
 	@$(MODPROBE) -l usb8xxx
 	@$(MODPROBE) -l usbnet
 	@$(MODPROBE) -l zd1211rw
+	@echo
+	@echo "Your old bluetooth subsystem modules were left intact:"
+	@echo
+	@$(MODPROBE) -l sco
+	@$(MODPROBE) -l l2cap
+	@$(MODPROBE) -l hidp
+	@$(MODPROBE) -l rfcomm
+	@$(MODPROBE) -l bnep
+	@$(MODPROBE) -l btusb
+	@$(MODPROBE) -l bluetooth
 	@
 	@echo 
 
@@ -253,7 +277,19 @@ unload:
 load: unload
 	@./scripts/load.sh
 
-.PHONY: all clean install uninstall unload load
+btunload:
+	@./scripts/btunload.sh
+
+btload: btunload
+	@./scripts/btload.sh
+
+wlunload:
+	@./scripts/wlunload.sh
+
+wlload: wlunload
+	@./scripts/wlload.sh
+
+.PHONY: all clean install uninstall unload load btunload btload wlunload wlload
 
 endif
 

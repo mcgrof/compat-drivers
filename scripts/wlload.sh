@@ -12,7 +12,6 @@ MODULES="$MODULES rt2500usb rt73usb"
 MODULES="$MODULES rndis_wlan at76_usb"
 MODULES="$MODULES mwl8k mac80211_hwsim"
 MODULES="$MODULES at76c50x_usb"
-MODULES="$MODULES bluetooth btusb l2cap sco hidp rfcomm bnep"
 for i in $MODULES; do
 	echo Loading $i...
 	modprobe $i
@@ -21,6 +20,3 @@ done
 athload ath5k
 # For b43 we must make sure to unload bcm43xx first
 b43load b43
-echo Starting bluetooth service..
-sudo service bluetooth start
-sudo service bluetooth status
