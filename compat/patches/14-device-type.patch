@@ -20,3 +20,17 @@ compile warning.
  
  static int cfg80211_netdev_notifier_call(struct notifier_block * nb,
  					 unsigned long state,
+--- a/net/bluetooth/bnep/core.c	2009-12-10 09:22:58.000000000 -0800
++++ b/net/bluetooth/bnep/core.c	2009-12-10 09:22:59.000000000 -0800
+@@ -536,9 +536,11 @@ static struct device *bnep_get_device(st
+ 	return conn ? &conn->dev : NULL;
+ }
+ 
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,32))
+ static struct device_type bnep_type = {
+ 	.name	= "bluetooth",
+ };
++#endif
+ 
+ int bnep_add_connection(struct bnep_connadd_req *req, struct socket *sock)
+ {
