@@ -63,22 +63,6 @@ else
 	echo "You said to use git tree at: $GIT_TREE for wireless"
 fi
 
-if [ -z $GIT_BT_TREE ]; then
-	GIT_BT_TREE="/home/$USER/bluetooth-testing/"
-	if [ ! -d $GIT_BT_TREE ]; then
-		echo "Please tell me where your bluetooth-testing git tree is."
-		echo "You can do this by exporting its location as follows:"
-		echo
-		echo "  export GIT_BT_TREE=/home/$USER/bluetooth-testing/"
-		echo
-		echo "If you do not have one you can clone the repository:"
-		echo "  git-clone $GIT_BT_URL"
-		exit 1
-	fi
-else
-	echo "You said to use git tree at: $GIT_BT_TREE for bluetooth"
-fi
-
 if [ -z $GIT_COMPAT_TREE ]; then
 	GIT_COMPAT_TREE="/home/$USER/compat/"
 	if [ ! -d $GIT_COMPAT_TREE ]; then
@@ -151,8 +135,8 @@ done
 
 DIR="include/net/bluetooth"
 for i in $INCLUDE_NET_BT; do
-  echo "Copying $GIT_BT_TREE/$DIR/$i"
-  cp $GIT_BT_TREE/$DIR/$i $DIR/
+  echo "Copying $GIT_TREE/$DIR/$i"
+  cp $GIT_TREE/$DIR/$i $DIR/
 done
 
 DIR="include/linux/usb"
@@ -178,9 +162,9 @@ done
 # net/bluetooth
 for i in $NET_BT_DIRS; do
 	mkdir -p net/$i
-	echo "Copying $GIT_BT_TREE/net/$i/*.[ch]"
-	cp $GIT_BT_TREE/net/$i/*.[ch] net/$i/
-	cp $GIT_BT_TREE/net/$i/Makefile net/$i/
+	echo "Copying $GIT_TREE/net/$i/*.[ch]"
+	cp $GIT_TREE/net/$i/*.[ch] net/$i/
+	cp $GIT_TREE/net/$i/Makefile net/$i/
 	rm -f net/$i/*.mod.c
 done
 
@@ -195,9 +179,9 @@ done
 
 for i in $DRIVERS_BT; do
 	mkdir -p $i
-	echo "Copying $GIT_BT_TREE/$i/*.[ch]"
-	cp $GIT_BT_TREE/$i/*.[ch] $i/
-	cp $GIT_BT_TREE/$i/Makefile $i/
+	echo "Copying $GIT_TREE/$i/*.[ch]"
+	cp $GIT_TREE/$i/*.[ch] $i/
+	cp $GIT_TREE/$i/Makefile $i/
 	rm -f $i/*.mod.c
 done
 

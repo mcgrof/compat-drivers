@@ -36,9 +36,9 @@ without creating a headache on maintenance of the pathes.
  
  	retval = rndis_command(dev, u.header, CONTROL_BUFFER_SIZE);
  	if (unlikely(retval < 0)) {
---- a/drivers/net/usb/usbnet.c	2009-08-18 16:13:32.161376062 -0700
-+++ b/drivers/net/usb/usbnet.c	2009-08-18 16:13:32.761354961 -0700
-@@ -1196,6 +1196,7 @@
+--- a/drivers/net/usb/usbnet.c	2009-12-10 08:40:23.000000000 -0800
++++ b/drivers/net/usb/usbnet.c	2009-12-10 08:40:24.000000000 -0800
+@@ -1260,6 +1260,7 @@
  }
  EXPORT_SYMBOL_GPL(usbnet_disconnect);
  
@@ -46,7 +46,7 @@ without creating a headache on maintenance of the pathes.
  static const struct net_device_ops usbnet_netdev_ops = {
  	.ndo_open		= usbnet_open,
  	.ndo_stop		= usbnet_stop,
-@@ -1205,6 +1206,7 @@
+@@ -1269,6 +1270,7 @@
  	.ndo_set_mac_address 	= eth_mac_addr,
  	.ndo_validate_addr	= eth_validate_addr,
  };
@@ -54,7 +54,7 @@ without creating a headache on maintenance of the pathes.
  
  /*-------------------------------------------------------------------------*/
  
-@@ -1275,7 +1277,15 @@
+@@ -1348,7 +1350,15 @@
  		net->features |= NETIF_F_HIGHDMA;
  #endif
  
@@ -100,8 +100,8 @@ without creating a headache on maintenance of the pathes.
  
  	tmp = RNDIS_PACKET_TYPE_DIRECTED | RNDIS_PACKET_TYPE_BROADCAST;
  	retval = rndis_set_oid(usbdev, OID_GEN_CURRENT_PACKET_FILTER, &tmp,
---- a/net/mac80211/iface.c	2009-11-13 11:36:21.000000000 -0800
-+++ b/net/mac80211/iface.c	2009-11-13 11:36:21.000000000 -0800
+--- a/net/mac80211/iface.c	2009-12-10 08:41:38.000000000 -0800
++++ b/net/mac80211/iface.c	2009-12-10 08:41:39.000000000 -0800
 @@ -644,6 +644,7 @@
  	WARN_ON(flushed);
  }
@@ -157,7 +157,7 @@ without creating a headache on maintenance of the pathes.
  		sdata->u.mntr_flags = MONITOR_FLAG_CONTROL |
  				      MONITOR_FLAG_OTHER_BSS;
  		break;
-@@ -778,6 +798,8 @@
+@@ -774,6 +794,8 @@
  		return -ENOMEM;
  	dev_net_set(ndev, wiphy_net(local->hw.wiphy));
  
@@ -166,7 +166,7 @@ without creating a headache on maintenance of the pathes.
  	ndev->needed_headroom = local->tx_headroom +
  				4*6 /* four MAC addresses */
  				+ 2 + 2 + 2 + 2 /* ctl, dur, seq, qos */
-@@ -786,6 +808,7 @@
+@@ -782,6 +804,7 @@
  				- ETH_HLEN /* ethernet hard_header_len */
  				+ IEEE80211_ENCRYPT_HEADROOM;
  	ndev->needed_tailroom = IEEE80211_ENCRYPT_TAILROOM;
@@ -174,7 +174,7 @@ without creating a headache on maintenance of the pathes.
  
  	ret = dev_alloc_name(ndev, ndev->name);
  	if (ret < 0)
-@@ -826,6 +849,10 @@
+@@ -821,6 +844,10 @@
  	if (ret)
  		goto fail;
  
@@ -185,9 +185,9 @@ without creating a headache on maintenance of the pathes.
  	if (ieee80211_vif_is_mesh(&sdata->vif) &&
  	    params && params->mesh_id_len)
  		ieee80211_sdata_set_mesh_id(sdata,
---- a/drivers/net/b44.c	2009-09-23 10:29:49.423721274 -0700
-+++ b/drivers/net/b44.c	2009-09-23 10:29:49.503708316 -0700
-@@ -2119,6 +2119,7 @@
+--- a/drivers/net/b44.c	2009-12-10 08:42:34.000000000 -0800
++++ b/drivers/net/b44.c	2009-12-10 08:42:34.000000000 -0800
+@@ -2116,6 +2116,7 @@
  	return err;
  }
  
@@ -195,7 +195,7 @@ without creating a headache on maintenance of the pathes.
  static const struct net_device_ops b44_netdev_ops = {
  	.ndo_open		= b44_open,
  	.ndo_stop		= b44_close,
-@@ -2134,6 +2135,7 @@
+@@ -2131,6 +2132,7 @@
  	.ndo_poll_controller	= b44_poll_controller,
  #endif
  };
@@ -203,7 +203,7 @@ without creating a headache on maintenance of the pathes.
  
  static int __devinit b44_init_one(struct ssb_device *sdev,
  				  const struct ssb_device_id *ent)
-@@ -2173,9 +2175,26 @@
+@@ -2170,9 +2172,26 @@
  	bp->rx_pending = B44_DEF_RX_RING_PENDING;
  	bp->tx_pending = B44_DEF_TX_RING_PENDING;
  

@@ -11,9 +11,9 @@ users use wext again.
 We only do this for kernels <= 2.6.32 as 2.6.33 will use
 the struct wiphy wireless handler.
 
---- a/net/wireless/core.c	2009-11-02 08:08:20.000000000 -0800
-+++ b/net/wireless/core.c	2009-11-02 08:08:21.000000000 -0800
-@@ -676,6 +676,10 @@
+--- a/net/wireless/core.c	2009-12-10 09:02:05.000000000 -0800
++++ b/net/wireless/core.c	2009-12-10 09:02:08.000000000 -0800
+@@ -683,6 +683,10 @@
  		wdev->sme_state = CFG80211_SME_IDLE;
  		mutex_unlock(&rdev->devlist_mtx);
  #ifdef CONFIG_CFG80211_WEXT
