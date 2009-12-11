@@ -10,8 +10,8 @@ and define CONFIG_COMPAT_MAC80211_RC_DEFAULT on config.mk.
 Through the compat autoconf we then get it also defined there
 at compilation time.
 
---- a/net/mac80211/rate.c	2009-12-10 08:44:19.000000000 -0800
-+++ b/net/mac80211/rate.c	2009-12-10 08:46:38.000000000 -0800
+--- a/net/mac80211/rate.c	2009-12-11 13:25:55.000000000 -0800
++++ b/net/mac80211/rate.c	2009-12-11 13:27:15.000000000 -0800
 @@ -22,7 +22,7 @@ struct rate_control_alg {
  static LIST_HEAD(rate_ctrl_algs);
  static DEFINE_MUTEX(rate_ctrl_mutex);
@@ -21,7 +21,7 @@ at compilation time.
  module_param(ieee80211_default_rc_algo, charp, 0644);
  MODULE_PARM_DESC(ieee80211_default_rc_algo,
  		 "Default rate control algorithm for mac80211 to use");
-@@ -118,8 +118,8 @@ ieee80211_rate_control_ops_get(const cha
+@@ -117,8 +117,8 @@ ieee80211_rate_control_ops_get(const cha
  		ops = ieee80211_try_rate_control_ops_get(ieee80211_default_rc_algo);
  
  	/* try built-in one if specific alg requested but not found */
@@ -29,6 +29,6 @@ at compilation time.
 -		ops = ieee80211_try_rate_control_ops_get(CONFIG_MAC80211_RC_DEFAULT);
 +	if (!ops && strlen(CONFIG_COMPAT_MAC80211_RC_DEFAULT))
 +		ops = ieee80211_try_rate_control_ops_get(CONFIG_COMPAT_MAC80211_RC_DEFAULT);
- 	kparam_unblock_sysfs_write(ieee80211_default_rc_algo);
  
  	return ops;
+ }
