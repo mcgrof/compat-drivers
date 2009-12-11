@@ -17,21 +17,20 @@ ifneq ($(KERNELRELEASE),)
 
 include $(M)/$(COMPAT_CONFIG)
 
-NOSTDINC_FLAGS := -I$(M)/include/ -include $(M)/include/net/compat.h $(CFLAGS)
+NOSTDINC_FLAGS := -I$(M)/include/ -include $(M)/include/linux/compat.h $(CFLAGS)
 
-obj-y := \
-	compat/ \
-	net/rfkill/
-	net/bluetooth/ \
-	net/wireless/ net/mac80211/
+obj-y := compat/
 
-obj-m += \
-	drivers/ssb/ \
-	drivers/misc/eeprom/ \
-	drivers/net/ \
-	drivers/net/usb/ \
-	drivers/net/wireless/ \
-	drivers/bluetooth/
+obj-$(COMPAT_RFKILL) += net/rfkill/
+obj-$(CONFIG_COMPAT_BT) += net/bluetooth/
+obj-$(CONFIG_COMPAT_WIRELESS) += net/wireless/ net/mac80211/
+
+obj-$(CONFIG_COMPAT_NETWORK_MODULES) += drivers/net/
+obj-$(CONFIG_COMPAT_VAR_MODULES) +=  drivers/ssb/ drivers/misc/eeprom/
+
+obj-$(CONFIG_COMPAT_NET_USB_MODULES) += drivers/net/usb/
+obj-$(CONFIG_COMPAT_WIRELESS_MODULES) += drivers/net/wireless/
+obj-$(CONFIG_COMPAT_BLUETOOTH_MODULES) += drivers/bluetooth/
 
 else
 
