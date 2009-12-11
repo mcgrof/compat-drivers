@@ -21,8 +21,8 @@ endif
 ifeq ($(CONFIG_MAC80211),y)
 $(error "ERROR: you have MAC80211 compiled into the kernel, CONFIG_MAC80211=y, as such you cannot replace its mac80211 driver. You need this set to CONFIG_MAC80211=m. If you are using Fedora upgrade your kernel as later version should this set as modular. For further information on Fedora see https://bugzilla.redhat.com/show_bug.cgi?id=470143. If you are using your own kernel recompile it and make mac80211 modular")
 else
- CONFIG_COMPAT_WIRELESS=y
- CONFIG_COMPAT_WIRELESS_MODULES=m
+ CONFIG_COMPAT_KERNEL=y
+ CONFIG_COMPAT_KERNEL_MODULES=m
  CONFIG_COMPAT_VAR_MODULES=m
 # We could technically separate these but not yet, we only have b44
 # Note that we don't intend on backporting network drivers that
@@ -48,10 +48,9 @@ ifneq ($(wildcard $(KLIB_BUILD)/Makefile),)
 COMPAT_LATEST_VERSION = 32
 KERNEL_SUBLEVEL := $(shell $(MAKE) -C $(KLIB_BUILD) kernelversion | sed -n 's/^2\.6\.\([0-9]\+\).*/\1/p')
 COMPAT_VERSIONS := $(shell I=$(COMPAT_LATEST_VERSION); while [ "$$I" -gt $(KERNEL_SUBLEVEL) ]; do echo $$I; I=$$(($$I - 1)); done)
-$(foreach ver,$(COMPAT_VERSIONS),$(eval CONFIG_COMPAT_WIRELESS_$(ver)=y))
-$(foreach ver,$(COMPAT_VERSIONS),$(eval CONFIG_COMPAT_BLUETOOTH_$(ver)=y))
+$(foreach ver,$(COMPAT_VERSIONS),$(eval CONFIG_COMPAT_KERNEL_$(ver)=y))
 
-ifdef CONFIG_COMPAT_WIRELESS_25
+ifdef CONFIG_COMPAT_KERNEL_25
 $(error "ERROR: You should use compat-wireless-2.6-old for older kernels, this one is for kernels >= 2.6.25")
 endif
 
@@ -152,7 +151,7 @@ CONFIG_BT_BNEP=m
 CONFIG_BT_CMTP=m
 CONFIG_BT_HIDP=m
 
-ifdef CONFIG_COMPAT_WIRELESS_32
+ifdef CONFIG_COMPAT_KERNEL_32
 # Old kernels stil do depend on CONFIG_WIRELESS_EXT
 # as we add the wireless handler back to the struct
 # netdevice
@@ -167,7 +166,7 @@ else
 # on in case users on >= 2.6.33 still have iwconfig and other
 # old deprecated userspace applications.
 CONFIG_CFG80211_WEXT=y
-endif # CONFIG_COMPAT_WIRELESS_32
+endif # CONFIG_COMPAT_KERNEL_32
 
 # mac80211 test driver
 CONFIG_MAC80211_HWSIM=m
@@ -307,7 +306,7 @@ endif
 
 ifneq ($(CONFIG_PCMCIA),)
 
-ifdef CONFIG_COMPAT_WIRELESS_27
+ifdef CONFIG_COMPAT_KERNEL_27
 CONFIG_LIBERTAS=n
 CONFIG_LIBERTAS_CS=n
 else
@@ -344,7 +343,7 @@ CONFIG_RTL8187_LEDS=y
 
 CONFIG_AT76C50X_USB=m
 
-ifndef CONFIG_COMPAT_WIRELESS_28
+ifndef CONFIG_COMPAT_KERNEL_28
 CONFIG_AR9170_USB=m
 CONFIG_AR9170_LEDS=y
 endif
@@ -360,7 +359,7 @@ CONFIG_RT73USB=m
 NEED_RT2X00_FIRMWARE=y
 endif
 
-ifdef CONFIG_COMPAT_WIRELESS_27
+ifdef CONFIG_COMPAT_KERNEL_27
 CONFIG_LIBERTAS_THINFIRM_USB=n
 CONFIG_LIBERTAS_USB=n
 NEED_LIBERTAS=n
@@ -377,7 +376,7 @@ ifneq ($(CONFIG_SPI_MASTER),)
 CONFIG_WL1251=m
 CONFIG_P54_SPI=m
 
-ifdef CONFIG_COMPAT_WIRELESS_27
+ifdef CONFIG_COMPAT_KERNEL_27
 CONFIG_LIBERTAS_SPI=n
 NEED_LIBERTAS=n
 else
@@ -389,7 +388,7 @@ endif # end of SPI driver list
 
 ifneq ($(CONFIG_MMC),)
 
-ifdef CONFIG_COMPAT_WIRELESS_27
+ifdef CONFIG_COMPAT_KERNEL_27
 CONFIG_LIBERTAS_SDIO=n
 NEED_LIBERTAS=n
 else
@@ -399,7 +398,7 @@ endif
 
 # Activate iwmc3200wifi support only on kernel >= 2.6.29.
 # iwmc3200wifi uses new netdev_ops api no supported by old kernel.
-ifndef CONFIG_COMPAT_WIRELESS_29
+ifndef CONFIG_COMPAT_KERNEL_29
 CONFIG_IWM=m
 # CONFIG_IWM_DEBUG=y
 endif
@@ -436,7 +435,7 @@ CONFIG_WL1251_SPI=m
 CONFIG_WL1251_SDIO=m
 CONFIG_WL1271=m
 
-ifdef CONFIG_COMPAT_WIRELESS_27
+ifdef CONFIG_COMPAT_KERNEL_27
 CONFIG_LIBERTAS=n
 else
 ifeq ($(NEED_LIBERTAS),y)
@@ -448,7 +447,7 @@ endif
 
 # We need the backported rfkill module on kernel < 2.6.31.
 # In more recent kernel versions use the in kernel rfkill module.
-ifdef CONFIG_COMPAT_WIRELESS_31
+ifdef CONFIG_COMPAT_KERNEL_31
 CONFIG_RFKILL_BACKPORT=m
 CONFIG_RFKILL_BACKPORT_LEDS=y
 CONFIG_RFKILL_BACKPORT_INPUT=y
