@@ -1,3 +1,6 @@
+These changes are required to backport blueooth. A lot can be optimized
+here still, but for now we keep this here.
+
 diff -Nur a/drivers/bluetooth/hci_ldisc.c b/drivers/bluetooth/hci_ldisc.c
 --- a/drivers/bluetooth/hci_ldisc.c	2009-11-25 11:24:32.000000000 +0530
 +++ b/drivers/bluetooth/hci_ldisc.c	2009-11-28 10:56:22.000000000 +0530
