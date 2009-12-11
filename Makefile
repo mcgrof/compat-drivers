@@ -17,22 +17,24 @@ ifneq ($(KERNELRELEASE),)
 
 include $(M)/$(COMPAT_CONFIG)
 
-NOSTDINC_FLAGS := -I$(M)/include/ -include $(M)/include/linux/compat.h $(CFLAGS)
+NOSTDINC_FLAGS := -I$(M)/include/ -include $(M)/include/linux/compat-2.6.h $(CFLAGS)
 
 obj-y := compat/
 
 obj-$(COMPAT_RFKILL) += net/rfkill/
-obj-$(CONFIG_COMPAT_BT) += net/bluetooth/
+
 obj-$(CONFIG_COMPAT_WIRELESS) += net/wireless/ net/mac80211/
+obj-$(CONFIG_COMPAT_WIRELESS_MODULES) += drivers/net/wireless/
+
+obj-$(CONFIG_COMPAT_NET_USB_MODULES) += drivers/net/usb/
+
+obj-$(CONFIG_COMPAT_BT) += net/bluetooth/
+obj-$(CONFIG_COMPAT_BLUETOOTH_MODULES) += drivers/bluetooth/
 
 obj-$(CONFIG_COMPAT_NETWORK_MODULES) += drivers/net/
 obj-$(CONFIG_COMPAT_VAR_MODULES) +=  drivers/misc/eeprom/
 # Sorry ssb requires pcmica backport for 2.6.33 which is not done yet
 #					drivers/ssb/
-
-obj-$(CONFIG_COMPAT_NET_USB_MODULES) += drivers/net/usb/
-obj-$(CONFIG_COMPAT_WIRELESS_MODULES) += drivers/net/wireless/
-obj-$(CONFIG_COMPAT_BLUETOOTH_MODULES) += drivers/bluetooth/
 
 else
 

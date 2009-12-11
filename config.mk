@@ -21,8 +21,8 @@ endif
 ifeq ($(CONFIG_MAC80211),y)
 $(error "ERROR: you have MAC80211 compiled into the kernel, CONFIG_MAC80211=y, as such you cannot replace its mac80211 driver. You need this set to CONFIG_MAC80211=m. If you are using Fedora upgrade your kernel as later version should this set as modular. For further information on Fedora see https://bugzilla.redhat.com/show_bug.cgi?id=470143. If you are using your own kernel recompile it and make mac80211 modular")
 else
- CONFIG_COMPAT_KERNEL=y
- CONFIG_COMPAT_KERNEL_MODULES=m
+ CONFIG_COMPAT_WIRELESS=y
+ CONFIG_COMPAT_WIRELESS_MODULES=m
  CONFIG_COMPAT_VAR_MODULES=m
 # We could technically separate these but not yet, we only have b44
 # Note that we don't intend on backporting network drivers that
@@ -35,7 +35,7 @@ endif
 ifeq ($(CONFIG_BT),y)
 # we'll ignore compiling bluetooth
 else
-CONFIG_COMPAT_BT=y
+CONFIG_COMPAT_BLUETOOTH=y
 CONFIG_COMPAT_BLUETOOTH_MODULES=m
 endif
 
