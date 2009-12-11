@@ -218,20 +218,15 @@ cp $GIT_TREE/$DIR/* $DIR
 
 
 # Compat stuff
-COMPAT_BT="net/compat"
-for i in $COMPAT_BT; do
-	mkdir -p $i
-	echo "Copying $GIT_COMPAT_TREE/$i/*.[ch]"
-	cp $GIT_COMPAT_TREE/*.c $i/
-	#cp $GIT_COMPAT_TREE/*.h include/net
-	cp $GIT_COMPAT_TREE/Makefile $i/
-	rm -f $i/*.mod.c
-done
-#cp compat/*.h include/net/
-cp $GIT_COMPAT_TREE/*.h include/net/
-cp compat/compat-2.6.33.h include/net/
+COMPAT="compat"
+mkdir -p $COMPAT
+echo "Copying $GIT_COMPAT_TREE/ files..."
+cp $GIT_COMPAT_TREE/compat/*.c $COMPAT/
+cp $GIT_COMPAT_TREE/Makefile $COMPAT/
+cp $GIT_COMPAT_TREE/include/linux/*.h include/linux/
+rm -f $COMPAT/*.mod.c
 
-for i in compat/patches/*.patch; do
+for i in patches/*.patch; do
 	echo -e "${GREEN}Applying backport patch${NORMAL}: ${BLUE}$i${NORMAL}"
 	patch -p1 -N -t < $i
 	RET=$?

@@ -19,7 +19,12 @@ include $(M)/$(COMPAT_CONFIG)
 
 NOSTDINC_FLAGS := -I$(M)/include/ -include $(M)/include/net/compat.h $(CFLAGS)
 
-obj-y := net/bluetooth/ net/compat/ net/wireless/ net/mac80211/ net/rfkill/
+obj-y := \
+	compat/ \
+	net/rfkill/
+	net/bluetooth/ \
+	net/wireless/ net/mac80211/
+
 ifeq ($(ONLY_CORE),)
 obj-m += \
 	drivers/ssb/ \
