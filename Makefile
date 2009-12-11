@@ -25,7 +25,6 @@ obj-y := \
 	net/bluetooth/ \
 	net/wireless/ net/mac80211/
 
-ifeq ($(ONLY_CORE),)
 obj-m += \
 	drivers/ssb/ \
 	drivers/misc/eeprom/ \
@@ -33,7 +32,6 @@ obj-m += \
 	drivers/net/usb/ \
 	drivers/net/wireless/ \
 	drivers/bluetooth/
-endif
 
 else
 
