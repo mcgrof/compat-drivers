@@ -97,6 +97,13 @@ DRIVERS="$DRIVERS drivers/net/wireless/libertas_tf"
 DRIVERS="$DRIVERS drivers/net/wireless/ipw2x00"
 DRIVERS="$DRIVERS drivers/net/wireless/wl12xx"
 DRIVERS="$DRIVERS drivers/net/wireless/iwmc3200wifi"
+
+# Ethernet drivers
+DRIVERS="$DRIVERS drivers/net/atl1c/"
+DRIVERS="$DRIVERS drivers/net/atl1e/"
+DRIVERS="$DRIVERS drivers/net/atlx/"
+
+# Bluetooth drivers
 DRIVERS_BT="drivers/bluetooth"
 
 # Drivers that belong the the wireless directory
@@ -193,11 +200,15 @@ for i in $RNDIS_REQS; do
 	cp $GIT_TREE/$DIR/$i $DIR/
 done
 
-# b44 is dependent on ssb, so its has to be rebuilt as well.
 DIR="drivers/net"
+echo > $DIR/Makefile
 cp $GIT_TREE/$DIR/b44.[ch] $DIR
 # Not yet
-#echo "obj-\$(CONFIG_B44) += b44.o" > $DIR/Makefile
+#echo "obj-\$(CONFIG_B44) += b44.o" >> $DIR/Makefile
+echo "obj-\$(CONFIG_ATL1) += atlx/" >> $DIR/Makefile
+echo "obj-\$(CONFIG_ATL2) += atlx/" >> $DIR/Makefile
+echo "obj-\$(CONFIG_ATL1E) += atl1e/" >> $DIR/Makefile
+echo "obj-\$(CONFIG_ATL1C) += atl1c/" >> $DIR/Makefile
 
 # Misc
 mkdir -p drivers/misc/eeprom/

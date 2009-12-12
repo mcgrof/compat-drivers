@@ -301,6 +301,12 @@ CONFIG_PCI_ATMEL=m
 
 CONFIG_MWL8K=m
 
+# Ethernet drivers go here
+CONFIG_ATL1=m
+CONFIG_ATL2=m
+CONFIG_ATL1E=m
+CONFIG_ATL1C=m
+
 endif
 ## end of PCI
 
