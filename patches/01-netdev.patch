@@ -685,8 +685,8 @@ diff -Nur a/net/bluetooth/bnep/netdev.c b/net/bluetooth/bnep/netdev.c
  	netdev->watchdog_timeo = AT_TX_WATCHDOG;
  	atl1c_set_ethtool_ops(netdev);
  
---- drivers/net/atlx/atl1.c.orig	2009-12-11 21:14:54.000000000 -0800
-+++ drivers/net/atlx/atl1.c	2009-12-11 21:29:39.000000000 -0800
+--- a/drivers/net/atlx/atl1.c	2009-12-11 21:14:54.000000000 -0800
++++ b/drivers/net/atlx/atl1.c	2009-12-11 21:29:39.000000000 -0800
 @@ -2878,6 +2878,7 @@ static void atl1_poll_controller(struct 
  }
  #endif
@@ -721,8 +721,8 @@ diff -Nur a/net/bluetooth/bnep/netdev.c b/net/bluetooth/bnep/netdev.c
  	netdev->watchdog_timeo = 5 * HZ;
  
  	netdev->ethtool_ops = &atl1_ethtool_ops;
---- drivers/net/atlx/atl2.c.orig	2009-12-11 21:21:51.000000000 -0800
-+++ drivers/net/atlx/atl2.c	2009-12-11 21:28:17.000000000 -0800
+--- a/drivers/net/atlx/atl2.c	2009-12-11 21:21:51.000000000 -0800
++++ b/drivers/net/atlx/atl2.c	2009-12-11 21:28:17.000000000 -0800
 @@ -1306,6 +1306,7 @@ static void atl2_poll_controller(struct 
  #endif
  
