@@ -115,7 +115,7 @@ install-scripts:
 	@# the updates/ dir which is what we use so we add one for it
 	@# (or any other distribution that doens't have this).
 	@./scripts/check_depmod
-	@/sbin/depmod -ae
+	@/sbin/depmod -a
 	@echo
 	@echo "Currently detected wireless subsystem modules:"
 	@echo 
@@ -204,7 +204,7 @@ uninstall:
 	@rm -f $(KLIB)/$(KMODDIR)/drivers/misc/eeprom/eeprom_93cx6.ko*
 	@rm -f $(KLIB)/$(KMODDIR)/drivers/misc/eeprom_93cx6.ko*
 	@rm -f $(KLIB)/$(KMODDIR)/drivers/net/b44.ko*
-	@/sbin/depmod -ae
+	@/sbin/depmod -a
 	@echo
 	@echo "Your old wireless subsystem modules were left intact:"
 	@echo 
