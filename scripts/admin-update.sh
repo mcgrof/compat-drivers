@@ -15,8 +15,7 @@
 # 
 # for example
 #
-GIT_URL="git://git.kernel.org/pub/scm/linux/kernel/git/linville/wireless-testing.git"
-GIT_BT_URL="git://git.kernel.org/pub/scm/linux/kernel/git/holtmann/bluetooth-testing.git"
+GIT_URL="git://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git"
 GIT_COMPAT_URL="git://git.kernel.org/pub/scm/linux/kernel/git/mcgrof/compat.git"
 
 INCLUDE_NET_BT="hci_core.h l2cap.h bluetooth.h rfcomm.h hci.h"
@@ -48,12 +47,12 @@ UNDERLINE="\033[02m"
 NET_DIRS="wireless mac80211 rfkill"
 # User exported this variable
 if [ -z $GIT_TREE ]; then
-	GIT_TREE="/home/$USER/wireless-testing/"
+	GIT_TREE="/home/$USER/linux-next/"
 	if [ ! -d $GIT_TREE ]; then
-		echo "Please tell me where your wireless-testing git tree is."
+		echo "Please tell me where your linux-next git tree is."
 		echo "You can do this by exporting its location as follows:"
 		echo
-		echo "  export GIT_TREE=/home/$USER/wireless-testing/"
+		echo "  export GIT_TREE=/home/$USER/linux-next/"
 		echo
 		echo "If you do not have one you can clone the repository:"
 		echo "  git-clone $GIT_URL"
