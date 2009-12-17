@@ -15,8 +15,6 @@ DESTDIR?=
 
 ifneq ($(KERNELRELEASE),)
 
-include $(M)/$(COMPAT_CONFIG)
-
 NOSTDINC_FLAGS := -I$(M)/include/ -include $(M)/include/linux/compat-2.6.h $(CFLAGS)
 
 obj-y := compat/
@@ -295,7 +293,7 @@ wlunload:
 wlload: wlunload
 	@./scripts/wlload.sh
 
-.PHONY: all clean install uninstall unload load btunload btload wlunload wlload
+.PHONY: all clean install uninstall unload load btunload btload wlunload wlload modules
 
 endif
 
