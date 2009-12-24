@@ -21,16 +21,19 @@ obj-y := compat/
 
 obj-$(CONFIG_COMPAT_RFKILL) += net/rfkill/
 
+ifeq ($(BT),)
 obj-$(CONFIG_COMPAT_WIRELESS) += net/wireless/ net/mac80211/
 obj-$(CONFIG_COMPAT_WIRELESS_MODULES) += drivers/net/wireless/
 
 obj-$(CONFIG_COMPAT_NET_USB_MODULES) += drivers/net/usb/
 
+obj-$(CONFIG_COMPAT_NETWORK_MODULES) += drivers/net/
+obj-$(CONFIG_COMPAT_VAR_MODULES) +=  drivers/misc/eeprom/
+endif
+
 obj-$(CONFIG_COMPAT_BLUETOOTH) += net/bluetooth/
 obj-$(CONFIG_COMPAT_BLUETOOTH_MODULES) += drivers/bluetooth/
 
-obj-$(CONFIG_COMPAT_NETWORK_MODULES) += drivers/net/
-obj-$(CONFIG_COMPAT_VAR_MODULES) +=  drivers/misc/eeprom/
 # Sorry ssb requires pcmica backport for 2.6.33 which is not done yet
 #					drivers/ssb/
 
@@ -56,6 +59,11 @@ modules: $(CREL_CHECK)
 	$(MAKE) -C $(KLIB_BUILD) M=$(PWD) modules
 	@touch $@
 
+bt: $(CREL_CHECK)
+	@./scripts/check_config.sh
+	$(MAKE) -C $(KLIB_BUILD) M=$(PWD) BT=TRUE modules
+	@touch $@
+
 # With the above and this we make sure we generate a new compat autoconf per
 # new relase of compat-wireless-2.6 OR when the user updates the 
 # $(COMPAT_CONFIG) file
@@ -65,6 +73,60 @@ $(CREL_CHECK):
 	@./scripts/check_config.sh
 	@touch $@
 	@md5sum $(COMPAT_CONFIG) > $(CONFIG_CHECK)
+
+btinstall: btuninstall bt-install-modules bt-install-scripts
+
+bt-install-modules: bt
+	$(MAKE) -C $(KLIB_BUILD) M=$(PWD) $(KMODDIR_ARG) $(KMODPATH_ARG) BT=TRUE \
+		modules_install
+
+bt-install-scripts:
+	@# All the scripts we can use
+	@# Mandrake doesn't have a depmod.d/ conf file to prefer
+	@# the updates/ dir which is what we use so we add one for it
+	@# (or any other distribution that doens't have this).
+	@/sbin/depmod -ae
+	@echo
+	@echo "Currently detected bluetooth subsystem modules:"
+	@echo
+	@$(MODPROBE) -l sco
+	@$(MODPROBE) -l l2cap
+	@$(MODPROBE) -l hidp
+	@$(MODPROBE) -l rfcomm
+	@$(MODPROBE) -l bnep
+	@$(MODPROBE) -l btusb
+	@$(MODPROBE) -l bluetooth
+	@echo
+	@echo Now run:
+	@echo
+	@echo sudo make btunload:
+	@echo
+	@echo And the load the needed bluetooth modules. If unsure reboot.
+	@echo
+
+btuninstall:
+	@# New location, matches upstream
+	@rm -rf $(KLIB)/$(KMODDIR)/net/bluetooth/
+	@rm -rf $(KLIB)/$(KMODDIR)/drivers/bluetooth/
+	@# Lets only remove the stuff we are sure we are providing
+	@# on the misc directory.
+	@/sbin/depmod -ae
+	@echo
+	@echo "Your old bluetooth subsystem modules were left intact:"
+	@echo
+	@$(MODPROBE) -l sco
+	@$(MODPROBE) -l l2cap
+	@$(MODPROBE) -l hidp
+	@$(MODPROBE) -l rfcomm
+	@$(MODPROBE) -l bnep
+	@$(MODPROBE) -l btusb
+	@$(MODPROBE) -l bluetooth
+	@
+	@echo
+
+btclean:
+	make -C /lib/modules/$(shell uname -r)/build M=$(PWD) BT=TRUE clean
+	@rm -f $(CREL_PRE)*
 
 install: uninstall install-modules install-scripts
 
@@ -293,7 +355,7 @@ wlunload:
 wlload: wlunload
 	@./scripts/wlload.sh
 
-.PHONY: all clean install uninstall unload load btunload btload wlunload wlload modules
+.PHONY: all clean install uninstall unload load btunload btload wlunload wlload modules bt
 
 endif
 

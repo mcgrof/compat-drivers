@@ -6,6 +6,7 @@ This is a Linux wireless compatibility package which provides the latest
 Linux wireless subsystem enhancements for kernels 2.6.25 and above.
 It is technically possible to support kernels < 2.6.25 but more
 work is required for that.
+It also provides Linux bluetooth subsystem enhancements for kernels 2.6.27 and above.
 
 If you'd like to keep the wireless-testing git repository local as well,
 please read out git-guide which explains how to achieve this:
@@ -70,6 +71,24 @@ Load:
 
 Reboot unless you know what you are doing.
 
+
+Bluetooth modules can be seperately compiled and installed using below commands
+
+Build:
+	make bt
+
+Install:
+	sudo make btinstall
+
+Uninstall:
+	sudo make btuninstall
+
+Load:
+	sudo make btload
+
+Unload:
+	sudo make btunload
+
 Drivers
 -------
 
@@ -114,6 +133,15 @@ To support b43 ssb is also provided, and since ssb is also provided
 we provide b44 (the ethernet driverl).
 
 The new rfkill drivers also provided and backported.
+
+Bluetooth drivers:
+bluetooth
+btusb
+hci_uart
+btsdio
+btuart_cs
+bluecard_cs
+bfusb
 
 Firmware:
 ---------
