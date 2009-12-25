@@ -200,7 +200,7 @@ diff -Nur a/net/bluetooth/hci_sysfs.c b/net/bluetooth/hci_sysfs.c
 +#if (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,27))
  	hid = hid_allocate_device();
  	if (IS_ERR(hid))
- 		return PTR_ERR(session->hid);
+ 		return PTR_ERR(hid);
 +#endif
  
  	session->hid = hid;
