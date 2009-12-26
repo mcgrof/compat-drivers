@@ -110,7 +110,7 @@ without creating a headache on maintenance of the pathes.
  static const struct net_device_ops ieee80211_dataif_ops = {
  	.ndo_open		= ieee80211_open,
  	.ndo_stop		= ieee80211_stop,
-@@ -663,11 +664,22 @@
+@@ -663,11 +664,23 @@
  	.ndo_change_mtu 	= ieee80211_change_mtu,
  	.ndo_set_mac_address 	= eth_mac_addr,
  };
@@ -125,6 +125,7 @@ without creating a headache on maintenance of the pathes.
 +	dev->hard_start_xmit = ieee80211_subif_start_xmit;
 +	dev->set_multicast_list = ieee80211_set_multicast_list;
 +	dev->change_mtu = ieee80211_change_mtu;
++	dev->set_mac_address = ieee80211_change_mac;
 +	dev->open = ieee80211_open;
 +	dev->stop = ieee80211_stop;
 +	/* we will validate the address ourselves in ->open */
@@ -133,7 +134,7 @@ without creating a headache on maintenance of the pathes.
  	dev->destructor = free_netdev;
  }
  
-@@ -682,7 +694,11 @@
+@@ -682,7 +694,12 @@
  
  	/* and set some type-dependent values */
  	sdata->vif.type = type;
@@ -141,6 +142,7 @@ without creating a headache on maintenance of the pathes.
  	sdata->dev->netdev_ops = &ieee80211_dataif_ops;
 +#else
 +	sdata->dev->hard_start_xmit = ieee80211_subif_start_xmit;
++	sdata->dev->set_mac_address = eth_mac_addr;
 +#endif
  	sdata->wdev.iftype = type;
  
