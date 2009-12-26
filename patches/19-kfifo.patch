@@ -1,0 +1,47 @@
+These parts of the new generic kernel FIFO implementation (kfifo) can
+not be backported easily with defines in the compat module.
+
+--- a/drivers/net/wireless/libertas/dev.h
++++ b/drivers/net/wireless/libertas/dev.h
+@@ -119,7 +119,11 @@ struct lbs_private {
+ 	u32 resp_len[2];
+ 
+ 	/* Events sent from hardware to driver */
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,33))
+ 	struct kfifo event_fifo;
++#else
++	struct kfifo *event_fifo;
++#endif
+ 
+ 	/** thread to service interrupts */
+ 	struct task_struct *main_thread;
+--- a/drivers/net/wireless/libertas/main.c
++++ b/drivers/net/wireless/libertas/main.c
+@@ -872,8 +872,14 @@ static int lbs_init_adapter(struct lbs_private *priv)
+ 	priv->resp_len[0] = priv->resp_len[1] = 0;
+ 
+ 	/* Create the event FIFO */
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,33))
+ 	ret = kfifo_alloc(&priv->event_fifo, sizeof(u32) * 16, GFP_KERNEL);
+ 	if (ret) {
++#else
++	priv->event_fifo = kfifo_alloc(sizeof(u32) * 16, GFP_KERNEL, NULL);
++	if (IS_ERR(priv->event_fifo)) {
++		ret = -ENOMEM;
++#endif
+ 		lbs_pr_err("Out of memory allocating event FIFO buffer\n");
+ 		goto out;
+ 	}
+@@ -889,7 +895,12 @@ static void lbs_free_adapter(struct lbs_private *priv)
+ 	lbs_deb_enter(LBS_DEB_MAIN);
+ 
+ 	lbs_free_cmd_buffer(priv);
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,33))
+ 	kfifo_free(&priv->event_fifo);
++#else
++	if (priv->event_fifo)
++		kfifo_free(priv->event_fifo);
++#endif
+ 	del_timer(&priv->command_timer);
+ 	del_timer(&priv->auto_deepsleep_timer);
+ 	kfree(priv->networks);
