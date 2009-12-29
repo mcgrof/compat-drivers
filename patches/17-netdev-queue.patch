@@ -12,9 +12,9 @@ The patch that introduced this on mac80211 was:
     Reviewed-by: Johannes Berg <johannes@sipsolutions.net>
     Signed-off-by: John W. Linville <linville@tuxdriver.com>
 
---- a/net/mac80211/iface.c	2009-12-10 23:06:21.000000000 -0800
-+++ b/net/mac80211/iface.c	2009-12-10 23:09:50.000000000 -0800
-@@ -884,6 +884,7 @@ void ieee80211_if_remove(struct ieee8021
+--- a/net/mac80211/iface.c	2009-12-28 17:55:57.000000000 -0800
++++ b/net/mac80211/iface.c	2009-12-28 17:55:58.000000000 -0800
+@@ -904,6 +904,7 @@ void ieee80211_if_remove(struct ieee8021
   * Remove all interfaces, may only be called at hardware unregistration
   * time because it doesn't do RCU-safe list removals.
   */
@@ -22,7 +22,7 @@ The patch that introduced this on mac80211 was:
  void ieee80211_remove_interfaces(struct ieee80211_local *local)
  {
  	struct ieee80211_sub_if_data *sdata, *tmp;
-@@ -900,6 +901,22 @@ void ieee80211_remove_interfaces(struct 
+@@ -920,6 +921,22 @@ void ieee80211_remove_interfaces(struct 
  	mutex_unlock(&local->iflist_mtx);
  	unregister_netdevice_many(&unreg_list);
  }
