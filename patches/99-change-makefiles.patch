@@ -11,8 +11,8 @@ only the wireless stuff.
 -obj-$(CONFIG_EEPROM_LEGACY)	+= eeprom.o
 -obj-$(CONFIG_EEPROM_MAX6875)	+= max6875.o
  obj-$(CONFIG_EEPROM_93CX6)	+= eeprom_93cx6.o
---- a/drivers/net/usb/Makefile	2009-07-27 08:03:34.770077174 -0700
-+++ b/drivers/net/usb/Makefile	2009-07-27 08:04:22.594143560 -0700
+--- a/drivers/net/usb/Makefile
++++ b/drivers/net/usb/Makefile
 @@ -2,24 +2,7 @@
  # Makefile for USB Network drivers
  #
@@ -38,8 +38,8 @@ only the wireless stuff.
 -obj-$(CONFIG_USB_NET_INT51X1)	+= int51x1.o
 -obj-$(CONFIG_USB_CDC_PHONET)	+= cdc-phonet.o
  
---- a/drivers/net/wireless/Makefile	2009-12-10 22:57:15.000000000 -0800
-+++ b/drivers/net/wireless/Makefile	2009-12-10 22:57:16.000000000 -0800
+--- a/drivers/net/wireless/Makefile
++++ b/drivers/net/wireless/Makefile
 @@ -5,33 +5,16 @@
  obj-$(CONFIG_IPW2100) += ipw2x00/
  obj-$(CONFIG_IPW2200) += ipw2x00/
@@ -74,9 +74,9 @@ only the wireless stuff.
  obj-$(CONFIG_LIBERTAS)		+= libertas/
  
  obj-$(CONFIG_LIBERTAS_THINFIRM)	+= libertas_tf/
---- a/net/wireless/Makefile	2009-10-06 13:00:59.000000000 -0400
-+++ b/net/wireless/Makefile	2009-10-06 13:00:59.000000000 -0400
-@@ -4,11 +4,6 @@
+--- a/net/wireless/Makefile
++++ b/net/wireless/Makefile
+@@ -4,11 +4,6 @@ obj-$(CONFIG_LIB80211_CRYPT_WEP) += lib8
  obj-$(CONFIG_LIB80211_CRYPT_CCMP) += lib80211_crypt_ccmp.o
  obj-$(CONFIG_LIB80211_CRYPT_TKIP) += lib80211_crypt_tkip.o
  

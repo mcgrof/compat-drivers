@@ -28,8 +28,8 @@ cases.
  
  #include "assoc.h"
  #include "decl.h"
---- a/drivers/net/wireless/wl12xx/wl1251_main.c	2009-08-07 11:42:12.532495607 -0700
-+++ b/drivers/net/wireless/wl12xx/wl1251_main.c	2009-08-07 12:08:31.167548696 -0700
+--- a/drivers/net/wireless/wl12xx/wl1251_main.c
++++ b/drivers/net/wireless/wl12xx/wl1251_main.c
 @@ -26,6 +26,9 @@
  #include <linux/firmware.h>
  #include <linux/delay.h>
@@ -40,8 +40,8 @@ cases.
  #include <linux/crc32.h>
  #include <linux/etherdevice.h>
  #include <linux/vmalloc.h>
---- a/drivers/net/wireless/wl12xx/wl1251_spi.c	2009-08-07 12:24:58.907526225 -0700
-+++ b/drivers/net/wireless/wl12xx/wl1251_spi.c	2009-08-07 12:24:59.199494403 -0700
+--- a/drivers/net/wireless/wl12xx/wl1251_spi.c
++++ b/drivers/net/wireless/wl12xx/wl1251_spi.c
 @@ -24,6 +24,9 @@
  #include <linux/irq.h>
  #include <linux/module.h>
@@ -64,8 +64,8 @@ cases.
  
  /**
   * DOC: Key handling basics
---- a/drivers/net/wireless/iwlwifi/iwl-core.h	2009-12-10 22:29:01.000000000 -0800
-+++ b/drivers/net/wireless/iwlwifi/iwl-core.h	2009-12-10 22:47:19.000000000 -0800
+--- a/drivers/net/wireless/iwlwifi/iwl-core.h
++++ b/drivers/net/wireless/iwlwifi/iwl-core.h
 @@ -63,7 +63,11 @@
  #ifndef __iwl_core_h__
  #define __iwl_core_h__

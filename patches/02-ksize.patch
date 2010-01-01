@@ -10,9 +10,9 @@ define ksize(bleh) SOME_LARGE_NUMBER
 but doing it this way emphasis careful review
 of the situation.
 
---- a/net/wireless/scan.c	2009-09-02 14:13:33.769092519 -0700
-+++ b/net/wireless/scan.c	2009-09-02 14:13:34.925094548 -0700
-@@ -423,7 +423,12 @@
+--- a/net/wireless/scan.c
++++ b/net/wireless/scan.c
+@@ -423,7 +423,12 @@ cfg80211_bss_update(struct cfg80211_regi
  			size_t used = dev->wiphy.bss_priv_size + sizeof(*res);
  			size_t ielen = res->pub.len_information_elements;
  

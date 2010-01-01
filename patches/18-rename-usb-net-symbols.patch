@@ -4,8 +4,6 @@ usb_autopm_put_interface_async and usb_autopm_get_interface_async are
 not backported to kernel 2.6.28 and earlier.
 Remove this patch if these symbols are backported.
 
-diff --git a/drivers/net/usb/Makefile b/drivers/net/usb/Makefile
-index e17afb7..ddea3ae 100644
 --- a/drivers/net/usb/Makefile
 +++ b/drivers/net/usb/Makefile
 @@ -8,18 +8,18 @@ obj-$(CONFIG_USB_PEGASUS)	+= pegasus.o
@@ -30,8 +28,6 @@ index e17afb7..ddea3ae 100644
  obj-$(CONFIG_USB_NET_INT51X1)	+= int51x1.o
  obj-$(CONFIG_USB_CDC_PHONET)	+= cdc-phonet.o
  
-diff --git a/drivers/net/usb/cdc_ether.c b/drivers/net/usb/cdc_ether.c
-index 21e183a..65c385f 100644
 --- a/drivers/net/usb/cdc_ether.c
 +++ b/drivers/net/usb/cdc_ether.c
 @@ -33,7 +33,7 @@
@@ -43,8 +39,6 @@ index 21e183a..65c385f 100644
  
  static int is_rndis(struct usb_interface_descriptor *desc)
  {
-diff --git a/drivers/net/wireless/Makefile b/drivers/net/wireless/Makefile
-index 5d4ce4d..d4e48bd 100644
 --- a/drivers/net/wireless/Makefile
 +++ b/drivers/net/wireless/Makefile
 @@ -29,7 +29,7 @@ obj-$(CONFIG_RTL8187)		+= rtl818x/

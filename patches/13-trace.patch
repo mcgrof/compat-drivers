@@ -4,8 +4,8 @@ in or compat headers.
 
 [1] http://lxr.linux.no/#linux+v2.6.31/include/trace/define_trace.h
 
---- a/drivers/net/wireless/iwlwifi/iwl-devtrace.h	2009-12-28 17:50:51.000000000 -0800
-+++ b/drivers/net/wireless/iwlwifi/iwl-devtrace.h	2009-12-28 17:50:52.000000000 -0800
+--- a/drivers/net/wireless/iwlwifi/iwl-devtrace.h
++++ b/drivers/net/wireless/iwlwifi/iwl-devtrace.h
 @@ -1,7 +1,9 @@
  #if !defined(__IWLWIFI_DEVICE_TRACE) || defined(TRACE_HEADER_MULTI_READ)
  #define __IWLWIFI_DEVICE_TRACE
@@ -23,8 +23,8 @@ in or compat headers.
 +#if (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,30))
  #include <trace/define_trace.h>
 +#endif
---- a/net/mac80211/driver-trace.h	2009-12-28 17:52:08.000000000 -0800
-+++ b/net/mac80211/driver-trace.h	2009-12-28 17:52:09.000000000 -0800
+--- a/net/mac80211/driver-trace.h
++++ b/net/mac80211/driver-trace.h
 @@ -1,7 +1,9 @@
  #if !defined(__MAC80211_DRIVER_TRACE) || defined(TRACE_HEADER_MULTI_READ)
  #define __MAC80211_DRIVER_TRACE
@@ -35,7 +35,7 @@ in or compat headers.
  #include <net/mac80211.h>
  #include "ieee80211_i.h"
  
-@@ -696,4 +698,6 @@ TRACE_EVENT(drv_ampdu_action,
+@@ -717,4 +719,6 @@ TRACE_EVENT(drv_flush,
  #define TRACE_INCLUDE_PATH .
  #undef TRACE_INCLUDE_FILE
  #define TRACE_INCLUDE_FILE driver-trace
