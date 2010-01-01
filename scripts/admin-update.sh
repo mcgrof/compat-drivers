@@ -59,13 +59,13 @@ if [ -z $GIT_TREE ]; then
 		exit 1
 	fi
 else
-	echo "You said to use git tree at: $GIT_TREE for wireless"
+	echo "You said to use git tree at: $GIT_TREE for linux-next"
 fi
 
 if [ -z $GIT_COMPAT_TREE ]; then
 	GIT_COMPAT_TREE="/home/$USER/compat/"
 	if [ ! -d $GIT_COMPAT_TREE ]; then
-		echo "Please tell me where your bluetooth-testing git tree is."
+		echo "Please tell me where your compat git tree is."
 		echo "You can do this by exporting its location as follows:"
 		echo
 		echo "  export GIT_COMPAT_TREE=/home/$USER/compat/"
@@ -75,7 +75,7 @@ if [ -z $GIT_COMPAT_TREE ]; then
 		exit 1
 	fi
 else
-	echo "You said to use git tree at: $GIT_COMPAT_TREE for bluetooth"
+	echo "You said to use git tree at: $GIT_COMPAT_TREE for compat"
 fi
 
 # Drivers that have their own directory
@@ -98,9 +98,9 @@ DRIVERS="$DRIVERS drivers/net/wireless/wl12xx"
 DRIVERS="$DRIVERS drivers/net/wireless/iwmc3200wifi"
 
 # Ethernet drivers
-DRIVERS="$DRIVERS drivers/net/atl1c/"
-DRIVERS="$DRIVERS drivers/net/atl1e/"
-DRIVERS="$DRIVERS drivers/net/atlx/"
+DRIVERS="$DRIVERS drivers/net/atl1c"
+DRIVERS="$DRIVERS drivers/net/atl1e"
+DRIVERS="$DRIVERS drivers/net/atlx"
 
 # Bluetooth drivers
 DRIVERS_BT="drivers/bluetooth"
@@ -303,6 +303,11 @@ if [ -d ./.git ]; then
 	case $TREE_NAME in
 	"wireless-testing.git") # John's wireless-testing
 		MASTER_TAG=$(git tag -l| grep master | tail -1)
+		echo $MASTER_TAG > $DIR/master-tag
+		echo -e "This is a ${RED}bleeding edge${NORMAL} compat-wireless release based on: ${PURPLE}$MASTER_TAG${NORMAL}"
+		;;
+	"linux-next.git") # The linux-next integration testing tree
+		MASTER_TAG=$(git tag -l| grep next | tail -1)
 		echo $MASTER_TAG > $DIR/master-tag
 		echo -e "This is a ${RED}bleeding edge${NORMAL} compat-wireless release based on: ${PURPLE}$MASTER_TAG${NORMAL}"
 		;;
