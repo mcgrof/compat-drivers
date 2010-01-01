@@ -28,14 +28,11 @@ obj-$(CONFIG_COMPAT_WIRELESS_MODULES) += drivers/net/wireless/
 obj-$(CONFIG_COMPAT_NET_USB_MODULES) += drivers/net/usb/
 
 obj-$(CONFIG_COMPAT_NETWORK_MODULES) += drivers/net/
-obj-$(CONFIG_COMPAT_VAR_MODULES) +=  drivers/misc/eeprom/
+obj-$(CONFIG_COMPAT_VAR_MODULES) +=  drivers/ssb/ drivers/misc/eeprom/
 endif
 
 obj-$(CONFIG_COMPAT_BLUETOOTH) += net/bluetooth/
 obj-$(CONFIG_COMPAT_BLUETOOTH_MODULES) += drivers/bluetooth/
-
-# Sorry ssb requires pcmica backport for 2.6.33 which is not done yet
-#					drivers/ssb/
 
 else
 

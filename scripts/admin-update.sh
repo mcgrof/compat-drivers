@@ -203,7 +203,7 @@ DIR="drivers/net"
 echo > $DIR/Makefile
 cp $GIT_TREE/$DIR/b44.[ch] $DIR
 # Not yet
-#echo "obj-\$(CONFIG_B44) += b44.o" >> $DIR/Makefile
+echo "obj-\$(CONFIG_B44) += b44.o" >> $DIR/Makefile
 echo "obj-\$(CONFIG_ATL1) += atlx/" >> $DIR/Makefile
 echo "obj-\$(CONFIG_ATL2) += atlx/" >> $DIR/Makefile
 echo "obj-\$(CONFIG_ATL1E) += atl1e/" >> $DIR/Makefile
