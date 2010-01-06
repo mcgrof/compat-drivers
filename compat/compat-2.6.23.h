@@ -12,6 +12,7 @@
 #include <linux/sched.h>
 #include <linux/workqueue.h>
 #include <linux/genetlink.h>
+#include <net/sch_generic.h>
 
 /*
  * Tell gcc if a function is cold. The compiler will assume any path

@@ -14,6 +14,7 @@
 #include <linux/usb.h>
 #include <linux/types.h>
 #include <linux/list.h>
+#include <linux/scatterlist.h>
 
 #define KEY_BLUETOOTH		237
 #define KEY_WLAN		238
@@ -206,6 +207,16 @@ struct header_ops {
  **/
 static inline void sg_mark_end(struct scatterlist *sg)
 {
+#ifdef CONFIG_DEBUG_SG
+	BUG_ON(sg->sg_magic != SG_MAGIC);
+#endif
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,23))
+	/*
+	 * Set termination bit, clear potential chain bit
+	*/
+	sg->page_link |= 0x02;
+	sg->page_link &= ~0x01;
+#endif
 }
 
 /**

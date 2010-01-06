@@ -16,6 +16,7 @@
 
 /* 2.6.28 compat code goes here */
 
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,23))
 /*
  * Compat-wireless notes for USB backport stuff:
  *
@@ -206,6 +207,7 @@ int usb_anchor_empty(struct usb_anchor *anchor)
 }
 
 EXPORT_SYMBOL_GPL(usb_anchor_empty);
+#endif
 
 
 void __iomem *pci_ioremap_bar(struct pci_dev *pdev, int bar)

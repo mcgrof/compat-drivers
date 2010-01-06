@@ -37,6 +37,8 @@
 #define pcmcia_parse_tuple(tuple, parse) pccard_parse_tuple(tuple, parse)
 #endif
 
+/* USB anchors were added as of 2.6.23 */
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,23))
 #if 0
 extern void usb_poison_urb(struct urb *urb);
 #endif
@@ -49,6 +51,7 @@ extern void usb_poison_anchored_urbs(struct usb_anchor *anchor);
 extern struct urb *usb_get_from_anchor(struct usb_anchor *anchor);
 extern void usb_scuttle_anchored_urbs(struct usb_anchor *anchor);
 extern int usb_anchor_empty(struct usb_anchor *anchor);
+#endif
 
 
 void __iomem *pci_ioremap_bar(struct pci_dev *pdev, int bar);
