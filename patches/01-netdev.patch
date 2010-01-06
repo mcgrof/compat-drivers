@@ -100,19 +100,19 @@ without creating a headache on maintenance of the pathes.
  
  	tmp = RNDIS_PACKET_TYPE_DIRECTED | RNDIS_PACKET_TYPE_BROADCAST;
  	retval = rndis_set_oid(usbdev, OID_GEN_CURRENT_PACKET_FILTER, &tmp,
---- a/net/mac80211/iface.c
-+++ b/net/mac80211/iface.c
-@@ -657,6 +657,7 @@ static void ieee80211_teardown_sdata(str
- 	WARN_ON(flushed);
+--- a/net/mac80211/iface.c	2010-01-06 14:53:03.000000000 -0800
++++ b/net/mac80211/iface.c	2010-01-06 14:53:04.000000000 -0800
+@@ -666,6 +666,7 @@ static u16 ieee80211_netdev_select_queue
+ 	return ieee80211_select_queue(IEEE80211_DEV_TO_SUB_IF(dev), skb);
  }
  
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
  static const struct net_device_ops ieee80211_dataif_ops = {
  	.ndo_open		= ieee80211_open,
  	.ndo_stop		= ieee80211_stop,
-@@ -676,11 +677,23 @@ static const struct net_device_ops ieee8
- 	.ndo_change_mtu 	= ieee80211_change_mtu,
+@@ -712,11 +713,23 @@ static const struct net_device_ops ieee8
  	.ndo_set_mac_address 	= eth_mac_addr,
+ 	.ndo_select_queue	= ieee80211_monitor_select_queue,
  };
 +#endif
  
@@ -134,7 +134,7 @@ without creating a headache on maintenance of the pathes.
  	dev->destructor = free_netdev;
  }
  
-@@ -695,7 +708,12 @@ static void ieee80211_setup_sdata(struct
+@@ -731,7 +744,12 @@ static void ieee80211_setup_sdata(struct
  
  	/* and set some type-dependent values */
  	sdata->vif.type = type;
@@ -147,7 +147,7 @@ without creating a headache on maintenance of the pathes.
  	sdata->wdev.iftype = type;
  
  	/* only monitor differs */
-@@ -718,7 +736,11 @@ static void ieee80211_setup_sdata(struct
+@@ -754,7 +772,11 @@ static void ieee80211_setup_sdata(struct
  		break;
  	case NL80211_IFTYPE_MONITOR:
  		sdata->dev->type = ARPHRD_IEEE80211_RADIOTAP;
@@ -159,7 +159,7 @@ without creating a headache on maintenance of the pathes.
  		sdata->u.mntr_flags = MONITOR_FLAG_CONTROL |
  				      MONITOR_FLAG_OTHER_BSS;
  		break;
-@@ -787,6 +809,8 @@ int ieee80211_if_add(struct ieee80211_lo
+@@ -823,6 +845,8 @@ int ieee80211_if_add(struct ieee80211_lo
  		return -ENOMEM;
  	dev_net_set(ndev, wiphy_net(local->hw.wiphy));
  
@@ -168,7 +168,7 @@ without creating a headache on maintenance of the pathes.
  	ndev->needed_headroom = local->tx_headroom +
  				4*6 /* four MAC addresses */
  				+ 2 + 2 + 2 + 2 /* ctl, dur, seq, qos */
-@@ -795,6 +819,7 @@ int ieee80211_if_add(struct ieee80211_lo
+@@ -831,6 +855,7 @@ int ieee80211_if_add(struct ieee80211_lo
  				- ETH_HLEN /* ethernet hard_header_len */
  				+ IEEE80211_ENCRYPT_HEADROOM;
  	ndev->needed_tailroom = IEEE80211_ENCRYPT_TAILROOM;
@@ -176,7 +176,7 @@ without creating a headache on maintenance of the pathes.
  
  	ret = dev_alloc_name(ndev, ndev->name);
  	if (ret < 0)
-@@ -836,6 +861,10 @@ int ieee80211_if_add(struct ieee80211_lo
+@@ -872,6 +897,10 @@ int ieee80211_if_add(struct ieee80211_lo
  	if (ret)
  		goto fail;
  
