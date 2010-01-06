@@ -328,53 +328,5 @@ define_strict_strtox(l, long)
 EXPORT_SYMBOL(strict_strtoul);
 EXPORT_SYMBOL(strict_strtol);
 
-int __dev_addr_sync(struct dev_addr_list **to, int *to_count,
-		    struct dev_addr_list **from, int *from_count)
-{
-	struct dev_addr_list *da, *next;
-	int err = 0;
-
-	da = *from;
-	while (da != NULL) {
-		next = da->next;
-		if (!da->da_synced) {
-			err = __dev_addr_add(to, to_count,
-					     da->da_addr, da->da_addrlen, 0);
-			if (err < 0)
-				break;
-			da->da_synced = 1;
-			da->da_users++;
-		} else if (da->da_users == 1) {
-			__dev_addr_delete(to, to_count,
-					  da->da_addr, da->da_addrlen, 0);
-			__dev_addr_delete(from, from_count,
-					  da->da_addr, da->da_addrlen, 0);
-		}
-		da = next;
-	}
-	return err;
-}
-EXPORT_SYMBOL_GPL(__dev_addr_sync);
-
-void __dev_addr_unsync(struct dev_addr_list **to, int *to_count,
-		       struct dev_addr_list **from, int *from_count)
-{
-	struct dev_addr_list *da, *next;
-
-	da = *from;
-	while (da != NULL) {
-		next = da->next;
-		if (da->da_synced) {
-			__dev_addr_delete(to, to_count,
-					  da->da_addr, da->da_addrlen, 0);
-			da->da_synced = 0;
-			__dev_addr_delete(from, from_count,
-					  da->da_addr, da->da_addrlen, 0);
-		}
-		da = next;
-	}
-}
-EXPORT_SYMBOL_GPL(__dev_addr_unsync);
-
 #endif /* LINUX_VERSION_CODE < KERNEL_VERSION(2,6,25) */
 
