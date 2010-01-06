@@ -71,17 +71,11 @@ $(CREL_CHECK):
 	@touch $@
 	@md5sum $(COMPAT_CONFIG) > $(CONFIG_CHECK)
 
-btinstall: btuninstall bt-install-modules bt-install-scripts
+btinstall: btuninstall bt-install-modules
 
 bt-install-modules: bt
 	$(MAKE) -C $(KLIB_BUILD) M=$(PWD) $(KMODDIR_ARG) $(KMODPATH_ARG) BT=TRUE \
 		modules_install
-
-bt-install-scripts:
-	@# All the scripts we can use
-	@# Mandrake doesn't have a depmod.d/ conf file to prefer
-	@# the updates/ dir which is what we use so we add one for it
-	@# (or any other distribution that doens't have this).
 	@/sbin/depmod -ae
 	@echo
 	@echo "Currently detected bluetooth subsystem modules:"
