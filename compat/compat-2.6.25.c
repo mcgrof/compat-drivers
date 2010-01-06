@@ -13,6 +13,8 @@
 /* All things not in 2.6.22, 2.6.23 and 2.6.24 */
 #if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,25))
 
+#include <linux/miscdevice.h>
+
 /* Backport work for QoS dependencies (kernel/pm_qos_params.c)
  * ipw2100 now makes use of
  * pm_qos_add_requirement(), 

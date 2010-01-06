@@ -8,6 +8,8 @@
 /* Compat work for 2.6.21, 2.6.22 and 2.6.23 */
 #if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,24))
 
+#include <linux/skbuff.h>
+
 /* Added on 2.6.24 in include/linux/types.h by Al viro on commit 142956af */
 typedef unsigned long               uintptr_t;
 
