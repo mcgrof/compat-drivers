@@ -10,8 +10,10 @@
 #include <linux/list.h>
 #include <linux/pci.h>
 #include <linux/dma-mapping.h>
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,24))
 #include <linux/mmc/sdio.h>
 #include <linux/mmc/sdio_func.h>
+#endif
 #include <linux/netdevice.h>
 #include <linux/workqueue.h>
 #include <net/iw_handler.h>
@@ -160,8 +162,10 @@ static inline void list_splice_tail_init(struct list_head *list,
 	}
 }
 
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,24))
 extern unsigned int mmc_align_data_size(struct mmc_card *, unsigned int);
 extern unsigned int sdio_align_size(struct sdio_func *func, unsigned int sz);
+#endif
 
 #define iwe_stream_add_value(info, event, value, ends, iwe, event_len) iwe_stream_add_value(event, value, ends, iwe, event_len)
 #define iwe_stream_add_point(info, stream, ends, iwe, extra) iwe_stream_add_point(stream, ends, iwe, extra)

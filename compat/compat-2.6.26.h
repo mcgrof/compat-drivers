@@ -12,7 +12,9 @@
 #include <linux/kernel.h>
 #include <linux/jiffies.h>
 #include <net/sock.h>
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,24))
 #include <net/net_namespace.h>
+#endif
 
 /* These jiffie helpers added as of 2.6.26 */
 

@@ -534,3 +534,17 @@ without creating a headache on maintenance of the pathes.
  	dev->destructor = free_netdev;
  	ether_setup(dev);
  	dev->tx_queue_len = 0;
+--- a/net/mac80211/iface.c	2010-01-05 21:58:26.000000000 -0800
++++ b/net/mac80211/iface.c	2010-01-05 21:58:30.000000000 -0800
+@@ -675,9 +675,11 @@
+ 	dev->change_mtu = ieee80211_change_mtu;
+ 	dev->open = ieee80211_open;
+ 	dev->stop = ieee80211_stop;
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,24))
+ 	/* we will validate the address ourselves in ->open */
+ 	dev->validate_addr = NULL;
+ #endif
++#endif
+ 	dev->destructor = free_netdev;
+ }
+ 

@@ -9,9 +9,13 @@
  */
 
 #include <net/compat.h>
+#include <net/arp.h>
 
 /* All things not in 2.6.22 and 2.6.23 */
 #if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,24))
+
+struct net init_net;
+EXPORT_SYMBOL(init_net);
 
 /* Part of net/ethernet/eth.c as of 2.6.24 */
 char *print_mac(char *buf, const u8 *addr)
@@ -21,67 +25,6 @@ char *print_mac(char *buf, const u8 *addr)
 	return buf;
 }
 EXPORT_SYMBOL(print_mac);
-
-/* On net/core/dev.c as of 2.6.24 */
-int __dev_addr_delete(struct dev_addr_list **list, int *count,
-                      void *addr, int alen, int glbl)
-{
-	struct dev_addr_list *da;
-
-	for (; (da = *list) != NULL; list = &da->next) {
-		if (memcmp(da->da_addr, addr, da->da_addrlen) == 0 &&
-			alen == da->da_addrlen) {
-			if (glbl) {
-				int old_glbl = da->da_gusers;
-				da->da_gusers = 0;
-				if (old_glbl == 0)
-					break;
-			}
-			if (--da->da_users)
-				return 0;
-
-			*list = da->next;
-			kfree(da);
-			(*count)--;
-			return 0;
-		}
-	}
-	return -ENOENT;
-}
-
-/* On net/core/dev.c as of 2.6.24. This is not yet used by mac80211 but
- * might as well add it */
-int __dev_addr_add(struct dev_addr_list **list, int *count,
-                   void *addr, int alen, int glbl)
-{
-	struct dev_addr_list *da;
-
-	for (da = *list; da != NULL; da = da->next) {
-		if (memcmp(da->da_addr, addr, da->da_addrlen) == 0 &&
-			da->da_addrlen == alen) {
-			if (glbl) {
-				int old_glbl = da->da_gusers;
-				da->da_gusers = 1;
-				if (old_glbl)
-					return 0;
-			}
-			da->da_users++;
-			return 0;
-		}
-	}
-
-	da = kmalloc(sizeof(*da), GFP_ATOMIC);
-	if (da == NULL)
-		return -ENOMEM;
-	memcpy(da->da_addr, addr, alen);
-	da->da_addrlen = alen;
-	da->da_users = 1;
-	da->da_gusers = glbl ? 1 : 0;
-	da->next = *list;
-	*list = da;
-	(*count)++;
-	return 0;
-}
 
 /* 2.6.22 and 2.6.23 have eth_header_cache_update defined as extern in include/linux/etherdevice.h
  * and actually defined in net/ethernet/eth.c but 2.6.24 exports it. Lets export it here */

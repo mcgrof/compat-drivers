@@ -44,7 +44,11 @@ int compat_pm_qos_power_init(void);
 extern int		__dev_addr_sync(struct dev_addr_list **to, int *to_count, struct dev_addr_list **from, int *from_count);
 extern void		__dev_addr_unsync(struct dev_addr_list **to, int *to_count, struct dev_addr_list **from, int *from_count);
 
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,24))
 #define seq_file_net &init_net;
+#else
+#define seq_file_net NULL
+#endif
 
 /* The patch:
  * commit 8b5f6883683c91ad7e1af32b7ceeb604d68e2865

@@ -1,0 +1,102 @@
+The class dev_uevent callback has changed. This needs a direct
+port. Technically we could just keep this on a c file but whatever,
+it'll still require synching with upstream.
+
+--- a/net/rfkill/core.c	2010-01-05 22:20:01.000000000 -0800
++++ b/net/rfkill/core.c	2010-01-05 22:18:50.000000000 -0800
+@@ -708,6 +708,7 @@ static void rfkill_release(struct device
+ 	kfree(rfkill);
+ }
+ 
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,24))
+ static int rfkill_dev_uevent(struct device *dev, struct kobj_uevent_env *env)
+ {
+ 	struct rfkill *rfkill = to_rfkill(dev);
+@@ -729,6 +730,46 @@ static int rfkill_dev_uevent(struct devi
+ 			       user_state_from_blocked(state));
+ 	return error;
+ }
++#else
++#ifdef CONFIG_HOTPLUG
++static int rfkill_dev_uevent_compat(struct device *dev, char **envp,
++				    int num_envp, char *buf, int size)
++{
++	struct rfkill *rfkill = to_rfkill(dev);
++	unsigned long flags;
++	u32 state;
++	int error, len = 0, i = 0;
++
++	error = add_uevent_var(envp, num_envp, &i,
++			       buf, size, &len,
++			       "RFKILL_NAME=%s", rfkill->name);
++	if (error)
++		goto exit;
++
++	error = add_uevent_var(envp, num_envp, &i,
++			       buf, size, &len,
++			       "RFKILL_TYPE=%s",
++			       rfkill_get_type_str(rfkill->type));
++	if (error)
++		goto exit;
++
++	spin_lock_irqsave(&rfkill->lock, flags);
++	state = rfkill->state;
++	spin_unlock_irqrestore(&rfkill->lock, flags);
++	error = add_uevent_var(envp, num_envp, &i,
++			       buf, size, &len,
++			       "RFKILL_STATE=%d",
++			       user_state_from_blocked(state));
++	if (error)
++		goto exit;
++
++	return 0;
++exit:
++	envp[i] = NULL;
++	return error;
++}
++#endif
++#endif
+ 
+ void rfkill_pause_polling(struct rfkill *rfkill)
+ {
+@@ -780,7 +821,13 @@ static struct class rfkill_class = {
+ 	.name		= "rfkill_backport",
+ 	.dev_release	= rfkill_release,
+ 	.dev_attrs	= rfkill_dev_attrs,
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,24))
+ 	.dev_uevent	= rfkill_dev_uevent,
++#else
++#ifdef CONFIG_HOTPLUG
++	.dev_uevent	= rfkill_dev_uevent_compat,
++#endif
++#endif
+ 	.suspend	= rfkill_suspend,
+ 	.resume		= rfkill_resume,
+ };
+--- a/net/wireless/sysfs.c	2010-01-05 23:13:12.000000000 -0800
++++ b/net/wireless/sysfs.c	2010-01-05 23:14:48.000000000 -0800
+@@ -47,6 +47,7 @@
+ 	cfg80211_dev_free(rdev);
+ }
+ 
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,24))
+ #ifdef CONFIG_HOTPLUG
+ static int wiphy_uevent(struct device *dev, struct kobj_uevent_env *env)
+ {
+@@ -54,6 +55,16 @@
+ 	return 0;
+ }
+ #endif
++#else
++#ifdef CONFIG_HOTPLUG
++static int wiphy_uevent(struct device *dev, char **envp,
++			int num_envp, char *buf, int size)
++{
++	/* TODO, we probably need stuff here */
++	return 0;
++}
++#endif
++#endif
+ 
+ static int wiphy_suspend(struct device *dev, pm_message_t state)
+ {

@@ -13,10 +13,12 @@
 #if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,27))
 
 #include <linux/pci.h>
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,24))
 #include <linux/mmc/sdio.h>
 #include <linux/mmc/sdio_func.h>
 #include <linux/mmc/card.h>
 #include <linux/mmc/host.h>
+#endif
 
 /* rfkill notification chain */
 #define RFKILL_STATE_CHANGED            0x0001  /* state of a normal rfkill
@@ -67,6 +69,7 @@ bool pci_pme_capable(struct pci_dev *dev, pci_power_t state)
 }
 EXPORT_SYMBOL(pci_pme_capable);
 
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,24))
 /**
  *	mmc_align_data_size - pads a transfer size to a more optimal value
  *	@card: the MMC card associated with the data transfer
@@ -201,6 +204,7 @@ unsigned int sdio_align_size(struct sdio_func *func, unsigned int sz)
 	return orig_sz;
 }
 EXPORT_SYMBOL_GPL(sdio_align_size);
+#endif
 
 
 #endif /* LINUX_VERSION_CODE < KERNEL_VERSION(2,6,27) */
