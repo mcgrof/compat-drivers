@@ -1,5 +1,5 @@
 /*
- * Copyright 2007	Luis R. Rodriguez <mcgrof@winlab.rutgers.edu>
+ * Copyright 2007-2010	Luis R. Rodriguez <mcgrof@winlab.rutgers.edu>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as
@@ -15,13 +15,22 @@
 
 #include <linux/miscdevice.h>
 
-/* Backport work for QoS dependencies (kernel/pm_qos_params.c)
+/*
+ * Backport work for QoS dependencies (kernel/pm_qos_params.c)
+ *
  * ipw2100 now makes use of
  * pm_qos_add_requirement(), 
  * pm_qos_update_requirement() and
  * pm_qos_remove_requirement() from it
  *
- * */
+ * mac80211 use the network latency to determine if to enable or not
+ * dynamic PS. mac80211 also and registers a notifier for when
+ * the latency changes. Since older kernels do no thave pm-qos stuff
+ * we just implement it completley here and register it upon cfg80211
+ * init. I haven't tested ipw2100 on 2.6.24 though.
+ *
+ * This is copied from the kernel written by mark gross mgross@linux.intel.com
+ */
 
 /*
  * locking rule: all changes to target_value or requirements or notifiers lists
@@ -94,6 +103,17 @@ static struct pm_qos_object *pm_qos_array[] = {
 
 static DEFINE_SPINLOCK(pm_qos_lock);
 
+static ssize_t pm_qos_power_write(struct file *filp, const char __user *buf,
+		size_t count, loff_t *f_pos);
+static int pm_qos_power_open(struct inode *inode, struct file *filp);
+static int pm_qos_power_release(struct inode *inode, struct file *filp);
+
+static const struct file_operations pm_qos_power_fops = {
+        .write = pm_qos_power_write,
+        .open = pm_qos_power_open,
+        .release = pm_qos_power_release,
+};
+
 /* static helper functions */
 static s32 max_compare(s32 v1, s32 v2)
 {
@@ -132,6 +152,46 @@ static void update_target(int target)
 			(unsigned long) extreme_value, NULL);
 }
 
+static int register_pm_qos_misc(struct pm_qos_object *qos)
+{
+	qos->pm_qos_power_miscdev.minor = MISC_DYNAMIC_MINOR;
+	qos->pm_qos_power_miscdev.name = qos->name;
+	qos->pm_qos_power_miscdev.fops = &pm_qos_power_fops;
+
+	return misc_register(&qos->pm_qos_power_miscdev);
+}
+
+static int find_pm_qos_object_by_minor(int minor)
+{
+	int pm_qos_class;
+
+	for (pm_qos_class = 0;
+		pm_qos_class < PM_QOS_NUM_CLASSES; pm_qos_class++) {
+		if (minor ==
+			pm_qos_array[pm_qos_class]->pm_qos_power_miscdev.minor)
+			return pm_qos_class;
+	}
+	return -1;
+}
+
+/**
+ * pm_qos_requirement - returns current system wide qos expectation
+ * @pm_qos_class: identification of which qos value is requested
+ *
+ * This function returns the current target value in an atomic manner.
+ */
+int pm_qos_requirement(int pm_qos_class)
+{
+	int ret_val;
+	unsigned long flags;
+
+	spin_lock_irqsave(&pm_qos_lock, flags);
+	ret_val = pm_qos_array[pm_qos_class]->target_value;
+	spin_unlock_irqrestore(&pm_qos_lock, flags);
+
+	return ret_val;
+}
+EXPORT_SYMBOL_GPL(pm_qos_requirement);
 
 /**
  * pm_qos_add_requirement - inserts new qos request into the list
@@ -242,6 +302,118 @@ void pm_qos_remove_requirement(int pm_qos_class, char *name)
 }
 EXPORT_SYMBOL_GPL(pm_qos_remove_requirement);
 
+/**
+ * pm_qos_add_notifier - sets notification entry for changes to target value
+ * @pm_qos_class: identifies which qos target changes should be notified.
+ * @notifier: notifier block managed by caller.
+ *
+ * will register the notifier into a notification chain that gets called
+ * uppon changes to the pm_qos_class target value.
+ */
+ int pm_qos_add_notifier(int pm_qos_class, struct notifier_block *notifier)
+{
+	int retval;
+
+	retval = blocking_notifier_chain_register(
+			pm_qos_array[pm_qos_class]->notifiers, notifier);
+
+	return retval;
+}
+EXPORT_SYMBOL_GPL(pm_qos_add_notifier);
+
+/**
+ * pm_qos_remove_notifier - deletes notification entry from chain.
+ * @pm_qos_class: identifies which qos target changes are notified.
+ * @notifier: notifier block to be removed.
+ *
+ * will remove the notifier from the notification chain that gets called
+ * uppon changes to the pm_qos_class target value.
+ */
+int pm_qos_remove_notifier(int pm_qos_class, struct notifier_block *notifier)
+{
+	int retval;
+
+	retval = blocking_notifier_chain_unregister(
+			pm_qos_array[pm_qos_class]->notifiers, notifier);
+
+	return retval;
+}
+EXPORT_SYMBOL_GPL(pm_qos_remove_notifier);
+
+#define PID_NAME_LEN sizeof("process_1234567890")
+static char name[PID_NAME_LEN];
+
+static int pm_qos_power_open(struct inode *inode, struct file *filp)
+{
+	int ret;
+	long pm_qos_class;
+
+	pm_qos_class = find_pm_qos_object_by_minor(iminor(inode));
+	if (pm_qos_class >= 0) {
+		filp->private_data = (void *)pm_qos_class;
+		sprintf(name, "process_%d", current->pid);
+		ret = pm_qos_add_requirement(pm_qos_class, name,
+					PM_QOS_DEFAULT_VALUE);
+		if (ret >= 0)
+			return 0;
+	}
+
+	return -EPERM;
+}
+
+static int pm_qos_power_release(struct inode *inode, struct file *filp)
+{
+	int pm_qos_class;
+
+	pm_qos_class = (long)filp->private_data;
+	sprintf(name, "process_%d", current->pid);
+	pm_qos_remove_requirement(pm_qos_class, name);
+
+	return 0;
+}
+
+static ssize_t pm_qos_power_write(struct file *filp, const char __user *buf,
+		size_t count, loff_t *f_pos)
+{
+	s32 value;
+	int pm_qos_class;
+
+	pm_qos_class = (long)filp->private_data;
+	if (count != sizeof(s32))
+		return -EINVAL;
+	if (copy_from_user(&value, buf, sizeof(s32)))
+		return -EFAULT;
+	sprintf(name, "process_%d", current->pid);
+	pm_qos_update_requirement(pm_qos_class, name, value);
+
+	return  sizeof(s32);
+}
+
+/*
+ * Will be called by cfg80211, if your non-cfg80211 driver needs this just
+ * call it right at the start of your probe.
+ */
+int compat_pm_qos_power_init(void)
+{
+	int ret = 0;
+
+	ret = register_pm_qos_misc(&cpu_dma_pm_qos);
+	if (ret < 0) {
+		printk(KERN_ERR "pm_qos_param: cpu_dma_latency setup failed\n");
+		return ret;
+	}
+	ret = register_pm_qos_misc(&network_lat_pm_qos);
+	if (ret < 0) {
+		printk(KERN_ERR "pm_qos_param: network_latency setup failed\n");
+		return ret;
+	}
+	ret = register_pm_qos_misc(&network_throughput_pm_qos);
+	if (ret < 0)
+		printk(KERN_ERR
+			"pm_qos_param: network_throughput setup failed\n");
+
+	return ret;
+}
 
 /**
  * The following things are out of ./lib/vsprintf.c

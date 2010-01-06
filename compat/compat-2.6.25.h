@@ -16,6 +16,9 @@
 #include <linux/netdevice.h>
 #include <linux/pm.h>
 #include <asm-generic/bug.h>
+#include <linux/pm_qos_params.h>
+
+int compat_pm_qos_power_init(void);
 
 /*
  * 2.6.25 adds PM_EVENT_HIBERNATE as well here but
