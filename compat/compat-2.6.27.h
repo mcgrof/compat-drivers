@@ -46,8 +46,8 @@ bool pci_pme_capable(struct pci_dev *dev, pci_power_t state);
 /*
  * The net_device has a spin_lock on newer kernels, on older kernels we're out of luck
  */
-#define netif_addr_lock_bh
-#define netif_addr_unlock_bh
+#define netif_addr_lock_bh(dev)
+#define netif_addr_unlock_bh(dev)
 
 /*
  * To port this properly we'd have to port warn_slowpath_null(),
