@@ -14,7 +14,20 @@
 #include <linux/leds.h>
 #include <linux/kernel.h>
 #include <linux/netdevice.h>
+#include <linux/pm.h>
 #include <asm-generic/bug.h>
+
+/*
+ * 2.6.25 adds PM_EVENT_HIBERNATE as well here but
+ * we don't have this on <= 2.6.23)
+ */
+#define PM_EVENT_SLEEP  (PM_EVENT_SUSPEND)
+
+/* Although we don't care about wimax this is needed for rfkill input stuff */
+#define KEY_WIMAX		246
+
+/* Although pm_qos stuff is not implemented on <= 2.6.24 lets keep the define */
+#define PM_QOS_DEFAULT_VALUE -1
 
 #define __WARN(foo) dump_stack()
 
