@@ -20,6 +20,9 @@
 #if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,26))
 
 
+/* 2.6.24 does not have the struct kobject with a name */
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,25))
+
 /**
  * kobject_set_name_vargs - Set the name of an kobject
  * @kobj: struct kobject to set the name of
@@ -47,6 +50,14 @@ int kobject_set_name_vargs(struct kobject *kobj, const char *fmt,
 	kfree(old_name);
 	return 0;
 }
+#else
+static
+int kobject_set_name_vargs(struct kobject *kobj, const char *fmt,
+				  va_list vargs)
+{
+	return 0;
+}
+#endif
 
 /**
  * dev_set_name - set a device name
