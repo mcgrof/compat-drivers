@@ -51,7 +51,7 @@ COMPAT_VERSIONS := $(shell I=$(COMPAT_LATEST_VERSION); while [ "$$I" -gt $(KERNE
 $(foreach ver,$(COMPAT_VERSIONS),$(eval CONFIG_COMPAT_KERNEL_$(ver)=y))
 
 ifdef CONFIG_COMPAT_KERNEL_25
-$(error "ERROR: You should use compat-wireless-2.6-old for older kernels, this one is for kernels >= 2.6.25")
+$(error "ERROR: compat-wireless by default supports kernels >= 2.6.25, try enabling only one driver though"
 endif
 
 ifeq ($(CONFIG_CFG80211),y)
