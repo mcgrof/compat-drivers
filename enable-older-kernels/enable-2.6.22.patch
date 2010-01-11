@@ -1,0 +1,26 @@
+--- a/config.mk	2010-01-11 10:27:53.000000000 -0800
++++ b/config.mk	2010-01-11 10:32:49.000000000 -0800
+@@ -51,8 +51,8 @@
+ COMPAT_VERSIONS := $(shell I=$(COMPAT_LATEST_VERSION); while [ "$$I" -gt $(KERNEL_SUBLEVEL) ]; do echo $$I; I=$$(($$I - 1)); done)
+ $(foreach ver,$(COMPAT_VERSIONS),$(eval CONFIG_COMPAT_KERNEL_$(ver)=y))
+ 
+-ifdef CONFIG_COMPAT_KERNEL_25
+-$(error "ERROR: compat-wireless by default supports kernels >= 2.6.25, try enabling only one driver though"
++ifdef CONFIG_COMPAT_WIRELESS_22
++$(error "ERROR: compat-wireless for selected driver requires a kernel >= 2.6.22")
+ endif
+ 
+ ifeq ($(CONFIG_CFG80211),y)
+diff --git a/scripts/gen-compat-autoconf.sh b/scripts/gen-compat-autoconf.sh
+index 6c7cae7..bb2ea6d 100755
+--- a/scripts/gen-compat-autoconf.sh
++++ b/scripts/gen-compat-autoconf.sh
+@@ -11,7 +11,7 @@
+ 
+ # This indicates which is the oldest kernel we support
+ # Update this if you are adding support for older kernels.
+-OLDEST_KERNEL_SUPPORTED="2.6.25"
++OLDEST_KERNEL_SUPPORTED="2.6.22"
+ COMPAT_RELEASE="compat-release"
+ KERNEL_RELEASE="git-describe"
+ MULT_DEP_FILE=".compat_pivot_dep"
