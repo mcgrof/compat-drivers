@@ -92,8 +92,8 @@ endif
 ifeq ($(CONFIG_BT),y)
 # we'll ignore compiling bluetooth
 else
-CONFIG_COMPAT_BLUETOOTH=y
-CONFIG_COMPAT_BLUETOOTH_MODULES=m
+ CONFIG_COMPAT_BLUETOOTH=y
+ CONFIG_COMPAT_BLUETOOTH_MODULES=m
 endif
 
 
