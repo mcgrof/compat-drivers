@@ -1,6 +1,6 @@
 --- a/config.mk	2010-01-11 10:27:53.000000000 -0800
 +++ b/config.mk	2010-01-11 10:32:49.000000000 -0800
-@@ -51,8 +51,8 @@
+@@ -26,8 +26,8 @@
  COMPAT_VERSIONS := $(shell I=$(COMPAT_LATEST_VERSION); while [ "$$I" -gt $(KERNEL_SUBLEVEL) ]; do echo $$I; I=$$(($$I - 1)); done)
  $(foreach ver,$(COMPAT_VERSIONS),$(eval CONFIG_COMPAT_KERNEL_$(ver)=y))
  

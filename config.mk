@@ -15,31 +15,6 @@ else
 include $(KLIB_BUILD)/.config
 endif
 
-# These both are needed by compat-wireless || compat-bluetooth so enable them
- CONFIG_COMPAT_RFKILL=y
-
-ifeq ($(CONFIG_MAC80211),y)
-$(error "ERROR: you have MAC80211 compiled into the kernel, CONFIG_MAC80211=y, as such you cannot replace its mac80211 driver. You need this set to CONFIG_MAC80211=m. If you are using Fedora upgrade your kernel as later version should this set as modular. For further information on Fedora see https://bugzilla.redhat.com/show_bug.cgi?id=470143. If you are using your own kernel recompile it and make mac80211 modular")
-else
- CONFIG_COMPAT_WIRELESS=y
- CONFIG_COMPAT_WIRELESS_MODULES=m
- CONFIG_COMPAT_VAR_MODULES=m
-# We could technically separate these but not yet, we only have b44
-# Note that we don't intend on backporting network drivers that
-# use Multiqueue as that was a pain to backport to kernels older than
-# 2.6.27. But -- we could just disable those drivers from kernels
-# older than 2.6.27
- CONFIG_COMPAT_NETWORK_MODULES=m
- CONFIG_COMPAT_NET_USB_MODULES=m
-endif
-
-ifeq ($(CONFIG_BT),y)
-# we'll ignore compiling bluetooth
-else
-CONFIG_COMPAT_BLUETOOTH=y
-CONFIG_COMPAT_BLUETOOTH_MODULES=m
-endif
-
 # We will warn when you don't have MQ support or NET_SCHED enabled.
 #
 # We could consider just quiting if MQ and NET_SCHED is disabled
@@ -96,6 +71,32 @@ endif
 
 endif # build check
 endif # kernel Makefile check
+
+# These both are needed by compat-wireless || compat-bluetooth so enable them
+ CONFIG_COMPAT_RFKILL=y
+
+ifeq ($(CONFIG_MAC80211),y)
+$(error "ERROR: you have MAC80211 compiled into the kernel, CONFIG_MAC80211=y, as such you cannot replace its mac80211 driver. You need this set to CONFIG_MAC80211=m. If you are using Fedora upgrade your kernel as later version should this set as modular. For further information on Fedora see https://bugzilla.redhat.com/show_bug.cgi?id=470143. If you are using your own kernel recompile it and make mac80211 modular")
+else
+ CONFIG_COMPAT_WIRELESS=y
+ CONFIG_COMPAT_WIRELESS_MODULES=m
+ CONFIG_COMPAT_VAR_MODULES=m
+# We could technically separate these but not yet, we only have b44
+# Note that we don't intend on backporting network drivers that
+# use Multiqueue as that was a pain to backport to kernels older than
+# 2.6.27. But -- we could just disable those drivers from kernels
+# older than 2.6.27
+ CONFIG_COMPAT_NETWORK_MODULES=m
+ CONFIG_COMPAT_NET_USB_MODULES=m
+endif
+
+ifeq ($(CONFIG_BT),y)
+# we'll ignore compiling bluetooth
+else
+CONFIG_COMPAT_BLUETOOTH=y
+CONFIG_COMPAT_BLUETOOTH_MODULES=m
+endif
+
 
 # Wireless subsystem stuff
 CONFIG_MAC80211=m
