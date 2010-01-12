@@ -223,11 +223,6 @@ done
 # Top level wireless driver Makefile
 cp $GIT_TREE/$DIR/Makefile $DIR
 
-DIR="include/linux/unaligned"
-echo "Copying $GIT_TREE/$DIR/*"
-cp $GIT_TREE/$DIR/* $DIR
-
-
 # Compat stuff
 COMPAT="compat"
 mkdir -p $COMPAT
