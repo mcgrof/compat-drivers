@@ -63,6 +63,30 @@ This would do the policing from within mac80211.
  
  	/* causes rfkill_start() to be called */
  	error = input_register_handle(handle);
+@@ -255,19 +255,23 @@ static int rfkill_connect(struct input_h
+ 
+ static void rfkill_start(struct input_handle *handle)
+ {
++#if (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,23))
+ 	/*
+ 	 * Take event_lock to guard against configuration changes, we
+ 	 * should be able to deal with concurrency with rfkill_event()
+ 	 * just fine (which event_lock will also avoid).
+ 	 */
+ 	spin_lock_irq(&handle->dev->event_lock);
++#endif
+ 
+ 	if (test_bit(EV_SW, handle->dev->evbit) &&
+ 	    test_bit(SW_RFKILL_ALL, handle->dev->swbit))
+ 		rfkill_schedule_evsw_rfkillall(test_bit(SW_RFKILL_ALL,
+ 							handle->dev->sw));
+ 
++#if (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,23))
+ 	spin_unlock_irq(&handle->dev->event_lock);
++#endif
+ }
+ 
+ static void rfkill_disconnect(struct input_handle *handle)
 --- a/net/rfkill/core.c	2009-12-14 09:31:50.000000000 -0800
 +++ b/net/rfkill/core.c	2009-12-14 09:31:50.000000000 -0800
 @@ -26,7 +26,7 @@
