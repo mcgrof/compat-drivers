@@ -55,6 +55,19 @@ static
 int kobject_set_name_vargs(struct kobject *kobj, const char *fmt,
 				  va_list vargs)
 {
+	struct device *dev;
+	unsigned int len;
+	va_list aq;
+
+	dev = container_of(kobj, struct device, kobj);
+
+	va_copy(aq, vargs);
+	len = vsnprintf(NULL, 0, fmt, aq);
+	va_end(aq);
+
+	len = len < BUS_ID_SIZE ? (len + 1) : BUS_ID_SIZE;
+
+	vsnprintf(dev->bus_id, len, fmt, vargs);
 	return 0;
 }
 #endif
