@@ -90,12 +90,15 @@ else
  CONFIG_COMPAT_NET_USB_MODULES=m
 endif
 
+# The Bluetooth compatibility only builds on kernels >= 2.6.27 for now
+ifndef CONFIG_COMPAT_KERNEL_27
 ifeq ($(CONFIG_BT),y)
 # we'll ignore compiling bluetooth
 else
  CONFIG_COMPAT_BLUETOOTH=y
  CONFIG_COMPAT_BLUETOOTH_MODULES=m
 endif
+endif # Kernel >= 2.6.26
 
 
 # Wireless subsystem stuff
