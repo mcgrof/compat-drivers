@@ -22,7 +22,7 @@ INCLUDE_NET_BT="hci_core.h l2cap.h bluetooth.h rfcomm.h hci.h"
 NET_BT_DIRS="bluetooth bluetooth/bnep bluetooth/cmtp bluetooth/rfcomm bluetooth/hidp"
 
 INCLUDE_LINUX="ieee80211.h nl80211.h wireless.h"
-INCLUDE_LINUX="$INCLUDE_LINUX pci_ids.h bitops.h eeprom_93cx6.h pm_qos_params.h"
+INCLUDE_LINUX="$INCLUDE_LINUX pci_ids.h eeprom_93cx6.h pm_qos_params.h"
 INCLUDE_LINUX="$INCLUDE_LINUX ath9k_platform.h"
 
 # For rndis_wext
