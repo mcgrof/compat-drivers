@@ -15,3 +15,22 @@ else should be available as with 2.6.25.
  #if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,24))
  	err = register_pernet_device(&cfg80211_pernet_ops);
  	if (err)
+@@ -841,6 +841,9 @@ static int __init cfg80211_init(void)
+ 	return 0;
+ 
+ out_fail_reg:
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,25))
++	compat_pm_qos_power_deinit();
++#endif
+ 	debugfs_remove(ieee80211_debugfs_dir);
+ out_fail_nl80211:
+ 	unregister_netdevice_notifier(&cfg80211_netdev_notifier);
+@@ -865,5 +868,8 @@ static void cfg80211_exit(void)
+ #if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,24))
+ 	unregister_pernet_device(&cfg80211_pernet_ops);
+ #endif
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,25))
++	compat_pm_qos_power_deinit();
++#endif
+ }
+ module_exit(cfg80211_exit);
