@@ -261,13 +261,13 @@ case $1 in
 		disable_bt_usb_ethernet_var
 		select_driver		CONFIG_ATH_COMMON
 		select_ath_driver	CONFIG_ATH5K
-		patch -p1 < enable-older-kernels/enable-2.6.24.patch
+		patch -p1 < enable-older-kernels/enable-2.6.23.patch
 		;;
 	ath9k)
 		disable_bt_usb_ethernet_var
 		select_driver		CONFIG_ATH_COMMON
 		select_ath9k_driver
-		patch -p1 < enable-older-kernels/enable-2.6.24.patch
+		patch -p1 < enable-older-kernels/enable-2.6.23.patch
 		;;
 	ar9170)
 		select_driver		CONFIG_ATH_COMMON
