@@ -5,7 +5,7 @@
  $(foreach ver,$(COMPAT_VERSIONS),$(eval CONFIG_COMPAT_KERNEL_$(ver)=y))
  
 -ifdef CONFIG_COMPAT_KERNEL_25
--$(error "ERROR: compat-wireless by default supports kernels >= 2.6.25, try enabling only one driver though"
+-$(error "ERROR: compat-wireless by default supports kernels >= 2.6.25, try enabling only one driver though")
 +ifdef CONFIG_COMPAT_WIRELESS_22
 +$(error "ERROR: compat-wireless for selected driver requires a kernel >= 2.6.22")
  endif
