@@ -40,8 +40,8 @@ This would do the policing from within mac80211.
 +rfkill_backport-y			+= core.o
 +rfkill_backport-$(CONFIG_RFKILL_BACKPORT_INPUT)	+= input.o
 +obj-$(CONFIG_RFKILL_BACKPORT)		+= rfkill_backport.o
---- a/net/rfkill/input.c	2009-07-07 17:27:09.290706860 -0700
-+++ b/net/rfkill/input.c	2009-07-07 17:26:57.195684653 -0700
+--- a/net/rfkill/input.c
++++ b/net/rfkill/input.c
 @@ -17,7 +17,11 @@
  #include <linux/slab.h>
  #include <linux/workqueue.h>
@@ -63,8 +63,8 @@ This would do the policing from within mac80211.
  
  	/* causes rfkill_start() to be called */
  	error = input_register_handle(handle);
---- a/net/rfkill/core.c	2009-10-06 12:53:52.000000000 -0400
-+++ b/net/rfkill/core.c	2009-10-06 12:53:53.000000000 -0400
+--- a/net/rfkill/core.c
++++ b/net/rfkill/core.c
 @@ -26,7 +26,7 @@
  #include <linux/capability.h>
  #include <linux/list.h>
@@ -74,7 +74,7 @@ This would do the policing from within mac80211.
  #include <linux/sched.h>
  #include <linux/spinlock.h>
  #include <linux/miscdevice.h>
-@@ -62,7 +62,7 @@
+@@ -62,7 +62,7 @@ struct rfkill {
  	const struct rfkill_ops	*ops;
  	void			*data;
  
@@ -83,7 +83,7 @@ This would do the policing from within mac80211.
  	struct led_trigger	led_trigger;
  	const char		*ledtrigname;
  #endif
-@@ -123,7 +123,7 @@
+@@ -123,7 +123,7 @@ static struct {
  static bool rfkill_epo_lock_active;
  
  
@@ -92,7 +92,7 @@ This would do the policing from within mac80211.
  static void rfkill_led_trigger_event(struct rfkill *rfkill)
  {
  	struct led_trigger *trigger;
-@@ -317,7 +317,7 @@
+@@ -317,7 +317,7 @@ static void rfkill_set_block(struct rfki
  	rfkill_event(rfkill);
  }
  
@@ -101,7 +101,7 @@ This would do the policing from within mac80211.
  static atomic_t rfkill_input_disabled = ATOMIC_INIT(0);
  
  /**
-@@ -779,7 +779,7 @@
+@@ -779,7 +779,7 @@ static int rfkill_resume(struct device *
  }
  
  static struct class rfkill_class = {
@@ -110,7 +110,7 @@ This would do the policing from within mac80211.
  	.dev_release	= rfkill_release,
  	.dev_attrs	= rfkill_dev_attrs,
  	.dev_uevent	= rfkill_dev_uevent,
-@@ -925,7 +925,7 @@
+@@ -925,7 +925,7 @@ int __must_check rfkill_register(struct 
  	if (!rfkill->persistent || rfkill_epo_lock_active) {
  		schedule_work(&rfkill->sync_work);
  	} else {
@@ -119,7 +119,7 @@ This would do the policing from within mac80211.
  		bool soft_blocked = !!(rfkill->state & RFKILL_BLOCK_SW);
  
  		if (!atomic_read(&rfkill_input_disabled))
-@@ -1153,7 +1153,7 @@
+@@ -1153,7 +1153,7 @@ static int rfkill_fop_release(struct ino
  	list_for_each_entry_safe(ev, tmp, &data->events, list)
  		kfree(ev);
  
@@ -128,7 +128,7 @@ This would do the policing from within mac80211.
  	if (data->input_handler)
  		if (atomic_dec_return(&rfkill_input_disabled) == 0)
  			printk(KERN_DEBUG "rfkill: input handler enabled\n");
-@@ -1164,7 +1164,7 @@
+@@ -1164,7 +1164,7 @@ static int rfkill_fop_release(struct ino
  	return 0;
  }
  
@@ -137,7 +137,7 @@ This would do the policing from within mac80211.
  static long rfkill_fop_ioctl(struct file *file, unsigned int cmd,
  			     unsigned long arg)
  {
-@@ -1197,7 +1197,7 @@
+@@ -1197,7 +1197,7 @@ static const struct file_operations rfki
  	.write		= rfkill_fop_write,
  	.poll		= rfkill_fop_poll,
  	.release	= rfkill_fop_release,
@@ -146,7 +146,7 @@ This would do the policing from within mac80211.
  	.unlocked_ioctl	= rfkill_fop_ioctl,
  	.compat_ioctl	= rfkill_fop_ioctl,
  #endif
-@@ -1227,7 +1227,7 @@
+@@ -1227,7 +1227,7 @@ static int __init rfkill_init(void)
  		goto out;
  	}
  
@@ -155,7 +155,7 @@ This would do the policing from within mac80211.
  	error = rfkill_handler_init();
  	if (error) {
  		misc_deregister(&rfkill_miscdev);
-@@ -1243,7 +1243,7 @@
+@@ -1243,7 +1243,7 @@ subsys_initcall(rfkill_init);
  
  static void __exit rfkill_exit(void)
  {
@@ -164,8 +164,8 @@ This would do the policing from within mac80211.
  	rfkill_handler_exit();
  #endif
  	misc_deregister(&rfkill_miscdev);
---- a/include/linux/rfkill_backport.h	2009-09-13 13:28:21.286436755 -0700
-+++ b/include/linux/rfkill_backport.h	2009-09-13 13:28:54.665495610 -0700
+--- a/include/linux/rfkill_backport.h
++++ b/include/linux/rfkill_backport.h
 @@ -20,6 +20,7 @@
   */
  
@@ -174,7 +174,7 @@ This would do the policing from within mac80211.
  
  /* define userspace visible states */
  #define RFKILL_STATE_SOFT_BLOCKED	0
-@@ -148,7 +149,7 @@
+@@ -148,7 +149,7 @@ struct rfkill_ops {
  	int	(*set_block)(void *data, bool blocked);
  };
  
@@ -183,7 +183,7 @@ This would do the policing from within mac80211.
  /**
   * rfkill_alloc - allocate rfkill structure
   * @name: name of the struct -- the string is not copied internally
-@@ -355,7 +356,7 @@
+@@ -355,7 +356,7 @@ static inline bool rfkill_blocked(struct
  #endif /* RFKILL || RFKILL_MODULE */
  
  
@@ -192,8 +192,8 @@ This would do the policing from within mac80211.
  /**
   * rfkill_get_led_trigger_name - Get the LED trigger name for the button's LED.
   * This function might return a NULL pointer if registering of the
---- a/net/wireless/core.h	2009-07-07 13:32:53.367707921 -0700
-+++ b/net/wireless/core.h	2009-07-07 13:32:53.943703622 -0700
+--- a/net/wireless/core.h
++++ b/net/wireless/core.h
 @@ -11,7 +11,11 @@
  #include <linux/kref.h>
  #include <linux/rbtree.h>
@@ -206,9 +206,9 @@ This would do the policing from within mac80211.
  #include <linux/workqueue.h>
  #include <net/genetlink.h>
  #include <net/cfg80211.h>
---- a/drivers/net/wireless/ath/ath9k/hw.c	2009-12-10 08:43:21.000000000 -0800
-+++ b/drivers/net/wireless/ath/ath9k/hw.c	2009-12-10 08:43:22.000000000 -0800
-@@ -3260,7 +3260,7 @@
+--- a/drivers/net/wireless/ath/ath9k/hw.c
++++ b/drivers/net/wireless/ath/ath9k/hw.c
+@@ -3260,7 +3260,7 @@ int ath9k_hw_fill_cap_info(struct ath_hw
  
  	pCap->hw_caps |= ATH9K_HW_CAP_ENHANCEDPM;
  
