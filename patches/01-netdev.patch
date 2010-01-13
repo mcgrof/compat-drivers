@@ -410,9 +410,9 @@ without creating a headache on maintenance of the pathes.
  
  	ieee->dev = dev;
  
---- a/drivers/net/wireless/libertas/main.c	2009-11-02 08:04:43.000000000 -0800
-+++ b/drivers/net/wireless/libertas/main.c	2009-11-02 08:04:44.000000000 -0800
-@@ -911,6 +911,7 @@
+--- a/drivers/net/wireless/libertas/main.c	2010-01-13 10:31:54.000000000 -0800
++++ b/drivers/net/wireless/libertas/main.c	2010-01-13 10:31:54.000000000 -0800
+@@ -912,6 +912,7 @@
  	lbs_deb_leave(LBS_DEB_MAIN);
  }
  
@@ -420,7 +420,7 @@ without creating a headache on maintenance of the pathes.
  static const struct net_device_ops lbs_netdev_ops = {
  	.ndo_open 		= lbs_dev_open,
  	.ndo_stop		= lbs_eth_stop,
-@@ -921,6 +922,7 @@
+@@ -922,6 +923,7 @@
  	.ndo_change_mtu		= eth_change_mtu,
  	.ndo_validate_addr	= eth_validate_addr,
  };
@@ -428,7 +428,7 @@ without creating a headache on maintenance of the pathes.
  
  /**
   * @brief This function adds the card. it will probe the
-@@ -966,7 +968,16 @@
+@@ -967,7 +969,16 @@
  	wdev->netdev = dev;
  	priv->dev = dev;
  
@@ -445,7 +445,7 @@ without creating a headache on maintenance of the pathes.
  	dev->watchdog_timeo = 5 * HZ;
  	dev->ethtool_ops = &lbs_ethtool_ops;
  #ifdef	WIRELESS_EXT
-@@ -1262,11 +1273,13 @@
+@@ -1263,11 +1274,13 @@
  	lbs_deb_leave(LBS_DEB_MAIN);
  }
  
@@ -459,7 +459,7 @@ without creating a headache on maintenance of the pathes.
  
  static int lbs_add_rtap(struct lbs_private *priv)
  {
-@@ -1287,7 +1300,13 @@
+@@ -1288,7 +1301,13 @@
  
  	memcpy(rtap_dev->dev_addr, priv->current_addr, ETH_ALEN);
  	rtap_dev->type = ARPHRD_IEEE80211_RADIOTAP;
@@ -473,9 +473,9 @@ without creating a headache on maintenance of the pathes.
  	rtap_dev->ml_priv = priv;
  	SET_NETDEV_DEV(rtap_dev, priv->dev->dev.parent);
  
---- a/drivers/net/wireless/libertas/mesh.c
-+++ b/drivers/net/wireless/libertas/mesh.c
-@@ -318,6 +318,7 @@
+--- a/drivers/net/wireless/libertas/mesh.c	2010-01-13 10:31:54.000000000 -0800
++++ b/drivers/net/wireless/libertas/mesh.c	2010-01-13 10:31:54.000000000 -0800
+@@ -319,6 +319,7 @@
  	return ret;
  }
  
@@ -483,7 +483,7 @@ without creating a headache on maintenance of the pathes.
  static const struct net_device_ops mesh_netdev_ops = {
  	.ndo_open		= lbs_mesh_dev_open,
  	.ndo_stop 		= lbs_mesh_stop,
-@@ -325,6 +326,7 @@
+@@ -326,6 +327,7 @@
  	.ndo_set_mac_address	= lbs_set_mac_address,
  	.ndo_set_multicast_list = lbs_set_multicast_list,
  };
@@ -491,7 +491,7 @@ without creating a headache on maintenance of the pathes.
  
  /**
   * @brief This function adds mshX interface
-@@ -349,7 +351,15 @@
+@@ -350,7 +352,15 @@
  	mesh_dev->ml_priv = priv;
  	priv->mesh_dev = mesh_dev;
  
@@ -505,8 +505,8 @@ without creating a headache on maintenance of the pathes.
 +	mesh_dev->set_multicast_list = lbs_set_multicast_list;
 +#endif
  	mesh_dev->ethtool_ops = &lbs_ethtool_ops;
- 	memcpy(mesh_dev->dev_addr, priv->dev->dev_addr,
- 			sizeof(priv->dev->dev_addr));
+ 	memcpy(mesh_dev->dev_addr, priv->dev->dev_addr, ETH_ALEN);
+ 
 --- a/drivers/net/wireless/libertas/defs.h	2009-07-08 14:04:29.692256519 -0700
 +++ b/drivers/net/wireless/libertas/defs.h	2009-07-08 14:03:26.712279246 -0700
 @@ -16,6 +16,14 @@
