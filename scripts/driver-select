@@ -120,6 +120,30 @@ function disable_usbnet
 	perl -i -ne 'print if ! /drivers\/net\/usb\/ \\/' Makefile
 }
 
+function disable_usbnet {
+	perl -i -ne 'print if ! /CONFIG_COMPAT_NET_USB_MODULES/' Makefile
+} 
+
+function disable_ethernet {
+	perl -i -ne 'print if ! /CONFIG_COMPAT_NETWORK_MODULES/' Makefile
+} 
+
+function disable_var_03 {
+	perl -i -ne 'print if ! /CONFIG_COMPAT_BLUETOOTH/' Makefile
+} 
+
+function disable_bt {
+	perl -i -ne 'print if ! /CONFIG_COMPAT_VAR_MODULES/' Makefile
+} 
+
+function disable_bt_usb_ethernet_var {
+	backup_file Makefile
+	disable_usbnet
+	disable_ethernet
+	disable_var_03
+	disable_bt
+} 
+
 function disable_var {
 	disable_ssb
 	disable_usbnet
@@ -216,6 +240,7 @@ case $1 in
 		disable_var_01
 		;;
 	ath)
+		disable_bt_usb_ethernet_var
 		select_drivers		CONFIG_ATH_COMMON
 		disable_var_01
 		;;
@@ -233,11 +258,13 @@ case $1 in
 		disable_var_01
 		;;
 	ath5k)
+		disable_bt_usb_ethernet_var
 		select_driver		CONFIG_ATH_COMMON
 		select_ath_driver	CONFIG_ATH5K
 		patch -p1 < enable-older-kernels/enable-2.6.24.patch
 		;;
 	ath9k)
+		disable_bt_usb_ethernet_var
 		select_driver		CONFIG_ATH_COMMON
 		select_ath9k_driver
 		patch -p1 < enable-older-kernels/enable-2.6.24.patch
