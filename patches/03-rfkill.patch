@@ -179,7 +179,7 @@ This would do the policing from within mac80211.
  };
  
 -#if defined(CONFIG_RFKILL) || defined(CONFIG_RFKILL_MODULE)
-+#if defined(CONFIG_RFKILL_BACKPORT) || defined(CONFIG_RFKILL_MODULE_BACKPORT)
++#if defined(CONFIG_RFKILL_BACKPORT) || defined(CONFIG_RFKILL_BACKPORT_MODULE)
  /**
   * rfkill_alloc - allocate rfkill structure
   * @name: name of the struct -- the string is not copied internally
