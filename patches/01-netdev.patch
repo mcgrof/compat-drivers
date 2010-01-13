@@ -756,3 +756,16 @@ without creating a headache on maintenance of the pathes.
  	atl2_set_ethtool_ops(netdev);
  	netdev->watchdog_timeo = 5 * HZ;
  	strncpy(netdev->name, pci_name(pdev), sizeof(netdev->name) - 1);
+--- a/net/mac80211/iface.c	2010-01-13 11:47:07.000000000 -0800
++++ b/net/mac80211/iface.c	2010-01-13 11:48:16.000000000 -0800
+@@ -678,8 +678,10 @@
+ 	dev->open = ieee80211_open;
+ 	dev->stop = ieee80211_stop;
+ 	/* we will validate the address ourselves in ->open */
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,24))
+ 	dev->validate_addr = NULL;
+ #endif
++#endif
+ 	dev->destructor = free_netdev;
+ }
+ 
