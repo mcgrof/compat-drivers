@@ -40,8 +40,8 @@ This would do the policing from within mac80211.
 +rfkill_backport-y			+= core.o
 +rfkill_backport-$(CONFIG_RFKILL_BACKPORT_INPUT)	+= input.o
 +obj-$(CONFIG_RFKILL_BACKPORT)		+= rfkill_backport.o
---- a/net/rfkill/input.c	2009-07-07 17:27:09.290706860 -0700
-+++ b/net/rfkill/input.c	2009-07-07 17:26:57.195684653 -0700
+--- a/net/rfkill/input.c	2010-01-12 16:54:55.000000000 -0800
++++ b/net/rfkill/input.c	2010-01-12 16:54:55.000000000 -0800
 @@ -17,7 +17,11 @@
  #include <linux/slab.h>
  #include <linux/workqueue.h>
@@ -54,7 +54,7 @@ This would do the policing from within mac80211.
  #include <linux/sched.h>
  
  #include "rfkill.h"
-@@ -229,7 +233,7 @@ static int rfkill_connect(struct input_h
+@@ -229,7 +233,7 @@
  
  	handle->dev = dev;
  	handle->handler = handler;
@@ -63,7 +63,7 @@ This would do the policing from within mac80211.
  
  	/* causes rfkill_start() to be called */
  	error = input_register_handle(handle);
-@@ -255,19 +255,23 @@ static int rfkill_connect(struct input_h
+@@ -251,19 +255,23 @@
  
  static void rfkill_start(struct input_handle *handle)
  {
