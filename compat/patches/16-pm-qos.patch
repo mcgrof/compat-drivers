@@ -3,9 +3,9 @@ Kernels >= 2.6.25 added pm-qos support. We port this over to older
 kernels by calling the initialization work at cfg80211's init. Everyhing
 else should be available as with 2.6.25.
 
---- a/net/wireless/core.c	2010-01-05 23:10:50.000000000 -0800
-+++ b/net/wireless/core.c	2010-01-05 23:11:32.000000000 -0800
-@@ -811,6 +811,9 @@
+--- a/net/wireless/core.c	2010-01-12 16:56:15.000000000 -0800
++++ b/net/wireless/core.c	2010-01-12 16:56:15.000000000 -0800
+@@ -811,6 +811,9 @@ static int __init cfg80211_init(void)
  {
  	int err;
  
@@ -15,7 +15,7 @@ else should be available as with 2.6.25.
  #if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,24))
  	err = register_pernet_device(&cfg80211_pernet_ops);
  	if (err)
-@@ -841,6 +841,9 @@ static int __init cfg80211_init(void)
+@@ -838,6 +841,9 @@ static int __init cfg80211_init(void)
  	return 0;
  
  out_fail_reg:
@@ -25,7 +25,7 @@ else should be available as with 2.6.25.
  	debugfs_remove(ieee80211_debugfs_dir);
  out_fail_nl80211:
  	unregister_netdevice_notifier(&cfg80211_netdev_notifier);
-@@ -865,5 +868,8 @@ static void cfg80211_exit(void)
+@@ -862,5 +868,8 @@ static void cfg80211_exit(void)
  #if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,24))
  	unregister_pernet_device(&cfg80211_pernet_ops);
  #endif
