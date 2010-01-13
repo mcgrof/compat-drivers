@@ -229,7 +229,7 @@ mkdir -p $COMPAT
 echo "Copying $GIT_COMPAT_TREE/ files..."
 cp $GIT_COMPAT_TREE/compat/*.c $COMPAT/
 cp $GIT_COMPAT_TREE/compat/Makefile $COMPAT/
-cp $GIT_COMPAT_TREE/include/linux/*.h include/linux/
+cp -a $GIT_COMPAT_TREE/include/linux/* include/linux/
 rm -f $COMPAT/*.mod.c
 
 for i in patches/*.patch; do
