@@ -232,6 +232,40 @@ cp $GIT_COMPAT_TREE/compat/Makefile $COMPAT/
 cp -a $GIT_COMPAT_TREE/include/linux/* include/linux/
 rm -f $COMPAT/*.mod.c
 
+# Refresh patches using quilt
+patchRefresh() {
+	if [ -d patches.orig ] ; then
+		rm -rf .pc patches/series
+	else
+		mkdir patches.orig
+	fi
+
+	mv -u patches/* patches.orig/
+
+	for i in patches.orig/*.patch; do
+		echo -e "${GREEN}Refresh backport patch${NORMAL}: ${BLUE}$i${NORMAL}"
+		quilt import $i
+		quilt push -f
+		RET=$?
+		if [[ $RET -ne 0 ]]; then
+			echo -e "${RED}Refreshing $i failed${NORMAL}, update it"
+			echo -e "use ${CYAN}quilt edit [filename]${NORMAL} to apply the failed part manually"
+			echo -e "use ${CYAN}quilt refresh${NORMAL} after the files are corrected and rerun this script"
+			cp patches.orig/README patches/README
+			exit $RET
+		fi
+		QUILT_DIFF_OPTS="-p" quilt refresh -p ab --no-index --no-timestamp
+	done
+	quilt pop -a
+
+	cp patches.orig/README patches/README
+	rm -rf patches.orig .pc patches/series
+}
+
+if [[ "$1" = "refresh" ]]; then
+	patchRefresh
+fi
+
 for i in patches/*.patch; do
 	echo -e "${GREEN}Applying backport patch${NORMAL}: ${BLUE}$i${NORMAL}"
 	patch -p1 -N -t < $i
