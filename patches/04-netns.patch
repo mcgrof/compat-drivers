@@ -16,9 +16,7 @@ files...
  };
  
  /* internal helper: get rdev and dev */
---- a/net/wireless/nl80211.c	2010-01-13 11:07:31.000000000 -0800
-+++ b/net/wireless/nl80211.c	2010-01-13 11:16:23.000000000 -0800
-@@ -4187,7 +4187,9 @@ static int nl80211_wiphy_netns(struct sk
+@@ -4221,7 +4223,9 @@ static int nl80211_wiphy_netns(struct sk
  
  	err = cfg80211_switch_netns(rdev, net);
   out_put_net:
@@ -28,8 +26,8 @@ files...
   out:
  	cfg80211_unlock_rdev(rdev);
   out_rtnl:
---- a/net/wireless/core.c	2010-01-13 11:07:31.000000000 -0800
-+++ b/net/wireless/core.c	2010-01-13 11:20:29.000000000 -0800
+--- a/net/wireless/core.c
++++ b/net/wireless/core.c
 @@ -228,6 +228,7 @@ int cfg80211_dev_rename(struct cfg80211_
  	return 0;
  }
@@ -56,7 +54,7 @@ files...
  
  	rdev->rfkill_ops.set_block = cfg80211_rfkill_set_block;
  	rdev->rfkill = rfkill_alloc(dev_name(&rdev->wiphy.dev),
-@@ -673,8 +677,10 @@ static int cfg80211_netdev_notifier_call
+@@ -671,8 +675,10 @@ static int cfg80211_netdev_notifier_call
  		mutex_lock(&rdev->devlist_mtx);
  		list_add(&wdev->list, &rdev->netdev_list);
  		rdev->devlist_generation++;
@@ -67,7 +65,7 @@ files...
  
  		if (sysfs_create_link(&dev->dev.kobj, &rdev->wiphy.dev.kobj,
  				      "phy80211")) {
-@@ -810,6 +816,7 @@ static struct notifier_block cfg80211_ne
+@@ -804,6 +810,7 @@ static struct notifier_block cfg80211_ne
  	.notifier_call = cfg80211_netdev_notifier_call,
  };
  
@@ -75,7 +73,7 @@ files...
  static void __net_exit cfg80211_pernet_exit(struct net *net)
  {
  	struct cfg80211_registered_device *rdev;
-@@ -827,14 +834,17 @@ static void __net_exit cfg80211_pernet_e
+@@ -821,14 +828,17 @@ static void __net_exit cfg80211_pernet_e
  static struct pernet_operations cfg80211_pernet_ops = {
  	.exit = cfg80211_pernet_exit,
  };
@@ -93,7 +91,7 @@ files...
  
  	err = wiphy_sysfs_init();
  	if (err)
-@@ -869,8 +879,10 @@ out_fail_nl80211:
+@@ -863,8 +873,10 @@ out_fail_nl80211:
  out_fail_notifier:
  	wiphy_sysfs_exit();
  out_fail_sysfs:
@@ -104,7 +102,7 @@ files...
  	return err;
  }
  subsys_initcall(cfg80211_init);
-@@ -882,7 +894,9 @@ static void cfg80211_exit(void)
+@@ -876,7 +888,9 @@ static void cfg80211_exit(void)
  	unregister_netdevice_notifier(&cfg80211_netdev_notifier);
  	wiphy_sysfs_exit();
  	regulatory_exit();
@@ -114,8 +112,8 @@ files...
  	destroy_workqueue(cfg80211_wq);
  }
  module_exit(cfg80211_exit);
---- a/net/wireless/wext-core.c	2010-01-13 11:07:31.000000000 -0800
-+++ b/net/wireless/wext-core.c	2010-01-13 11:16:23.000000000 -0800
+--- a/net/wireless/wext-core.c
++++ b/net/wireless/wext-core.c
 @@ -399,7 +399,11 @@ static void wireless_nlevent_process(uns
  {
  	struct sk_buff *skb;
@@ -128,8 +126,8 @@ files...
  }
  
  static DECLARE_TASKLET(wireless_nlevent_tasklet, wireless_nlevent_process, 0);
---- a/net/wireless/wext-proc.c	2010-01-13 11:21:38.000000000 -0800
-+++ b/net/wireless/wext-proc.c	2010-01-13 11:22:30.000000000 -0800
+--- a/net/wireless/wext-proc.c
++++ b/net/wireless/wext-proc.c
 @@ -98,7 +98,11 @@ static void *wireless_dev_seq_start(stru
  		return SEQ_START_TOKEN;
  

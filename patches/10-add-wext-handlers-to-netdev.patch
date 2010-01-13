@@ -13,7 +13,7 @@ the struct wiphy wireless handler.
 
 --- a/net/wireless/core.c
 +++ b/net/wireless/core.c
-@@ -683,6 +683,10 @@ static int cfg80211_netdev_notifier_call
+@@ -689,6 +689,10 @@ static int cfg80211_netdev_notifier_call
  		wdev->sme_state = CFG80211_SME_IDLE;
  		mutex_unlock(&rdev->devlist_mtx);
  #ifdef CONFIG_CFG80211_WEXT
