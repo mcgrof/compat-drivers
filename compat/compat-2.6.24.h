@@ -210,7 +210,7 @@ static inline void sg_mark_end(struct scatterlist *sg)
 #ifdef CONFIG_DEBUG_SG
 	BUG_ON(sg->sg_magic != SG_MAGIC);
 #endif
-#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,23))
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,24))
 	/*
 	 * Set termination bit, clear potential chain bit
 	*/
