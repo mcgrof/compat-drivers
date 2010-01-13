@@ -2,8 +2,8 @@ Older kernels than 2.6.24 do not have the is_pcie member as part of
 the struct pci_dev, to help with that we use the compat-2.6.24.c supplied
 compat_is_pcie() when needed.
 
---- a/drivers/net/wireless/ath/ath9k/pci.c	2010-01-13 10:48:29.000000000 -0800
-+++ b/drivers/net/wireless/ath/ath9k/pci.c	2010-01-13 10:49:52.000000000 -0800
+--- a/drivers/net/wireless/ath/ath9k/pci.c
++++ b/drivers/net/wireless/ath/ath9k/pci.c
 @@ -88,7 +88,11 @@ static void ath_pci_bt_coex_prep(struct 
  	struct pci_dev *pdev = to_pci_dev(sc->dev);
  	u8 aspm;

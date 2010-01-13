@@ -64,18 +64,9 @@ cases.
  
  /**
   * DOC: Key handling basics
-
-Every kernel release there are a few changes to headers
-made. Some code gets shifted around between headers or
-new headers are defined. This patch deals with such
-cases.
-
-This file also deals with enhancements with new kernel headers
-which older kernels would conflict with.
-
---- a/net/mac80211/main.c	2010-01-05 21:54:51.000000000 -0800
-+++ b/net/mac80211/main.c	2010-01-05 21:55:21.000000000 -0800
-@@ -22,7 +22,9 @@
+--- a/net/mac80211/main.c
++++ b/net/mac80211/main.c
+@@ -20,7 +20,9 @@
  #include <linux/rtnetlink.h>
  #include <linux/bitmap.h>
  #include <linux/pm_qos_params.h>
@@ -85,8 +76,8 @@ which older kernels would conflict with.
  #include <net/cfg80211.h>
  
  #include "ieee80211_i.h"
---- a/net/mac80211/cfg.c	2010-01-05 21:59:44.000000000 -0800
-+++ b/net/mac80211/cfg.c	2010-01-05 22:00:16.000000000 -0800
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
 @@ -9,7 +9,9 @@
  #include <linux/ieee80211.h>
  #include <linux/nl80211.h>
@@ -97,8 +88,8 @@ which older kernels would conflict with.
  #include <linux/rcupdate.h>
  #include <net/cfg80211.h>
  #include "ieee80211_i.h"
---- a/net/mac80211/tx.c	2010-01-05 22:01:11.000000000 -0800
-+++ b/net/mac80211/tx.c	2010-01-05 22:01:28.000000000 -0800
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
 @@ -18,7 +18,9 @@
  #include <linux/etherdevice.h>
  #include <linux/bitmap.h>
@@ -109,10 +100,10 @@ which older kernels would conflict with.
  #include <net/ieee80211_radiotap.h>
  #include <net/cfg80211.h>
  #include <net/mac80211.h>
---- a/net/mac80211/util.c	2010-01-05 22:02:59.000000000 -0800
-+++ b/net/mac80211/util.c	2010-01-05 22:03:30.000000000 -0800
-@@ -21,7 +21,9 @@
- #include <linux/wireless.h>
+--- a/net/mac80211/util.c
++++ b/net/mac80211/util.c
+@@ -20,7 +20,9 @@
+ #include <linux/if_arp.h>
  #include <linux/bitmap.h>
  #include <linux/crc32.h>
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,24))
@@ -121,8 +112,8 @@ which older kernels would conflict with.
  #include <net/cfg80211.h>
  #include <net/rtnetlink.h>
  
---- a/net/wireless/nl80211.c	2010-01-13 11:31:54.000000000 -0800
-+++ b/net/wireless/nl80211.c	2010-01-13 11:32:18.000000000 -0800
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
 @@ -14,7 +14,9 @@
  #include <linux/rtnetlink.h>
  #include <linux/netlink.h>

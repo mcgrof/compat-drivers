@@ -35,7 +35,7 @@ in or compat headers.
  #include <net/mac80211.h>
  #include "ieee80211_i.h"
  
-@@ -717,4 +719,6 @@ TRACE_EVENT(drv_flush,
+@@ -740,4 +742,6 @@ TRACE_EVENT(drv_flush,
  #define TRACE_INCLUDE_PATH .
  #undef TRACE_INCLUDE_FILE
  #define TRACE_INCLUDE_FILE driver-trace
