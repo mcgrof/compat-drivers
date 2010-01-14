@@ -98,6 +98,11 @@ else
  CONFIG_COMPAT_BLUETOOTH_MODULES=m
 endif
 endif
+ 
+
+ifeq ($(CONFIG_COMPAT_KERNEL_33),y)
+ CONFIG_COMPAT_FIRMWARE_CLASS=m
+endif
 
 
 # Wireless subsystem stuff
