@@ -100,6 +100,10 @@ else
 endif
 endif # Kernel >= 2.6.26
 
+ifeq ($(CONFIG_COMPAT_KERNEL_33),y)
+ CONFIG_COMPAT_FIRMWARE_CLASS=m
+endif
+
 
 # Wireless subsystem stuff
 CONFIG_MAC80211=m
