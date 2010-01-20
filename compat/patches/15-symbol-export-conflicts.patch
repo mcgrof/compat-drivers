@@ -1,9 +1,9 @@
 In kernel < 2.6.32 libipw also exports ieee80211_rx.
 To avoid conflicts with the other export we rename ours.
 
---- a/net/mac80211/rx.c	2010-01-05 21:05:45.000000000 -0800
-+++ b/net/mac80211/rx.c	2010-01-05 21:05:46.000000000 -0800
-@@ -2535,7 +2535,12 @@ void ieee80211_rx(struct ieee80211_hw *h
+--- a/net/mac80211/rx.c	2010-01-20 14:19:36.000000000 -0800
++++ b/net/mac80211/rx.c	2010-01-20 14:19:37.000000000 -0800
+@@ -2541,7 +2541,12 @@
   drop:
  	kfree_skb(skb);
  }
