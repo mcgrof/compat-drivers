@@ -100,19 +100,19 @@ without creating a headache on maintenance of the pathes.
  
  	tmp = RNDIS_PACKET_TYPE_DIRECTED | RNDIS_PACKET_TYPE_BROADCAST;
  	retval = rndis_set_oid(usbdev, OID_GEN_CURRENT_PACKET_FILTER, &tmp,
---- a/net/mac80211/iface.c	2009-10-02 16:28:31.862281205 -0700
-+++ b/net/mac80211/iface.c	2009-10-02 16:28:32.735274775 -0700
-@@ -642,6 +642,7 @@
- 	WARN_ON(flushed);
+--- a/net/mac80211/iface.c	2010-01-20 14:15:24.000000000 -0800
++++ b/net/mac80211/iface.c	2010-01-20 14:15:24.000000000 -0800
+@@ -650,6 +650,7 @@
+ 	return ieee80211_select_queue(IEEE80211_DEV_TO_SUB_IF(dev), skb);
  }
  
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
  static const struct net_device_ops ieee80211_dataif_ops = {
  	.ndo_open		= ieee80211_open,
  	.ndo_stop		= ieee80211_stop,
-@@ -661,11 +662,22 @@
- 	.ndo_change_mtu 	= ieee80211_change_mtu,
+@@ -697,11 +698,24 @@
  	.ndo_set_mac_address 	= eth_mac_addr,
+ 	.ndo_select_queue	= ieee80211_monitor_select_queue,
  };
 +#endif
  
@@ -127,13 +127,15 @@ without creating a headache on maintenance of the pathes.
 +	dev->change_mtu = ieee80211_change_mtu;
 +	dev->open = ieee80211_open;
 +	dev->stop = ieee80211_stop;
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,24))
 +	/* we will validate the address ourselves in ->open */
 +	dev->validate_addr = NULL;
++#endif
 +#endif
  	dev->destructor = free_netdev;
  }
  
-@@ -680,7 +692,11 @@
+@@ -716,7 +730,11 @@
  
  	/* and set some type-dependent values */
  	sdata->vif.type = type;
@@ -145,7 +147,7 @@ without creating a headache on maintenance of the pathes.
  	sdata->wdev.iftype = type;
  
  	/* only monitor differs */
-@@ -703,7 +719,11 @@
+@@ -739,7 +757,11 @@
  		break;
  	case NL80211_IFTYPE_MONITOR:
  		sdata->dev->type = ARPHRD_IEEE80211_RADIOTAP;
@@ -157,7 +159,7 @@ without creating a headache on maintenance of the pathes.
  		sdata->u.mntr_flags = MONITOR_FLAG_CONTROL |
  				      MONITOR_FLAG_OTHER_BSS;
  		break;
-@@ -774,6 +794,8 @@
+@@ -810,6 +832,8 @@
  		return -ENOMEM;
  	dev_net_set(ndev, wiphy_net(local->hw.wiphy));
  
@@ -166,7 +168,7 @@ without creating a headache on maintenance of the pathes.
  	ndev->needed_headroom = local->tx_headroom +
  				4*6 /* four MAC addresses */
  				+ 2 + 2 + 2 + 2 /* ctl, dur, seq, qos */
-@@ -782,6 +804,7 @@
+@@ -818,6 +842,7 @@
  				- ETH_HLEN /* ethernet hard_header_len */
  				+ IEEE80211_ENCRYPT_HEADROOM;
  	ndev->needed_tailroom = IEEE80211_ENCRYPT_TAILROOM;
@@ -174,7 +176,7 @@ without creating a headache on maintenance of the pathes.
  
  	ret = dev_alloc_name(ndev, ndev->name);
  	if (ret < 0)
-@@ -815,6 +838,10 @@
+@@ -851,6 +876,10 @@
  	if (ret)
  		goto fail;
  
@@ -534,17 +536,3 @@ without creating a headache on maintenance of the pathes.
  	dev->destructor = free_netdev;
  	ether_setup(dev);
  	dev->tx_queue_len = 0;
---- a/net/mac80211/iface.c	2010-01-05 21:58:26.000000000 -0800
-+++ b/net/mac80211/iface.c	2010-01-05 21:58:30.000000000 -0800
-@@ -675,9 +675,11 @@
- 	dev->change_mtu = ieee80211_change_mtu;
- 	dev->open = ieee80211_open;
- 	dev->stop = ieee80211_stop;
-+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,24))
- 	/* we will validate the address ourselves in ->open */
- 	dev->validate_addr = NULL;
- #endif
-+#endif
- 	dev->destructor = free_netdev;
- }
- 
