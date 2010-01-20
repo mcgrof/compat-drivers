@@ -82,7 +82,7 @@ here still, but for now we keep this here.
  		err = put_user(amount, (int __user *) arg);
 --- a/net/bluetooth/cmtp/capi.c
 +++ b/net/bluetooth/cmtp/capi.c
-@@ -382,7 +382,11 @@ static void cmtp_reset_ctr(struct capi_c
+@@ -383,7 +383,11 @@ static void cmtp_reset_ctr(struct capi_c
  
  	BT_DBG("ctrl %p", ctrl);
  

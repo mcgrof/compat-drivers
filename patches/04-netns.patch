@@ -16,7 +16,7 @@ files...
  };
  
  /* internal helper: get rdev and dev */
-@@ -4206,7 +4208,9 @@ static int nl80211_wiphy_netns(struct sk
+@@ -4208,7 +4210,9 @@ static int nl80211_wiphy_netns(struct sk
  
  	err = cfg80211_switch_netns(rdev, net);
   out_put_net:
@@ -28,7 +28,7 @@ files...
   out_rtnl:
 --- a/net/wireless/core.c
 +++ b/net/wireless/core.c
-@@ -228,6 +228,7 @@ int cfg80211_dev_rename(struct cfg80211_
+@@ -223,6 +223,7 @@ int cfg80211_dev_rename(struct cfg80211_
  	return 0;
  }
  
@@ -36,7 +36,7 @@ files...
  int cfg80211_switch_netns(struct cfg80211_registered_device *rdev,
  			  struct net *net)
  {
-@@ -263,6 +264,7 @@ int cfg80211_switch_netns(struct cfg8021
+@@ -258,6 +259,7 @@ int cfg80211_switch_netns(struct cfg8021
  
  	return err;
  }
@@ -44,7 +44,7 @@ files...
  
  static void cfg80211_rfkill_poll(struct rfkill *rfkill, void *data)
  {
-@@ -375,7 +377,9 @@ struct wiphy *wiphy_new(const struct cfg
+@@ -370,7 +372,9 @@ struct wiphy *wiphy_new(const struct cfg
  	rdev->wiphy.flags |= WIPHY_FLAG_PS_ON_BY_DEFAULT;
  #endif
  
@@ -54,9 +54,9 @@ files...
  
  	rdev->rfkill_ops.set_block = cfg80211_rfkill_set_block;
  	rdev->rfkill = rfkill_alloc(dev_name(&rdev->wiphy.dev),
-@@ -672,8 +676,10 @@ static int cfg80211_netdev_notifier_call
+@@ -668,8 +672,10 @@ static int cfg80211_netdev_notifier_call
  		mutex_lock(&rdev->devlist_mtx);
- 		list_add(&wdev->list, &rdev->netdev_list);
+ 		list_add_rcu(&wdev->list, &rdev->netdev_list);
  		rdev->devlist_generation++;
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,24))
  		/* can only change netns with wiphy */
@@ -65,7 +65,7 @@ files...
  
  		if (sysfs_create_link(&dev->dev.kobj, &rdev->wiphy.dev.kobj,
  				      "phy80211")) {
-@@ -805,6 +811,7 @@ static struct notifier_block cfg80211_ne
+@@ -809,6 +815,7 @@ static struct notifier_block cfg80211_ne
  	.notifier_call = cfg80211_netdev_notifier_call,
  };
  
@@ -73,7 +73,7 @@ files...
  static void __net_exit cfg80211_pernet_exit(struct net *net)
  {
  	struct cfg80211_registered_device *rdev;
-@@ -822,14 +829,17 @@ static void __net_exit cfg80211_pernet_e
+@@ -826,14 +833,17 @@ static void __net_exit cfg80211_pernet_e
  static struct pernet_operations cfg80211_pernet_ops = {
  	.exit = cfg80211_pernet_exit,
  };
@@ -91,7 +91,7 @@ files...
  
  	err = wiphy_sysfs_init();
  	if (err)
-@@ -864,8 +874,10 @@ out_fail_nl80211:
+@@ -868,8 +878,10 @@ out_fail_nl80211:
  out_fail_notifier:
  	wiphy_sysfs_exit();
  out_fail_sysfs:
@@ -102,7 +102,7 @@ files...
  	return err;
  }
  subsys_initcall(cfg80211_init);
-@@ -877,7 +889,9 @@ static void cfg80211_exit(void)
+@@ -881,7 +893,9 @@ static void cfg80211_exit(void)
  	unregister_netdevice_notifier(&cfg80211_netdev_notifier);
  	wiphy_sysfs_exit();
  	regulatory_exit();
