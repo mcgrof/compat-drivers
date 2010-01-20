@@ -101,7 +101,9 @@ endif
 endif # Kernel >= 2.6.26
 
 ifeq ($(CONFIG_COMPAT_KERNEL_33),y)
+ifneq ($(CONFIG_FW_LOADER),)
  CONFIG_COMPAT_FIRMWARE_CLASS=m
+endif
 endif
 
 
