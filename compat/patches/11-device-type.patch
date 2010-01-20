@@ -6,9 +6,9 @@ SET_NETDEV_DEVTYPE() be a no-op this means the wireless type
 we define is unused so we ucomment it simply to avoid a
 compile warning.
 
---- a/net/mac80211/iface.c	2010-01-05 23:15:28.000000000 -0800
-+++ b/net/mac80211/iface.c	2010-01-05 23:15:29.000000000 -0800
-@@ -776,9 +776,11 @@
+--- a/net/mac80211/iface.c	2010-01-20 14:18:49.000000000 -0800
++++ b/net/mac80211/iface.c	2010-01-20 14:18:49.000000000 -0800
+@@ -812,9 +812,11 @@
  	return 0;
  }
  
