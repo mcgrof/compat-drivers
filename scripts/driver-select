@@ -270,6 +270,7 @@ case $1 in
 		patch -p1 < enable-older-kernels/enable-2.6.23.patch
 		;;
 	ar9170)
+		disable_bt_usb_ethernet_var
 		select_driver		CONFIG_ATH_COMMON
 		select_ath_driver	CONFIG_AR9170_USB
 		;;
