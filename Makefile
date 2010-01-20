@@ -113,6 +113,8 @@ install-scripts:
 	@# the updates/ dir which is what we use so we add one for it
 	@# (or any other distribution that doens't have this).
 	@./scripts/check_depmod
+	@# Udev stuff needed for the new compat_firmware_class.
+	@./compat/scripts/compat_firmware_install
 	@/sbin/depmod -a
 	@echo
 	@echo "Currently detected wireless subsystem modules:"
