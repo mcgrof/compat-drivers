@@ -1,45 +1,39 @@
-The patch:
+The 2.6.23 kernel added multiqueue support. That release
+relied on the on the notion of struct net_device_subqueue
+attached to the netdevice struct as an array. The 2.6.27
+renamed these to struct netdev_queue, amogst other changes.
 
-commit 79d16385c7f287a33ea771c4dbe60ae43f791b49
-Author: David S. Miller <davem@davemloft.net>
-Date:   Tue Jul 8 23:14:46 2008 -0700
+For kernels 2.6.23..2.6.26 then we backport MQ support by
+using the equivalent calls on the struct netdev_queue to
+the struct net_device_subqueue.
 
-   netdev: Move atomic queue state bits into netdev_queue.
+For older kernels than 2.6.23 we can only stop all the
+queues then.
 
-   Signed-off-by: David S. Miller <davem@davemloft.net>
-
-Allowed allowed for the state of each queue to be separated.
-Previous to this all queue information relied on an internal
-central state to the netdev. To backport calls to start/stop
-each netdev queue then we just need to stop/start all queues
-unfortunately. This should have a performance impact when
-the device is really gets a lot of congestion.
-
-The 2.6.27 kernel also added the struct netdev_queue, this cannot
-be ported as each netdev_queue gets assigned as part of the netdev
-and interactions with them are done all on the core networking
-built on newer kernels.
-
---- a/net/mac80211/util.c	2010-01-20 16:26:37.000000000 -0800
-+++ b/net/mac80211/util.c	2010-01-20 16:30:30.000000000 -0800
-@@ -287,7 +287,11 @@
+--- a/net/mac80211/util.c	2010-01-20 18:35:04.000000000 -0800
++++ a/net/mac80211/util.c	2010-01-20 18:34:11.000000000 -0800
+@@ -287,7 +287,13 @@
  
  	rcu_read_lock();
  	list_for_each_entry_rcu(sdata, &local->interfaces, list)
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,27))
  		netif_tx_wake_queue(netdev_get_tx_queue(sdata->dev, queue));
++#elif (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,23))
++		netif_start_subqueue(sdata->dev, queue);
 +#else
 +		netif_wake_queue(sdata->dev);
 +#endif
  	rcu_read_unlock();
  }
  
-@@ -322,7 +326,11 @@
+@@ -322,7 +328,13 @@
  
  	rcu_read_lock();
  	list_for_each_entry_rcu(sdata, &local->interfaces, list)
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,27))
  		netif_tx_stop_queue(netdev_get_tx_queue(sdata->dev, queue));
++#elif (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,23))
++		netif_stop_subqueue(sdata->dev, queue);
 +#else
 +		netif_stop_queue(sdata->dev);
 +#endif
