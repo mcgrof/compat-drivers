@@ -13,7 +13,10 @@ customized internally on the driver.
 
 For kernels 2.6.23..2.6.26 then we backport MQ support by
 using the equivalent calls on the struct netdev_queue to
-the struct net_device_subqueue.
+the struct net_device_subqueue. The performance penalty
+here is just that all these queues share a common lock
+so stateful operations on one queue would imply a delay
+on other queues.
 
 For older kernels than 2.6.23 we can only stop all the
 queues then and wake them up only if no other queue had
@@ -48,12 +51,12 @@ queue by using skb_set_queue_mapping(skb, 0) through ieee80211_tx_skb()
  EXPORT_SYMBOL(ieee80211_ctstoself_duration);
  
 +#if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,23))
-+static bool ieee80211_all_queues_stopped(struct ieee80211_hw *hw)
++static bool ieee80211_all_queues_started(struct ieee80211_hw *hw)
 +{
 +	unsigned int queue;
 +
 +	for (queue = 0; queue < hw->queues; queue++)
-+		if (!ieee80211_queue_stopped(hw, queue))
++		if (ieee80211_queue_stopped(hw, queue))
 +			return false;
 +	return true;
 +}
@@ -71,7 +74,7 @@ queue by using skb_set_queue_mapping(skb, 0) through ieee80211_tx_skb()
 +#elif (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,23))
 +		netif_start_subqueue(sdata->dev, queue);
 +#else
-+		if (ieee80211_all_queues_stopped(hw))
++		if (ieee80211_all_queues_started(hw))
 +			netif_wake_queue(sdata->dev);
 +#endif
  	rcu_read_unlock();
