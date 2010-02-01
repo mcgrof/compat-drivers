@@ -54,7 +54,7 @@ files...
  
  	rdev->rfkill_ops.set_block = cfg80211_rfkill_set_block;
  	rdev->rfkill = rfkill_alloc(dev_name(&rdev->wiphy.dev),
-@@ -668,8 +672,10 @@ static int cfg80211_netdev_notifier_call
+@@ -680,8 +684,10 @@ static int cfg80211_netdev_notifier_call
  		mutex_lock(&rdev->devlist_mtx);
  		list_add_rcu(&wdev->list, &rdev->netdev_list);
  		rdev->devlist_generation++;
@@ -65,7 +65,7 @@ files...
  
  		if (sysfs_create_link(&dev->dev.kobj, &rdev->wiphy.dev.kobj,
  				      "phy80211")) {
-@@ -809,6 +815,7 @@ static struct notifier_block cfg80211_ne
+@@ -821,6 +827,7 @@ static struct notifier_block cfg80211_ne
  	.notifier_call = cfg80211_netdev_notifier_call,
  };
  
@@ -73,7 +73,7 @@ files...
  static void __net_exit cfg80211_pernet_exit(struct net *net)
  {
  	struct cfg80211_registered_device *rdev;
-@@ -826,14 +833,17 @@ static void __net_exit cfg80211_pernet_e
+@@ -838,14 +845,17 @@ static void __net_exit cfg80211_pernet_e
  static struct pernet_operations cfg80211_pernet_ops = {
  	.exit = cfg80211_pernet_exit,
  };
@@ -91,7 +91,7 @@ files...
  
  	err = wiphy_sysfs_init();
  	if (err)
-@@ -868,8 +878,10 @@ out_fail_nl80211:
+@@ -880,8 +890,10 @@ out_fail_nl80211:
  out_fail_notifier:
  	wiphy_sysfs_exit();
  out_fail_sysfs:
@@ -102,7 +102,7 @@ files...
  	return err;
  }
  subsys_initcall(cfg80211_init);
-@@ -881,7 +893,9 @@ static void cfg80211_exit(void)
+@@ -893,7 +905,9 @@ static void cfg80211_exit(void)
  	unregister_netdevice_notifier(&cfg80211_netdev_notifier);
  	wiphy_sysfs_exit();
  	regulatory_exit();

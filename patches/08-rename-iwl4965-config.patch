@@ -5,7 +5,7 @@ CONFIG_IWL4965 has to be set to y, to build correctly.
 
 --- a/drivers/net/wireless/iwlwifi/Makefile
 +++ b/drivers/net/wireless/iwlwifi/Makefile
-@@ -12,7 +12,7 @@ CFLAGS_iwl-devtrace.o := -I$(src)
+@@ -11,7 +11,7 @@ CFLAGS_iwl-devtrace.o := -I$(src)
  obj-$(CONFIG_IWLAGN)	+= iwlagn.o
  iwlagn-objs		:= iwl-agn.o iwl-agn-rs.o iwl-agn-led.o
  

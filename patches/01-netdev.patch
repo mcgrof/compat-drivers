@@ -550,7 +550,7 @@ without creating a headache on maintenance of the pathes.
  #define LBS_DEB_LEAVE	0x00000002
 --- a/drivers/net/wireless/mac80211_hwsim.c
 +++ b/drivers/net/wireless/mac80211_hwsim.c
-@@ -954,16 +954,22 @@ static struct device_driver mac80211_hws
+@@ -956,16 +956,22 @@ static struct device_driver mac80211_hws
  	.name = "mac80211_hwsim"
  };
  

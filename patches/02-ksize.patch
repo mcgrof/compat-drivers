@@ -12,7 +12,7 @@ of the situation.
 
 --- a/net/wireless/scan.c
 +++ b/net/wireless/scan.c
-@@ -424,9 +424,14 @@ cfg80211_bss_update(struct cfg80211_regi
+@@ -426,9 +426,14 @@ cfg80211_bss_update(struct cfg80211_regi
  			size_t used = dev->wiphy.bss_priv_size + sizeof(*res);
  			size_t ielen = res->pub.len_proberesp_ies;
  
@@ -27,7 +27,7 @@ of the situation.
  				memcpy(found->pub.proberesp_ies,
  				       res->pub.proberesp_ies, ielen);
  				found->pub.len_proberesp_ies = ielen;
-@@ -457,9 +462,14 @@ cfg80211_bss_update(struct cfg80211_regi
+@@ -459,9 +464,14 @@ cfg80211_bss_update(struct cfg80211_regi
  			size_t used = dev->wiphy.bss_priv_size + sizeof(*res);
  			size_t ielen = res->pub.len_beacon_ies;
  
