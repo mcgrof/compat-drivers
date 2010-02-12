@@ -176,14 +176,15 @@ here still, but for now we keep this here.
  };
 --- a/net/bluetooth/hidp/core.c
 +++ b/net/bluetooth/hidp/core.c
-@@ -280,12 +280,14 @@ static int hidp_send_report(struct hidp_
+@@ -313,6 +313,7 @@ static int hidp_send_report(struct hidp_
  	return hidp_queue_report(session, buf, rsize);
  }
  
 +#if (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,27))
- static int hidp_output_raw_report(struct hid_device *hid, unsigned char *data, size_t count)
+ static int hidp_output_raw_report(struct hid_device *hid, unsigned char *data, size_t count,
+ 		unsigned char report_type)
  {
- 	if (hidp_queue_report(hid->driver_data, data, count))
+@@ -332,6 +333,7 @@ static int hidp_output_raw_report(struct
  		return -ENOMEM;
  	return count;
  }
@@ -191,7 +192,7 @@ here still, but for now we keep this here.
  
  static void hidp_idle_timeout(unsigned long arg)
  {
-@@ -583,10 +585,16 @@ static int hidp_session(void *arg)
+@@ -596,10 +598,16 @@ static int hidp_session(void *arg)
  		session->input = NULL;
  	}
  
@@ -212,7 +213,7 @@ here still, but for now we keep this here.
  
  	/* Wakeup user-space polling for socket errors */
  	session->intr_sock->sk->sk_err = EUNATCH;
-@@ -698,6 +706,7 @@ static void hidp_close(struct hid_device
+@@ -711,6 +719,7 @@ static void hidp_close(struct hid_device
  {
  }
  
@@ -220,7 +221,7 @@ here still, but for now we keep this here.
  static int hidp_parse(struct hid_device *hid)
  {
  	struct hidp_session *session = hid->driver_data;
-@@ -762,15 +771,44 @@ static struct hid_ll_driver hidp_hid_dri
+@@ -755,11 +764,37 @@ static struct hid_ll_driver hidp_hid_dri
  };
  
  static int hidp_setup_hid(struct hidp_session *session,
@@ -248,7 +249,6 @@ here still, but for now we keep this here.
 +#endif
  				struct hidp_connadd_req *req)
  {
-+#if (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,27))
  	struct hid_device *hid;
 -	bdaddr_t src, dst;
  	int err;
@@ -258,15 +258,23 @@ here still, but for now we keep this here.
 +#endif
 +	bdaddr_t src, dst;
  
+ 	session->rd_data = kzalloc(req->rd_size, GFP_KERNEL);
+ 	if (!session->rd_data)
+@@ -771,11 +806,13 @@ static int hidp_setup_hid(struct hidp_se
+ 	}
+ 	session->rd_size = req->rd_size;
+ 
 +#if (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,27))
  	hid = hid_allocate_device();
- 	if (IS_ERR(hid))
- 		return PTR_ERR(hid);
+ 	if (IS_ERR(hid)) {
+ 		err = PTR_ERR(hid);
+ 		goto fault;
+ 	}
 +#endif
  
  	session->hid = hid;
- 	session->req = req;
-@@ -789,6 +827,8 @@ static int hidp_setup_hid(struct hidp_se
+ 
+@@ -794,6 +831,8 @@ static int hidp_setup_hid(struct hidp_se
  	strncpy(hid->phys, batostr(&src), 64);
  	strncpy(hid->uniq, batostr(&dst), 64);
  
@@ -275,8 +283,8 @@ here still, but for now we keep this here.
  	hid->dev.parent = hidp_get_device(session);
  	hid->ll_driver = &hidp_hid_driver;
  
-@@ -805,6 +845,24 @@ failed:
- 	session->hid = NULL;
+@@ -814,6 +853,24 @@ fault:
+ 	session->rd_data = NULL;
  
  	return err;
 +#else
@@ -300,7 +308,7 @@ here still, but for now we keep this here.
  }
  
  int hidp_add_connection(struct hidp_connadd_req *req, struct socket *ctrl_sock, struct socket *intr_sock)
-@@ -824,6 +882,39 @@ int hidp_add_connection(struct hidp_conn
+@@ -833,6 +890,39 @@ int hidp_add_connection(struct hidp_conn
  
  	BT_DBG("rd_data %p rd_size %d", req->rd_data, req->rd_size);
  
@@ -340,7 +348,7 @@ here still, but for now we keep this here.
  	down_write(&hidp_session_sem);
  
  	s = __hidp_get_session(&bt_sk(ctrl_sock->sk)->dst);
-@@ -851,6 +942,7 @@ int hidp_add_connection(struct hidp_conn
+@@ -860,6 +950,7 @@ int hidp_add_connection(struct hidp_conn
  	session->flags   = req->flags & (1 << HIDP_BLUETOOTH_VENDOR_ID);
  	session->idle_to = req->idle_to;
  
@@ -348,7 +356,7 @@ here still, but for now we keep this here.
  	if (req->rd_size > 0) {
  		err = hidp_setup_hid(session, req);
  		if (err && err != -ENODEV)
-@@ -862,6 +954,16 @@ int hidp_add_connection(struct hidp_conn
+@@ -871,6 +962,16 @@ int hidp_add_connection(struct hidp_conn
  		if (err < 0)
  			goto purge;
  	}
@@ -365,7 +373,7 @@ here still, but for now we keep this here.
  
  	__hidp_link_session(session);
  
-@@ -893,6 +995,7 @@ unlink:
+@@ -902,6 +1003,7 @@ unlink:
  		session->input = NULL;
  	}
  
@@ -373,7 +381,7 @@ here still, but for now we keep this here.
  	if (session->hid) {
  		hid_destroy_device(session->hid);
  		session->hid = NULL;
-@@ -901,10 +1004,15 @@ unlink:
+@@ -913,10 +1015,15 @@ unlink:
  purge:
  	skb_queue_purge(&session->ctrl_transmit);
  	skb_queue_purge(&session->intr_transmit);
@@ -389,7 +397,7 @@ here still, but for now we keep this here.
  	input_free_device(session->input);
  	kfree(session);
  	return err;
-@@ -994,6 +1102,7 @@ int hidp_get_conninfo(struct hidp_connin
+@@ -1006,6 +1113,7 @@ int hidp_get_conninfo(struct hidp_connin
  	return err;
  }
  
@@ -397,7 +405,7 @@ here still, but for now we keep this here.
  static const struct hid_device_id hidp_table[] = {
  	{ HID_BLUETOOTH_DEVICE(HID_ANY_ID, HID_ANY_ID) },
  	{ }
-@@ -1003,6 +1112,7 @@ static struct hid_driver hidp_driver = {
+@@ -1015,6 +1123,7 @@ static struct hid_driver hidp_driver = {
  	.name = "generic-bluetooth",
  	.id_table = hidp_table,
  };
@@ -405,7 +413,7 @@ here still, but for now we keep this here.
  
  static int __init hidp_init(void)
  {
-@@ -1012,11 +1122,14 @@ static int __init hidp_init(void)
+@@ -1024,11 +1133,14 @@ static int __init hidp_init(void)
  
  	BT_INFO("HIDP (Human Interface Emulation) ver %s", VERSION);
  
@@ -420,7 +428,7 @@ here still, but for now we keep this here.
  	if (ret)
  		goto err_drv;
  
-@@ -1024,13 +1137,16 @@ static int __init hidp_init(void)
+@@ -1036,13 +1148,16 @@ static int __init hidp_init(void)
  err_drv:
  	hid_unregister_driver(&hidp_driver);
  err:
