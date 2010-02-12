@@ -436,7 +436,7 @@ without creating a headache on maintenance of the pathes.
  
 --- a/drivers/net/wireless/libertas/main.c
 +++ b/drivers/net/wireless/libertas/main.c
-@@ -898,6 +898,7 @@ static void lbs_free_adapter(struct lbs_
+@@ -881,6 +881,7 @@ static void lbs_free_adapter(struct lbs_
  	lbs_deb_leave(LBS_DEB_MAIN);
  }
  
@@ -444,7 +444,7 @@ without creating a headache on maintenance of the pathes.
  static const struct net_device_ops lbs_netdev_ops = {
  	.ndo_open 		= lbs_dev_open,
  	.ndo_stop		= lbs_eth_stop,
-@@ -908,6 +909,7 @@ static const struct net_device_ops lbs_n
+@@ -891,6 +892,7 @@ static const struct net_device_ops lbs_n
  	.ndo_change_mtu		= eth_change_mtu,
  	.ndo_validate_addr	= eth_validate_addr,
  };
@@ -452,7 +452,7 @@ without creating a headache on maintenance of the pathes.
  
  /**
   * @brief This function adds the card. it will probe the
-@@ -953,7 +955,16 @@ struct lbs_private *lbs_add_card(void *c
+@@ -936,7 +938,16 @@ struct lbs_private *lbs_add_card(void *c
  	wdev->netdev = dev;
  	priv->dev = dev;
  
@@ -469,7 +469,7 @@ without creating a headache on maintenance of the pathes.
  	dev->watchdog_timeo = 5 * HZ;
  	dev->ethtool_ops = &lbs_ethtool_ops;
  #ifdef	WIRELESS_EXT
-@@ -1259,11 +1270,13 @@ out:
+@@ -1242,11 +1253,13 @@ out:
  	lbs_deb_leave(LBS_DEB_MAIN);
  }
  
@@ -483,7 +483,7 @@ without creating a headache on maintenance of the pathes.
  
  static int lbs_add_rtap(struct lbs_private *priv)
  {
-@@ -1284,7 +1297,13 @@ static int lbs_add_rtap(struct lbs_priva
+@@ -1267,7 +1280,13 @@ static int lbs_add_rtap(struct lbs_priva
  
  	memcpy(rtap_dev->dev_addr, priv->current_addr, ETH_ALEN);
  	rtap_dev->type = ARPHRD_IEEE80211_RADIOTAP;
@@ -550,7 +550,7 @@ without creating a headache on maintenance of the pathes.
  #define LBS_DEB_LEAVE	0x00000002
 --- a/drivers/net/wireless/mac80211_hwsim.c
 +++ b/drivers/net/wireless/mac80211_hwsim.c
-@@ -956,16 +956,22 @@ static struct device_driver mac80211_hws
+@@ -995,16 +995,22 @@ static struct device_driver mac80211_hws
  	.name = "mac80211_hwsim"
  };
  

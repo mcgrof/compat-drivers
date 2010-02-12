@@ -611,7 +611,7 @@ here still, but for now we keep this here.
  		return -EPERM;
  
  	sock->ops = &l2cap_sock_ops;
-@@ -1763,7 +1771,11 @@ static int l2cap_sock_setsockopt_old(str
+@@ -1764,7 +1772,11 @@ static int l2cap_sock_setsockopt_old(str
  	return err;
  }
  
