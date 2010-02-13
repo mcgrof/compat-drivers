@@ -6,7 +6,7 @@ in or compat headers.
 
 --- a/drivers/net/wireless/iwlwifi/iwl-devtrace.h
 +++ b/drivers/net/wireless/iwlwifi/iwl-devtrace.h
-@@ -1,7 +1,9 @@
+@@ -27,7 +27,9 @@
  #if !defined(__IWLWIFI_DEVICE_TRACE) || defined(TRACE_HEADER_MULTI_READ)
  #define __IWLWIFI_DEVICE_TRACE
  
@@ -16,7 +16,7 @@ in or compat headers.
  #include "iwl-dev.h"
  
  #if !defined(CONFIG_IWLWIFI_DEVICE_TRACING) || defined(__CHECKER__)
-@@ -194,4 +196,6 @@ TRACE_EVENT(iwlwifi_dev_ucode_event,
+@@ -220,4 +222,6 @@ TRACE_EVENT(iwlwifi_dev_ucode_event,
  #define TRACE_INCLUDE_PATH .
  #undef TRACE_INCLUDE_FILE
  #define TRACE_INCLUDE_FILE iwl-devtrace
