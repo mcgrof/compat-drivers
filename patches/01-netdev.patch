@@ -575,7 +575,7 @@ without creating a headache on maintenance of the pathes.
  	dev->tx_queue_len = 0;
 --- a/net/bluetooth/bnep/netdev.c
 +++ b/net/bluetooth/bnep/netdev.c
-@@ -165,8 +165,12 @@ static inline int bnep_net_proto_filter(
+@@ -167,8 +167,12 @@ static inline int bnep_net_proto_filter(
  }
  #endif
  
@@ -590,7 +590,7 @@ without creating a headache on maintenance of the pathes.
  {
  	struct bnep_session *s = netdev_priv(dev);
  	struct sock *sk = s->sock->sk;
-@@ -207,6 +211,7 @@ static netdev_tx_t bnep_net_xmit(struct 
+@@ -209,6 +213,7 @@ static netdev_tx_t bnep_net_xmit(struct 
  	return NETDEV_TX_OK;
  }
  
@@ -598,7 +598,7 @@ without creating a headache on maintenance of the pathes.
  static const struct net_device_ops bnep_netdev_ops = {
  	.ndo_open            = bnep_net_open,
  	.ndo_stop            = bnep_net_close,
-@@ -218,6 +223,16 @@ static const struct net_device_ops bnep_
+@@ -220,6 +225,16 @@ static const struct net_device_ops bnep_
  	.ndo_change_mtu	     = eth_change_mtu,
  
  };
@@ -615,7 +615,7 @@ without creating a headache on maintenance of the pathes.
  
  void bnep_net_setup(struct net_device *dev)
  {
-@@ -226,7 +241,18 @@ void bnep_net_setup(struct net_device *d
+@@ -228,7 +243,18 @@ void bnep_net_setup(struct net_device *d
  	dev->addr_len = ETH_ALEN;
  
  	ether_setup(dev);
@@ -636,7 +636,7 @@ without creating a headache on maintenance of the pathes.
  }
 --- a/drivers/net/atl1e/atl1e_main.c
 +++ b/drivers/net/atl1e/atl1e_main.c
-@@ -2219,6 +2219,7 @@ static void atl1e_shutdown(struct pci_de
+@@ -2202,6 +2202,7 @@ static void atl1e_shutdown(struct pci_de
  	atl1e_suspend(pdev, PMSG_SUSPEND);
  }
  
@@ -644,7 +644,7 @@ without creating a headache on maintenance of the pathes.
  static const struct net_device_ops atl1e_netdev_ops = {
  	.ndo_open		= atl1e_open,
  	.ndo_stop		= atl1e_close,
-@@ -2236,6 +2237,7 @@ static const struct net_device_ops atl1e
+@@ -2219,6 +2220,7 @@ static const struct net_device_ops atl1e
  #endif
  
  };
@@ -652,7 +652,7 @@ without creating a headache on maintenance of the pathes.
  
  static int atl1e_init_netdev(struct net_device *netdev, struct pci_dev *pdev)
  {
-@@ -2243,7 +2245,23 @@ static int atl1e_init_netdev(struct net_
+@@ -2226,7 +2228,23 @@ static int atl1e_init_netdev(struct net_
  	pci_set_drvdata(pdev, netdev);
  
  	netdev->irq  = pdev->irq;
