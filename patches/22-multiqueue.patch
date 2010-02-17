@@ -1,0 +1,161 @@
+Backport multiqueue support for kernels < 2.6.27
+
+The 2.6.23 kernel added some initial multiqueue support.
+That release relied on the on the notion of struct
+net_device_subqueue attached to the netdevice struct
+as an array. The 2.6.27 renamed these to struct netdev_queue,
+and enhanced MQ support by providing locks separately onto
+each queue. MQ support on 2.6.27 also extended each netdev
+to be able to assign a select_queue callback to be used by
+core networking for prior to pushing the skb out to the device
+driver so that queue selection can be dealt with and
+customized internally on the driver.
+
+For kernels 2.6.23..2.6.26 then we backport MQ support by
+using the equivalent calls on the struct netdev_queue to
+the struct net_device_subqueue. The performance penalty
+here is just that all these queues share a common lock
+so stateful operations on one queue would imply a delay
+on other queues.
+
+For older kernels than 2.6.23 we can only stop all the
+queues then and wake them up only if no other queue had
+been stopped previously. This means for kernels older
+than 2.6.23 there is a performance penalty and congestion
+on one queue would imply propagating the same congestion
+impact on all the other queues.
+
+The select_queue callback was only added as of 2.6.27 via
+commit eae792b7 so for kernels older than 2.6.23 and up
+to 2.6.27 we must ensure we do the selection of the queue
+once the core networking calls mac80211's dev_hard_start_xmit()
+(ndo_start_xmit() callback on newer kernels).
+
+This patch then consists of three parts:
+
+  1) Addresses the lack of select_queue on older kernels than 2.6.27
+  2) Extends the backport of net_device_ops for select_queue for kernels >= 2.6.27
+  3) Backporting wake/stop queue for older kernels:
+	- Handle with net_device_subqueue for >= 2.6.23
+	- Treat each queue operation as an aggregate for all queues
+
+Monitor interfaces have their own select_queue -- monitor interfaces
+are used for injecting frames so they have their own respective queue
+handling, but mac80211 just always sends management frames on VO
+queue by using skb_set_queue_mapping(skb, 0) through ieee80211_tx_skb()
+
+--- a/net/mac80211/util.c
++++ b/net/mac80211/util.c
+@@ -266,6 +266,18 @@
+ }
+ EXPORT_SYMBOL(ieee80211_ctstoself_duration);
+ 
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,23))
++static bool ieee80211_all_queues_started(struct ieee80211_hw *hw)
++{
++	unsigned int queue;
++
++	for (queue = 0; queue < hw->queues; queue++)
++		if (ieee80211_queue_stopped(hw, queue))
++			return false;
++	return true;
++}
++#endif
++
+ static void __ieee80211_wake_queue(struct ieee80211_hw *hw, int queue,
+ 				   enum queue_stop_reason reason)
+ {
+@@ -286,7 +298,14 @@
+ 
+ 	rcu_read_lock();
+ 	list_for_each_entry_rcu(sdata, &local->interfaces, list)
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,27))
+ 		netif_tx_wake_queue(netdev_get_tx_queue(sdata->dev, queue));
++#elif (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,23))
++		netif_start_subqueue(sdata->dev, queue);
++#else
++		if (ieee80211_all_queues_started(hw))
++			netif_wake_queue(sdata->dev);
++#endif
+ 	rcu_read_unlock();
+ }
+ 
+@@ -321,7 +340,13 @@
+ 
+ 	rcu_read_lock();
+ 	list_for_each_entry_rcu(sdata, &local->interfaces, list)
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,27))
+ 		netif_tx_stop_queue(netdev_get_tx_queue(sdata->dev, queue));
++#elif (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,23))
++		netif_stop_subqueue(sdata->dev, queue);
++#else
++		netif_stop_queue(sdata->dev);
++#endif
+ 	rcu_read_unlock();
+ }
+ 
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -1564,6 +1564,10 @@
+ 				return;
+ 			}
+ 
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,27))
++	/* Older kernels do not have the select_queue callback */
++	skb_set_queue_mapping(skb, ieee80211_select_queue(sdata, skb));
++#endif
+ 	ieee80211_set_qos_hdr(local, skb);
+ 	ieee80211_tx(sdata, skb, false);
+ 	rcu_read_unlock();
+--- a/net/mac80211/iface.c
++++ b/net/mac80211/iface.c
+@@ -660,11 +660,13 @@
+ 	WARN_ON(flushed);
+ }
+ 
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,27))
+ static u16 ieee80211_netdev_select_queue(struct net_device *dev,
+ 					 struct sk_buff *skb)
+ {
+ 	return ieee80211_select_queue(IEEE80211_DEV_TO_SUB_IF(dev), skb);
+ }
++#endif
+ 
+ #if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
+ static const struct net_device_ops ieee80211_dataif_ops = {
+@@ -679,6 +681,7 @@
+ };
+ #endif
+ 
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,27))
+ static u16 ieee80211_monitor_select_queue(struct net_device *dev,
+ 					  struct sk_buff *skb)
+ {
+@@ -711,6 +714,7 @@
+ 
+ 	return ieee80211_downgrade_queue(local, skb);
+ }
++#endif
+ 
+ #if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
+ static const struct net_device_ops ieee80211_monitorif_ops = {
+@@ -735,7 +739,9 @@
+ 	dev->set_multicast_list = ieee80211_set_multicast_list;
+ 	dev->change_mtu = ieee80211_change_mtu;
+ 	dev->set_mac_address = ieee80211_change_mac;
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,27))
+ 	dev->select_queue = ieee80211_netdev_select_queue;
++#endif
+ 	dev->open = ieee80211_open;
+ 	dev->stop = ieee80211_stop;
+ 	/* we will validate the address ourselves in ->open */
+@@ -787,7 +793,9 @@
+ 		sdata->dev->netdev_ops = &ieee80211_monitorif_ops;
+ #else
+ 		sdata->dev->hard_start_xmit = ieee80211_monitor_start_xmit;
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,27))
+ 		sdata->dev->select_queue = ieee80211_monitor_select_queue;
++#endif
+ 		sdata->dev->set_mac_address = eth_mac_addr;
+ #endif
+ 		sdata->u.mntr_flags = MONITOR_FLAG_CONTROL |
