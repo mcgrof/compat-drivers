@@ -183,6 +183,30 @@ static inline int iwe_stream_lcp_len(struct iw_request_info *info)
 	return IW_EV_LCP_LEN;
 }
 
+#ifdef CONFIG_ARM
+
+/*
+ * The caller asks to handle a range between offset and offset + size,
+ * but we process a larger range from 0 to offset + size due to lack of
+ * offset support.
+ */
+
+static inline void dma_sync_single_range_for_cpu(struct device *dev,
+		dma_addr_t handle, unsigned long offset, size_t size,
+		enum dma_data_direction dir)
+{
+	dma_sync_single_for_cpu(dev, handle, offset + size, dir);
+}
+
+static inline void dma_sync_single_range_for_device(struct device *dev,
+		dma_addr_t handle, unsigned long offset, size_t size,
+		enum dma_data_direction dir)
+{
+	dma_sync_single_for_device(dev, handle, offset + size, dir);
+}
+
+#endif /* arm */
+
 #endif /* (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,27)) */
 
 #endif /* LINUX_26_27_COMPAT_H */
