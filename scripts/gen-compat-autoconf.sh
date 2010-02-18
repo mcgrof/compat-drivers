@@ -169,10 +169,6 @@ for i in $(grep '^CONFIG_' $COMPAT_CONFIG); do
 		define_config_dep $VAR $VALUE CONFIG_USB_NET_CDCETHER
 		continue
 		;;
-	CONFIG_SSB_PCMCIAHOST)
-		define_config_dep $VAR $VALUE CONFIG_PCMCIA
-		continue
-		;;
 	# ignore this, we have a special hanlder for this at the botttom
 	# instead. We still need to keep this in config.mk to let Makefiles
 	# know its enabled so just ignore it here.
