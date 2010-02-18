@@ -203,25 +203,22 @@ if [ -d ./.git ]; then
 	echo -e "git-describe for $TREE_NAME says: ${PURPLE}$GIT_DESCRIBE${NORMAL}"
 
 	rm -f $DIR/master-tag
+
+	cd $DIR
+	git describe > compat-release
+	cd $GIT_TREE
+
 	case $TREE_NAME in
 	"wireless-testing.git") # John's wireless-testing
-		cd $DIR
-		git tag -l | grep "master" | tail -1 > compat-release
-		cd $GIT_TREE
 		MASTER_TAG=$(git tag -l| grep master | tail -1)
 		echo $MASTER_TAG > $DIR/master-tag
 		echo -e "This is a ${RED}bleeding edge${NORMAL} compat-wireless release based on: ${PURPLE}$MASTER_TAG${NORMAL}"
 		;;
 	"linux-2.6-allstable.git") # HPA's all stable tree
-		cd $DIR
-		git tag -l | grep "2.6" | tail -1 > compat-release
-		cd $GIT_TREE
 		echo -e "This is a ${GREEN}stable${NORMAL} compat-wireless release based on: ${PURPLE}$(git describe --abbrev=0)${NORMAL}"
 		;;
 	"linux-2.6.git") # Linus' 2.6 tree
-		cd $DIR
-		git tag -l | grep "2.6" > compat-release
-		cd $GIT_TREE
+		echo -e "This is a ${GREEN}stable${NORMAL} compat-wireless release based on: ${PURPLE}$(git describe --abbrev=0)${NORMAL}"
 		;;
 	*)
 		;;
