@@ -271,14 +271,20 @@ if [[ "$1" = "refresh" ]]; then
 	patchRefresh linux-next-cherry-picks
 fi
 
-for i in patches/*.patch linux-next-cherry-picks/*.patch; do
-	echo -e "${GREEN}Applying backport patch${NORMAL}: ${BLUE}$i${NORMAL}"
-	patch -p1 -N -t < $i
-	RET=$?
-	if [[ $RET -ne 0 ]]; then
-		echo -e "${RED}Patching $i failed${NORMAL}, update it"
-		exit $RET
+for dir in patches linux-next-cherry-picks; do
+	FOUND=$(find $dir/ -name \*.patch | wc -l)
+	if [ $FOUND -eq 0 ]; then
+		continue
 	fi
+	for i in $dir/*.patch; do
+		echo -e "${GREEN}Applying backport patch${NORMAL}: ${BLUE}$i${NORMAL}"
+		patch -p1 -N -t < $i
+		RET=$?
+		if [[ $RET -ne 0 ]]; then
+			echo -e "${RED}Patching $i failed${NORMAL}, update it"
+			exit $RET
+		fi
+	done
 done
 
 DIR="$PWD"
