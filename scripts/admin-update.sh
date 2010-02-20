@@ -242,7 +242,9 @@ patchRefresh() {
 		mkdir patches.orig
 	fi
 
-	mv -u patches/* patches.orig/
+	export QUILT_PATCHES=$1
+
+	mv -u $1/* patches.orig/
 
 	for i in patches.orig/*.patch; do
 		echo -e "${GREEN}Refresh backport patch${NORMAL}: ${BLUE}$i${NORMAL}"
@@ -253,22 +255,23 @@ patchRefresh() {
 			echo -e "${RED}Refreshing $i failed${NORMAL}, update it"
 			echo -e "use ${CYAN}quilt edit [filename]${NORMAL} to apply the failed part manually"
 			echo -e "use ${CYAN}quilt refresh${NORMAL} after the files are corrected and rerun this script"
-			cp patches.orig/README patches/README
+			cp patches.orig/README $1/README
 			exit $RET
 		fi
 		QUILT_DIFF_OPTS="-p" quilt refresh -p ab --no-index --no-timestamp
 	done
 	quilt pop -a
 
-	cp patches.orig/README patches/README
-	rm -rf patches.orig .pc patches/series
+	cp patches.orig/README $1/README
+	rm -rf patches.orig .pc $1/series
 }
 
 if [[ "$1" = "refresh" ]]; then
-	patchRefresh
+	patchRefresh patches
+	patchRefresh linux-next-cherry-picks
 fi
 
-for i in patches/*.patch; do
+for i in patches/*.patch linux-next-cherry-picks/*.patch; do
 	echo -e "${GREEN}Applying backport patch${NORMAL}: ${BLUE}$i${NORMAL}"
 	patch -p1 -N -t < $i
 	RET=$?
