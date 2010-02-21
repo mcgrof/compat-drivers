@@ -247,6 +247,10 @@ patchRefresh() {
 	mv -u $1/* patches.orig/
 
 	for i in patches.orig/*.patch; do
+		if [ ! -f "$i" ]; then
+			echo -e "${RED}No patches found in $1${NORMAL}"
+			break;
+		fi
 		echo -e "${GREEN}Refresh backport patch${NORMAL}: ${BLUE}$i${NORMAL}"
 		quilt import $i
 		quilt push -f
