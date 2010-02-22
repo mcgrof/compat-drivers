@@ -46,7 +46,7 @@ queue by using skb_set_queue_mapping(skb, 0) through ieee80211_tx_skb()
 
 --- a/net/mac80211/util.c
 +++ b/net/mac80211/util.c
-@@ -266,6 +266,18 @@
+@@ -266,6 +266,18 @@ __le16 ieee80211_ctstoself_duration(stru
  }
  EXPORT_SYMBOL(ieee80211_ctstoself_duration);
  
@@ -65,7 +65,7 @@ queue by using skb_set_queue_mapping(skb, 0) through ieee80211_tx_skb()
  static void __ieee80211_wake_queue(struct ieee80211_hw *hw, int queue,
  				   enum queue_stop_reason reason)
  {
-@@ -286,7 +298,14 @@
+@@ -286,7 +298,14 @@ static void __ieee80211_wake_queue(struc
  
  	rcu_read_lock();
  	list_for_each_entry_rcu(sdata, &local->interfaces, list)
@@ -80,7 +80,7 @@ queue by using skb_set_queue_mapping(skb, 0) through ieee80211_tx_skb()
  	rcu_read_unlock();
  }
  
-@@ -321,7 +340,13 @@
+@@ -321,7 +340,13 @@ static void __ieee80211_stop_queue(struc
  
  	rcu_read_lock();
  	list_for_each_entry_rcu(sdata, &local->interfaces, list)
@@ -96,7 +96,7 @@ queue by using skb_set_queue_mapping(skb, 0) through ieee80211_tx_skb()
  
 --- a/net/mac80211/tx.c
 +++ b/net/mac80211/tx.c
-@@ -1564,6 +1564,10 @@
+@@ -1564,6 +1564,10 @@ static void ieee80211_xmit(struct ieee80
  				return;
  			}
  
@@ -109,7 +109,7 @@ queue by using skb_set_queue_mapping(skb, 0) through ieee80211_tx_skb()
  	rcu_read_unlock();
 --- a/net/mac80211/iface.c
 +++ b/net/mac80211/iface.c
-@@ -660,11 +660,13 @@
+@@ -660,11 +660,13 @@ static void ieee80211_teardown_sdata(str
  	WARN_ON(flushed);
  }
  
@@ -123,7 +123,7 @@ queue by using skb_set_queue_mapping(skb, 0) through ieee80211_tx_skb()
  
  #if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
  static const struct net_device_ops ieee80211_dataif_ops = {
-@@ -679,6 +681,7 @@
+@@ -679,6 +681,7 @@ static const struct net_device_ops ieee8
  };
  #endif
  
@@ -131,7 +131,7 @@ queue by using skb_set_queue_mapping(skb, 0) through ieee80211_tx_skb()
  static u16 ieee80211_monitor_select_queue(struct net_device *dev,
  					  struct sk_buff *skb)
  {
-@@ -711,6 +714,7 @@
+@@ -711,6 +714,7 @@ static u16 ieee80211_monitor_select_queu
  
  	return ieee80211_downgrade_queue(local, skb);
  }
@@ -139,7 +139,7 @@ queue by using skb_set_queue_mapping(skb, 0) through ieee80211_tx_skb()
  
  #if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
  static const struct net_device_ops ieee80211_monitorif_ops = {
-@@ -735,7 +739,9 @@
+@@ -735,7 +739,9 @@ static void ieee80211_if_setup(struct ne
  	dev->set_multicast_list = ieee80211_set_multicast_list;
  	dev->change_mtu = ieee80211_change_mtu;
  	dev->set_mac_address = ieee80211_change_mac;
@@ -149,7 +149,7 @@ queue by using skb_set_queue_mapping(skb, 0) through ieee80211_tx_skb()
  	dev->open = ieee80211_open;
  	dev->stop = ieee80211_stop;
  	/* we will validate the address ourselves in ->open */
-@@ -787,7 +793,9 @@
+@@ -787,7 +793,9 @@ static void ieee80211_setup_sdata(struct
  		sdata->dev->netdev_ops = &ieee80211_monitorif_ops;
  #else
  		sdata->dev->hard_start_xmit = ieee80211_monitor_start_xmit;
