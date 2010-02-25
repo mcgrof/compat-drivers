@@ -211,7 +211,7 @@ without creating a headache on maintenance of the pathes.
  		ieee80211_sdata_set_mesh_id(sdata,
 --- a/drivers/net/b44.c
 +++ b/drivers/net/b44.c
-@@ -2107,6 +2107,7 @@ static int __devinit b44_get_invariants(
+@@ -2109,6 +2109,7 @@ static int __devinit b44_get_invariants(
  	return err;
  }
  
@@ -219,7 +219,7 @@ without creating a headache on maintenance of the pathes.
  static const struct net_device_ops b44_netdev_ops = {
  	.ndo_open		= b44_open,
  	.ndo_stop		= b44_close,
-@@ -2122,6 +2123,7 @@ static const struct net_device_ops b44_n
+@@ -2124,6 +2125,7 @@ static const struct net_device_ops b44_n
  	.ndo_poll_controller	= b44_poll_controller,
  #endif
  };
@@ -227,7 +227,7 @@ without creating a headache on maintenance of the pathes.
  
  static int __devinit b44_init_one(struct ssb_device *sdev,
  				  const struct ssb_device_id *ent)
-@@ -2161,9 +2163,26 @@ static int __devinit b44_init_one(struct
+@@ -2163,9 +2165,26 @@ static int __devinit b44_init_one(struct
  	bp->rx_pending = B44_DEF_RX_RING_PENDING;
  	bp->tx_pending = B44_DEF_TX_RING_PENDING;
  
