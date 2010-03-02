@@ -253,7 +253,7 @@ unload:
 load: unload
 	@./scripts/load.sh
 
-.PHONY: all clean install uninstall unload load
+.PHONY: all clean install uninstall unload load modules
 
 endif
 
