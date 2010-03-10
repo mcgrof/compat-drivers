@@ -281,8 +281,10 @@ CONFIG_ADM8211=m
 CONFIG_RT2X00_LIB_PCI=m
 CONFIG_RT2400PCI=m
 CONFIG_RT2500PCI=m
+ifneq ($(CONFIG_CRC_CCITT),)
 CONFIG_RT2800PCI=m
 CONFIG_RT2800PCI_PCI=y
+endif
 NEED_RT2X00=y
 
 # Two rt2x00 drivers require firmware: rt61pci and rt73usb. They depend on
@@ -358,7 +360,9 @@ endif
 
 # RT2500USB does not require firmware
 CONFIG_RT2500USB=m
+ifneq ($(CONFIG_CRC_CCITT),)
 CONFIG_RT2800USB=m
+endif
 CONFIG_RT2X00_LIB_USB=m
 NEED_RT2X00=y
 # RT73USB requires firmware
