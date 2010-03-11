@@ -21,7 +21,7 @@ GIT_COMPAT_URL="git://git.kernel.org/pub/scm/linux/kernel/git/mcgrof/compat.git"
 INCLUDE_NET_BT="hci_core.h l2cap.h bluetooth.h rfcomm.h hci.h"
 NET_BT_DIRS="bluetooth bluetooth/bnep bluetooth/cmtp bluetooth/rfcomm bluetooth/hidp"
 
-INCLUDE_LINUX="ieee80211.h nl80211.h wireless.h"
+INCLUDE_LINUX="ieee80211.h nl80211.h"
 INCLUDE_LINUX="$INCLUDE_LINUX pci_ids.h eeprom_93cx6.h"
 INCLUDE_LINUX="$INCLUDE_LINUX ath9k_platform.h"
 
@@ -32,7 +32,7 @@ INCLUDE_LINUX_SPI="wl12xx.h libertas_spi.h"
 
 # The good new yummy stuff
 INCLUDE_NET="cfg80211.h ieee80211_radiotap.h"
-INCLUDE_NET="$INCLUDE_NET mac80211.h wext.h lib80211.h regulatory.h"
+INCLUDE_NET="$INCLUDE_NET mac80211.h lib80211.h regulatory.h"
 
 # Pretty colors
 GREEN="\033[01;32m"
