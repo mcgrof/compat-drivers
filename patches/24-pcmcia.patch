@@ -1,0 +1,14 @@
+--- a/drivers/net/wireless/orinoco/orinoco_cs.c
++++ b/drivers/net/wireless/orinoco/orinoco_cs.c
+@@ -81,7 +81,11 @@ orinoco_cs_hard_reset(struct orinoco_pri
+ 	/* We need atomic ops here, because we're not holding the lock */
+ 	set_bit(0, &card->hard_reset_in_progress);
+ 
++#if LINUX_VERSION_CODE <= KERNEL_VERSION(2,6,27)
++	err = pcmcia_reset_card(link, NULL);
++#else
+ 	err = pcmcia_reset_card(link->socket);
++#endif
+ 	if (err)
+ 		return err;
+ 
