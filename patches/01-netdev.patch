@@ -338,7 +338,7 @@ without creating a headache on maintenance of the pathes.
  };
 +#endif
  
- /* Look into using netdev destructor to shutdown ieee80211? */
+ /* Look into using netdev destructor to shutdown libipw? */
  
 @@ -6126,7 +6128,16 @@ static struct net_device *ipw2100_alloc_
  	priv->ieee->perfect_rssi = -20;
@@ -423,7 +423,7 @@ without creating a headache on maintenance of the pathes.
  	net_dev->wireless_handlers = &ipw_wx_handler_def;
 --- a/drivers/net/wireless/ipw2x00/libipw_module.c
 +++ b/drivers/net/wireless/ipw2x00/libipw_module.c
-@@ -154,6 +154,10 @@ struct net_device *alloc_ieee80211(int s
+@@ -154,6 +154,10 @@ struct net_device *alloc_libipw(int size
  		goto failed;
  	}
  	ieee = netdev_priv(dev);
