@@ -373,6 +373,8 @@ CONFIG_AR9170_USB=m
 CONFIG_AR9170_LEDS=y
 endif
 
+CONFIG_ATH9K_HTC=m
+
 # RT2500USB does not require firmware
 CONFIG_RT2500USB=m
 ifneq ($(CONFIG_CRC_CCITT),)

@@ -274,6 +274,11 @@ case $1 in
 		select_driver		CONFIG_ATH_COMMON
 		select_ath_driver	CONFIG_AR9170_USB
 		;;
+	ath9k_htc)
+		disable_bt_usb_ethernet_var
+		select_driver		CONFIG_ATH_COMMON
+		select_ath_driver	CONFIG_ATH9K_HTC
+		;;
 	rtl818x)
 		select_drivers		CONFIG_RTL8180 CONFIG_RTL8187
 		disable_var_02
