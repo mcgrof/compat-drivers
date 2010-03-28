@@ -29,7 +29,7 @@ PURPLE="\033[35m"
 CYAN="\033[36m"
 UNDERLINE="\033[02m"
 
-SUPPORTED_DRIVERS="ath5k ath9k ath9k_htc ar9170 zd1211rw"
+SUPPORTED_DRIVERS="ath5k ath9k ath9k_htc ar9170 b43 zd1211rw"
 
 function usage {
 	echo -e "${GREEN}Usage${NORMAL}: ${CYAN}$0${NORMAL} [ ${PURPLE}<driver-name>${NORMAL} | ${PURPLE}<driver-group-name>${NORMAL} | ${GREEN}restore${NORMAL} ]"
@@ -286,6 +286,12 @@ case $1 in
 	zd1211rw)
 		select_driver		CONFIG_ZD1211RW
 		disable_var_01
+		;;
+	b43)
+		disable_usbnet
+		disable_ethernet
+		disable_var_03
+		select_driver		CONFIG_B43
 		;;
 	*)
 		echo "Unsupported driver"
