@@ -13,10 +13,10 @@ in or compat headers.
 +#if (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,27))
  #include <linux/tracepoint.h>
 +#endif /* (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,27)) */
- #include "iwl-dev.h"
  
  #if !defined(CONFIG_IWLWIFI_DEVICE_TRACING) || defined(__CHECKER__)
-@@ -264,4 +266,6 @@ TRACE_EVENT(iwlwifi_dev_ucode_event,
+ #undef TRACE_EVENT
+@@ -263,4 +265,6 @@
  #define TRACE_INCLUDE_PATH .
  #undef TRACE_INCLUDE_FILE
  #define TRACE_INCLUDE_FILE iwl-devtrace
