@@ -78,10 +78,10 @@ cases.
  #include "ieee80211_i.h"
 --- a/net/mac80211/cfg.c
 +++ b/net/mac80211/cfg.c
-@@ -9,7 +9,9 @@
- #include <linux/ieee80211.h>
+@@ -10,7 +10,9 @@
  #include <linux/nl80211.h>
  #include <linux/rtnetlink.h>
+ #include <linux/slab.h>
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,24))
  #include <net/net_namespace.h>
 +#endif
