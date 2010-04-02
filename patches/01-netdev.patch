@@ -8,7 +8,7 @@ without creating a headache on maintenance of the pathes.
 
 --- a/drivers/net/usb/rndis_host.c
 +++ b/drivers/net/usb/rndis_host.c
-@@ -274,6 +274,7 @@ response_error:
+@@ -275,6 +275,7 @@ response_error:
  	return -EDOM;
  }
  
@@ -16,7 +16,7 @@ without creating a headache on maintenance of the pathes.
  /* same as usbnet_netdev_ops but MTU change not allowed */
  static const struct net_device_ops rndis_netdev_ops = {
  	.ndo_open		= usbnet_open,
-@@ -283,6 +284,7 @@ static const struct net_device_ops rndis
+@@ -284,6 +285,7 @@ static const struct net_device_ops rndis
  	.ndo_set_mac_address 	= eth_mac_addr,
  	.ndo_validate_addr	= eth_validate_addr,
  };
@@ -24,7 +24,7 @@ without creating a headache on maintenance of the pathes.
  
  int
  generic_rndis_bind(struct usbnet *dev, struct usb_interface *intf, int flags)
-@@ -345,7 +347,11 @@ generic_rndis_bind(struct usbnet *dev, s
+@@ -346,7 +348,11 @@ generic_rndis_bind(struct usbnet *dev, s
  	dev->rx_urb_size &= ~(dev->maxpacket - 1);
  	u.init->max_transfer_size = cpu_to_le32(dev->rx_urb_size);
  
@@ -38,7 +38,7 @@ without creating a headache on maintenance of the pathes.
  	if (unlikely(retval < 0)) {
 --- a/drivers/net/usb/usbnet.c
 +++ b/drivers/net/usb/usbnet.c
-@@ -1236,6 +1236,7 @@ void usbnet_disconnect (struct usb_inter
+@@ -1237,6 +1237,7 @@ void usbnet_disconnect (struct usb_inter
  }
  EXPORT_SYMBOL_GPL(usbnet_disconnect);
  
@@ -46,7 +46,7 @@ without creating a headache on maintenance of the pathes.
  static const struct net_device_ops usbnet_netdev_ops = {
  	.ndo_open		= usbnet_open,
  	.ndo_stop		= usbnet_stop,
-@@ -1245,6 +1246,7 @@ static const struct net_device_ops usbne
+@@ -1246,6 +1247,7 @@ static const struct net_device_ops usbne
  	.ndo_set_mac_address 	= eth_mac_addr,
  	.ndo_validate_addr	= eth_validate_addr,
  };
@@ -54,7 +54,7 @@ without creating a headache on maintenance of the pathes.
  
  /*-------------------------------------------------------------------------*/
  
-@@ -1324,7 +1326,15 @@ usbnet_probe (struct usb_interface *udev
+@@ -1325,7 +1327,15 @@ usbnet_probe (struct usb_interface *udev
  		net->features |= NETIF_F_HIGHDMA;
  #endif
  
@@ -72,7 +72,7 @@ without creating a headache on maintenance of the pathes.
  
 --- a/drivers/net/wireless/rndis_wlan.c
 +++ b/drivers/net/wireless/rndis_wlan.c
-@@ -3047,6 +3047,7 @@ static int bcm4320b_early_init(struct us
+@@ -3048,6 +3048,7 @@ static int bcm4320b_early_init(struct us
  	return 0;
  }
  
@@ -80,7 +80,7 @@ without creating a headache on maintenance of the pathes.
  /* same as rndis_netdev_ops but with local multicast handler */
  static const struct net_device_ops rndis_wlan_netdev_ops = {
  	.ndo_open		= usbnet_open,
-@@ -3057,6 +3058,7 @@ static const struct net_device_ops rndis
+@@ -3058,6 +3059,7 @@ static const struct net_device_ops rndis
  	.ndo_validate_addr	= eth_validate_addr,
  	.ndo_set_multicast_list	= rndis_wlan_set_multicast_list,
  };
@@ -88,7 +88,7 @@ without creating a headache on maintenance of the pathes.
  
  static int rndis_wlan_bind(struct usbnet *usbdev, struct usb_interface *intf)
  {
-@@ -3104,7 +3106,11 @@ static int rndis_wlan_bind(struct usbnet
+@@ -3105,7 +3107,11 @@ static int rndis_wlan_bind(struct usbnet
  	 * rndis_host wants to avoid all OID as much as possible
  	 * so do promisc/multicast handling in rndis_wlan.
  	 */
@@ -102,7 +102,7 @@ without creating a headache on maintenance of the pathes.
  	retval = rndis_set_oid(usbdev, OID_GEN_CURRENT_PACKET_FILTER, &tmp,
 --- a/net/mac80211/iface.c
 +++ b/net/mac80211/iface.c
-@@ -666,6 +666,7 @@ static u16 ieee80211_netdev_select_queue
+@@ -667,6 +667,7 @@ static u16 ieee80211_netdev_select_queue
  	return ieee80211_select_queue(IEEE80211_DEV_TO_SUB_IF(dev), skb);
  }
  
@@ -110,7 +110,7 @@ without creating a headache on maintenance of the pathes.
  static const struct net_device_ops ieee80211_dataif_ops = {
  	.ndo_open		= ieee80211_open,
  	.ndo_stop		= ieee80211_stop,
-@@ -676,6 +677,7 @@ static const struct net_device_ops ieee8
+@@ -677,6 +678,7 @@ static const struct net_device_ops ieee8
  	.ndo_set_mac_address 	= ieee80211_change_mac,
  	.ndo_select_queue	= ieee80211_netdev_select_queue,
  };
@@ -118,7 +118,7 @@ without creating a headache on maintenance of the pathes.
  
  static u16 ieee80211_monitor_select_queue(struct net_device *dev,
  					  struct sk_buff *skb)
-@@ -710,6 +712,7 @@ static u16 ieee80211_monitor_select_queu
+@@ -711,6 +713,7 @@ static u16 ieee80211_monitor_select_queu
  	return ieee80211_downgrade_queue(local, skb);
  }
  
@@ -126,7 +126,7 @@ without creating a headache on maintenance of the pathes.
  static const struct net_device_ops ieee80211_monitorif_ops = {
  	.ndo_open		= ieee80211_open,
  	.ndo_stop		= ieee80211_stop,
-@@ -720,14 +723,28 @@ static const struct net_device_ops ieee8
+@@ -721,14 +724,28 @@ static const struct net_device_ops ieee8
  	.ndo_set_mac_address 	= eth_mac_addr,
  	.ndo_select_queue	= ieee80211_monitor_select_queue,
  };
@@ -155,7 +155,7 @@ without creating a headache on maintenance of the pathes.
  /*
   * Helper function to initialise an interface to a specific type.
   */
-@@ -739,7 +756,11 @@ static void ieee80211_setup_sdata(struct
+@@ -740,7 +757,11 @@ static void ieee80211_setup_sdata(struct
  
  	/* and set some type-dependent values */
  	sdata->vif.type = type;
@@ -167,7 +167,7 @@ without creating a headache on maintenance of the pathes.
  	sdata->wdev.iftype = type;
  
  	/* only monitor differs */
-@@ -762,7 +783,13 @@ static void ieee80211_setup_sdata(struct
+@@ -763,7 +784,13 @@ static void ieee80211_setup_sdata(struct
  		break;
  	case NL80211_IFTYPE_MONITOR:
  		sdata->dev->type = ARPHRD_IEEE80211_RADIOTAP;
@@ -181,7 +181,7 @@ without creating a headache on maintenance of the pathes.
  		sdata->u.mntr_flags = MONITOR_FLAG_CONTROL |
  				      MONITOR_FLAG_OTHER_BSS;
  		break;
-@@ -943,6 +970,8 @@ int ieee80211_if_add(struct ieee80211_lo
+@@ -944,6 +971,8 @@ int ieee80211_if_add(struct ieee80211_lo
  		return -ENOMEM;
  	dev_net_set(ndev, wiphy_net(local->hw.wiphy));
  
@@ -190,7 +190,7 @@ without creating a headache on maintenance of the pathes.
  	ndev->needed_headroom = local->tx_headroom +
  				4*6 /* four MAC addresses */
  				+ 2 + 2 + 2 + 2 /* ctl, dur, seq, qos */
-@@ -951,6 +980,7 @@ int ieee80211_if_add(struct ieee80211_lo
+@@ -952,6 +981,7 @@ int ieee80211_if_add(struct ieee80211_lo
  				- ETH_HLEN /* ethernet hard_header_len */
  				+ IEEE80211_ENCRYPT_HEADROOM;
  	ndev->needed_tailroom = IEEE80211_ENCRYPT_TAILROOM;
@@ -198,7 +198,7 @@ without creating a headache on maintenance of the pathes.
  
  	ret = dev_alloc_name(ndev, ndev->name);
  	if (ret < 0)
-@@ -996,6 +1026,10 @@ int ieee80211_if_add(struct ieee80211_lo
+@@ -997,6 +1027,10 @@ int ieee80211_if_add(struct ieee80211_lo
  	if (ret)
  		goto fail;
  
@@ -211,7 +211,7 @@ without creating a headache on maintenance of the pathes.
  		ieee80211_sdata_set_mesh_id(sdata,
 --- a/drivers/net/b44.c
 +++ b/drivers/net/b44.c
-@@ -2109,6 +2109,7 @@ static int __devinit b44_get_invariants(
+@@ -2110,6 +2110,7 @@ static int __devinit b44_get_invariants(
  	return err;
  }
  
@@ -219,7 +219,7 @@ without creating a headache on maintenance of the pathes.
  static const struct net_device_ops b44_netdev_ops = {
  	.ndo_open		= b44_open,
  	.ndo_stop		= b44_close,
-@@ -2124,6 +2125,7 @@ static const struct net_device_ops b44_n
+@@ -2125,6 +2126,7 @@ static const struct net_device_ops b44_n
  	.ndo_poll_controller	= b44_poll_controller,
  #endif
  };
@@ -227,7 +227,7 @@ without creating a headache on maintenance of the pathes.
  
  static int __devinit b44_init_one(struct ssb_device *sdev,
  				  const struct ssb_device_id *ent)
-@@ -2163,9 +2165,26 @@ static int __devinit b44_init_one(struct
+@@ -2164,9 +2166,26 @@ static int __devinit b44_init_one(struct
  	bp->rx_pending = B44_DEF_RX_RING_PENDING;
  	bp->tx_pending = B44_DEF_TX_RING_PENDING;
  
@@ -256,7 +256,7 @@ without creating a headache on maintenance of the pathes.
  
 --- a/net/wireless/wext-core.c
 +++ b/net/wireless/wext-core.c
-@@ -340,6 +340,7 @@ static const int compat_event_type_size[
+@@ -341,6 +341,7 @@ static const int compat_event_type_size[
  
  /* IW event code */
  
@@ -264,7 +264,7 @@ without creating a headache on maintenance of the pathes.
  static int __net_init wext_pernet_init(struct net *net)
  {
  	skb_queue_head_init(&net->wext_nlevents);
-@@ -382,6 +383,29 @@ static void wireless_nlevent_process(str
+@@ -383,6 +384,29 @@ static void wireless_nlevent_process(str
  
  static DECLARE_WORK(wireless_nlevent_work, wireless_nlevent_process);
  
@@ -294,7 +294,7 @@ without creating a headache on maintenance of the pathes.
  static struct nlmsghdr *rtnetlink_ifinfo_prep(struct net_device *dev,
  					      struct sk_buff *skb)
  {
-@@ -592,8 +616,13 @@ void wireless_send_event(struct net_devi
+@@ -593,8 +617,13 @@ void wireless_send_event(struct net_devi
  
  	skb_shinfo(skb)->frag_list = compskb;
  #endif
@@ -308,7 +308,7 @@ without creating a headache on maintenance of the pathes.
  }
  EXPORT_SYMBOL(wireless_send_event);
  
-@@ -902,8 +931,13 @@ static int wireless_process_ioctl(struct
+@@ -903,8 +932,13 @@ static int wireless_process_ioctl(struct
  			return private(dev, iwr, cmd, info, handler);
  	}
  	/* Old driver API : call driver ioctl handler */
@@ -359,7 +359,7 @@ without creating a headache on maintenance of the pathes.
  	priv->wireless_data.libipw = priv->ieee;
 --- a/drivers/net/wireless/ipw2x00/ipw2200.c
 +++ b/drivers/net/wireless/ipw2x00/ipw2200.c
-@@ -11649,6 +11649,7 @@ static netdev_tx_t ipw_prom_hard_start_x
+@@ -11659,6 +11659,7 @@ static netdev_tx_t ipw_prom_hard_start_x
  	return NETDEV_TX_OK;
  }
  
@@ -367,7 +367,7 @@ without creating a headache on maintenance of the pathes.
  static const struct net_device_ops ipw_prom_netdev_ops = {
  	.ndo_open 		= ipw_prom_open,
  	.ndo_stop		= ipw_prom_stop,
-@@ -11657,6 +11658,7 @@ static const struct net_device_ops ipw_p
+@@ -11667,6 +11668,7 @@ static const struct net_device_ops ipw_p
  	.ndo_set_mac_address 	= eth_mac_addr,
  	.ndo_validate_addr	= eth_validate_addr,
  };
@@ -375,7 +375,7 @@ without creating a headache on maintenance of the pathes.
  
  static int ipw_prom_alloc(struct ipw_priv *priv)
  {
-@@ -11677,7 +11679,13 @@ static int ipw_prom_alloc(struct ipw_pri
+@@ -11687,7 +11689,13 @@ static int ipw_prom_alloc(struct ipw_pri
  	memcpy(priv->prom_net_dev->dev_addr, priv->mac_addr, ETH_ALEN);
  
  	priv->prom_net_dev->type = ARPHRD_IEEE80211_RADIOTAP;
@@ -389,7 +389,7 @@ without creating a headache on maintenance of the pathes.
  
  	priv->prom_priv->ieee->iw_mode = IW_MODE_MONITOR;
  	SET_NETDEV_DEV(priv->prom_net_dev, &priv->pci_dev->dev);
-@@ -11705,6 +11713,7 @@ static void ipw_prom_free(struct ipw_pri
+@@ -11715,6 +11723,7 @@ static void ipw_prom_free(struct ipw_pri
  
  #endif
  
@@ -397,7 +397,7 @@ without creating a headache on maintenance of the pathes.
  static const struct net_device_ops ipw_netdev_ops = {
  	.ndo_init		= ipw_net_init,
  	.ndo_open		= ipw_net_open,
-@@ -11715,6 +11724,7 @@ static const struct net_device_ops ipw_n
+@@ -11725,6 +11734,7 @@ static const struct net_device_ops ipw_n
  	.ndo_change_mtu		= libipw_change_mtu,
  	.ndo_validate_addr	= eth_validate_addr,
  };
@@ -405,7 +405,7 @@ without creating a headache on maintenance of the pathes.
  
  static int __devinit ipw_pci_probe(struct pci_dev *pdev,
  				   const struct pci_device_id *ent)
-@@ -11816,7 +11826,15 @@ static int __devinit ipw_pci_probe(struc
+@@ -11826,7 +11836,15 @@ static int __devinit ipw_pci_probe(struc
  	priv->ieee->perfect_rssi = -20;
  	priv->ieee->worst_rssi = -85;
  
@@ -436,7 +436,7 @@ without creating a headache on maintenance of the pathes.
  
 --- a/drivers/net/wireless/libertas/main.c
 +++ b/drivers/net/wireless/libertas/main.c
-@@ -886,6 +886,7 @@ static void lbs_free_adapter(struct lbs_
+@@ -887,6 +887,7 @@ static void lbs_free_adapter(struct lbs_
  	lbs_deb_leave(LBS_DEB_MAIN);
  }
  
@@ -444,7 +444,7 @@ without creating a headache on maintenance of the pathes.
  static const struct net_device_ops lbs_netdev_ops = {
  	.ndo_open 		= lbs_dev_open,
  	.ndo_stop		= lbs_eth_stop,
-@@ -896,6 +897,7 @@ static const struct net_device_ops lbs_n
+@@ -897,6 +898,7 @@ static const struct net_device_ops lbs_n
  	.ndo_change_mtu		= eth_change_mtu,
  	.ndo_validate_addr	= eth_validate_addr,
  };
@@ -452,7 +452,7 @@ without creating a headache on maintenance of the pathes.
  
  /**
   * @brief This function adds the card. it will probe the
-@@ -941,7 +943,16 @@ struct lbs_private *lbs_add_card(void *c
+@@ -942,7 +944,16 @@ struct lbs_private *lbs_add_card(void *c
  	wdev->netdev = dev;
  	priv->dev = dev;
  
@@ -469,7 +469,7 @@ without creating a headache on maintenance of the pathes.
  	dev->watchdog_timeo = 5 * HZ;
  	dev->ethtool_ops = &lbs_ethtool_ops;
  #ifdef	WIRELESS_EXT
-@@ -1247,11 +1258,13 @@ out:
+@@ -1248,11 +1259,13 @@ out:
  	lbs_deb_leave(LBS_DEB_MAIN);
  }
  
@@ -483,7 +483,7 @@ without creating a headache on maintenance of the pathes.
  
  static int lbs_add_rtap(struct lbs_private *priv)
  {
-@@ -1272,7 +1285,13 @@ static int lbs_add_rtap(struct lbs_priva
+@@ -1273,7 +1286,13 @@ static int lbs_add_rtap(struct lbs_priva
  
  	memcpy(rtap_dev->dev_addr, priv->current_addr, ETH_ALEN);
  	rtap_dev->type = ARPHRD_IEEE80211_RADIOTAP;
@@ -550,7 +550,7 @@ without creating a headache on maintenance of the pathes.
  #define LBS_DEB_LEAVE	0x00000002
 --- a/drivers/net/wireless/mac80211_hwsim.c
 +++ b/drivers/net/wireless/mac80211_hwsim.c
-@@ -1015,16 +1015,22 @@ static struct device_driver mac80211_hws
+@@ -1016,16 +1016,22 @@ static struct device_driver mac80211_hws
  	.name = "mac80211_hwsim"
  };
  
@@ -575,7 +575,7 @@ without creating a headache on maintenance of the pathes.
  	dev->tx_queue_len = 0;
 --- a/drivers/net/wireless/orinoco/main.c
 +++ b/drivers/net/wireless/orinoco/main.c
-@@ -2077,6 +2077,7 @@ int orinoco_init(struct orinoco_private 
+@@ -2078,6 +2078,7 @@ int orinoco_init(struct orinoco_private 
  }
  EXPORT_SYMBOL(orinoco_init);
  
@@ -583,7 +583,7 @@ without creating a headache on maintenance of the pathes.
  static const struct net_device_ops orinoco_netdev_ops = {
  	.ndo_open		= orinoco_open,
  	.ndo_stop		= orinoco_stop,
-@@ -2088,6 +2089,7 @@ static const struct net_device_ops orino
+@@ -2089,6 +2090,7 @@ static const struct net_device_ops orino
  	.ndo_tx_timeout		= orinoco_tx_timeout,
  	.ndo_get_stats		= orinoco_get_stats,
  };
@@ -591,7 +591,7 @@ without creating a headache on maintenance of the pathes.
  
  /* Allocate private data.
   *
-@@ -2210,7 +2212,18 @@ int orinoco_if_add(struct orinoco_privat
+@@ -2211,7 +2213,18 @@ int orinoco_if_add(struct orinoco_privat
  
  	/* Setup / override net_device fields */
  	dev->ieee80211_ptr = wdev;
@@ -612,7 +612,7 @@ without creating a headache on maintenance of the pathes.
  #ifdef WIRELESS_SPY
 --- a/net/bluetooth/bnep/netdev.c
 +++ b/net/bluetooth/bnep/netdev.c
-@@ -167,8 +167,12 @@ static inline int bnep_net_proto_filter(
+@@ -168,8 +168,12 @@ static inline int bnep_net_proto_filter(
  }
  #endif
  
@@ -627,7 +627,7 @@ without creating a headache on maintenance of the pathes.
  {
  	struct bnep_session *s = netdev_priv(dev);
  	struct sock *sk = s->sock->sk;
-@@ -209,6 +213,7 @@ static netdev_tx_t bnep_net_xmit(struct 
+@@ -210,6 +214,7 @@ static netdev_tx_t bnep_net_xmit(struct 
  	return NETDEV_TX_OK;
  }
  
@@ -635,7 +635,7 @@ without creating a headache on maintenance of the pathes.
  static const struct net_device_ops bnep_netdev_ops = {
  	.ndo_open            = bnep_net_open,
  	.ndo_stop            = bnep_net_close,
-@@ -220,6 +225,16 @@ static const struct net_device_ops bnep_
+@@ -221,6 +226,16 @@ static const struct net_device_ops bnep_
  	.ndo_change_mtu	     = eth_change_mtu,
  
  };
@@ -652,7 +652,7 @@ without creating a headache on maintenance of the pathes.
  
  void bnep_net_setup(struct net_device *dev)
  {
-@@ -228,7 +243,18 @@ void bnep_net_setup(struct net_device *d
+@@ -229,7 +244,18 @@ void bnep_net_setup(struct net_device *d
  	dev->addr_len = ETH_ALEN;
  
  	ether_setup(dev);
@@ -673,7 +673,7 @@ without creating a headache on maintenance of the pathes.
  }
 --- a/drivers/net/atl1e/atl1e_main.c
 +++ b/drivers/net/atl1e/atl1e_main.c
-@@ -2202,6 +2202,7 @@ static void atl1e_shutdown(struct pci_de
+@@ -2201,6 +2201,7 @@ static void atl1e_shutdown(struct pci_de
  	atl1e_suspend(pdev, PMSG_SUSPEND);
  }
  
@@ -681,7 +681,7 @@ without creating a headache on maintenance of the pathes.
  static const struct net_device_ops atl1e_netdev_ops = {
  	.ndo_open		= atl1e_open,
  	.ndo_stop		= atl1e_close,
-@@ -2219,6 +2220,7 @@ static const struct net_device_ops atl1e
+@@ -2218,6 +2219,7 @@ static const struct net_device_ops atl1e
  #endif
  
  };
@@ -689,7 +689,7 @@ without creating a headache on maintenance of the pathes.
  
  static int atl1e_init_netdev(struct net_device *netdev, struct pci_dev *pdev)
  {
-@@ -2226,7 +2228,23 @@ static int atl1e_init_netdev(struct net_
+@@ -2225,7 +2227,23 @@ static int atl1e_init_netdev(struct net_
  	pci_set_drvdata(pdev, netdev);
  
  	netdev->irq  = pdev->irq;
@@ -715,7 +715,7 @@ without creating a headache on maintenance of the pathes.
  	atl1e_set_ethtool_ops(netdev);
 --- a/drivers/net/atl1c/atl1c_main.c
 +++ b/drivers/net/atl1c/atl1c_main.c
-@@ -2534,6 +2534,7 @@ static void atl1c_shutdown(struct pci_de
+@@ -2533,6 +2533,7 @@ static void atl1c_shutdown(struct pci_de
  	atl1c_suspend(pdev, PMSG_SUSPEND);
  }
  
@@ -723,7 +723,7 @@ without creating a headache on maintenance of the pathes.
  static const struct net_device_ops atl1c_netdev_ops = {
  	.ndo_open		= atl1c_open,
  	.ndo_stop		= atl1c_close,
-@@ -2550,6 +2551,7 @@ static const struct net_device_ops atl1c
+@@ -2549,6 +2550,7 @@ static const struct net_device_ops atl1c
  	.ndo_poll_controller	= atl1c_netpoll,
  #endif
  };
@@ -731,7 +731,7 @@ without creating a headache on maintenance of the pathes.
  
  static int atl1c_init_netdev(struct net_device *netdev, struct pci_dev *pdev)
  {
-@@ -2557,7 +2559,23 @@ static int atl1c_init_netdev(struct net_
+@@ -2556,7 +2558,23 @@ static int atl1c_init_netdev(struct net_
  	pci_set_drvdata(pdev, netdev);
  
  	netdev->irq  = pdev->irq;

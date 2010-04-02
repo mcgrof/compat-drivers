@@ -16,7 +16,7 @@ in or compat headers.
  
  #if !defined(CONFIG_IWLWIFI_DEVICE_TRACING) || defined(__CHECKER__)
  #undef TRACE_EVENT
-@@ -263,4 +265,6 @@
+@@ -263,4 +265,6 @@ TRACE_EVENT(iwlwifi_dev_ucode_event,
  #define TRACE_INCLUDE_PATH .
  #undef TRACE_INCLUDE_FILE
  #define TRACE_INCLUDE_FILE iwl-devtrace

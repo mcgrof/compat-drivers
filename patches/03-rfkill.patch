@@ -74,7 +74,7 @@ This would do the policing from within mac80211.
  #include <linux/sched.h>
  #include <linux/spinlock.h>
  #include <linux/miscdevice.h>
-@@ -62,7 +62,7 @@ struct rfkill {
+@@ -63,7 +63,7 @@ struct rfkill {
  	const struct rfkill_ops	*ops;
  	void			*data;
  
@@ -83,7 +83,7 @@ This would do the policing from within mac80211.
  	struct led_trigger	led_trigger;
  	const char		*ledtrigname;
  #endif
-@@ -123,7 +123,7 @@ static struct {
+@@ -124,7 +124,7 @@ static struct {
  static bool rfkill_epo_lock_active;
  
  
@@ -92,7 +92,7 @@ This would do the policing from within mac80211.
  static void rfkill_led_trigger_event(struct rfkill *rfkill)
  {
  	struct led_trigger *trigger;
-@@ -317,7 +317,7 @@ static void rfkill_set_block(struct rfki
+@@ -318,7 +318,7 @@ static void rfkill_set_block(struct rfki
  	rfkill_event(rfkill);
  }
  
@@ -101,7 +101,7 @@ This would do the policing from within mac80211.
  static atomic_t rfkill_input_disabled = ATOMIC_INIT(0);
  
  /**
-@@ -818,7 +818,7 @@ static int rfkill_resume(struct device *
+@@ -819,7 +819,7 @@ static int rfkill_resume(struct device *
  }
  
  static struct class rfkill_class = {
@@ -110,7 +110,7 @@ This would do the policing from within mac80211.
  	.dev_release	= rfkill_release,
  	.dev_attrs	= rfkill_dev_attrs,
  	.dev_uevent	= rfkill_dev_uevent,
-@@ -964,7 +964,7 @@ int __must_check rfkill_register(struct 
+@@ -965,7 +965,7 @@ int __must_check rfkill_register(struct 
  	if (!rfkill->persistent || rfkill_epo_lock_active) {
  		schedule_work(&rfkill->sync_work);
  	} else {
@@ -119,7 +119,7 @@ This would do the policing from within mac80211.
  		bool soft_blocked = !!(rfkill->state & RFKILL_BLOCK_SW);
  
  		if (!atomic_read(&rfkill_input_disabled))
-@@ -1192,7 +1192,7 @@ static int rfkill_fop_release(struct ino
+@@ -1193,7 +1193,7 @@ static int rfkill_fop_release(struct ino
  	list_for_each_entry_safe(ev, tmp, &data->events, list)
  		kfree(ev);
  
@@ -128,7 +128,7 @@ This would do the policing from within mac80211.
  	if (data->input_handler)
  		if (atomic_dec_return(&rfkill_input_disabled) == 0)
  			printk(KERN_DEBUG "rfkill: input handler enabled\n");
-@@ -1203,7 +1203,7 @@ static int rfkill_fop_release(struct ino
+@@ -1204,7 +1204,7 @@ static int rfkill_fop_release(struct ino
  	return 0;
  }
  
@@ -137,7 +137,7 @@ This would do the policing from within mac80211.
  static long rfkill_fop_ioctl(struct file *file, unsigned int cmd,
  			     unsigned long arg)
  {
-@@ -1236,7 +1236,7 @@ static const struct file_operations rfki
+@@ -1237,7 +1237,7 @@ static const struct file_operations rfki
  	.write		= rfkill_fop_write,
  	.poll		= rfkill_fop_poll,
  	.release	= rfkill_fop_release,
@@ -146,7 +146,7 @@ This would do the policing from within mac80211.
  	.unlocked_ioctl	= rfkill_fop_ioctl,
  	.compat_ioctl	= rfkill_fop_ioctl,
  #endif
-@@ -1266,7 +1266,7 @@ static int __init rfkill_init(void)
+@@ -1267,7 +1267,7 @@ static int __init rfkill_init(void)
  		goto out;
  	}
  
@@ -155,7 +155,7 @@ This would do the policing from within mac80211.
  	error = rfkill_handler_init();
  	if (error) {
  		misc_deregister(&rfkill_miscdev);
-@@ -1282,7 +1282,7 @@ subsys_initcall(rfkill_init);
+@@ -1283,7 +1283,7 @@ subsys_initcall(rfkill_init);
  
  static void __exit rfkill_exit(void)
  {
@@ -208,7 +208,7 @@ This would do the policing from within mac80211.
  #include <net/cfg80211.h>
 --- a/drivers/net/wireless/ath/ath9k/hw.c
 +++ b/drivers/net/wireless/ath/ath9k/hw.c
-@@ -3219,7 +3219,7 @@ int ath9k_hw_fill_cap_info(struct ath_hw
+@@ -3220,7 +3220,7 @@ int ath9k_hw_fill_cap_info(struct ath_hw
  
  	pCap->hw_caps |= ATH9K_HW_CAP_ENHANCEDPM;
  

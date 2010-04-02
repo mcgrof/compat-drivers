@@ -18,9 +18,9 @@ cases.
  
 --- a/drivers/net/wireless/libertas/assoc.c
 +++ b/drivers/net/wireless/libertas/assoc.c
-@@ -5,6 +5,9 @@
- #include <linux/ieee80211.h>
+@@ -6,6 +6,9 @@
  #include <linux/if_arp.h>
+ #include <linux/slab.h>
  #include <net/lib80211.h>
 +#if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,29))
 +#include <asm/unaligned.h>
@@ -42,9 +42,9 @@ cases.
  #include <linux/vmalloc.h>
 --- a/drivers/net/wireless/wl12xx/wl1251_spi.c
 +++ b/drivers/net/wireless/wl12xx/wl1251_spi.c
-@@ -24,6 +24,9 @@
- #include <linux/irq.h>
+@@ -25,6 +25,9 @@
  #include <linux/module.h>
+ #include <linux/slab.h>
  #include <linux/crc7.h>
 +#if (LINUX_VERSION_CODE == KERNEL_VERSION(2,6,28))
 +#include <linux/device.h>
@@ -54,7 +54,7 @@ cases.
  
 --- a/net/mac80211/key.c
 +++ b/net/mac80211/key.c
-@@ -21,6 +21,9 @@
+@@ -22,6 +22,9 @@
  #include "aes_ccm.h"
  #include "aes_cmac.h"
  
@@ -114,7 +114,7 @@ cases.
  
 --- a/net/wireless/nl80211.c
 +++ b/net/wireless/nl80211.c
-@@ -14,7 +14,9 @@
+@@ -15,7 +15,9 @@
  #include <linux/rtnetlink.h>
  #include <linux/netlink.h>
  #include <linux/etherdevice.h>

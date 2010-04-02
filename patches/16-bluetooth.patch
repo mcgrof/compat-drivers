@@ -31,7 +31,7 @@ here still, but for now we keep this here.
  
 --- a/net/bluetooth/af_bluetooth.c
 +++ b/net/bluetooth/af_bluetooth.c
-@@ -126,8 +126,12 @@ int bt_sock_unregister(int proto)
+@@ -125,8 +125,12 @@ int bt_sock_unregister(int proto)
  }
  EXPORT_SYMBOL(bt_sock_unregister);
  
@@ -44,7 +44,7 @@ here still, but for now we keep this here.
  {
  	int err;
  
-@@ -145,7 +149,11 @@ static int bt_sock_create(struct net *ne
+@@ -144,7 +148,11 @@ static int bt_sock_create(struct net *ne
  	read_lock(&bt_proto_lock);
  
  	if (bt_proto[proto] && try_module_get(bt_proto[proto]->owner)) {
@@ -56,7 +56,7 @@ here still, but for now we keep this here.
  		bt_sock_reclassify_lock(sock, proto);
  		module_put(bt_proto[proto]->owner);
  	}
-@@ -258,7 +266,11 @@ int bt_sock_recvmsg(struct kiocb *iocb, 
+@@ -257,7 +265,11 @@ int bt_sock_recvmsg(struct kiocb *iocb, 
  	skb_reset_transport_header(skb);
  	err = skb_copy_datagram_iovec(skb, 0, msg->msg_iov, copied);
  	if (err == 0)
@@ -68,7 +68,7 @@ here still, but for now we keep this here.
  
  	skb_free_datagram(sk, skb);
  
-@@ -338,7 +350,11 @@ int bt_sock_ioctl(struct socket *sock, u
+@@ -337,7 +349,11 @@ int bt_sock_ioctl(struct socket *sock, u
  		if (sk->sk_state == BT_LISTEN)
  			return -EINVAL;
  
@@ -138,7 +138,7 @@ here still, but for now we keep this here.
  
 --- a/net/bluetooth/hci_sysfs.c
 +++ b/net/bluetooth/hci_sysfs.c
-@@ -72,7 +72,11 @@ static struct attribute_group bt_link_gr
+@@ -73,7 +73,11 @@ static struct attribute_group bt_link_gr
  	.attrs = bt_link_attrs,
  };
  
@@ -150,7 +150,7 @@ here still, but for now we keep this here.
  	&bt_link_group,
  	NULL
  };
-@@ -130,7 +134,11 @@ static void del_conn(struct work_struct 
+@@ -131,7 +135,11 @@ static void del_conn(struct work_struct 
  		dev = device_find_child(&conn->dev, NULL, __match_tty);
  		if (!dev)
  			break;
@@ -162,7 +162,7 @@ here still, but for now we keep this here.
  		put_device(dev);
  	}
  
-@@ -388,7 +396,11 @@ static struct attribute_group bt_host_gr
+@@ -389,7 +397,11 @@ static struct attribute_group bt_host_gr
  	.attrs = bt_host_attrs,
  };
  
