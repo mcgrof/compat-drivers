@@ -1,0 +1,20 @@
+--- a/drivers/net/wireless/mac80211_hwsim.c
++++ b/drivers/net/wireless/mac80211_hwsim.c
+@@ -1211,8 +1211,17 @@ static int __init init_mac80211_hwsim(vo
+ 		data = hw->priv;
+ 		data->hw = hw;
+ 
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,27))
+ 		data->dev = device_create(hwsim_class, NULL, 0, hw,
+ 					  "hwsim%d", i);
++#elif (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,26))
++		data->dev = device_create_drvdata(hwsim_class, NULL, 0, hw,
++					  "hwsim%d", i);
++#else
++		data->dev = device_create(hwsim_class, NULL, 0,
++					  "hwsim%d", i);
++		dev_set_drvdata(data->dev, hw);
++#endif
+ 		if (IS_ERR(data->dev)) {
+ 			printk(KERN_DEBUG
+ 			       "mac80211_hwsim: device_create "
