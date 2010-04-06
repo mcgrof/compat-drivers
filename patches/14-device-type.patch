@@ -8,7 +8,7 @@ compile warning.
 
 --- a/net/wireless/core.c
 +++ b/net/wireless/core.c
-@@ -649,9 +649,11 @@ static void wdev_cleanup_work(struct wor
+@@ -645,9 +645,11 @@ static void wdev_cleanup_work(struct wor
  	dev_put(wdev->netdev);
  }
  

@@ -8,19 +8,33 @@ anymore when backporting code, this adds the wext handler
 back to the netdevice wireless_handlers to let compat
 users use wext again.
 
-We only do this for kernels <= 2.6.32 as 2.6.33 will use
-the struct wiphy wireless handler.
+We do this for every kernel version because the struct wiphy
+is changing from kernel version to version. At least the
+struct from kernel 2.6.33 and 2.6.34 are incompatible and
+the kernel would dereference some wrong type in the struct
+and oops. The old interface is not affected by this. This
+will cause that CONFIG_CFG80211_WEXT still depends on
+CONFIG_WIRELESS_EXT in compat-wireless.
 
 --- a/net/wireless/core.c
 +++ b/net/wireless/core.c
-@@ -702,6 +702,10 @@ static int cfg80211_netdev_notifier_call
+@@ -361,10 +361,6 @@ struct wiphy *wiphy_new(const struct cfg
+ 	INIT_LIST_HEAD(&rdev->bss_list);
+ 	INIT_WORK(&rdev->scan_done_wk, __cfg80211_scan_done);
+ 
+-#ifdef CONFIG_CFG80211_WEXT
+-	rdev->wiphy.wext = &cfg80211_wext_handler;
+-#endif
+-
+ 	device_initialize(&rdev->wiphy.dev);
+ 	rdev->wiphy.dev.class = &ieee80211_class;
+ 	rdev->wiphy.dev.platform_data = rdev;
+@@ -702,6 +698,8 @@ static int cfg80211_netdev_notifier_call
  		wdev->sme_state = CFG80211_SME_IDLE;
  		mutex_unlock(&rdev->devlist_mtx);
  #ifdef CONFIG_CFG80211_WEXT
-+#if (LINUX_VERSION_CODE <= KERNEL_VERSION(2,6,32))
 +		if (!dev->wireless_handlers)
 +			dev->wireless_handlers = &cfg80211_wext_handler;
-+#endif
  		wdev->wext.default_key = -1;
  		wdev->wext.default_mgmt_key = -1;
  		wdev->wext.connect.auth_type = NL80211_AUTHTYPE_AUTOMATIC;
