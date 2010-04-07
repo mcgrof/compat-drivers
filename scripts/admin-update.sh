@@ -296,11 +296,11 @@ DIR="$PWD"
 cd $GIT_TREE
 GIT_DESCRIBE=$(git describe)
 GIT_BRANCH=$(git branch --no-color |sed -n 's/^\* //p')
-GIT_BRANCH=${GIT_BRANCH-master}
+GIT_BRANCH=${GIT_BRANCH:-master}
 GIT_REMOTE=$(git config branch.${GIT_BRANCH}.remote)
-GIT_REMOTE=${GIT_REMOTE-origin}
+GIT_REMOTE=${GIT_REMOTE:-origin}
 GIT_REMOTE_URL=$(git config remote.${GIT_REMOTE}.url)
-GIT_REMOTE_URL=${GIT_REMOTE_URL-unknown}
+GIT_REMOTE_URL=${GIT_REMOTE_URL:-unknown}
 echo -e "${GREEN}Updated${NORMAL} from local tree: ${BLUE}${GIT_TREE}${NORMAL}"
 echo -e "Origin remote URL: ${CYAN}${GIT_REMOTE_URL}${NORMAL}"
 cd $DIR
