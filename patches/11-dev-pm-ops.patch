@@ -9,7 +9,7 @@ calls on compat code with only slight modifications.
 
 --- a/drivers/net/wireless/ath/ath5k/base.c
 +++ b/drivers/net/wireless/ath/ath5k/base.c
-@@ -197,6 +197,33 @@ static void __devexit	ath5k_pci_remove(s
+@@ -198,6 +198,33 @@ static void __devexit	ath5k_pci_remove(s
  #ifdef CONFIG_PM
  static int		ath5k_pci_suspend(struct device *dev);
  static int		ath5k_pci_resume(struct device *dev);
@@ -43,7 +43,7 @@ calls on compat code with only slight modifications.
  
  static SIMPLE_DEV_PM_OPS(ath5k_pm_ops, ath5k_pci_suspend, ath5k_pci_resume);
  #define ATH5K_PM_OPS	(&ath5k_pm_ops)
-@@ -209,7 +236,12 @@ static struct pci_driver ath5k_pci_drive
+@@ -210,7 +237,12 @@ static struct pci_driver ath5k_pci_drive
  	.id_table	= ath5k_pci_id_table,
  	.probe		= ath5k_pci_probe,
  	.remove		= __devexit_p(ath5k_pci_remove),

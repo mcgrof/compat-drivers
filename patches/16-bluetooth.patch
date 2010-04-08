@@ -445,7 +445,7 @@ here still, but for now we keep this here.
  {
  	struct sock *sk;
  
-@@ -706,7 +711,11 @@ static int rfcomm_sock_recvmsg(struct ki
+@@ -707,7 +712,11 @@ static int rfcomm_sock_recvmsg(struct ki
  		copied += chunk;
  		size   -= chunk;
  
@@ -457,7 +457,7 @@ here still, but for now we keep this here.
  
  		if (!(flags & MSG_PEEK)) {
  			atomic_sub(chunk, &sk->sk_rmem_alloc);
-@@ -769,7 +778,11 @@ static int rfcomm_sock_setsockopt_old(st
+@@ -770,7 +779,11 @@ static int rfcomm_sock_setsockopt_old(st
  	return err;
  }
  
@@ -511,7 +511,7 @@ here still, but for now we keep this here.
  {
  	struct sock *sk;
  
-@@ -647,7 +651,11 @@ static int sco_sock_sendmsg(struct kiocb
+@@ -648,7 +652,11 @@ static int sco_sock_sendmsg(struct kiocb
  	return err;
  }
  
@@ -595,7 +595,7 @@ here still, but for now we keep this here.
  		return -EPERM;
  
  	sock->ops = &l2cap_sock_ops;
-@@ -1766,7 +1774,11 @@ static int l2cap_sock_setsockopt_old(str
+@@ -1767,7 +1775,11 @@ static int l2cap_sock_setsockopt_old(str
  	return err;
  }
  

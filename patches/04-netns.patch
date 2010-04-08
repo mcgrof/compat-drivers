@@ -16,7 +16,7 @@ files...
  };
  
  /* internal helper: get rdev and dev */
-@@ -4190,7 +4192,9 @@ static int nl80211_wiphy_netns(struct sk
+@@ -4203,7 +4205,9 @@ static int nl80211_wiphy_netns(struct sk
  
  	err = cfg80211_switch_netns(rdev, net);
   out_put_net:
