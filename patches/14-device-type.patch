@@ -8,7 +8,7 @@ compile warning.
 
 --- a/net/wireless/core.c
 +++ b/net/wireless/core.c
-@@ -648,9 +648,11 @@ static void wdev_cleanup_work(struct wor
+@@ -649,9 +649,11 @@ static void wdev_cleanup_work(struct wor
  	dev_put(wdev->netdev);
  }
  
@@ -22,7 +22,7 @@ compile warning.
  					 unsigned long state,
 --- a/net/bluetooth/bnep/core.c
 +++ b/net/bluetooth/bnep/core.c
-@@ -536,9 +536,11 @@ static struct device *bnep_get_device(st
+@@ -537,9 +537,11 @@ static struct device *bnep_get_device(st
  	return conn ? &conn->dev : NULL;
  }
  
@@ -36,7 +36,7 @@ compile warning.
  {
 --- a/drivers/net/usb/usbnet.c
 +++ b/drivers/net/usb/usbnet.c
-@@ -1276,13 +1276,17 @@ static const struct net_device_ops usbne
+@@ -1253,13 +1253,17 @@ static const struct net_device_ops usbne
  
  // precondition: never called in_interrupt
  
