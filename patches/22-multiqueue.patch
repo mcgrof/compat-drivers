@@ -46,7 +46,7 @@ queue by using skb_set_queue_mapping(skb, 0) through ieee80211_tx_skb()
 
 --- a/net/mac80211/util.c
 +++ b/net/mac80211/util.c
-@@ -266,6 +266,18 @@
+@@ -264,6 +264,18 @@
  }
  EXPORT_SYMBOL(ieee80211_ctstoself_duration);
  
@@ -65,22 +65,22 @@ queue by using skb_set_queue_mapping(skb, 0) through ieee80211_tx_skb()
  static void __ieee80211_wake_queue(struct ieee80211_hw *hw, int queue,
  				   enum queue_stop_reason reason)
  {
-@@ -286,7 +298,14 @@
- 
- 	rcu_read_lock();
- 	list_for_each_entry_rcu(sdata, &local->interfaces, list)
+@@ -282,7 +294,14 @@
+ 	if (skb_queue_empty(&local->pending[queue])) {
+ 		rcu_read_lock();
+ 		list_for_each_entry_rcu(sdata, &local->interfaces, list)
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,27))
- 		netif_tx_wake_queue(netdev_get_tx_queue(sdata->dev, queue));
+ 			netif_tx_wake_queue(netdev_get_tx_queue(sdata->dev, queue));
 +#elif (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,23))
-+		netif_start_subqueue(sdata->dev, queue);
++			netif_start_subqueue(sdata->dev, queue);
 +#else
-+		if (ieee80211_all_queues_started(hw))
-+			netif_wake_queue(sdata->dev);
++			if (ieee80211_all_queues_started(hw))
++				netif_wake_queue(sdata->dev);
 +#endif
- 	rcu_read_unlock();
- }
- 
-@@ -321,7 +340,13 @@
+ 		rcu_read_unlock();
+ 	} else
+ 		tasklet_schedule(&local->tx_pending_tasklet);
+@@ -319,7 +338,13 @@
  
  	rcu_read_lock();
  	list_for_each_entry_rcu(sdata, &local->interfaces, list)
