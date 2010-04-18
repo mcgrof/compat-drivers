@@ -116,6 +116,7 @@ DRIVER_FILES="$DRIVER_FILES mwl8k.c"
 mkdir -p include/linux/ include/net/ include/linux/usb \
 	include/linux/unaligned \
 	include/linux/spi \
+	include/trace \
 	net/mac80211/ net/wireless/ \
 	net/rfkill/ \
 	drivers/ssb/ \
@@ -233,6 +234,8 @@ cp $GIT_COMPAT_TREE/compat/Makefile $COMPAT/
 cp -a $GIT_COMPAT_TREE/udev/ .
 cp -a $GIT_COMPAT_TREE/scripts/ $COMPAT/
 cp -a $GIT_COMPAT_TREE/include/linux/* include/linux/
+cp -a $GIT_COMPAT_TREE/include/net/* include/net/
+cp -a $GIT_COMPAT_TREE/include/trace/* include/trace/
 rm -f $COMPAT/*.mod.c
 
 # Refresh patches using quilt
