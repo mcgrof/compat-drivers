@@ -65,7 +65,7 @@ queue by using skb_set_queue_mapping(skb, 0) through ieee80211_tx_skb()
  static void __ieee80211_wake_queue(struct ieee80211_hw *hw, int queue,
  				   enum queue_stop_reason reason)
  {
-@@ -282,7 +294,14 @@ static void __ieee80211_wake_queue(struc
+@@ -284,7 +296,14 @@ static void __ieee80211_wake_queue(struc
  	if (skb_queue_empty(&local->pending[queue])) {
  		rcu_read_lock();
  		list_for_each_entry_rcu(sdata, &local->interfaces, list)
@@ -80,7 +80,7 @@ queue by using skb_set_queue_mapping(skb, 0) through ieee80211_tx_skb()
  		rcu_read_unlock();
  	} else
  		tasklet_schedule(&local->tx_pending_tasklet);
-@@ -319,7 +338,13 @@ static void __ieee80211_stop_queue(struc
+@@ -323,7 +342,13 @@ static void __ieee80211_stop_queue(struc
  
  	rcu_read_lock();
  	list_for_each_entry_rcu(sdata, &local->interfaces, list)
