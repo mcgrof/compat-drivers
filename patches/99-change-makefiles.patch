@@ -13,7 +13,7 @@ only the wireless stuff.
  obj-$(CONFIG_EEPROM_93CX6)	+= eeprom_93cx6.o
 --- a/drivers/net/usb/Makefile
 +++ b/drivers/net/usb/Makefile
-@@ -2,25 +2,7 @@
+@@ -2,26 +2,6 @@
  # Makefile for USB Network drivers
  #
  
@@ -38,7 +38,8 @@ only the wireless stuff.
  obj-$(CONFIG_USB_COMPAT_USBNET)	+= usbnet.o
 -obj-$(CONFIG_USB_NET_INT51X1)	+= int51x1.o
 -obj-$(CONFIG_USB_CDC_PHONET)	+= cdc-phonet.o
- 
+-obj-$(CONFIG_USB_IPHETH)	+= ipheth.o
+-
 --- a/drivers/net/wireless/Makefile
 +++ b/drivers/net/wireless/Makefile
 @@ -7,31 +7,16 @@ obj-$(CONFIG_IPW2200) += ipw2x00/
