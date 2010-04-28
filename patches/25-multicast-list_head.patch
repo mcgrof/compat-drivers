@@ -174,7 +174,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  static void ath5k_configure_filter(struct ieee80211_hw *hw,
  		unsigned int changed_flags,
  		unsigned int *new_flags,
-@@ -3105,20 +3109,42 @@ unlock:
+@@ -3108,20 +3112,42 @@ unlock:
  }
  
  static u64 ath5k_prepare_multicast(struct ieee80211_hw *hw,
@@ -217,7 +217,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  		pos ^= (val >> 18) ^ (val >> 12) ^ (val >> 6) ^ val;
  		pos &= 0x3f;
  		mfilt[pos / 32] |= (1 << (pos % 32));
-@@ -3127,6 +3153,9 @@ static u64 ath5k_prepare_multicast(struc
+@@ -3130,6 +3156,9 @@ static u64 ath5k_prepare_multicast(struc
  		* neet to inform below to not reset the mcast */
  		/* ath5k_hw_set_mcast_filterindex(ah,
  		 *      ha->addr[5]); */
@@ -266,7 +266,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  	}
 --- a/drivers/net/wireless/libertas_tf/main.c
 +++ b/drivers/net/wireless/libertas_tf/main.c
-@@ -369,20 +369,36 @@ static int lbtf_op_config(struct ieee802
+@@ -418,20 +418,36 @@ static int lbtf_op_config(struct ieee802
  }
  
  static u64 lbtf_op_prepare_multicast(struct ieee80211_hw *hw,
@@ -393,7 +393,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  	if (cmd != NULL) {
 --- a/drivers/net/wireless/orinoco/hw.c
 +++ b/drivers/net/wireless/orinoco/hw.c
-@@ -1063,7 +1063,11 @@ int __orinoco_hw_set_multicast_list(stru
+@@ -1089,7 +1089,11 @@ int __orinoco_hw_set_multicast_list(stru
  		netdev_for_each_mc_addr(ha, dev) {
  			if (i == mc_count)
  				break;
@@ -494,9 +494,9 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
 +	int i;
 +#endif
  	struct wl1271 *wl = hw->priv;
+ 	int i;
  
- 	if (unlikely(wl->state == WL1271_STATE_OFF))
-@@ -1322,16 +1331,40 @@ static u64 wl1271_op_prepare_multicast(s
+@@ -1323,16 +1332,40 @@ static u64 wl1271_op_prepare_multicast(s
  	}
  
  	/* update multicast filtering parameters */
@@ -576,7 +576,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  	return hash.low | ((u64)hash.high << 32);
 --- a/include/net/mac80211.h
 +++ b/include/net/mac80211.h
-@@ -1631,7 +1631,11 @@ struct ieee80211_ops {
+@@ -1642,7 +1642,11 @@ struct ieee80211_ops {
  				 struct ieee80211_bss_conf *info,
  				 u32 changed);
  	u64 (*prepare_multicast)(struct ieee80211_hw *hw,
