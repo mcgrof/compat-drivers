@@ -388,6 +388,8 @@ CONFIG_LIBERTAS_USB=m
 NEED_LIBERTAS=y
 endif
 
+CONFIG_ORINOCO_USB=m
+
 endif # end of USB driver list
 
 ifneq ($(CONFIG_SPI_MASTER),)
