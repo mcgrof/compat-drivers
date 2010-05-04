@@ -8,29 +8,14 @@ without creating a headache on maintenance of the pathes.
 
 --- a/drivers/net/usb/rndis_host.c
 +++ b/drivers/net/usb/rndis_host.c
-@@ -275,6 +275,7 @@ response_error:
- 	return -EDOM;
- }
- 
-+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
- /* same as usbnet_netdev_ops but MTU change not allowed */
- static const struct net_device_ops rndis_netdev_ops = {
- 	.ndo_open		= usbnet_open,
-@@ -284,6 +285,7 @@ static const struct net_device_ops rndis
- 	.ndo_set_mac_address 	= eth_mac_addr,
- 	.ndo_validate_addr	= eth_validate_addr,
- };
-+#endif
- 
- int
- generic_rndis_bind(struct usbnet *dev, struct usb_interface *intf, int flags)
-@@ -346,7 +348,11 @@ generic_rndis_bind(struct usbnet *dev, s
+@@ -346,7 +346,11 @@
  	dev->rx_urb_size &= ~(dev->maxpacket - 1);
  	u.init->max_transfer_size = cpu_to_le32(dev->rx_urb_size);
  
-+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
- 	net->netdev_ops = &rndis_netdev_ops;
-+#else
+-	net->netdev_ops = &rndis_netdev_ops;
++	netdev_attach_ops(dev, &&rndis_netdev_ops);
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,29))
++	/* can't we remove this? */
 +	net->change_mtu = NULL;
 +#endif
  
