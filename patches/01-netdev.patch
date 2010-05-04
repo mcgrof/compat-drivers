@@ -23,35 +23,12 @@ without creating a headache on maintenance of the pathes.
  	if (unlikely(retval < 0)) {
 --- a/drivers/net/usb/usbnet.c
 +++ b/drivers/net/usb/usbnet.c
-@@ -1240,6 +1240,7 @@ void usbnet_disconnect (struct usb_inter
- }
- EXPORT_SYMBOL_GPL(usbnet_disconnect);
- 
-+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
- static const struct net_device_ops usbnet_netdev_ops = {
- 	.ndo_open		= usbnet_open,
- 	.ndo_stop		= usbnet_stop,
-@@ -1249,6 +1250,7 @@ static const struct net_device_ops usbne
- 	.ndo_set_mac_address 	= eth_mac_addr,
- 	.ndo_validate_addr	= eth_validate_addr,
- };
-+#endif
- 
- /*-------------------------------------------------------------------------*/
- 
-@@ -1328,7 +1330,15 @@ usbnet_probe (struct usb_interface *udev
+@@ -1328,7 +1332,7 @@
  		net->features |= NETIF_F_HIGHDMA;
  #endif
  
-+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
- 	net->netdev_ops = &usbnet_netdev_ops;
-+#else
-+	net->change_mtu = usbnet_change_mtu;
-+	net->hard_start_xmit = usbnet_start_xmit;
-+	net->open = usbnet_open;
-+	net->stop = usbnet_stop;
-+	net->tx_timeout = usbnet_tx_timeout;
-+#endif
+-	net->netdev_ops = &usbnet_netdev_ops;
++	netdev_attach_ops(net, &usbnet_netdev_ops);
  	net->watchdog_timeo = TX_TIMEOUT_JIFFIES;
  	net->ethtool_ops = &usbnet_ethtool_ops;
  
