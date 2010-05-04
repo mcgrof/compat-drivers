@@ -251,9 +251,9 @@
  	/* Register an interface with the stack */
  	if (orinoco_if_add(priv, link->io.BasePort1,
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,35))
- 			   link->irq) != 0) {
+ 			   link->irq, NULL) != 0) {
 +#else
-+			   link->irq.AssignedIRQ) != 0) {
++			   link->irq.AssignedIRQ, NULL) != 0) {
 +#endif
  		printk(KERN_ERR PFX "orinoco_if_add() failed\n");
  		goto failed;
@@ -285,14 +285,14 @@
  	if (ret)
  		goto failed;
  
-@@ -359,7 +369,11 @@ spectrum_cs_config(struct pcmcia_device 
+@@ -360,7 +370,11 @@ spectrum_cs_config(struct pcmcia_device 
  
  	/* Register an interface with the stack */
  	if (orinoco_if_add(priv, link->io.BasePort1,
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,35))
- 			   link->irq) != 0) {
+ 			   link->irq, NULL) != 0) {
 +#else
-+			   link->irq.AssignedIRQ) != 0) {
++			   link->irq.AssignedIRQ, NULL) != 0) {
 +#endif
  		printk(KERN_ERR PFX "orinoco_if_add() failed\n");
  		goto failed;

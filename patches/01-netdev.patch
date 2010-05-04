@@ -575,41 +575,18 @@ without creating a headache on maintenance of the pathes.
  	dev->tx_queue_len = 0;
 --- a/drivers/net/wireless/orinoco/main.c
 +++ b/drivers/net/wireless/orinoco/main.c
-@@ -2078,6 +2078,7 @@ int orinoco_init(struct orinoco_private 
- }
- EXPORT_SYMBOL(orinoco_init);
+@@ -2228,9 +2228,9 @@
+ #endif
+ 	/* Default to standard ops if not set */
+ 	if (ops)
+-		dev->netdev_ops = ops;
++		netdev_attach_ops(dev, ops);
+ 	else
+-		dev->netdev_ops = &orinoco_netdev_ops;
++		netdev_attach_ops(dev, &orinoco_netdev_ops);
  
-+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
- static const struct net_device_ops orinoco_netdev_ops = {
- 	.ndo_open		= orinoco_open,
- 	.ndo_stop		= orinoco_stop,
-@@ -2089,6 +2090,7 @@ static const struct net_device_ops orino
- 	.ndo_tx_timeout		= orinoco_tx_timeout,
- 	.ndo_get_stats		= orinoco_get_stats,
- };
-+#endif
+ 	/* we use the default eth_mac_addr for setting the MAC addr */
  
- /* Allocate private data.
-  *
-@@ -2211,7 +2213,18 @@ int orinoco_if_add(struct orinoco_privat
- 
- 	/* Setup / override net_device fields */
- 	dev->ieee80211_ptr = wdev;
-+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
- 	dev->netdev_ops = &orinoco_netdev_ops;
-+#else
-+	dev->open = orinoco_open;
-+	dev->stop = orinoco_stop;
-+	dev->hard_start_xmit = orinoco_xmit;
-+	dev->set_multicast_list = orinoco_set_multicast_list;
-+	dev->change_mtu = orinoco_change_mtu;
-+	dev->set_mac_address = eth_mac_addr;
-+	dev->tx_timeout = orinoco_tx_timeout;
-+	dev->get_stats = orinoco_get_stats;
-+#endif
- 	dev->watchdog_timeo = HZ; /* 1 second timeout */
- 	dev->wireless_handlers = &orinoco_handler_def;
- #ifdef WIRELESS_SPY
 --- a/net/bluetooth/bnep/netdev.c
 +++ b/net/bluetooth/bnep/netdev.c
 @@ -168,8 +168,12 @@ static inline int bnep_net_proto_filter(
