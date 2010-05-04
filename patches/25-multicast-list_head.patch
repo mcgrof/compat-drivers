@@ -174,7 +174,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  static void ath5k_configure_filter(struct ieee80211_hw *hw,
  		unsigned int changed_flags,
  		unsigned int *new_flags,
-@@ -3107,20 +3111,42 @@ unlock:
+@@ -3106,20 +3110,42 @@ unlock:
  }
  
  static u64 ath5k_prepare_multicast(struct ieee80211_hw *hw,
@@ -217,7 +217,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  		pos ^= (val >> 18) ^ (val >> 12) ^ (val >> 6) ^ val;
  		pos &= 0x3f;
  		mfilt[pos / 32] |= (1 << (pos % 32));
-@@ -3129,6 +3155,9 @@ static u64 ath5k_prepare_multicast(struc
+@@ -3128,6 +3154,9 @@ static u64 ath5k_prepare_multicast(struc
  		* neet to inform below to not reset the mcast */
  		/* ath5k_hw_set_mcast_filterindex(ah,
  		 *      ha->addr[5]); */
@@ -393,7 +393,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  	if (cmd != NULL) {
 --- a/drivers/net/wireless/orinoco/hw.c
 +++ b/drivers/net/wireless/orinoco/hw.c
-@@ -1089,7 +1089,11 @@ int __orinoco_hw_set_multicast_list(stru
+@@ -1090,7 +1090,11 @@ int __orinoco_hw_set_multicast_list(stru
  		netdev_for_each_mc_addr(ha, dev) {
  			if (i == mc_count)
  				break;
@@ -404,7 +404,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
 +#endif
  		}
  
- 		err = hermes_write_ltv(hw, USER_BAP,
+ 		err = hw->ops->write_ltv(hw, USER_BAP,
 --- a/drivers/net/wireless/orinoco/hw.h
 +++ b/drivers/net/wireless/orinoco/hw.h
 @@ -22,6 +22,9 @@
@@ -576,7 +576,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  	return hash.low | ((u64)hash.high << 32);
 --- a/include/net/mac80211.h
 +++ b/include/net/mac80211.h
-@@ -1646,7 +1646,11 @@ struct ieee80211_ops {
+@@ -1640,7 +1640,11 @@ struct ieee80211_ops {
  				 struct ieee80211_bss_conf *info,
  				 u32 changed);
  	u64 (*prepare_multicast)(struct ieee80211_hw *hw,
