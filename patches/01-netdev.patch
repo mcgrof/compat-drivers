@@ -294,7 +294,7 @@ without creating a headache on maintenance of the pathes.
  
 --- a/net/bluetooth/bnep/netdev.c
 +++ b/net/bluetooth/bnep/netdev.c
-@@ -168,8 +168,12 @@ static inline int bnep_net_proto_filter(
+@@ -168,8 +168,12 @@
  }
  #endif
  
@@ -309,131 +309,34 @@ without creating a headache on maintenance of the pathes.
  {
  	struct bnep_session *s = netdev_priv(dev);
  	struct sock *sk = s->sock->sk;
-@@ -210,6 +214,7 @@ static netdev_tx_t bnep_net_xmit(struct 
- 	return NETDEV_TX_OK;
- }
- 
-+#if (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,28))
- static const struct net_device_ops bnep_netdev_ops = {
- 	.ndo_open            = bnep_net_open,
- 	.ndo_stop            = bnep_net_close,
-@@ -221,6 +226,16 @@ static const struct net_device_ops bnep_
- 	.ndo_change_mtu	     = eth_change_mtu,
- 
- };
-+#else
-+static struct net_device_stats *bnep_net_get_stats(struct net_device *dev)
-+{
-+	return &dev->stats;
-+}
-+static int bnep_net_ioctl(struct net_device *dev, struct ifreq *ifr, int cmd)
-+{
-+	return -EINVAL;
-+}
-+#endif
- 
- void bnep_net_setup(struct net_device *dev)
- {
-@@ -229,7 +244,18 @@ void bnep_net_setup(struct net_device *d
+@@ -229,7 +233,7 @@
  	dev->addr_len = ETH_ALEN;
  
  	ether_setup(dev);
-+#if (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,28))
- 	dev->netdev_ops = &bnep_netdev_ops;
-+#else
-+	dev->open            = bnep_net_open;
-+	dev->stop            = bnep_net_close;
-+	dev->hard_start_xmit = bnep_net_xmit;
-+	dev->get_stats       = bnep_net_get_stats;
-+	dev->do_ioctl        = bnep_net_ioctl;
-+	dev->set_mac_address = bnep_net_set_mac_addr;
-+	dev->set_multicast_list = bnep_net_set_mc_list;
-+	dev->tx_timeout      = bnep_net_timeout;
-+#endif
+-	dev->netdev_ops = &bnep_netdev_ops;
++	netdev_attach_ops(dev, &bnep_netdev_ops);
  
  	dev->watchdog_timeo  = HZ * 2;
  }
 --- a/drivers/net/atl1e/atl1e_main.c
 +++ b/drivers/net/atl1e/atl1e_main.c
-@@ -2201,6 +2201,7 @@ static void atl1e_shutdown(struct pci_de
- 	atl1e_suspend(pdev, PMSG_SUSPEND);
- }
- 
-+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
- static const struct net_device_ops atl1e_netdev_ops = {
- 	.ndo_open		= atl1e_open,
- 	.ndo_stop		= atl1e_close,
-@@ -2218,6 +2219,7 @@ static const struct net_device_ops atl1e
- #endif
- 
- };
-+#endif
- 
- static int atl1e_init_netdev(struct net_device *netdev, struct pci_dev *pdev)
- {
-@@ -2225,7 +2227,23 @@ static int atl1e_init_netdev(struct net_
+@@ -2225,7 +2225,7 @@
  	pci_set_drvdata(pdev, netdev);
  
  	netdev->irq  = pdev->irq;
-+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
- 	netdev->netdev_ops = &atl1e_netdev_ops;
-+#else
-+	netdev->change_mtu = atl1e_change_mtu;
-+	netdev->hard_start_xmit = atl1e_xmit_frame;
-+	netdev->open = atl1e_open;
-+	netdev->stop = atl1e_close;
-+	netdev->tx_timeout = atl1e_tx_timeout;
-+	netdev->set_mac_address = atl1e_set_mac_addr;
-+	netdev->do_ioctl = atl1e_ioctl;
-+	netdev->get_stats = atl1e_get_stats;
-+	netdev->set_multicast_list = atl1e_set_multi;
-+	netdev->vlan_rx_register = atl1e_vlan_rx_register;
-+#ifdef CONFIG_NET_POLL_CONTROLLER
-+	netdev->poll_controller = atl1e_netpoll;
-+#endif
-+#endif
+-	netdev->netdev_ops = &atl1e_netdev_ops;
++	netdev_attach_ops(netdev, &atl1e_netdev_ops);
  
  	netdev->watchdog_timeo = AT_TX_WATCHDOG;
  	atl1e_set_ethtool_ops(netdev);
 --- a/drivers/net/atl1c/atl1c_main.c
 +++ b/drivers/net/atl1c/atl1c_main.c
-@@ -2533,6 +2533,7 @@ static void atl1c_shutdown(struct pci_de
- 	atl1c_suspend(pdev, PMSG_SUSPEND);
- }
- 
-+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
- static const struct net_device_ops atl1c_netdev_ops = {
- 	.ndo_open		= atl1c_open,
- 	.ndo_stop		= atl1c_close,
-@@ -2549,6 +2550,7 @@ static const struct net_device_ops atl1c
- 	.ndo_poll_controller	= atl1c_netpoll,
- #endif
- };
-+#endif
- 
- static int atl1c_init_netdev(struct net_device *netdev, struct pci_dev *pdev)
- {
-@@ -2556,7 +2558,23 @@ static int atl1c_init_netdev(struct net_
+@@ -2556,7 +2556,7 @@
  	pci_set_drvdata(pdev, netdev);
  
  	netdev->irq  = pdev->irq;
-+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
- 	netdev->netdev_ops = &atl1c_netdev_ops;
-+#else
-+	netdev->change_mtu = atl1c_change_mtu;
-+	netdev->hard_start_xmit = atl1c_xmit_frame;
-+	netdev->open = atl1c_open;
-+	netdev->stop = atl1c_close;
-+	netdev->tx_timeout = atl1c_tx_timeout;
-+	netdev->set_mac_address = atl1c_set_mac_addr;
-+	netdev->do_ioctl = atl1c_ioctl;
-+	netdev->get_stats = atl1c_get_stats;
-+	netdev->set_multicast_list = atl1c_set_multi;
-+	netdev->vlan_rx_register = atl1c_vlan_rx_register;
-+#ifdef CONFIG_NET_POLL_CONTROLLER
-+	netdev->poll_controller = atl1c_netpoll;
-+#endif
-+#endif
+-	netdev->netdev_ops = &atl1c_netdev_ops;
++	netdev_attach_ops(netdev, &atl1c_netdev_ops);
  	netdev->watchdog_timeo = AT_TX_WATCHDOG;
  	atl1c_set_ethtool_ops(netdev);
  
