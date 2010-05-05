@@ -190,36 +190,12 @@ without creating a headache on maintenance of the pathes.
  
 --- a/drivers/net/wireless/ipw2x00/ipw2100.c
 +++ b/drivers/net/wireless/ipw2x00/ipw2100.c
-@@ -6091,6 +6091,7 @@ static void ipw2100_rf_kill(struct work_
- 
- static void ipw2100_irq_tasklet(struct ipw2100_priv *priv);
- 
-+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
- static const struct net_device_ops ipw2100_netdev_ops = {
- 	.ndo_open		= ipw2100_open,
- 	.ndo_stop		= ipw2100_close,
-@@ -6101,6 +6102,7 @@ static const struct net_device_ops ipw21
- 	.ndo_set_mac_address	= ipw2100_set_address,
- 	.ndo_validate_addr	= eth_validate_addr,
- };
-+#endif
- 
- /* Look into using netdev destructor to shutdown libipw? */
- 
-@@ -6126,7 +6128,16 @@ static struct net_device *ipw2100_alloc_
+@@ -6126,7 +6126,7 @@
  	priv->ieee->perfect_rssi = -20;
  	priv->ieee->worst_rssi = -85;
  
-+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
- 	dev->netdev_ops = &ipw2100_netdev_ops;
-+#else
-+	dev->open = ipw2100_open;
-+	dev->stop = ipw2100_close;
-+	dev->init = ipw2100_net_init;
-+	dev->tx_timeout = ipw2100_tx_timeout;
-+	dev->set_mac_address = ipw2100_set_address;
-+#endif
-+
+-	dev->netdev_ops = &ipw2100_netdev_ops;
++	netdev_attach_ops(dev, &ipw2100_netdev_ops);
  	dev->ethtool_ops = &ipw2100_ethtool_ops;
  	dev->wireless_handlers = &ipw2100_wx_handler_def;
  	priv->wireless_data.libipw = priv->ieee;
