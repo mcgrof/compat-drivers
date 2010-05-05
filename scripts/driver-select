@@ -7,6 +7,7 @@
 DRIVERS_MAKEFILE="drivers/net/wireless/Makefile"
 ATH_MAKEFILE="drivers/net/wireless/ath/Makefile"
 ATH9K_MAKEFILE="drivers/net/wireless/ath/ath9k/Makefile"
+RT2X00_MAKEFILE="drivers/net/wireless/rt2x00/Makefile"
 NET_WIRELESS_MAKEFILE="net/wireless/Makefile"
 EEPROM_MAKEFILE="drivers/misc/eeprom/Makefile"
 DRIVERS_NET="drivers/net/Makefile"
@@ -29,7 +30,7 @@ PURPLE="\033[35m"
 CYAN="\033[36m"
 UNDERLINE="\033[02m"
 
-SUPPORTED_DRIVERS="ath5k ath9k ath9k_htc ar9170 b43 zd1211rw"
+SUPPORTED_DRIVERS="ath5k ath9k ath9k_htc ar9170 b43 zd1211rw rt2x00"
 
 function usage {
 	echo -e "${GREEN}Usage${NORMAL}: ${CYAN}$0${NORMAL} [ ${PURPLE}<driver-name>${NORMAL} | ${PURPLE}<driver-group-name>${NORMAL} | ${GREEN}restore${NORMAL} ]"
@@ -292,6 +293,10 @@ case $1 in
 		disable_ethernet
 		disable_var_03
 		select_driver		CONFIG_B43
+		;;
+	rt2x00)
+		select_driver		CONFIG_RT2X00
+		disable_var_02
 		;;
 	*)
 		echo "Unsupported driver"
