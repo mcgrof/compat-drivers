@@ -111,49 +111,15 @@ without creating a headache on maintenance of the pathes.
  		ieee80211_sdata_set_mesh_id(sdata,
 --- a/drivers/net/b44.c
 +++ b/drivers/net/b44.c
-@@ -2110,6 +2110,7 @@ static int __devinit b44_get_invariants(
- 	return err;
- }
- 
-+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
- static const struct net_device_ops b44_netdev_ops = {
- 	.ndo_open		= b44_open,
- 	.ndo_stop		= b44_close,
-@@ -2125,6 +2126,7 @@ static const struct net_device_ops b44_n
- 	.ndo_poll_controller	= b44_poll_controller,
- #endif
- };
-+#endif
- 
- static int __devinit b44_init_one(struct ssb_device *sdev,
- 				  const struct ssb_device_id *ent)
-@@ -2164,9 +2166,26 @@ static int __devinit b44_init_one(struct
+@@ -2164,7 +2164,7 @@
  	bp->rx_pending = B44_DEF_RX_RING_PENDING;
  	bp->tx_pending = B44_DEF_TX_RING_PENDING;
  
-+#if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,29))
-+	dev->open = b44_open;
-+	dev->stop = b44_close;
-+	dev->hard_start_xmit = b44_start_xmit;
-+	dev->get_stats = b44_get_stats;
-+	dev->set_multicast_list = b44_set_rx_mode;
-+	dev->set_mac_address = b44_set_mac_addr;
-+	dev->do_ioctl = b44_ioctl;
-+	dev->tx_timeout = b44_tx_timeout;
-+	netif_napi_add(dev, &bp->napi, b44_poll, 64);
-+	dev->watchdog_timeo = B44_TX_TIMEOUT;
-+#ifdef CONFIG_NET_POLL_CONTROLLER
-+	dev->poll_controller = b44_poll_controller;
-+#endif
-+	dev->change_mtu = b44_change_mtu;
-+#else
- 	dev->netdev_ops = &b44_netdev_ops;
+-	dev->netdev_ops = &b44_netdev_ops;
++	netdev_attach_ops(dev, &b44_netdev_ops);
  	netif_napi_add(dev, &bp->napi, b44_poll, 64);
  	dev->watchdog_timeo = B44_TX_TIMEOUT;
-+#endif
  	dev->irq = sdev->irq;
- 	SET_ETHTOOL_OPS(dev, &b44_ethtool_ops);
- 
 --- a/net/wireless/wext-core.c
 +++ b/net/wireless/wext-core.c
 @@ -341,6 +341,7 @@ static const int compat_event_type_size[
