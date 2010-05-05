@@ -221,98 +221,32 @@ without creating a headache on maintenance of the pathes.
  	net_dev->wireless_handlers = &ipw_wx_handler_def;
 --- a/drivers/net/wireless/libertas/main.c
 +++ b/drivers/net/wireless/libertas/main.c
-@@ -887,6 +887,7 @@ static void lbs_free_adapter(struct lbs_
- 	lbs_deb_leave(LBS_DEB_MAIN);
- }
- 
-+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
- static const struct net_device_ops lbs_netdev_ops = {
- 	.ndo_open 		= lbs_dev_open,
- 	.ndo_stop		= lbs_eth_stop,
-@@ -897,6 +898,7 @@ static const struct net_device_ops lbs_n
- 	.ndo_change_mtu		= eth_change_mtu,
- 	.ndo_validate_addr	= eth_validate_addr,
- };
-+#endif
- 
- /**
-  * @brief This function adds the card. it will probe the
-@@ -942,7 +944,16 @@ struct lbs_private *lbs_add_card(void *c
+@@ -942,7 +942,7 @@
  	wdev->netdev = dev;
  	priv->dev = dev;
  
-+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
-  	dev->netdev_ops = &lbs_netdev_ops;
-+#else
-+	dev->open = lbs_dev_open;
-+	dev->hard_start_xmit = lbs_hard_start_xmit;
-+	dev->stop = lbs_eth_stop;
-+	dev->set_mac_address = lbs_set_mac_address;
-+	dev->tx_timeout = lbs_tx_timeout;
-+	dev->set_multicast_list = lbs_set_multicast_list;
-+#endif
+- 	dev->netdev_ops = &lbs_netdev_ops;
++	netdev_attach_ops(dev, &lbs_netdev_ops);
  	dev->watchdog_timeo = 5 * HZ;
  	dev->ethtool_ops = &lbs_ethtool_ops;
  #ifdef	WIRELESS_EXT
-@@ -1248,11 +1259,13 @@ out:
- 	lbs_deb_leave(LBS_DEB_MAIN);
- }
- 
-+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
- static const struct net_device_ops rtap_netdev_ops = {
- 	.ndo_open = lbs_rtap_open,
- 	.ndo_stop = lbs_rtap_stop,
- 	.ndo_start_xmit = lbs_rtap_hard_start_xmit,
- };
-+#endif
- 
- static int lbs_add_rtap(struct lbs_private *priv)
- {
-@@ -1273,7 +1286,13 @@ static int lbs_add_rtap(struct lbs_priva
+@@ -1273,7 +1273,7 @@
  
  	memcpy(rtap_dev->dev_addr, priv->current_addr, ETH_ALEN);
  	rtap_dev->type = ARPHRD_IEEE80211_RADIOTAP;
-+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
- 	rtap_dev->netdev_ops = &rtap_netdev_ops;
-+#else
-+	rtap_dev->open = lbs_rtap_open;
-+	rtap_dev->stop = lbs_rtap_stop;
-+	rtap_dev->hard_start_xmit = lbs_rtap_hard_start_xmit;
-+#endif
+-	rtap_dev->netdev_ops = &rtap_netdev_ops;
++	netdev_attach_ops(rtap_dev, &rtap_netdev_ops);
  	rtap_dev->ml_priv = priv;
  	SET_NETDEV_DEV(rtap_dev, priv->dev->dev.parent);
  
 --- a/drivers/net/wireless/libertas/mesh.c
 +++ b/drivers/net/wireless/libertas/mesh.c
-@@ -332,6 +332,7 @@ static int lbs_mesh_dev_open(struct net_
- 	return ret;
- }
- 
-+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
- static const struct net_device_ops mesh_netdev_ops = {
- 	.ndo_open		= lbs_mesh_dev_open,
- 	.ndo_stop 		= lbs_mesh_stop,
-@@ -339,6 +340,7 @@ static const struct net_device_ops mesh_
- 	.ndo_set_mac_address	= lbs_set_mac_address,
- 	.ndo_set_multicast_list = lbs_set_multicast_list,
- };
-+#endif
- 
- /**
-  * @brief This function adds mshX interface
-@@ -363,7 +365,15 @@ int lbs_add_mesh(struct lbs_private *pri
+@@ -363,7 +363,7 @@
  	mesh_dev->ml_priv = priv;
  	priv->mesh_dev = mesh_dev;
  
-+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
- 	mesh_dev->netdev_ops = &mesh_netdev_ops;
-+#else
-+	mesh_dev->open = lbs_mesh_dev_open;
-+	mesh_dev->hard_start_xmit = lbs_hard_start_xmit;
-+	mesh_dev->stop = lbs_mesh_stop;
-+	mesh_dev->set_mac_address = lbs_set_mac_address;
-+	mesh_dev->set_multicast_list = lbs_set_multicast_list;
-+#endif
+-	mesh_dev->netdev_ops = &mesh_netdev_ops;
++	netdev_attach_ops(mesh_dev, &mesh_netdev_ops);
  	mesh_dev->ethtool_ops = &lbs_ethtool_ops;
  	memcpy(mesh_dev->dev_addr, priv->dev->dev_addr, ETH_ALEN);
  
