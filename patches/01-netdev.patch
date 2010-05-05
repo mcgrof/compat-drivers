@@ -353,42 +353,12 @@ without creating a headache on maintenance of the pathes.
  	netdev->ethtool_ops = &atl1_ethtool_ops;
 --- a/drivers/net/atlx/atl2.c
 +++ b/drivers/net/atlx/atl2.c
-@@ -1306,6 +1306,7 @@ static void atl2_poll_controller(struct 
- #endif
- 
- 
-+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
- static const struct net_device_ops atl2_netdev_ops = {
- 	.ndo_open		= atl2_open,
- 	.ndo_stop		= atl2_close,
-@@ -1321,6 +1322,7 @@ static const struct net_device_ops atl2_
- 	.ndo_poll_controller	= atl2_poll_controller,
- #endif
- };
-+#endif
- 
- /*
-  * atl2_probe - Device Initialization Routine
-@@ -1395,7 +1397,22 @@ static int __devinit atl2_probe(struct p
+@@ -1395,7 +1395,7 @@
  
  	atl2_setup_pcicmd(pdev);
  
-+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
- 	netdev->netdev_ops = &atl2_netdev_ops;
-+#else
-+	netdev->change_mtu = atl2_change_mtu;
-+	netdev->hard_start_xmit = atl2_xmit_frame;
-+	netdev->open = atl2_open;
-+	netdev->stop = atl2_close;
-+	netdev->tx_timeout = atl2_tx_timeout;
-+	netdev->set_mac_address = atl2_set_mac;
-+	netdev->do_ioctl = atl2_ioctl;
-+	netdev->set_multicast_list = atl2_set_multi;
-+	netdev->vlan_rx_register = atl2_vlan_rx_register;
-+#ifdef CONFIG_NET_POLL_CONTROLLER
-+	netdev->poll_controller = atl2_poll_controller;
-+#endif
-+#endif
+-	netdev->netdev_ops = &atl2_netdev_ops;
++	netdev_attach_ops(netdev, &atl2_netdev_ops);
  	atl2_set_ethtool_ops(netdev);
  	netdev->watchdog_timeo = 5 * HZ;
  	strncpy(netdev->name, pci_name(pdev), sizeof(netdev->name) - 1);
