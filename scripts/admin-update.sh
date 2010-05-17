@@ -345,8 +345,6 @@ if [ -d ./.git ]; then
 	echo -e "Base tree: ${GREEN}$(cat compat_base_tree)${NORMAL}"
 	echo -e "Base tree version: ${PURPLE}$(cat compat_base_tree_version)${NORMAL}"
 	echo -e "compat-wireless release: ${YELLOW}$(cat compat_version)${NORMAL}"
-
-	cd $DIR
 fi
 
 ./scripts/driver-select restore
