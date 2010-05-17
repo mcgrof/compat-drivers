@@ -96,8 +96,8 @@ here still, but for now we keep this here.
  	cmtp_schedule(session);
 --- a/net/bluetooth/hci_core.c
 +++ b/net/bluetooth/hci_core.c
-@@ -39,7 +39,12 @@
- #include <linux/skbuff.h>
+@@ -40,7 +40,12 @@
+ #include <linux/workqueue.h>
  #include <linux/interrupt.h>
  #include <linux/notifier.h>
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,31))
@@ -138,7 +138,7 @@ here still, but for now we keep this here.
  
 --- a/net/bluetooth/hci_sysfs.c
 +++ b/net/bluetooth/hci_sysfs.c
-@@ -73,7 +73,11 @@ static struct attribute_group bt_link_gr
+@@ -71,7 +71,11 @@ static struct attribute_group bt_link_gr
  	.attrs = bt_link_attrs,
  };
  
@@ -150,7 +150,7 @@ here still, but for now we keep this here.
  	&bt_link_group,
  	NULL
  };
-@@ -131,7 +135,11 @@ static void del_conn(struct work_struct 
+@@ -129,7 +133,11 @@ static void del_conn(struct work_struct 
  		dev = device_find_child(&conn->dev, NULL, __match_tty);
  		if (!dev)
  			break;
@@ -162,7 +162,7 @@ here still, but for now we keep this here.
  		put_device(dev);
  	}
  
-@@ -389,7 +397,11 @@ static struct attribute_group bt_host_gr
+@@ -381,7 +389,11 @@ static struct attribute_group bt_host_gr
  	.attrs = bt_host_attrs,
  };
  
@@ -498,7 +498,7 @@ here still, but for now we keep this here.
  		rfcomm_dlc_close(dev->dlc, 0);
 --- a/net/bluetooth/sco.c
 +++ b/net/bluetooth/sco.c
-@@ -432,8 +432,12 @@ static struct sock *sco_sock_alloc(struc
+@@ -429,8 +429,12 @@ static struct sock *sco_sock_alloc(struc
  	return sk;
  }
  
@@ -511,7 +511,7 @@ here still, but for now we keep this here.
  {
  	struct sock *sk;
  
-@@ -648,7 +652,11 @@ static int sco_sock_sendmsg(struct kiocb
+@@ -645,7 +649,11 @@ static int sco_sock_sendmsg(struct kiocb
  	return err;
  }
  
@@ -570,7 +570,7 @@ here still, but for now we keep this here.
  
 --- a/net/bluetooth/l2cap.c
 +++ b/net/bluetooth/l2cap.c
-@@ -824,8 +824,12 @@ static struct sock *l2cap_sock_alloc(str
+@@ -856,8 +856,12 @@ static struct sock *l2cap_sock_alloc(str
  	return sk;
  }
  
@@ -583,7 +583,7 @@ here still, but for now we keep this here.
  {
  	struct sock *sk;
  
-@@ -837,7 +841,11 @@ static int l2cap_sock_create(struct net 
+@@ -869,7 +873,11 @@ static int l2cap_sock_create(struct net 
  			sock->type != SOCK_DGRAM && sock->type != SOCK_RAW)
  		return -ESOCKTNOSUPPORT;
  
@@ -595,7 +595,7 @@ here still, but for now we keep this here.
  		return -EPERM;
  
  	sock->ops = &l2cap_sock_ops;
-@@ -1770,7 +1778,11 @@ static int l2cap_sock_setsockopt_old(str
+@@ -1912,7 +1920,11 @@ static int l2cap_sock_setsockopt_old(str
  	return err;
  }
  

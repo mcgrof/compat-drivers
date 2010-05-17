@@ -13,7 +13,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
 
 --- a/drivers/net/atl1c/atl1c_main.c
 +++ b/drivers/net/atl1c/atl1c_main.c
-@@ -378,7 +378,11 @@ static void atl1c_set_multi(struct net_d
+@@ -376,7 +376,11 @@ static void atl1c_set_multi(struct net_d
  
  	/* comoute mc addresses' hash value ,and put it into hash table */
  	netdev_for_each_mc_addr(ha, netdev) {
@@ -69,7 +69,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  }
 --- a/drivers/net/b44.c
 +++ b/drivers/net/b44.c
-@@ -1689,7 +1689,11 @@ static int __b44_load_mcast(struct b44 *
+@@ -1687,7 +1687,11 @@ static int __b44_load_mcast(struct b44 *
  	netdev_for_each_mc_addr(ha, dev) {
  		if (i == num_ents)
  			break;
@@ -266,7 +266,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  	}
 --- a/drivers/net/wireless/libertas_tf/main.c
 +++ b/drivers/net/wireless/libertas_tf/main.c
-@@ -419,20 +419,36 @@ static int lbtf_op_config(struct ieee802
+@@ -418,20 +418,36 @@ static int lbtf_op_config(struct ieee802
  }
  
  static u64 lbtf_op_prepare_multicast(struct ieee80211_hw *hw,
@@ -475,7 +475,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  static void rtl8187_configure_filter(struct ieee80211_hw *dev,
 --- a/drivers/net/wireless/wl12xx/wl1271_main.c
 +++ b/drivers/net/wireless/wl12xx/wl1271_main.c
-@@ -1360,11 +1360,20 @@ struct wl1271_filter_params {
+@@ -1361,11 +1361,20 @@ struct wl1271_filter_params {
  	u8 mc_list[ACX_MC_ADDRESS_GROUP_MAX][ETH_ALEN];
  };
  
@@ -496,7 +496,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  	struct wl1271 *wl = hw->priv;
  
  	if (unlikely(wl->state == WL1271_STATE_OFF))
-@@ -1377,16 +1386,40 @@ static u64 wl1271_op_prepare_multicast(s
+@@ -1378,16 +1387,40 @@ static u64 wl1271_op_prepare_multicast(s
  	}
  
  	/* update multicast filtering parameters */
@@ -576,7 +576,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  	return hash.low | ((u64)hash.high << 32);
 --- a/include/net/mac80211.h
 +++ b/include/net/mac80211.h
-@@ -1646,7 +1646,11 @@ struct ieee80211_ops {
+@@ -1673,7 +1673,11 @@ struct ieee80211_ops {
  				 struct ieee80211_bss_conf *info,
  				 u32 changed);
  	u64 (*prepare_multicast)(struct ieee80211_hw *hw,

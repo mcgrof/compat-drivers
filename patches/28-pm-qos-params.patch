@@ -35,7 +35,7 @@
  
  	/* We have to signal any supplicant if we are disassociating */
  	if (associated)
-@@ -6674,7 +6685,11 @@ static int __init ipw2100_init(void)
+@@ -6673,7 +6684,11 @@ static int __init ipw2100_init(void)
  	if (ret)
  		goto out;
  
@@ -47,7 +47,7 @@
  			PM_QOS_DEFAULT_VALUE);
  #ifdef CONFIG_IPW2100_DEBUG
  	ipw2100_debug_level = debug;
-@@ -6697,7 +6712,11 @@ static void __exit ipw2100_exit(void)
+@@ -6696,7 +6711,11 @@ static void __exit ipw2100_exit(void)
  			   &driver_attr_debug_level);
  #endif
  	pci_unregister_driver(&ipw2100_pci_driver);
@@ -61,7 +61,7 @@
  module_init(ipw2100_init);
 --- a/net/mac80211/mlme.c
 +++ b/net/mac80211/mlme.c
-@@ -509,7 +509,11 @@ void ieee80211_recalc_ps(struct ieee8021
+@@ -556,7 +556,11 @@ void ieee80211_recalc_ps(struct ieee8021
  		s32 beaconint_us;
  
  		if (latency < 0)
