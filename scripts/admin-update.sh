@@ -308,40 +308,45 @@ echo -e "${GREEN}Updated${NORMAL} from local tree: ${BLUE}${GIT_TREE}${NORMAL}"
 echo -e "Origin remote URL: ${CYAN}${GIT_REMOTE_URL}${NORMAL}"
 cd $DIR
 if [ -d ./.git ]; then
-	git describe > compat-release
+	git describe > compat_version
 
 	cd $GIT_TREE
 	TREE_NAME=${GIT_REMOTE_URL##*/}
 
-	echo $TREE_NAME > $DIR/git-describe
-	echo $GIT_DESCRIBE >> $DIR/git-describe
+	echo $TREE_NAME > $DIR/compat_base_tree
+	echo $GIT_DESCRIBE > $DIR/compat_base_tree_version
 
-	echo -e "git-describe for $TREE_NAME says: ${PURPLE}$GIT_DESCRIBE${NORMAL}"
-
-	rm -f $DIR/master-tag
 	case $TREE_NAME in
 	"wireless-testing.git") # John's wireless-testing
+		# We override the compat_base_tree_version for wireless-testing
+		# as john keeps the Linus' tags and does not write a tag for his
+		# tree himself so git describe would yield a v2.6.3x.y-etc but
+		# what is more useful is just the wireless-testing master tag
 		MASTER_TAG=$(git tag -l| grep master | tail -1)
-		echo $MASTER_TAG > $DIR/master-tag
-		echo -e "This is a ${RED}bleeding edge${NORMAL} compat-wireless release based on: ${PURPLE}$MASTER_TAG${NORMAL}"
+		echo $MASTER_TAG > $DIR/compat_base_tree_version
+		echo -e "This is a ${RED}bleeding edge${NORMAL} compat-wireless release"
 		;;
 	"linux-next.git") # The linux-next integration testing tree
 		MASTER_TAG=$(git tag -l| grep next | tail -1)
 		echo $MASTER_TAG > $DIR/master-tag
-		echo -e "This is a ${RED}bleeding edge${NORMAL} compat-wireless release based on: ${PURPLE}$MASTER_TAG${NORMAL}"
+		echo -e "This is a ${RED}bleeding edge${NORMAL} compat-wireless release"
 		;;
 	"linux-2.6-allstable.git") # HPA's all stable tree
-		echo -e "This is a ${GREEN}stable${NORMAL} compat-wireless release based on: ${PURPLE}$(git describe --abbrev=0)${NORMAL}"
+		echo -e "This is a ${GREEN}stable${NORMAL} compat-wireless release"
 		;;
 	"linux-2.6.git") # Linus' 2.6 tree
+		echo -e "This is a ${GREEN}stable${NORMAL} compat-wireless release"
 		;;
 	*)
 		;;
 	esac
 
 	cd $DIR
+	echo -e "Base tree: ${GREEN}$(cat compat_base_tree)${NORMAL}"
+	echo -e "Base tree version: ${PURPLE}$(cat compat_base_tree_version)${NORMAL}"
+	echo -e "compat-wireless release: ${YELLOW}$(cat compat_version)${NORMAL}"
+
+	cd $DIR
 fi
 
 ./scripts/driver-select restore
-
-echo -e "This is compat-release: ${YELLOW}$(cat compat-release)${NORMAL}"
