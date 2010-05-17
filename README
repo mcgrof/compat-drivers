@@ -190,6 +190,10 @@ Report the bug because you are working with the latest and greatest.
 If your bug is compatibility-related then we should still try to fix
 it within the compat.[ch] work.
 
+Please provide the output of:
+
+sudo grep '' /sys/module/compat/parameters/compat_*
+
 ChangeLog
 ---------
 
