@@ -28,7 +28,7 @@ Remove this patch if these symbols are backported.
 +obj-$(CONFIG_USB_COMPAT_USBNET)	+= usbnet.o
  obj-$(CONFIG_USB_NET_INT51X1)	+= int51x1.o
  obj-$(CONFIG_USB_CDC_PHONET)	+= cdc-phonet.o
- 
+ obj-$(CONFIG_USB_IPHETH)	+= ipheth.o
 --- a/drivers/net/usb/cdc_ether.c
 +++ b/drivers/net/usb/cdc_ether.c
 @@ -33,7 +33,7 @@

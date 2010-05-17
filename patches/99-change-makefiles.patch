@@ -11,8 +11,8 @@ only the wireless stuff.
 -obj-$(CONFIG_EEPROM_LEGACY)	+= eeprom.o
 -obj-$(CONFIG_EEPROM_MAX6875)	+= max6875.o
  obj-$(CONFIG_EEPROM_93CX6)	+= eeprom_93cx6.o
---- a/drivers/net/usb/Makefile	2010-05-17 12:22:49.739620402 -0700
-+++ b/drivers/net/usb/Makefile	2010-05-17 12:24:36.699647082 -0700
+--- a/drivers/net/usb/Makefile
++++ b/drivers/net/usb/Makefile
 @@ -2,27 +2,6 @@
  # Makefile for USB Network drivers
  #
