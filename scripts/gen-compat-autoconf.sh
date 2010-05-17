@@ -144,9 +144,6 @@ EOF
 # Checks user is compiling against a kernel we support
 kernel_version_req $OLDEST_KERNEL_SUPPORTED
 
-# Handle core kernel wireless depenencies here
-define_config_req CONFIG_WIRELESS_EXT
-
 # For each CONFIG_FOO=x option
 for i in $(grep '^CONFIG_' $COMPAT_CONFIG); do
 	# Get the element on the left of the "="
@@ -194,6 +191,11 @@ if [ -f $KLIB_BUILD/Makefile ]; then
 		echo CONFIG_NETDEVICES_MULTIQUEUE >> $MULT_DEP_FILE
 		define_config_multiple_deps CONFIG_MAC80211_QOS y $ALL_DEPS
 		rm -f $MULT_DEP_FILE
+		# Kernels >= 2.6.32 can disable WEXT :D
+		if [ $SUBLEVEL -lt 32 ]; then
+			# Handle core kernel wireless depenencies here
+			define_config_req CONFIG_WIRELESS_EXT
+		fi
 	fi
 fi
 echo "#endif /* COMPAT_AUTOCONF_INCLUDED */"
