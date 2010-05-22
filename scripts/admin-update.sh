@@ -219,6 +219,8 @@ DRIVER_FILES="$DRIVER_FILES mac80211_hwsim.c"
 DRIVER_FILES="$DRIVER_FILES at76c50x-usb.c at76c50x-usb.h"
 DRIVER_FILES="$DRIVER_FILES mwl8k.c"
 
+rm -rf drivers/
+
 mkdir -p include/linux/ include/net/ include/linux/usb \
 	include/linux/unaligned \
 	include/linux/spi \
