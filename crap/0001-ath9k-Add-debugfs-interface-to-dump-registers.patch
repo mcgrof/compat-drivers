@@ -1,0 +1,129 @@
+
+Reason for not yet publishing: This code needs more testing.
+
+From 31c64cc62c514a7aab703a59dc3146e1885fc6aa Mon Sep 17 00:00:00 2001
+From: Vasanthakumar Thiagarajan <vasanth@atheros.com>
+Date: Fri, 16 Apr 2010 12:07:51 -0700
+Subject: [PATCH 1/3] ath9k: Add debugfs interface to dump registers
+
+Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
+Signed-off-by: Felix Fietkau <nbd@openwrt.org>
+---
+ drivers/net/wireless/ath/ath9k/debug.c |   53 +++++++++++++++++++++++++++++++-
+ drivers/net/wireless/ath/ath9k/debug.h |    8 +++++
+ 2 files changed, 60 insertions(+), 1 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath9k/debug.c b/drivers/net/wireless/ath/ath9k/debug.c
+index ee83877..07a4c7c 100644
+--- a/drivers/net/wireless/ath/ath9k/debug.c
++++ b/drivers/net/wireless/ath/ath9k/debug.c
+@@ -15,6 +15,7 @@
+  */
+ 
+ #include <linux/slab.h>
++#include <linux/vmalloc.h>
+ #include <asm/unaligned.h>
+ 
+ #include "ath9k.h"
+@@ -32,6 +33,19 @@ static int ath9k_debugfs_open(struct inode *inode, struct file *file)
+ 	return 0;
+ }
+ 
++static ssize_t ath9k_debugfs_read_buf(struct file *file, char __user *user_buf,
++				      size_t count, loff_t *ppos)
++{
++	u8 *buf = file->private_data;
++	return simple_read_from_buffer(user_buf, count, ppos, buf, strlen(buf));
++}
++
++static int ath9k_debugfs_release_buf (struct inode *inode, struct file *file)
++{
++	vfree(file->private_data);
++	return 0;
++}
++
+ #ifdef CONFIG_ATH_DEBUG
+ 
+ static ssize_t read_file_debug(struct file *file, char __user *user_buf,
+@@ -876,7 +890,38 @@ static ssize_t write_file_regval(struct file *file, const char __user *user_buf,
+ static const struct file_operations fops_regval = {
+ 	.read = read_file_regval,
+ 	.write = write_file_regval,
+-	.open = ath9k_debugfs_open,
++};
++
++#define REGDUMP_LINE_SIZE	20
++#define REGDUMP_NUM_REGS	(0x16bd4 / 4 + 1)
++#define REGDUMP_DATA_LEN	(REGDUMP_NUM_REGS * REGDUMP_LINE_SIZE + 1)
++
++static int open_file_regdump(struct inode *inode, struct file *file)
++{
++	struct ath_softc *sc = inode->i_private;
++	unsigned int len = 0;
++	u8 *buf;
++	int i;
++
++	buf = vmalloc(REGDUMP_DATA_LEN);
++	if (!buf)
++		return -ENOMEM;
++
++	ath9k_ps_wakeup(sc);
++	for (i = 0; i < REGDUMP_NUM_REGS; i++)
++		len += scnprintf(buf + len, REGDUMP_DATA_LEN - len,
++			"0x%06x 0x%08x\n", i << 2, REG_READ(sc->sc_ah, i << 2));
++	ath9k_ps_restore(sc);
++
++	file->private_data = buf;
++
++	return 0;
++}
++
++static const struct file_operations fops_regdump = {
++	.open = open_file_regdump,
++	.read = ath9k_debugfs_read_buf,
++	.release = ath9k_debugfs_release_buf,
+ 	.owner = THIS_MODULE
+ };
+ 
+@@ -940,6 +985,11 @@ int ath9k_init_debug(struct ath_hw *ah)
+ 		goto err;
+ 
+ 	sc->debug.regidx = 0;
++
++	if (!debugfs_create_file("regdump", S_IRUSR, sc->debug.debugfs_phy,
++			sc, &fops_regdump))
++		goto err;
++
+ 	return 0;
+ err:
+ 	ath9k_exit_debug(ah);
+@@ -951,6 +1001,7 @@ void ath9k_exit_debug(struct ath_hw *ah)
+ 	struct ath_common *common = ath9k_hw_common(ah);
+ 	struct ath_softc *sc = (struct ath_softc *) common->priv;
+ 
++	debugfs_remove(sc->debug.debugfs_regdump);
+ 	debugfs_remove_recursive(sc->debug.debugfs_phy);
+ }
+ 
+diff --git a/drivers/net/wireless/ath/ath9k/debug.h b/drivers/net/wireless/ath/ath9k/debug.h
+index 5d21704..0950752 100644
+--- a/drivers/net/wireless/ath/ath9k/debug.h
++++ b/drivers/net/wireless/ath/ath9k/debug.h
+@@ -156,6 +156,14 @@ struct ath_stats {
+ struct ath9k_debug {
+ 	struct dentry *debugfs_phy;
+ 	u32 regidx;
++	struct dentry *debugfs_debug;
++	struct dentry *debugfs_dma;
++	struct dentry *debugfs_interrupt;
++	struct dentry *debugfs_rcstat;
++	struct dentry *debugfs_wiphy;
++	struct dentry *debugfs_xmit;
++	struct dentry *debugfs_recv;
++	struct dentry *debugfs_regdump;
+ 	struct ath_stats stats;
+ };
+ 
+-- 
+1.6.3.3
+
