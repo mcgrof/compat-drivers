@@ -290,6 +290,7 @@ for i in $DRIVERS; do
 	echo "Copying $GIT_TREE/$i/*.[ch]"
 	cp $GIT_TREE/$i/*.[ch] $i/
 	cp $GIT_TREE/$i/Makefile $i/
+	cp $GIT_TREE/$i/Kconfig $i/
 	rm -f $i/*.mod.c
 done
 
