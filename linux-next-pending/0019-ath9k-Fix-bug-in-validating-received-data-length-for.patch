@@ -1,0 +1,37 @@
+From 4532fc82246270aba6d72ed89c76304652c8ddfe Mon Sep 17 00:00:00 2001
+From: Vasanthakumar Thiagarajan <vasanth@atheros.com>
+Date: Thu, 20 May 2010 14:47:38 -0700
+Subject: [PATCH 19/19] ath9k: Fix bug in validating received data length for edma
+
+The rx status length should also be taken into account while
+validating the length of a received frame.
+
+Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
+---
+ drivers/net/wireless/ath/ath9k/recv.c |    3 ++-
+ 1 files changed, 2 insertions(+), 1 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath9k/recv.c b/drivers/net/wireless/ath/ath9k/recv.c
+index 95f1622..fc15b4b 100644
+--- a/drivers/net/wireless/ath/ath9k/recv.c
++++ b/drivers/net/wireless/ath/ath9k/recv.c
+@@ -827,6 +827,7 @@ static bool ath9k_rx_accept(struct ath_common *common,
+ {
+ 	struct ath_hw *ah = common->ah;
+ 	__le16 fc;
++	u8 rx_status_len = ah->caps.rx_status_len;
+ 
+ 	fc = hdr->frame_control;
+ 
+@@ -837,7 +838,7 @@ static bool ath9k_rx_accept(struct ath_common *common,
+          * we can take a hint that hardware corrupted it, so ignore
+          * those frames.
+          */
+-	if (rx_stats->rs_datalen > common->rx_bufsize)
++	if (rx_stats->rs_datalen > (common->rx_bufsize - rx_status_len))
+ 		return false;
+ 
+ 	/*
+-- 
+1.6.3.3
+

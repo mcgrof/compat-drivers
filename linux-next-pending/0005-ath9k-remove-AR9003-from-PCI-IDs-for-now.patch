@@ -1,0 +1,33 @@
+From 7400385ea36226c5e27b00112206ebb48803c9e0 Mon Sep 17 00:00:00 2001
+From: Luis R. Rodriguez <lrodriguez@atheros.com>
+Date: Thu, 13 May 2010 14:55:24 -0700
+Subject: [PATCH 05/19] ath9k: remove AR9003 from PCI IDs for now
+
+We tried to squeeze as much AR9003 support into this kernel
+release cycle but there are a few features which are still
+being tested and developed. Some of these features are critical
+to the stable operation of AR9003 so for now disable AR9003 support
+all together. This will get re-enabled once all necessary features
+are in place but very likely will not happen for 2.6.35.
+
+Reviewed-by: Don Breslin <don.breslin@atheros.com>
+Signed-off-by: Luis R. Rodriguez <lrodriguez@atheros.com>
+---
+ drivers/net/wireless/ath/ath9k/pci.c |    1 -
+ 1 files changed, 0 insertions(+), 1 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath9k/pci.c b/drivers/net/wireless/ath/ath9k/pci.c
+index 257b10b..1ec836c 100644
+--- a/drivers/net/wireless/ath/ath9k/pci.c
++++ b/drivers/net/wireless/ath/ath9k/pci.c
+@@ -28,7 +28,6 @@ static DEFINE_PCI_DEVICE_TABLE(ath_pci_id_table) = {
+ 	{ PCI_VDEVICE(ATHEROS, 0x002C) }, /* PCI-E 802.11n bonded out */
+ 	{ PCI_VDEVICE(ATHEROS, 0x002D) }, /* PCI   */
+ 	{ PCI_VDEVICE(ATHEROS, 0x002E) }, /* PCI-E */
+-	{ PCI_VDEVICE(ATHEROS, 0x0030) }, /* PCI-E  AR9300 */
+ 	{ 0 }
+ };
+ 
+-- 
+1.6.3.3
+

@@ -7,7 +7,8 @@ in this directory. The requirement is your patches must have
 been posted to a public mailing list for the subsystem you are
 working on. Each patch you add here must have a really good
 explanation on the top of the file which clarifies why the
-patch has not yet been merged.
+patch has not yet been merged OR specify it on the commit log
+when you add it on compat-wireless.
 
 We try to avoid having patch files because but we understand
 if you might because you need to test code posted but not yet

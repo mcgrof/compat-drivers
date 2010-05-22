@@ -1,0 +1,38 @@
+From b678026133c321be78cbebdfc7f791fa72525ac1 Mon Sep 17 00:00:00 2001
+From: Vasanthakumar Thiagarajan <vasanth@atheros.com>
+Date: Mon, 17 May 2010 11:34:10 -0700
+Subject: [PATCH 07/19] ath9k: Make sure null func frame is acked before going into PS for ar9003
+
+Add missing code to handle nullfunc frame completion in
+ath_tx_edma_tasklet().
+
+Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
+---
+ drivers/net/wireless/ath/ath9k/xmit.c |   11 +++++++++++
+ 1 files changed, 11 insertions(+), 0 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath9k/xmit.c b/drivers/net/wireless/ath/ath9k/xmit.c
+index 3db1917..debb62d 100644
+--- a/drivers/net/wireless/ath/ath9k/xmit.c
++++ b/drivers/net/wireless/ath/ath9k/xmit.c
+@@ -2277,6 +2277,17 @@ void ath_tx_edma_tasklet(struct ath_softc *sc)
+ 
+ 		txok = !(txs.ts_status & ATH9K_TXERR_MASK);
+ 
++		/*
++		 * Make sure null func frame is acked before configuring
++		 * hw into ps mode.
++		 */
++		if (bf->bf_isnullfunc && txok) {
++			if ((sc->ps_flags & PS_ENABLED))
++				ath9k_enable_ps(sc);
++			else
++				sc->ps_flags |= PS_NULLFUNC_COMPLETED;
++		}
++
+ 		if (!bf_isampdu(bf)) {
+ 			bf->bf_retries = txs.ts_longretry;
+ 			if (txs.ts_status & ATH9K_TXERR_XRETRY)
+-- 
+1.6.3.3
+
