@@ -1,7 +1,7 @@
-From af9b87568dbd2c07ac41e0c6ae9037526b15712d Mon Sep 17 00:00:00 2001
+From e171efcee117cd713e58334b0d82fb5e612888e4 Mon Sep 17 00:00:00 2001
 From: Sujith <Sujith.Manoharan@atheros.com>
 Date: Thu, 20 May 2010 17:23:19 +0530
-Subject: [PATCH 16/19] ath9k: Move driver specific structures
+Subject: [PATCH 14/20] ath9k: Move driver specific structures
 
 A bunch of data structures are present in the
 common module, which are internal to ath9k.
@@ -13,6 +13,8 @@ Signed-off-by: Sujith <Sujith.Manoharan@atheros.com>
  drivers/net/wireless/ath/ath9k/common.h |   63 -------------------------------
  2 files changed, 63 insertions(+), 63 deletions(-)
 
+diff --git a/drivers/net/wireless/ath/ath9k/ath9k.h b/drivers/net/wireless/ath/ath9k/ath9k.h
+index fbb7dec..cc6ea42 100644
 --- a/drivers/net/wireless/ath/ath9k/ath9k.h
 +++ b/drivers/net/wireless/ath/ath9k/ath9k.h
 @@ -206,6 +206,69 @@ struct ath_txq {
@@ -85,6 +87,8 @@ Signed-off-by: Sujith <Sujith.Manoharan@atheros.com>
  #define AGGR_CLEANUP         BIT(1)
  #define AGGR_ADDBA_COMPLETE  BIT(2)
  #define AGGR_ADDBA_PROGRESS  BIT(3)
+diff --git a/drivers/net/wireless/ath/ath9k/common.h b/drivers/net/wireless/ath/ath9k/common.h
+index 1e6f360..283cca8 100644
 --- a/drivers/net/wireless/ath/ath9k/common.h
 +++ b/drivers/net/wireless/ath/ath9k/common.h
 @@ -52,69 +52,6 @@
@@ -157,3 +161,6 @@ Signed-off-by: Sujith <Sujith.Manoharan@atheros.com>
  int ath9k_cmn_padpos(__le16 frame_control);
  int ath9k_cmn_get_hw_crypto_keytype(struct sk_buff *skb);
  void ath9k_cmn_update_ichannel(struct ieee80211_hw *hw,
+-- 
+1.6.3.3
+

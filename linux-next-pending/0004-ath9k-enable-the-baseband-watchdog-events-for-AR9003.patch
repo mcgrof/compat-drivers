@@ -1,7 +1,7 @@
-From cdfd0964c1c769a3de7e0c24c2469c7865e423f3 Mon Sep 17 00:00:00 2001
+From 9e472af2e2994b3ce54f2ba41c277bdba8ccd856 Mon Sep 17 00:00:00 2001
 From: Luis R. Rodriguez <lrodriguez@atheros.com>
 Date: Wed, 12 May 2010 11:12:02 -0700
-Subject: [PATCH 04/19] ath9k: enable the baseband watchdog events for AR9003
+Subject: [PATCH 04/20] ath9k: enable the baseband watchdog events for AR9003
 
 This enables the baseband watchdog events for the AR9003
 family on ath9k. Upon an a baseband watchdog interrupt we reset
@@ -22,9 +22,11 @@ Signed-off-by: Luis R. Rodriguez <lrodriguez@atheros.com>
  drivers/net/wireless/ath/ath9k/main.c  |   10 +++++++++-
  3 files changed, 16 insertions(+), 1 deletions(-)
 
+diff --git a/drivers/net/wireless/ath/ath9k/debug.c b/drivers/net/wireless/ath/ath9k/debug.c
+index 29898f8..ee83877 100644
 --- a/drivers/net/wireless/ath/ath9k/debug.c
 +++ b/drivers/net/wireless/ath/ath9k/debug.c
-@@ -269,6 +269,8 @@ void ath_debug_stat_interrupt(struct ath
+@@ -269,6 +269,8 @@ void ath_debug_stat_interrupt(struct ath_softc *sc, enum ath9k_int status)
  			sc->debug.stats.istats.rxlp++;
  		if (status & ATH9K_INT_RXHP)
  			sc->debug.stats.istats.rxhp++;
@@ -33,7 +35,7 @@ Signed-off-by: Luis R. Rodriguez <lrodriguez@atheros.com>
  	} else {
  		if (status & ATH9K_INT_RX)
  			sc->debug.stats.istats.rxok++;
-@@ -319,6 +321,9 @@ static ssize_t read_file_interrupt(struc
+@@ -319,6 +321,9 @@ static ssize_t read_file_interrupt(struct file *file, char __user *user_buf,
  			"%8s: %10u\n", "RXLP", sc->debug.stats.istats.rxlp);
  		len += snprintf(buf + len, sizeof(buf) - len,
  			"%8s: %10u\n", "RXHP", sc->debug.stats.istats.rxhp);
@@ -43,6 +45,8 @@ Signed-off-by: Luis R. Rodriguez <lrodriguez@atheros.com>
  	} else {
  		len += snprintf(buf + len, sizeof(buf) - len,
  			"%8s: %10u\n", "RX", sc->debug.stats.istats.rxok);
+diff --git a/drivers/net/wireless/ath/ath9k/debug.h b/drivers/net/wireless/ath/ath9k/debug.h
+index 5147b87..5d21704 100644
 --- a/drivers/net/wireless/ath/ath9k/debug.h
 +++ b/drivers/net/wireless/ath/ath9k/debug.h
 @@ -53,6 +53,7 @@ struct ath_buf;
@@ -61,6 +65,8 @@ Signed-off-by: Luis R. Rodriguez <lrodriguez@atheros.com>
  };
  
  struct ath_rc_stats {
+diff --git a/drivers/net/wireless/ath/ath9k/main.c b/drivers/net/wireless/ath/ath9k/main.c
+index abfa049..b98b2f2 100644
 --- a/drivers/net/wireless/ath/ath9k/main.c
 +++ b/drivers/net/wireless/ath/ath9k/main.c
 @@ -520,6 +520,12 @@ irqreturn_t ath_isr(int irq, void *dev)
@@ -76,7 +82,7 @@ Signed-off-by: Luis R. Rodriguez <lrodriguez@atheros.com>
  	if (status & ATH9K_INT_SWBA)
  		tasklet_schedule(&sc->bcon_tasklet);
  
-@@ -1195,7 +1201,9 @@ static int ath9k_start(struct ieee80211_
+@@ -1195,7 +1201,9 @@ static int ath9k_start(struct ieee80211_hw *hw)
  		    ATH9K_INT_GLOBAL;
  
  	if (ah->caps.hw_caps & ATH9K_HW_CAP_EDMA)
@@ -87,3 +93,6 @@ Signed-off-by: Luis R. Rodriguez <lrodriguez@atheros.com>
  	else
  		ah->imask |= ATH9K_INT_RX;
  
+-- 
+1.6.3.3
+

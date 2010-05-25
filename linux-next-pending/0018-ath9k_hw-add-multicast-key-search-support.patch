@@ -1,0 +1,57 @@
+From af9f4737b9e305454f2c769565184ed105b618b8 Mon Sep 17 00:00:00 2001
+From: Felix Fietkau <nbd@openwrt.org>
+Date: Tue, 25 May 2010 19:42:44 +0200
+Subject: [PATCH 18/20] ath9k_hw: add multicast key search support
+
+If a MAC address for a key table entry is flagged with the
+multicast bit (0x01), indicate to the hardware that multicast
+lookup instead of unicast lookup should be used. The multicast
+bit itself never makes it to the actual keytable entry register,
+as it is shifted out.
+
+Signed-off-by: Felix Fietkau <nbd@openwrt.org>
+---
+ drivers/net/wireless/ath/ath9k/hw.c |   13 ++++++++++++-
+ 1 files changed, 12 insertions(+), 1 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath9k/hw.c b/drivers/net/wireless/ath/ath9k/hw.c
+index 1ded0b7..e70d7fe 100644
+--- a/drivers/net/wireless/ath/ath9k/hw.c
++++ b/drivers/net/wireless/ath/ath9k/hw.c
+@@ -1485,6 +1485,7 @@ EXPORT_SYMBOL(ath9k_hw_keyreset);
+ bool ath9k_hw_keysetmac(struct ath_hw *ah, u16 entry, const u8 *mac)
+ {
+ 	u32 macHi, macLo;
++	u32 unicast_flag = AR_KEYTABLE_VALID;
+ 
+ 	if (entry >= ah->caps.keycache_size) {
+ 		ath_print(ath9k_hw_common(ah), ATH_DBG_FATAL,
+@@ -1493,6 +1494,16 @@ bool ath9k_hw_keysetmac(struct ath_hw *ah, u16 entry, const u8 *mac)
+ 	}
+ 
+ 	if (mac != NULL) {
++		/*
++		 * AR_KEYTABLE_VALID indicates that the address is a unicast
++		 * address, which must match the transmitter address for
++		 * decrypting frames.
++		 * Not setting this bit allows the hardware to use the key
++		 * for multicast frame decryption.
++		 */
++		if (mac[0] & 0x01)
++			unicast_flag = 0;
++
+ 		macHi = (mac[5] << 8) | mac[4];
+ 		macLo = (mac[3] << 24) |
+ 			(mac[2] << 16) |
+@@ -1505,7 +1516,7 @@ bool ath9k_hw_keysetmac(struct ath_hw *ah, u16 entry, const u8 *mac)
+ 		macLo = macHi = 0;
+ 	}
+ 	REG_WRITE(ah, AR_KEYTABLE_MAC0(entry), macLo);
+-	REG_WRITE(ah, AR_KEYTABLE_MAC1(entry), macHi | AR_KEYTABLE_VALID);
++	REG_WRITE(ah, AR_KEYTABLE_MAC1(entry), macHi | unicast_flag);
+ 
+ 	return true;
+ }
+-- 
+1.6.3.3
+

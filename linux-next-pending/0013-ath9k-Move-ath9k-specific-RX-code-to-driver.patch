@@ -1,7 +1,7 @@
-From fdeff77508aed952a3b3f42484db09d4e8728bbb Mon Sep 17 00:00:00 2001
+From be5c86be802f5a9e6f6a2771e77d80d4c7d8924b Mon Sep 17 00:00:00 2001
 From: Sujith <Sujith.Manoharan@atheros.com>
 Date: Thu, 20 May 2010 15:34:38 +0530
-Subject: [PATCH 15/19] ath9k: Move ath9k specific RX code to driver
+Subject: [PATCH 13/20] ath9k: Move ath9k specific RX code to driver
 
 This patch relocates RX processing code from the
 common module to ath9k. This reduces the size
@@ -14,6 +14,8 @@ Signed-off-by: Sujith <Sujith.Manoharan@atheros.com>
  drivers/net/wireless/ath/ath9k/recv.c   |  267 ++++++++++++++++++++++++++++++-
  3 files changed, 263 insertions(+), 281 deletions(-)
 
+diff --git a/drivers/net/wireless/ath/ath9k/common.c b/drivers/net/wireless/ath/ath9k/common.c
+index 7707341..27f9ae5 100644
 --- a/drivers/net/wireless/ath/ath9k/common.c
 +++ b/drivers/net/wireless/ath/ath9k/common.c
 @@ -27,270 +27,6 @@ MODULE_AUTHOR("Atheros Communications");
@@ -287,6 +289,8 @@ Signed-off-by: Sujith <Sujith.Manoharan@atheros.com>
  int ath9k_cmn_padpos(__le16 frame_control)
  {
  	int padpos = 24;
+diff --git a/drivers/net/wireless/ath/ath9k/common.h b/drivers/net/wireless/ath/ath9k/common.h
+index e08f7e5..1e6f360 100644
 --- a/drivers/net/wireless/ath/ath9k/common.h
 +++ b/drivers/net/wireless/ath/ath9k/common.h
 @@ -115,19 +115,6 @@ struct ath_node {
@@ -309,9 +313,11 @@ Signed-off-by: Sujith <Sujith.Manoharan@atheros.com>
  int ath9k_cmn_padpos(__le16 frame_control);
  int ath9k_cmn_get_hw_crypto_keytype(struct sk_buff *skb);
  void ath9k_cmn_update_ichannel(struct ieee80211_hw *hw,
+diff --git a/drivers/net/wireless/ath/ath9k/recv.c b/drivers/net/wireless/ath/ath9k/recv.c
+index 90c3e0e..d5b3ea7 100644
 --- a/drivers/net/wireless/ath/ath9k/recv.c
 +++ b/drivers/net/wireless/ath/ath9k/recv.c
-@@ -821,6 +821,265 @@ static struct ath_buf *ath_get_next_rx_b
+@@ -824,6 +824,265 @@ static struct ath_buf *ath_get_next_rx_buf(struct ath_softc *sc,
  	return bf;
  }
  
@@ -577,7 +583,7 @@ Signed-off-by: Sujith <Sujith.Manoharan@atheros.com>
  
  int ath_rx_tasklet(struct ath_softc *sc, int flush, bool hp)
  {
-@@ -883,8 +1142,8 @@ int ath_rx_tasklet(struct ath_softc *sc,
+@@ -886,8 +1145,8 @@ int ath_rx_tasklet(struct ath_softc *sc, int flush, bool hp)
  		if (flush)
  			goto requeue;
  
@@ -588,7 +594,7 @@ Signed-off-by: Sujith <Sujith.Manoharan@atheros.com>
  		if (retval)
  			goto requeue;
  
-@@ -908,8 +1167,8 @@ int ath_rx_tasklet(struct ath_softc *sc,
+@@ -911,8 +1170,8 @@ int ath_rx_tasklet(struct ath_softc *sc, int flush, bool hp)
  		if (ah->caps.rx_status_len)
  			skb_pull(skb, ah->caps.rx_status_len);
  
@@ -599,3 +605,6 @@ Signed-off-by: Sujith <Sujith.Manoharan@atheros.com>
  
  		/* We will now give hardware our shiny new allocated skb */
  		bf->bf_mpdu = requeue_skb;
+-- 
+1.6.3.3
+

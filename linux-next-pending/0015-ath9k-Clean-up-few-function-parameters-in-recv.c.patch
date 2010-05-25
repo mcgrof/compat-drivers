@@ -1,7 +1,7 @@
-From fead6bb5090ec7db68831d6bd9503dec2f10057f Mon Sep 17 00:00:00 2001
+From 9165102f082775f29be69c0956ae6eccb636e18b Mon Sep 17 00:00:00 2001
 From: Vasanthakumar Thiagarajan <vasanth@atheros.com>
 Date: Thu, 20 May 2010 14:34:46 -0700
-Subject: [PATCH 17/19] ath9k: Clean up few function parameters in recv.c
+Subject: [PATCH 15/20] ath9k: Clean up few function parameters in recv.c
 
 ath9k_rx_skb_preprocess() needs only ieee80211 frame header,
 pass only frame headers instead of skb to that function. Also
@@ -12,9 +12,11 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  drivers/net/wireless/ath/ath9k/recv.c |   23 ++++++++---------------
  1 files changed, 8 insertions(+), 15 deletions(-)
 
+diff --git a/drivers/net/wireless/ath/ath9k/recv.c b/drivers/net/wireless/ath/ath9k/recv.c
+index d5b3ea7..48049f8 100644
 --- a/drivers/net/wireless/ath/ath9k/recv.c
 +++ b/drivers/net/wireless/ath/ath9k/recv.c
-@@ -823,16 +823,14 @@ static struct ath_buf *ath_get_next_rx_b
+@@ -826,16 +826,14 @@ static struct ath_buf *ath_get_next_rx_buf(struct ath_softc *sc,
  
  /* Assumes you've already done the endian to CPU conversion */
  static bool ath9k_rx_accept(struct ath_common *common,
@@ -32,7 +34,7 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  	fc = hdr->frame_control;
  
  	if (!rx_stats->rs_datalen)
-@@ -903,8 +901,7 @@ static bool ath9k_rx_accept(struct ath_c
+@@ -906,8 +904,7 @@ static bool ath9k_rx_accept(struct ath_common *common,
  static int ath9k_process_rate(struct ath_common *common,
  			      struct ieee80211_hw *hw,
  			      struct ath_rx_status *rx_stats,
@@ -42,7 +44,7 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  {
  	struct ieee80211_supported_band *sband;
  	enum ieee80211_band band;
-@@ -942,25 +939,21 @@ static int ath9k_process_rate(struct ath
+@@ -945,25 +942,21 @@ static int ath9k_process_rate(struct ath_common *common,
  	 */
  	ath_print(common, ATH_DBG_XMIT, "unsupported hw bitrate detected "
  		  "0x%02x using 1 Mbit\n", rx_stats->rs_rate);
@@ -69,7 +71,7 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  	fc = hdr->frame_control;
  
  	rcu_read_lock();
-@@ -999,7 +992,7 @@ static void ath9k_process_rssi(struct at
+@@ -1002,7 +995,7 @@ static void ath9k_process_rssi(struct ath_common *common,
   */
  static int ath9k_rx_skb_preprocess(struct ath_common *common,
  				   struct ieee80211_hw *hw,
@@ -78,7 +80,7 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  				   struct ath_rx_status *rx_stats,
  				   struct ieee80211_rx_status *rx_status,
  				   bool *decrypt_error)
-@@ -1012,12 +1005,12 @@ static int ath9k_rx_skb_preprocess(struc
+@@ -1015,12 +1008,12 @@ static int ath9k_rx_skb_preprocess(struct ath_common *common,
  	 * everything but the rate is checked here, the rate check is done
  	 * separately to avoid doing two lookups for a rate for each frame.
  	 */
@@ -94,7 +96,7 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  		return -EINVAL;
  
  	rx_status->mactime = ath9k_hw_extend_tsf(ah, rx_stats->rs_tstamp);
-@@ -1142,7 +1135,7 @@ int ath_rx_tasklet(struct ath_softc *sc,
+@@ -1145,7 +1138,7 @@ int ath_rx_tasklet(struct ath_softc *sc, int flush, bool hp)
  		if (flush)
  			goto requeue;
  
@@ -103,3 +105,6 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  						 rxs, &decrypt_error);
  		if (retval)
  			goto requeue;
+-- 
+1.6.3.3
+

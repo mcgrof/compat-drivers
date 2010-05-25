@@ -1,16 +1,18 @@
-From 79e8cb3f106fbb4f8aa1fb2ab442f6e34b992bbc Mon Sep 17 00:00:00 2001
+From a269e97ddf3d7e86b68b8cc007431a1022989430 Mon Sep 17 00:00:00 2001
 From: Vasanthakumar Thiagarajan <vasanth@atheros.com>
 Date: Mon, 17 May 2010 18:38:58 -0700
-Subject: [PATCH 09/19] ath9k_hw: Enable auto sleep for ar9003
+Subject: [PATCH 08/20] ath9k_hw: Enable auto sleep for ar9003
 
 Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
 ---
  drivers/net/wireless/ath/ath9k/hw.c |    2 +-
  1 files changed, 1 insertions(+), 1 deletions(-)
 
+diff --git a/drivers/net/wireless/ath/ath9k/hw.c b/drivers/net/wireless/ath/ath9k/hw.c
+index 2fd6254..b2301bd 100644
 --- a/drivers/net/wireless/ath/ath9k/hw.c
 +++ b/drivers/net/wireless/ath/ath9k/hw.c
-@@ -2167,7 +2167,7 @@ int ath9k_hw_fill_cap_info(struct ath_hw
+@@ -2167,7 +2167,7 @@ int ath9k_hw_fill_cap_info(struct ath_hw *ah)
  		pCap->hw_caps |= ATH9K_HW_CAP_RFSILENT;
  	}
  #endif
@@ -19,3 +21,6 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  		pCap->hw_caps |= ATH9K_HW_CAP_AUTOSLEEP;
  	else
  		pCap->hw_caps &= ~ATH9K_HW_CAP_AUTOSLEEP;
+-- 
+1.6.3.3
+

@@ -1,7 +1,7 @@
-From b5a8d95359c518498d91d0c28673060d58d62d44 Mon Sep 17 00:00:00 2001
+From fd45dc3316a3ccaa961ce9835ca21c705956d1dd Mon Sep 17 00:00:00 2001
 From: Vasanthakumar Thiagarajan <vasanth@atheros.com>
 Date: Thu, 20 May 2010 14:47:28 -0700
-Subject: [PATCH 18/19] ath9k: Fix bug in accessing skb->data of rx frame for edma
+Subject: [PATCH 16/20] ath9k: Fix bug in accessing skb->data of rx frame for edma
 
 Skip the rx status portion in skb->data before accessing ieee80211
 frame header.
@@ -11,9 +11,11 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  drivers/net/wireless/ath/ath9k/recv.c |    3 ++-
  1 files changed, 2 insertions(+), 1 deletions(-)
 
+diff --git a/drivers/net/wireless/ath/ath9k/recv.c b/drivers/net/wireless/ath/ath9k/recv.c
+index 48049f8..e8eb15f 100644
 --- a/drivers/net/wireless/ath/ath9k/recv.c
 +++ b/drivers/net/wireless/ath/ath9k/recv.c
-@@ -1094,6 +1094,7 @@ int ath_rx_tasklet(struct ath_softc *sc,
+@@ -1097,6 +1097,7 @@ int ath_rx_tasklet(struct ath_softc *sc, int flush, bool hp)
  	enum ath9k_rx_qtype qtype;
  	bool edma = !!(ah->caps.hw_caps & ATH9K_HW_CAP_EDMA);
  	int dma_type;
@@ -21,7 +23,7 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  
  	if (edma)
  		dma_type = DMA_FROM_DEVICE;
-@@ -1121,7 +1122,7 @@ int ath_rx_tasklet(struct ath_softc *sc,
+@@ -1124,7 +1125,7 @@ int ath_rx_tasklet(struct ath_softc *sc, int flush, bool hp)
  		if (!skb)
  			continue;
  
@@ -30,3 +32,6 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  		rxs =  IEEE80211_SKB_RXCB(skb);
  
  		hw = ath_get_virt_hw(sc, hdr);
+-- 
+1.6.3.3
+
