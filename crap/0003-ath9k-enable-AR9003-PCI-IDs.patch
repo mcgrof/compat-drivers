@@ -2,7 +2,7 @@ Reason for not yet publishing: This code will only be added once
 AR9003 support is completed. It makes no sense to enable AR9003
 until we are completely satisfied with all the code.
 
-From a685dc0cdbc728510cd612c613a4382419b85c17 Mon Sep 17 00:00:00 2001
+From b46903df1aaf40d3b4957c9eaf1188341aab4d28 Mon Sep 17 00:00:00 2001
 From: Luis R. Rodriguez <lrodriguez@atheros.com>
 Date: Thu, 13 May 2010 17:33:23 -0700
 Subject: [PATCH 3/3] ath9k: enable AR9003 PCI IDs
