@@ -12,11 +12,9 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  drivers/net/wireless/ath/ath9k/recv.c |   23 ++++++++---------------
  1 files changed, 8 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/recv.c b/drivers/net/wireless/ath/ath9k/recv.c
-index d855155..512b3f0 100644
 --- a/drivers/net/wireless/ath/ath9k/recv.c
 +++ b/drivers/net/wireless/ath/ath9k/recv.c
-@@ -820,16 +820,14 @@ static struct ath_buf *ath_get_next_rx_buf(struct ath_softc *sc,
+@@ -823,16 +823,14 @@ static struct ath_buf *ath_get_next_rx_b
  
  /* Assumes you've already done the endian to CPU conversion */
  static bool ath9k_rx_accept(struct ath_common *common,
@@ -34,7 +32,7 @@ index d855155..512b3f0 100644
  	fc = hdr->frame_control;
  
  	if (!rx_stats->rs_datalen)
-@@ -900,8 +898,7 @@ static bool ath9k_rx_accept(struct ath_common *common,
+@@ -903,8 +901,7 @@ static bool ath9k_rx_accept(struct ath_c
  static int ath9k_process_rate(struct ath_common *common,
  			      struct ieee80211_hw *hw,
  			      struct ath_rx_status *rx_stats,
@@ -44,7 +42,7 @@ index d855155..512b3f0 100644
  {
  	struct ieee80211_supported_band *sband;
  	enum ieee80211_band band;
-@@ -939,25 +936,21 @@ static int ath9k_process_rate(struct ath_common *common,
+@@ -942,25 +939,21 @@ static int ath9k_process_rate(struct ath
  	 */
  	ath_print(common, ATH_DBG_XMIT, "unsupported hw bitrate detected "
  		  "0x%02x using 1 Mbit\n", rx_stats->rs_rate);
@@ -71,7 +69,7 @@ index d855155..512b3f0 100644
  	fc = hdr->frame_control;
  
  	rcu_read_lock();
-@@ -996,7 +989,7 @@ static void ath9k_process_rssi(struct ath_common *common,
+@@ -999,7 +992,7 @@ static void ath9k_process_rssi(struct at
   */
  static int ath9k_rx_skb_preprocess(struct ath_common *common,
  				   struct ieee80211_hw *hw,
@@ -80,7 +78,7 @@ index d855155..512b3f0 100644
  				   struct ath_rx_status *rx_stats,
  				   struct ieee80211_rx_status *rx_status,
  				   bool *decrypt_error)
-@@ -1009,12 +1002,12 @@ static int ath9k_rx_skb_preprocess(struct ath_common *common,
+@@ -1012,12 +1005,12 @@ static int ath9k_rx_skb_preprocess(struc
  	 * everything but the rate is checked here, the rate check is done
  	 * separately to avoid doing two lookups for a rate for each frame.
  	 */
@@ -96,7 +94,7 @@ index d855155..512b3f0 100644
  		return -EINVAL;
  
  	rx_status->mactime = ath9k_hw_extend_tsf(ah, rx_stats->rs_tstamp);
-@@ -1139,7 +1132,7 @@ int ath_rx_tasklet(struct ath_softc *sc, int flush, bool hp)
+@@ -1142,7 +1135,7 @@ int ath_rx_tasklet(struct ath_softc *sc,
  		if (flush)
  			goto requeue;
  
@@ -105,6 +103,3 @@ index d855155..512b3f0 100644
  						 rxs, &decrypt_error);
  		if (retval)
  			goto requeue;
--- 
-1.6.3.3
-

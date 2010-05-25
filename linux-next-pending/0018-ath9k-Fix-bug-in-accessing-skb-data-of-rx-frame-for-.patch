@@ -11,11 +11,9 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  drivers/net/wireless/ath/ath9k/recv.c |    3 ++-
  1 files changed, 2 insertions(+), 1 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/recv.c b/drivers/net/wireless/ath/ath9k/recv.c
-index 512b3f0..95f1622 100644
 --- a/drivers/net/wireless/ath/ath9k/recv.c
 +++ b/drivers/net/wireless/ath/ath9k/recv.c
-@@ -1091,6 +1091,7 @@ int ath_rx_tasklet(struct ath_softc *sc, int flush, bool hp)
+@@ -1094,6 +1094,7 @@ int ath_rx_tasklet(struct ath_softc *sc,
  	enum ath9k_rx_qtype qtype;
  	bool edma = !!(ah->caps.hw_caps & ATH9K_HW_CAP_EDMA);
  	int dma_type;
@@ -23,7 +21,7 @@ index 512b3f0..95f1622 100644
  
  	if (edma)
  		dma_type = DMA_FROM_DEVICE;
-@@ -1118,7 +1119,7 @@ int ath_rx_tasklet(struct ath_softc *sc, int flush, bool hp)
+@@ -1121,7 +1122,7 @@ int ath_rx_tasklet(struct ath_softc *sc,
  		if (!skb)
  			continue;
  
@@ -32,6 +30,3 @@ index 512b3f0..95f1622 100644
  		rxs =  IEEE80211_SKB_RXCB(skb);
  
  		hw = ath_get_virt_hw(sc, hdr);
--- 
-1.6.3.3
-

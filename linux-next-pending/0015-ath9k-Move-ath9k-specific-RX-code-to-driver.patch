@@ -14,8 +14,6 @@ Signed-off-by: Sujith <Sujith.Manoharan@atheros.com>
  drivers/net/wireless/ath/ath9k/recv.c   |  267 ++++++++++++++++++++++++++++++-
  3 files changed, 263 insertions(+), 281 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/common.c b/drivers/net/wireless/ath/ath9k/common.c
-index 7707341..27f9ae5 100644
 --- a/drivers/net/wireless/ath/ath9k/common.c
 +++ b/drivers/net/wireless/ath/ath9k/common.c
 @@ -27,270 +27,6 @@ MODULE_AUTHOR("Atheros Communications");
@@ -289,8 +287,6 @@ index 7707341..27f9ae5 100644
  int ath9k_cmn_padpos(__le16 frame_control)
  {
  	int padpos = 24;
-diff --git a/drivers/net/wireless/ath/ath9k/common.h b/drivers/net/wireless/ath/ath9k/common.h
-index e08f7e5..1e6f360 100644
 --- a/drivers/net/wireless/ath/ath9k/common.h
 +++ b/drivers/net/wireless/ath/ath9k/common.h
 @@ -115,19 +115,6 @@ struct ath_node {
@@ -313,11 +309,9 @@ index e08f7e5..1e6f360 100644
  int ath9k_cmn_padpos(__le16 frame_control);
  int ath9k_cmn_get_hw_crypto_keytype(struct sk_buff *skb);
  void ath9k_cmn_update_ichannel(struct ieee80211_hw *hw,
-diff --git a/drivers/net/wireless/ath/ath9k/recv.c b/drivers/net/wireless/ath/ath9k/recv.c
-index dfb11a6..d855155 100644
 --- a/drivers/net/wireless/ath/ath9k/recv.c
 +++ b/drivers/net/wireless/ath/ath9k/recv.c
-@@ -818,6 +818,265 @@ static struct ath_buf *ath_get_next_rx_buf(struct ath_softc *sc,
+@@ -821,6 +821,265 @@ static struct ath_buf *ath_get_next_rx_b
  	return bf;
  }
  
@@ -583,7 +577,7 @@ index dfb11a6..d855155 100644
  
  int ath_rx_tasklet(struct ath_softc *sc, int flush, bool hp)
  {
-@@ -880,8 +1139,8 @@ int ath_rx_tasklet(struct ath_softc *sc, int flush, bool hp)
+@@ -883,8 +1142,8 @@ int ath_rx_tasklet(struct ath_softc *sc,
  		if (flush)
  			goto requeue;
  
@@ -594,7 +588,7 @@ index dfb11a6..d855155 100644
  		if (retval)
  			goto requeue;
  
-@@ -905,8 +1164,8 @@ int ath_rx_tasklet(struct ath_softc *sc, int flush, bool hp)
+@@ -908,8 +1167,8 @@ int ath_rx_tasklet(struct ath_softc *sc,
  		if (ah->caps.rx_status_len)
  			skb_pull(skb, ah->caps.rx_status_len);
  
@@ -605,6 +599,3 @@ index dfb11a6..d855155 100644
  
  		/* We will now give hardware our shiny new allocated skb */
  		bf->bf_mpdu = requeue_skb;
--- 
-1.6.3.3
-

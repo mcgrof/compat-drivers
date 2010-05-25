@@ -8,11 +8,9 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  drivers/net/wireless/ath/ath9k/hw.c |    2 +-
  1 files changed, 1 insertions(+), 1 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/hw.c b/drivers/net/wireless/ath/ath9k/hw.c
-index 2fd6254..b2301bd 100644
 --- a/drivers/net/wireless/ath/ath9k/hw.c
 +++ b/drivers/net/wireless/ath/ath9k/hw.c
-@@ -2167,7 +2167,7 @@ int ath9k_hw_fill_cap_info(struct ath_hw *ah)
+@@ -2167,7 +2167,7 @@ int ath9k_hw_fill_cap_info(struct ath_hw
  		pCap->hw_caps |= ATH9K_HW_CAP_RFSILENT;
  	}
  #endif
@@ -21,6 +19,3 @@ index 2fd6254..b2301bd 100644
  		pCap->hw_caps |= ATH9K_HW_CAP_AUTOSLEEP;
  	else
  		pCap->hw_caps &= ~ATH9K_HW_CAP_AUTOSLEEP;
--- 
-1.6.3.3
-

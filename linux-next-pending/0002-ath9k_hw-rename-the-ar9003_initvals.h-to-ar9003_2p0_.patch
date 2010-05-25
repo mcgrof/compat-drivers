@@ -12,9 +12,6 @@ Signed-off-by: Luis R. Rodriguez <lrodriguez@atheros.com>
  create mode 100644 drivers/net/wireless/ath/ath9k/ar9003_2p0_initvals.h
  delete mode 100644 drivers/net/wireless/ath/ath9k/ar9003_initvals.h
 
-diff --git a/drivers/net/wireless/ath/ath9k/ar9003_2p0_initvals.h b/drivers/net/wireless/ath/ath9k/ar9003_2p0_initvals.h
-new file mode 100644
-index 0000000..f82a00d
 --- /dev/null
 +++ b/drivers/net/wireless/ath/ath9k/ar9003_2p0_initvals.h
 @@ -0,0 +1,1784 @@
@@ -1802,8 +1799,6 @@ index 0000000..f82a00d
 +};
 +
 +#endif /* INITVALS_9003_2P0_H */
-diff --git a/drivers/net/wireless/ath/ath9k/ar9003_hw.c b/drivers/net/wireless/ath/ath9k/ar9003_hw.c
-index 3c4a446..863f61e 100644
 --- a/drivers/net/wireless/ath/ath9k/ar9003_hw.c
 +++ b/drivers/net/wireless/ath/ath9k/ar9003_hw.c
 @@ -16,7 +16,7 @@
@@ -1815,9 +1810,6 @@ index 3c4a446..863f61e 100644
  #include "ar9003_2p2_initvals.h"
  
  /* General hardware code for the AR9003 hadware family */
-diff --git a/drivers/net/wireless/ath/ath9k/ar9003_initvals.h b/drivers/net/wireless/ath/ath9k/ar9003_initvals.h
-deleted file mode 100644
-index db019dd..0000000
 --- a/drivers/net/wireless/ath/ath9k/ar9003_initvals.h
 +++ /dev/null
 @@ -1,1784 +0,0 @@
@@ -3605,6 +3597,3 @@ index db019dd..0000000
 -};
 -
 -#endif /* INITVALS_9003_H */
--- 
-1.6.3.3
-
