@@ -57,10 +57,16 @@ usage() {
 }
 
 brag_backport() {
+	COMPAT_FILES_CODE=$(find ./ -type f -name  \*.[ch] | egrep  "^./compat/|include/linux/compat" |
+		xargs wc -l | tail -1 | awk '{print $1}')
+	let COMPAT_ALL_CHANGES=$2+$COMPAT_FILES_CODE
 	printf "${GREEN}%10s${NORMAL} - backport code changes\n" $2
 	printf "${GREEN}%10s${NORMAL} - backport code additions\n" $3
 	printf "${GREEN}%10s${NORMAL} - backport code deletions\n" $4
-	printf "${RED}%10s${NORMAL} - %% of code consists of backport work\n" $(perl -e 'printf("%.2f", 100 * '$2' / '$1');')
+	printf "${GREEN}%10s${NORMAL} - backport from compat module\n" $COMPAT_FILES_CODE
+	printf "${GREEN}%10s${NORMAL} - total backport code\n" $COMPAT_ALL_CHANGES
+	printf "${RED}%10s${NORMAL} - %% of code consists of backport work\n" \
+		$(perl -e 'printf("%.2f", 100 * '$COMPAT_ALL_CHANGES' / '$1');')
 }
 
 nag_next_cherry_pick() {
@@ -389,7 +395,9 @@ if [[ "$REFRESH" = "y" ]]; then
 	done
 fi
 
-ORIG_CODE=$(find ./ -type f -name \*.[ch]| xargs wc -l | tail -1 | awk '{print $1}')
+ORIG_CODE=$(find ./ -type f -name  \*.[ch] |
+	egrep -v "^./compat/|include/linux/compat" |
+	xargs wc -l | tail -1 | awk '{print $1}')
 printf "\n${CYAN}compat-wireless code metrics${NORMAL}\n\n" > $CODE_METRICS
 printf "${PURPLE}%10s${NORMAL} - Total upstream code being pulled\n" $ORIG_CODE >> $CODE_METRICS
 
