@@ -4,7 +4,7 @@ compat_is_pcie() when needed.
 
 --- a/drivers/net/wireless/ath/ath9k/pci.c
 +++ b/drivers/net/wireless/ath/ath9k/pci.c
-@@ -80,7 +80,11 @@ static void ath_pci_bt_coex_prep(struct 
+@@ -79,7 +79,11 @@ static void ath_pci_bt_coex_prep(struct 
  	struct pci_dev *pdev = to_pci_dev(sc->dev);
  	u8 aspm;
  

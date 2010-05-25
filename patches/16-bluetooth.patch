@@ -498,7 +498,7 @@ here still, but for now we keep this here.
  		rfcomm_dlc_close(dev->dlc, 0);
 --- a/net/bluetooth/sco.c
 +++ b/net/bluetooth/sco.c
-@@ -429,8 +429,12 @@ static struct sock *sco_sock_alloc(struc
+@@ -428,8 +428,12 @@ static struct sock *sco_sock_alloc(struc
  	return sk;
  }
  
@@ -511,7 +511,7 @@ here still, but for now we keep this here.
  {
  	struct sock *sk;
  
-@@ -645,7 +649,11 @@ static int sco_sock_sendmsg(struct kiocb
+@@ -644,7 +648,11 @@ static int sco_sock_sendmsg(struct kiocb
  	return err;
  }
  
@@ -595,7 +595,7 @@ here still, but for now we keep this here.
  		return -EPERM;
  
  	sock->ops = &l2cap_sock_ops;
-@@ -1912,7 +1920,11 @@ static int l2cap_sock_setsockopt_old(str
+@@ -1910,7 +1918,11 @@ static int l2cap_sock_setsockopt_old(str
  	return err;
  }
  
