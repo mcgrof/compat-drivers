@@ -5,6 +5,6 @@ for i in $MODULES; do
 	modprobe $i
 done
 echo Starting bluetooth service..
-sudo service bluetooth start
-sudo service bluetooth status
+/etc/init.d/bluetooth start
+/etc/init.d/bluetooth status
 

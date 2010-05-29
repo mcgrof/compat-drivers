@@ -31,8 +31,8 @@ MODULES="$MODULES mac80211 cfg80211 lib80211"
 MODULES="$MODULES hidp rfcomm bnep l2cap sco btusb bluetooth"
 MODULES="$MODULES compat"
 echo Stoping bluetooth service..
-sudo service bluetooth stop
-sudo service bluetooth status
+/etc/init.d/bluetooth stop
+/etc/init.d/bluetooth status
 MADWIFI_MODULES="ath_pci ath_rate_sample wlan_scan_sta wlan ath_hal"
 IPW3945D="/sbin/ipw3945d-`uname -r`"
 

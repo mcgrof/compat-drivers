@@ -1,8 +1,8 @@
 #!/bin/bash
 MODULES="hidp rfcomm bnep l2cap sco btusb bluetooth"
 echo Stoping bluetooth service..
-sudo service bluetooth stop
-sudo service bluetooth status
+/etc/init.d/bluetooth stop
+/etc/init.d/bluetooth status
 
 for i in $MODULES; do
 	grep ^$i /proc/modules 2>&1 > /dev/null

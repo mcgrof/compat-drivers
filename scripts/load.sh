@@ -22,5 +22,5 @@ athload ath5k
 # For b43 we must make sure to unload bcm43xx first
 b43load b43
 echo Starting bluetooth service..
-sudo service bluetooth start
-sudo service bluetooth status
+/etc/init.d/bluetooth start
+/etc/init.d/bluetooth status
