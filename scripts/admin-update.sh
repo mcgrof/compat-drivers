@@ -391,12 +391,6 @@ patchRefresh() {
 	rm -rf patches.orig .pc $1/series
 }
 
-if [[ "$REFRESH" = "y" ]]; then
-	for dir in $EXTRA_PATCHES; do
-		patchRefresh $dir
-	done
-fi
-
 ORIG_CODE=$(find ./ -type f -name  \*.[ch] |
 	egrep -v "^./compat/|include/linux/compat" |
 	xargs wc -l | tail -1 | awk '{print $1}')
@@ -404,6 +398,14 @@ printf "\n${CYAN}compat-wireless code metrics${NORMAL}\n\n" > $CODE_METRICS
 printf "${PURPLE}%10s${NORMAL} - Total upstream code being pulled\n" $ORIG_CODE >> $CODE_METRICS
 
 for dir in $EXTRA_PATCHES; do
+	LAST_ELEM=$dir
+done
+
+for dir in $EXTRA_PATCHES; do
+	if [[ $LAST_ELEM = $dir && "$REFRESH" = y ]]; then
+		patchRefresh $dir
+	fi
+
 	FOUND=$(find $dir/ -name \*.patch | wc -l)
 	if [ $FOUND -eq 0 ]; then
 		continue
