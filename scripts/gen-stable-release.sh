@@ -67,7 +67,7 @@ mkdir -p $STAGING
 cp -a $COMPAT_WIRELESS_DIR $STAGING/$RELEASE
 cd $STAGING/$RELEASE
 
-./scripts/admin-update.sh
+./scripts/admin-update.sh $@
 rm -rf $STAGING/$RELEASE/.git
 
 # Remove any gunk
