@@ -12,7 +12,7 @@ at compilation time.
 
 --- a/net/mac80211/rate.c
 +++ b/net/mac80211/rate.c
-@@ -23,7 +23,7 @@
+@@ -23,7 +23,7 @@ struct rate_control_alg {
  static LIST_HEAD(rate_ctrl_algs);
  static DEFINE_MUTEX(rate_ctrl_mutex);
  
@@ -21,7 +21,7 @@ at compilation time.
  module_param(ieee80211_default_rc_algo, charp, 0644);
  MODULE_PARM_DESC(ieee80211_default_rc_algo,
  		 "Default rate control algorithm for mac80211 to use");
-@@ -118,8 +118,8 @@
+@@ -118,8 +118,8 @@ ieee80211_rate_control_ops_get(const cha
  		ops = ieee80211_try_rate_control_ops_get(ieee80211_default_rc_algo);
  
  	/* try built-in one if specific alg requested but not found */
