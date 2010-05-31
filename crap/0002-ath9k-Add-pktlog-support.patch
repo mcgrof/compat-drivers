@@ -1376,7 +1376,7 @@ diff --git a/drivers/net/wireless/ath/ath9k/xmit.c b/drivers/net/wireless/ath/at
 index debb62d..7300a30 100644
 --- a/drivers/net/wireless/ath/ath9k/xmit.c
 +++ b/drivers/net/wireless/ath/ath9k/xmit.c
-@@ -418,6 +418,8 @@ static void ath_tx_complete_aggr(struct ath_softc *sc, struct ath_txq *txq,
+@@ -418,6 +418,8 @@
  			list_move_tail(&bf->list, &bf_head);
  		}
  
@@ -1385,7 +1385,7 @@ index debb62d..7300a30 100644
  		if (!txpending) {
  			/*
  			 * complete the acked-ones/xretried ones; update
-@@ -2115,7 +2117,7 @@ static void ath_tx_processq(struct ath_softc *sc, struct ath_txq *txq)
+@@ -2117,7 +2119,7 @@
  		ds = lastbf->bf_desc;
  
  		memset(&ts, 0, sizeof(ts));
@@ -1394,7 +1394,7 @@ index debb62d..7300a30 100644
  		if (status == -EINPROGRESS) {
  			spin_unlock_bh(&txq->axq_lock);
  			break;
-@@ -2165,10 +2167,14 @@ static void ath_tx_processq(struct ath_softc *sc, struct ath_txq *txq)
+@@ -2167,10 +2169,14 @@
  			ath_tx_rc_status(bf, &ts, 0, txok, true);
  		}
  
@@ -1411,7 +1411,7 @@ index debb62d..7300a30 100644
  
  		ath_wake_mac80211_queue(sc, txq);
  
-@@ -2240,9 +2246,11 @@ void ath_tx_edma_tasklet(struct ath_softc *sc)
+@@ -2242,9 +2248,11 @@
  	struct list_head bf_head;
  	int status;
  	int txok;
@@ -1424,7 +1424,7 @@ index debb62d..7300a30 100644
  		if (status == -EINPROGRESS)
  			break;
  		if (status == -EIO) {
-@@ -2295,14 +2303,18 @@ void ath_tx_edma_tasklet(struct ath_softc *sc)
+@@ -2297,14 +2305,18 @@
  			ath_tx_rc_status(bf, &txs, 0, txok, true);
  		}
  
@@ -1445,6 +1445,3 @@ index debb62d..7300a30 100644
  		spin_lock_bh(&txq->axq_lock);
  		if (!list_empty(&txq->txq_fifo_pending)) {
  			INIT_LIST_HEAD(&bf_head);
--- 
-1.6.3.3
-
