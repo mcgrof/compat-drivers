@@ -15,22 +15,55 @@
 ALL_STABLE_TREE="linux-2.6-allstable"
 STAGING=/tmp/staging/compat-wireless/
 
-if [[ $# -gt 1 ]]; then
-	echo "Usage: $0 <linux-2.6.X.y>"
+function usage()
+{
+	echo "Usage: $1 <linux-2.6.X.y>"
 	echo
 	echo Examples usages:
 	echo
-	echo  $0
-	echo  $0 linux-2.6.29.y
-	echo  $0 linux-2.6.30.y
+	echo  $1
+	echo  $1 linux-2.6.29.y
+	echo  $1 linux-2.6.30.y
 	echo
 	echo "If no kernel is specified we try to make a release based on the latest RC kernel."
-	echo "If a kernel release is specified X is the next stable release as 31 in 2.6.31.y."
+	echo "If a kernel release is specified X is the next stable release as 35 in 2.6.35.y."
 	exit
-fi
+}
 
-# branch we want to use from hpa's tree
-BRANCH="$1"
+UPDATE_ARGS=""
+# branch we want to use from hpa's tree, by default
+# this is origin/master as this will get us the latest
+# RC kernel.
+# This is not used yet
+REMOTE_BRANCH="origin/master"
+POSTFIX_RELEASE_TAG="-"
+
+while [ $# -ne 0 ]; do
+	if [[ "$1" = "-n" ]]; then
+		UPDATE_ARGS="${UPDATE_ARGS} $1"
+		POSTFIX_RELEASE_TAG="${POSTFIX_RELEASE_TAG}n"
+		shift; continue;
+	fi
+	if [[ "$1" = "-p" ]]; then
+		UPDATE_ARGS="${UPDATE_ARGS} $1"
+		POSTFIX_RELEASE_TAG="${POSTFIX_RELEASE_TAG}p"
+		shift; continue;
+	fi
+	if [[ "$1" = "-c" ]]; then
+		UPDATE_ARGS="${UPDATE_ARGS} $1"
+		POSTFIX_RELEASE_TAG="${POSTFIX_RELEASE_TAG}c"
+		shift; continue;
+	fi
+
+	if [[ $(expr "$1" : '^linux-') -eq 6 ]]; then
+		REMOTE_BRANCH="origin/$1"
+		shift; continue;
+	fi
+
+	echo "Unexpected argument passed: $1"
+	usage $0
+	exit
+done
 
 export GIT_TREE=$HOME/$ALL_STABLE_TREE
 COMPAT_WIRELESS_DIR=$(pwd)
@@ -60,6 +93,9 @@ esac
 # We should now be on the branch we want
 KERNEL_RELEASE=$(git describe --abbrev=0 | sed -e 's/v//g')
 RELEASE="compat-wireless-$KERNEL_RELEASE"
+if [[ $POSTFIX_RELEASE_TAG != "-" ]]; then
+	RELEASE="${RELEASE}${POSTFIX_RELEASE_TAG}"
+fi
 RELEASE_TAR="$RELEASE.tar.bz2"
 
 rm -rf $STAGING
@@ -67,7 +103,7 @@ mkdir -p $STAGING
 cp -a $COMPAT_WIRELESS_DIR $STAGING/$RELEASE
 cd $STAGING/$RELEASE
 
-./scripts/admin-update.sh $@
+./scripts/admin-update.sh $UPDATE_ARGS
 rm -rf $STAGING/$RELEASE/.git
 
 # Remove any gunk
