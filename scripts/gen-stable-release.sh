@@ -34,9 +34,13 @@ UPDATE_ARGS=""
 # branch we want to use from hpa's tree, by default
 # this is origin/master as this will get us the latest
 # RC kernel.
-# This is not used yet
-REMOTE_BRANCH="origin/master"
+LOCAL_BRANCH="master"
 POSTFIX_RELEASE_TAG="-"
+
+# By default we will not do a git fetch and reset of the branch,
+# use -f if you want to force an update, this will delete all
+# of your local patches so be careful.
+FORCE_UPDATE="no"
 
 while [ $# -ne 0 ]; do
 	if [[ "$1" = "-n" ]]; then
@@ -54,9 +58,13 @@ while [ $# -ne 0 ]; do
 		POSTFIX_RELEASE_TAG="${POSTFIX_RELEASE_TAG}c"
 		shift; continue;
 	fi
+	if [[ "$1" = "-f" ]]; then
+		FORCE_UPDATE="yes"
+		shift; continue;
+	fi
 
 	if [[ $(expr "$1" : '^linux-') -eq 6 ]]; then
-		REMOTE_BRANCH="origin/$1"
+		LOCAL_BRANCH="$1"
 		shift; continue;
 	fi
 
@@ -67,26 +75,44 @@ done
 
 export GIT_TREE=$HOME/$ALL_STABLE_TREE
 COMPAT_WIRELESS_DIR=$(pwd)
+COMPAT_WIRELESS_BRANCH=$(git branch | grep \* | awk '{print $2}')
 
 cd $GIT_TREE
 # --abbrev=0 on branch should work but I guess it doesn't on some releases
-LOCAL_BRANCH=$(git branch | grep \* | awk '{print $2}')
+EXISTING_BRANCH=$(git branch | grep \* | awk '{print $2}')
+# This is a super hack, but let me know if you figure out a cleaner way
+TARGET_KERNEL_RELEASE=$(make VERSION="linux-2" EXTRAVERSION=".y" kernelversion)
+
+if [[ $COMPAT_WIRELESS_BRANCH != $TARGET_KERNEL_RELEASE ]]; then
+	echo "You are not on the branch $COMPAT_WIRELESS_BRANCH on compat-wireless,"
+	echo "try changing to that first."
+	exit
+fi
 
 case $LOCAL_BRANCH in
 "master") # Preparing a new stable compat-wireless release based on an RC kernel
-	git checkout -f
-	git pull
-	# Rebase will be done automatically if our tree is clean
+	if [[ $FORCE_UPDATE = "yes" || "$EXISTING_BRANCH" != "$LOCAL_BRANCH" ]]; then
+		git checkout -f
+		git fetch
+		git reset --hard origin
+	fi
 	echo "On master branch on $ALL_STABLE_TREE"
 	;;
 *) # Based on a stable 2.6.x.y release, lets just move to the master branch,
    # git pull, nuke the old branch and start a fresh new branch.
+	if [[ $FORCE_UPDATE = "yes" || "$EXISTING_BRANCH" != "$LOCAL_BRANCH" ]]; then
+		git checkout -f
+		git fetch
+		if [[ "$EXISTING_BRANCH" = "$LOCAL_BRANCH" ]]; then
+			git branch -m crap-foo-compat
+		fi
+		git branch -D $LOCAL_BRANCH
+		git checkout -b $LOCAL_BRANCH origin/$LOCAL_BRANCH
+		if [[ "$EXISTING_BRANCH" -eq "$LOCAL_BRANCH" ]]; then
+			git branch -D crap-foo-compat
+		fi
+	fi
 	echo "On non-master branch on $ALL_STABLE_TREE: $LOCAL_BRANCH"
-	git checkout -f
-	git checkout master
-	git pull
-	git branch -D $LOCAL_BRANCH
-	git checkout -b $LOCAL_BRANCH origin/$LOCAL_BRANCH
 	;;
 esac
 
