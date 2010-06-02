@@ -15,11 +15,9 @@ Signed-off-by: Felix Fietkau <nbd@openwrt.org>
  drivers/net/wireless/ath/ath9k/common.c |   37 ++++++++++++++++++++++--------
  1 files changed, 27 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/common.c b/drivers/net/wireless/ath/ath9k/common.c
-index 27f9ae5..03590f0 100644
 --- a/drivers/net/wireless/ath/ath9k/common.c
 +++ b/drivers/net/wireless/ath/ath9k/common.c
-@@ -211,10 +211,14 @@ static int ath_reserve_key_cache_slot_tkip(struct ath_common *common)
+@@ -211,10 +211,14 @@ static int ath_reserve_key_cache_slot_tk
  	return -1;
  }
  
@@ -35,7 +33,7 @@ index 27f9ae5..03590f0 100644
  	/* First, try to find slots that would not be available for TKIP. */
  	if (common->splitmic) {
  		for (i = IEEE80211_WEP_NKID; i < common->keymax / 4; i++) {
-@@ -283,6 +287,7 @@ int ath9k_cmn_key_config(struct ath_common *common,
+@@ -283,6 +287,7 @@ int ath9k_cmn_key_config(struct ath_comm
  	struct ath_hw *ah = common->ah;
  	struct ath9k_keyval hk;
  	const u8 *mac = NULL;
@@ -43,7 +41,7 @@ index 27f9ae5..03590f0 100644
  	int ret = 0;
  	int idx;
  
-@@ -306,9 +311,23 @@ int ath9k_cmn_key_config(struct ath_common *common,
+@@ -306,9 +311,23 @@ int ath9k_cmn_key_config(struct ath_comm
  	memcpy(hk.kv_val, key->key, key->keylen);
  
  	if (!(key->flags & IEEE80211_KEY_FLAG_PAIRWISE)) {
@@ -70,7 +68,7 @@ index 27f9ae5..03590f0 100644
  	} else if (key->keyidx) {
  		if (WARN_ON(!sta))
  			return -EOPNOTSUPP;
-@@ -325,14 +344,12 @@ int ath9k_cmn_key_config(struct ath_common *common,
+@@ -325,14 +344,12 @@ int ath9k_cmn_key_config(struct ath_comm
  			return -EOPNOTSUPP;
  		mac = sta->addr;
  
@@ -89,6 +87,3 @@ index 27f9ae5..03590f0 100644
  	if (key->alg == ALG_TKIP)
  		ret = ath_setkey_tkip(common, idx, key->key, &hk, mac,
  				      vif->type == NL80211_IFTYPE_AP);
--- 
-1.6.3.3
-

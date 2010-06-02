@@ -11,11 +11,9 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  drivers/net/wireless/ath/ath9k/xmit.c |   11 +++++++++++
  1 files changed, 11 insertions(+), 0 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/xmit.c b/drivers/net/wireless/ath/ath9k/xmit.c
-index 3db1917..debb62d 100644
 --- a/drivers/net/wireless/ath/ath9k/xmit.c
 +++ b/drivers/net/wireless/ath/ath9k/xmit.c
-@@ -2277,6 +2277,17 @@ void ath_tx_edma_tasklet(struct ath_softc *sc)
+@@ -2279,6 +2279,17 @@ void ath_tx_edma_tasklet(struct ath_soft
  
  		txok = !(txs.ts_status & ATH9K_TXERR_MASK);
  
@@ -33,6 +31,3 @@ index 3db1917..debb62d 100644
  		if (!bf_isampdu(bf)) {
  			bf->bf_retries = txs.ts_longretry;
  			if (txs.ts_status & ATH9K_TXERR_XRETRY)
--- 
-1.6.3.3
-

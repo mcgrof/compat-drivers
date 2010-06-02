@@ -14,8 +14,6 @@ Signed-off-by: Felix Fietkau <nbd@openwrt.org>
  drivers/net/wireless/ath/ath9k/hw.c |   13 ++++++++++++-
  1 files changed, 12 insertions(+), 1 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/hw.c b/drivers/net/wireless/ath/ath9k/hw.c
-index 1ded0b7..e70d7fe 100644
 --- a/drivers/net/wireless/ath/ath9k/hw.c
 +++ b/drivers/net/wireless/ath/ath9k/hw.c
 @@ -1485,6 +1485,7 @@ EXPORT_SYMBOL(ath9k_hw_keyreset);
@@ -26,7 +24,7 @@ index 1ded0b7..e70d7fe 100644
  
  	if (entry >= ah->caps.keycache_size) {
  		ath_print(ath9k_hw_common(ah), ATH_DBG_FATAL,
-@@ -1493,6 +1494,16 @@ bool ath9k_hw_keysetmac(struct ath_hw *ah, u16 entry, const u8 *mac)
+@@ -1493,6 +1494,16 @@ bool ath9k_hw_keysetmac(struct ath_hw *a
  	}
  
  	if (mac != NULL) {
@@ -43,7 +41,7 @@ index 1ded0b7..e70d7fe 100644
  		macHi = (mac[5] << 8) | mac[4];
  		macLo = (mac[3] << 24) |
  			(mac[2] << 16) |
-@@ -1505,7 +1516,7 @@ bool ath9k_hw_keysetmac(struct ath_hw *ah, u16 entry, const u8 *mac)
+@@ -1505,7 +1516,7 @@ bool ath9k_hw_keysetmac(struct ath_hw *a
  		macLo = macHi = 0;
  	}
  	REG_WRITE(ah, AR_KEYTABLE_MAC0(entry), macLo);
@@ -52,6 +50,3 @@ index 1ded0b7..e70d7fe 100644
  
  	return true;
  }
--- 
-1.6.3.3
-

@@ -11,11 +11,9 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  drivers/net/wireless/ath/ath9k/recv.c |    3 ++-
  1 files changed, 2 insertions(+), 1 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/recv.c b/drivers/net/wireless/ath/ath9k/recv.c
-index e8eb15f..777f6a3 100644
 --- a/drivers/net/wireless/ath/ath9k/recv.c
 +++ b/drivers/net/wireless/ath/ath9k/recv.c
-@@ -833,6 +833,7 @@ static bool ath9k_rx_accept(struct ath_common *common,
+@@ -833,6 +833,7 @@ static bool ath9k_rx_accept(struct ath_c
  {
  	struct ath_hw *ah = common->ah;
  	__le16 fc;
@@ -23,7 +21,7 @@ index e8eb15f..777f6a3 100644
  
  	fc = hdr->frame_control;
  
-@@ -843,7 +844,7 @@ static bool ath9k_rx_accept(struct ath_common *common,
+@@ -843,7 +844,7 @@ static bool ath9k_rx_accept(struct ath_c
           * we can take a hint that hardware corrupted it, so ignore
           * those frames.
           */
@@ -32,6 +30,3 @@ index e8eb15f..777f6a3 100644
  		return false;
  
  	/*
--- 
-1.6.3.3
-

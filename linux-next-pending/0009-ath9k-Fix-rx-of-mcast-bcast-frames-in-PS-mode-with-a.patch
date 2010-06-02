@@ -8,8 +8,6 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  drivers/net/wireless/ath/ath9k/recv.c |    7 +++++--
  1 files changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/recv.c b/drivers/net/wireless/ath/ath9k/recv.c
-index ca6065b..90c3e0e 100644
 --- a/drivers/net/wireless/ath/ath9k/recv.c
 +++ b/drivers/net/wireless/ath/ath9k/recv.c
 @@ -18,6 +18,9 @@
@@ -22,7 +20,7 @@ index ca6065b..90c3e0e 100644
  
  static inline bool ath9k_check_auto_sleep(struct ath_softc *sc)
  {
-@@ -622,7 +625,7 @@ static void ath_rx_ps(struct ath_softc *sc, struct sk_buff *skb)
+@@ -622,7 +625,7 @@ static void ath_rx_ps(struct ath_softc *
  	hdr = (struct ieee80211_hdr *)skb->data;
  
  	/* Process Beacon and CAB receive in PS state */
@@ -31,7 +29,7 @@ index ca6065b..90c3e0e 100644
  	    && ieee80211_is_beacon(hdr->frame_control))
  		ath_rx_ps_beacon(sc, skb);
  	else if ((sc->ps_flags & PS_WAIT_FOR_CAB) &&
-@@ -938,7 +941,7 @@ int ath_rx_tasklet(struct ath_softc *sc, int flush, bool hp)
+@@ -938,7 +941,7 @@ int ath_rx_tasklet(struct ath_softc *sc,
  			sc->rx.rxotherant = 0;
  		}
  
@@ -40,6 +38,3 @@ index ca6065b..90c3e0e 100644
  			     (sc->ps_flags & (PS_WAIT_FOR_BEACON |
  					      PS_WAIT_FOR_CAB |
  					      PS_WAIT_FOR_PSPOLL_DATA))))
--- 
-1.6.3.3
-

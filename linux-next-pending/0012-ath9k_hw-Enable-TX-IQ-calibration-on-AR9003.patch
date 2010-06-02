@@ -13,11 +13,9 @@ Signed-off-by: Luis R. Rodriguez <lrodriguez@atheros.com>
  drivers/net/wireless/ath/ath9k/hw.h           |    1 -
  3 files changed, 6 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/ar9003_calib.c b/drivers/net/wireless/ath/ath9k/ar9003_calib.c
-index 56a9e5f..5a06503 100644
 --- a/drivers/net/wireless/ath/ath9k/ar9003_calib.c
 +++ b/drivers/net/wireless/ath/ath9k/ar9003_calib.c
-@@ -739,6 +739,12 @@ static bool ar9003_hw_init_cal(struct ath_hw *ah,
+@@ -739,6 +739,12 @@ static bool ar9003_hw_init_cal(struct at
  	 */
  	ar9003_hw_set_chain_masks(ah, 0x7, 0x7);
  
@@ -30,7 +28,7 @@ index 56a9e5f..5a06503 100644
  	/* Calibrate the AGC */
  	REG_WRITE(ah, AR_PHY_AGC_CONTROL,
  		  REG_READ(ah, AR_PHY_AGC_CONTROL) |
-@@ -753,10 +759,6 @@ static bool ar9003_hw_init_cal(struct ath_hw *ah,
+@@ -753,10 +759,6 @@ static bool ar9003_hw_init_cal(struct at
  		return false;
  	}
  
@@ -41,11 +39,9 @@ index 56a9e5f..5a06503 100644
  	/* Revert chainmasks to their original values before NF cal */
  	ar9003_hw_set_chain_masks(ah, ah->rxchainmask, ah->txchainmask);
  
-diff --git a/drivers/net/wireless/ath/ath9k/hw.c b/drivers/net/wireless/ath/ath9k/hw.c
-index b2301bd..1ded0b7 100644
 --- a/drivers/net/wireless/ath/ath9k/hw.c
 +++ b/drivers/net/wireless/ath/ath9k/hw.c
-@@ -392,12 +392,6 @@ static void ath9k_hw_init_config(struct ath_hw *ah)
+@@ -392,12 +392,6 @@ static void ath9k_hw_init_config(struct 
  	ah->config.rx_intr_mitigation = true;
  
  	/*
@@ -58,8 +54,6 @@ index b2301bd..1ded0b7 100644
  	 * We need this for PCI devices only (Cardbus, PCI, miniPCI)
  	 * _and_ if on non-uniprocessor systems (Multiprocessor/HT).
  	 * This means we use it for all AR5416 devices, and the few
-diff --git a/drivers/net/wireless/ath/ath9k/hw.h b/drivers/net/wireless/ath/ath9k/hw.h
-index 5cf0714..ba77506 100644
 --- a/drivers/net/wireless/ath/ath9k/hw.h
 +++ b/drivers/net/wireless/ath/ath9k/hw.h
 @@ -263,7 +263,6 @@ struct ath9k_ops_config {
@@ -70,6 +64,3 @@ index 5cf0714..ba77506 100644
  	int spurmode;
  	u16 spurchans[AR_EEPROM_MODAL_SPURS][2];
  	u8 max_txtrig_level;
--- 
-1.6.3.3
-

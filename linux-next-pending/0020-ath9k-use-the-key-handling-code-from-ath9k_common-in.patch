@@ -8,11 +8,9 @@ Signed-off-by: Felix Fietkau <nbd@openwrt.org>
  drivers/net/wireless/ath/ath9k/main.c |  232 +--------------------------------
  1 files changed, 2 insertions(+), 230 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/main.c b/drivers/net/wireless/ath/ath9k/main.c
-index d6e8be0..120708d 100644
 --- a/drivers/net/wireless/ath/ath9k/main.c
 +++ b/drivers/net/wireless/ath/ath9k/main.c
-@@ -621,234 +621,6 @@ static u32 ath_get_extchanmode(struct ath_softc *sc,
+@@ -621,234 +621,6 @@ static u32 ath_get_extchanmode(struct at
  	return chanmode;
  }
  
@@ -247,7 +245,7 @@ index d6e8be0..120708d 100644
  static void ath9k_bss_assoc_info(struct ath_softc *sc,
  				 struct ieee80211_vif *vif,
  				 struct ieee80211_bss_conf *bss_conf)
-@@ -1813,7 +1585,7 @@ static int ath9k_set_key(struct ieee80211_hw *hw,
+@@ -1813,7 +1585,7 @@ static int ath9k_set_key(struct ieee8021
  
  	switch (cmd) {
  	case SET_KEY:
@@ -256,7 +254,7 @@ index d6e8be0..120708d 100644
  		if (ret >= 0) {
  			key->hw_key_idx = ret;
  			/* push IV and Michael MIC generation to stack */
-@@ -1826,7 +1598,7 @@ static int ath9k_set_key(struct ieee80211_hw *hw,
+@@ -1826,7 +1598,7 @@ static int ath9k_set_key(struct ieee8021
  		}
  		break;
  	case DISABLE_KEY:
@@ -265,6 +263,3 @@ index d6e8be0..120708d 100644
  		break;
  	default:
  		ret = -EINVAL;
--- 
-1.6.3.3
-
