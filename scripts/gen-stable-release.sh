@@ -12,21 +12,32 @@
 # If no kernel is specified we use the latest rc-release, which will be on the
 # remove master branch. Your master branch should be clean.
 
+# Pretty colors
+GREEN="\033[01;32m"
+YELLOW="\033[01;33m"
+NORMAL="\033[00m"
+BLUE="\033[34m"
+RED="\033[31m"
+PURPLE="\033[35m"
+CYAN="\033[36m"
+UNDERLINE="\033[02m"
+
 ALL_STABLE_TREE="linux-2.6-allstable"
 STAGING=/tmp/staging/compat-wireless/
 
 function usage()
 {
-	echo "Usage: $1 <linux-2.6.X.y>"
+	echo -e "Usage: ${GREEN}$1${NORMAL} ${BLUE}[ -n | -p | -c | -f ]${NORMAL} ${CYAN}[ linux-2.6.X.y ]${NORMAL}"
 	echo
 	echo Examples usages:
 	echo
-	echo  $1
-	echo  $1 linux-2.6.29.y
-	echo  $1 linux-2.6.30.y
+	echo  -e "${PURPLE}${1}${NORMAL}"
+	echo  -e "${PURPLE}${1} ${CYAN}linux-2.6.29.y${NORMAL}"
+	echo  -e "${PURPLE}${1} ${CYAN}linux-2.6.30.y${NORMAL}"
 	echo
-	echo "If no kernel is specified we try to make a release based on the latest RC kernel."
-	echo "If a kernel release is specified X is the next stable release as 35 in 2.6.35.y."
+	echo -e "If no kernel is specified we try to make a release based on the latest RC kernel."
+	echo -en "If a kernel release is specified ${CYAN}X${NORMAL} is the next stable release "
+	echo -en "as ${CYAN}35${NORMAL} in ${CYAN}2.6.35.y${NORMAL}\n"
 	exit
 }
 
@@ -68,7 +79,7 @@ while [ $# -ne 0 ]; do
 		shift; continue;
 	fi
 
-	echo "Unexpected argument passed: $1"
+	echo -e "Unexpected argument passed: ${RED}${1}${NORMAL}"
 	usage $0
 	exit
 done
