@@ -91,14 +91,6 @@ COMPAT_WIRELESS_BRANCH=$(git branch | grep \* | awk '{print $2}')
 cd $GIT_TREE
 # --abbrev=0 on branch should work but I guess it doesn't on some releases
 EXISTING_BRANCH=$(git branch | grep \* | awk '{print $2}')
-# This is a super hack, but let me know if you figure out a cleaner way
-TARGET_KERNEL_RELEASE=$(make VERSION="linux-2" EXTRAVERSION=".y" kernelversion)
-
-if [[ $COMPAT_WIRELESS_BRANCH != $TARGET_KERNEL_RELEASE ]]; then
-	echo "You are not on the branch $COMPAT_WIRELESS_BRANCH on compat-wireless,"
-	echo "try changing to that first."
-	exit
-fi
 
 case $LOCAL_BRANCH in
 "master") # Preparing a new stable compat-wireless release based on an RC kernel
@@ -126,6 +118,21 @@ case $LOCAL_BRANCH in
 	echo "On non-master branch on $ALL_STABLE_TREE: $LOCAL_BRANCH"
 	;;
 esac
+
+# At this point your linux-2.6-allstable tree should be up to date
+# with the target kernel you want to use. Lets now make sure you are
+# on matching compat-wireless branch.
+
+# This is a super hack, but let me know if you figure out a cleaner way
+TARGET_KERNEL_RELEASE=$(make VERSION="linux-2" EXTRAVERSION=".y" kernelversion)
+
+if [[ $COMPAT_WIRELESS_BRANCH != $TARGET_KERNEL_RELEASE ]]; then
+	echo -e "You are on the compat-wireless ${GREEN}${COMPAT_WIRELESS_BRANCH}${NORMAL} but are "
+	echo -en "on the ${RED}${TARGET_KERNEL_RELEASE}${NORMAL} branch... "
+	echo -e "try changing to that first."
+	exit
+fi
+
 
 # We should now be on the branch we want
 KERNEL_RELEASE=$(git describe --abbrev=0 | sed -e 's/v//g')
