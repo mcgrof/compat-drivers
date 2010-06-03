@@ -12,8 +12,6 @@ Signed-off-by: Felix Fietkau <nbd@openwrt.org>
  drivers/net/wireless/ath/ath9k/debug.h |    8 +++++
  2 files changed, 60 insertions(+), 1 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/debug.c b/drivers/net/wireless/ath/ath9k/debug.c
-index ee83877..07a4c7c 100644
 --- a/drivers/net/wireless/ath/ath9k/debug.c
 +++ b/drivers/net/wireless/ath/ath9k/debug.c
 @@ -15,6 +15,7 @@
@@ -24,7 +22,7 @@ index ee83877..07a4c7c 100644
  #include <asm/unaligned.h>
  
  #include "ath9k.h"
-@@ -32,6 +33,19 @@ static int ath9k_debugfs_open(struct inode *inode, struct file *file)
+@@ -32,6 +33,19 @@ static int ath9k_debugfs_open(struct ino
  	return 0;
  }
  
@@ -44,7 +42,7 @@ index ee83877..07a4c7c 100644
  #ifdef CONFIG_ATH_DEBUG
  
  static ssize_t read_file_debug(struct file *file, char __user *user_buf,
-@@ -876,7 +890,38 @@ static ssize_t write_file_regval(struct file *file, const char __user *user_buf,
+@@ -893,7 +907,38 @@ static ssize_t write_file_regval(struct 
  static const struct file_operations fops_regval = {
  	.read = read_file_regval,
  	.write = write_file_regval,
@@ -84,7 +82,7 @@ index ee83877..07a4c7c 100644
  	.owner = THIS_MODULE
  };
  
-@@ -940,6 +985,11 @@ int ath9k_init_debug(struct ath_hw *ah)
+@@ -957,6 +1002,11 @@ int ath9k_init_debug(struct ath_hw *ah)
  		goto err;
  
  	sc->debug.regidx = 0;
@@ -96,7 +94,7 @@ index ee83877..07a4c7c 100644
  	return 0;
  err:
  	ath9k_exit_debug(ah);
-@@ -951,6 +1001,7 @@ void ath9k_exit_debug(struct ath_hw *ah)
+@@ -968,6 +1018,7 @@ void ath9k_exit_debug(struct ath_hw *ah)
  	struct ath_common *common = ath9k_hw_common(ah);
  	struct ath_softc *sc = (struct ath_softc *) common->priv;
  
@@ -104,8 +102,6 @@ index ee83877..07a4c7c 100644
  	debugfs_remove_recursive(sc->debug.debugfs_phy);
  }
  
-diff --git a/drivers/net/wireless/ath/ath9k/debug.h b/drivers/net/wireless/ath/ath9k/debug.h
-index 5d21704..0950752 100644
 --- a/drivers/net/wireless/ath/ath9k/debug.h
 +++ b/drivers/net/wireless/ath/ath9k/debug.h
 @@ -156,6 +156,14 @@ struct ath_stats {
@@ -123,6 +119,3 @@ index 5d21704..0950752 100644
  	struct ath_stats stats;
  };
  
--- 
-1.6.3.3
-

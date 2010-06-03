@@ -15,11 +15,9 @@ Signed-off-by: Luis R. Rodriguez <lrodriguez@atheros.com>
  drivers/net/wireless/ath/ath9k/pci.c |    1 +
  1 files changed, 1 insertions(+), 0 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/pci.c b/drivers/net/wireless/ath/ath9k/pci.c
-index 1ec836c..257b10b 100644
 --- a/drivers/net/wireless/ath/ath9k/pci.c
 +++ b/drivers/net/wireless/ath/ath9k/pci.c
-@@ -28,6 +28,7 @@ static DEFINE_PCI_DEVICE_TABLE(ath_pci_id_table) = {
+@@ -28,6 +28,7 @@ static DEFINE_PCI_DEVICE_TABLE(ath_pci_i
  	{ PCI_VDEVICE(ATHEROS, 0x002C) }, /* PCI-E 802.11n bonded out */
  	{ PCI_VDEVICE(ATHEROS, 0x002D) }, /* PCI   */
  	{ PCI_VDEVICE(ATHEROS, 0x002E) }, /* PCI-E */
@@ -27,6 +25,3 @@ index 1ec836c..257b10b 100644
  	{ 0 }
  };
  
--- 
-1.6.3.3
-

@@ -32,8 +32,6 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  create mode 100644 drivers/net/wireless/ath/ath9k/pktlog.c
  create mode 100644 drivers/net/wireless/ath/ath9k/pktlog.h
 
-diff --git a/drivers/net/wireless/ath/ath9k/Kconfig b/drivers/net/wireless/ath/ath9k/Kconfig
-index 35f23bd..a48a916 100644
 --- a/drivers/net/wireless/ath/ath9k/Kconfig
 +++ b/drivers/net/wireless/ath/ath9k/Kconfig
 @@ -32,6 +32,13 @@ config ATH9K_DEBUGFS
@@ -55,8 +53,6 @@ index 35f23bd..a48a916 100644
  	---help---
  	  Say Y, if you need access to ath9k_htc's statistics.
 +
-diff --git a/drivers/net/wireless/ath/ath9k/Makefile b/drivers/net/wireless/ath/ath9k/Makefile
-index dd112be..8b7c4cc 100644
 --- a/drivers/net/wireless/ath/ath9k/Makefile
 +++ b/drivers/net/wireless/ath/ath9k/Makefile
 @@ -10,6 +10,7 @@ ath9k-y +=	beacon.o \
@@ -67,11 +63,9 @@ index dd112be..8b7c4cc 100644
  
  obj-$(CONFIG_ATH9K) += ath9k.o
  
-diff --git a/drivers/net/wireless/ath/ath9k/ar9002_mac.c b/drivers/net/wireless/ath/ath9k/ar9002_mac.c
-index 2be20d2..89ab919 100644
 --- a/drivers/net/wireless/ath/ath9k/ar9002_mac.c
 +++ b/drivers/net/wireless/ath/ath9k/ar9002_mac.c
-@@ -215,7 +215,8 @@ static void ar9002_hw_fill_txdesc(struct ath_hw *ah, void *ds, u32 seglen,
+@@ -215,7 +215,8 @@ static void ar9002_hw_fill_txdesc(struct
  }
  
  static int ar9002_hw_proc_txdesc(struct ath_hw *ah, void *ds,
@@ -81,11 +75,9 @@ index 2be20d2..89ab919 100644
  {
  	struct ar5416_desc *ads = AR5416DESC(ds);
  
-diff --git a/drivers/net/wireless/ath/ath9k/ar9003_mac.c b/drivers/net/wireless/ath/ath9k/ar9003_mac.c
-index 4073107..790507a 100644
 --- a/drivers/net/wireless/ath/ath9k/ar9003_mac.c
 +++ b/drivers/net/wireless/ath/ath9k/ar9003_mac.c
-@@ -234,7 +234,8 @@ static void ar9003_hw_fill_txdesc(struct ath_hw *ah, void *ds, u32 seglen,
+@@ -234,7 +234,8 @@ static void ar9003_hw_fill_txdesc(struct
  }
  
  static int ar9003_hw_proc_txdesc(struct ath_hw *ah, void *ds,
@@ -95,7 +87,7 @@ index 4073107..790507a 100644
  {
  	struct ar9003_txs *ads;
  
-@@ -305,6 +306,7 @@ static int ar9003_hw_proc_txdesc(struct ath_hw *ah, void *ds,
+@@ -305,6 +306,7 @@ static int ar9003_hw_proc_txdesc(struct 
  
  	ts->tid = MS(ads->status8, AR_TxTid);
  
@@ -103,8 +95,6 @@ index 4073107..790507a 100644
  	memset(ads, 0, sizeof(*ads));
  
  	return 0;
-diff --git a/drivers/net/wireless/ath/ath9k/ath9k.h b/drivers/net/wireless/ath/ath9k/ath9k.h
-index cc6ea42..4e3cb63 100644
 --- a/drivers/net/wireless/ath/ath9k/ath9k.h
 +++ b/drivers/net/wireless/ath/ath9k/ath9k.h
 @@ -23,6 +23,7 @@
@@ -115,7 +105,7 @@ index cc6ea42..4e3cb63 100644
  
  /*
   * Header for the ath9k.ko driver core *only* -- hw code nor any other driver
-@@ -508,6 +509,7 @@ void ath_deinit_leds(struct ath_softc *sc);
+@@ -508,6 +509,7 @@ void ath_deinit_leds(struct ath_softc *s
  #define SC_OP_TSF_RESET              BIT(11)
  #define SC_OP_BT_PRIORITY_DETECTED   BIT(12)
  #define SC_OP_BT_SCAN		     BIT(13)
@@ -134,11 +124,9 @@ index cc6ea42..4e3cb63 100644
  	struct ath_beacon_config cur_beacon_conf;
  	struct delayed_work tx_complete_work;
  	struct ath_btcoex btcoex;
-diff --git a/drivers/net/wireless/ath/ath9k/debug.c b/drivers/net/wireless/ath/ath9k/debug.c
-index 07a4c7c..81db80c 100644
 --- a/drivers/net/wireless/ath/ath9k/debug.c
 +++ b/drivers/net/wireless/ath/ath9k/debug.c
-@@ -990,6 +990,9 @@ int ath9k_init_debug(struct ath_hw *ah)
+@@ -1007,6 +1007,9 @@ int ath9k_init_debug(struct ath_hw *ah)
  			sc, &fops_regdump))
  		goto err;
  
@@ -148,7 +136,7 @@ index 07a4c7c..81db80c 100644
  	return 0;
  err:
  	ath9k_exit_debug(ah);
-@@ -1001,6 +1004,7 @@ void ath9k_exit_debug(struct ath_hw *ah)
+@@ -1018,6 +1021,7 @@ void ath9k_exit_debug(struct ath_hw *ah)
  	struct ath_common *common = ath9k_hw_common(ah);
  	struct ath_softc *sc = (struct ath_softc *) common->priv;
  
@@ -156,11 +144,9 @@ index 07a4c7c..81db80c 100644
  	debugfs_remove(sc->debug.debugfs_regdump);
  	debugfs_remove_recursive(sc->debug.debugfs_phy);
  }
-diff --git a/drivers/net/wireless/ath/ath9k/hw-ops.h b/drivers/net/wireless/ath/ath9k/hw-ops.h
-index 624422a..4fbfa66 100644
 --- a/drivers/net/wireless/ath/ath9k/hw-ops.h
 +++ b/drivers/net/wireless/ath/ath9k/hw-ops.h
-@@ -67,9 +67,10 @@ static inline void ath9k_hw_filltxdesc(struct ath_hw *ah, void *ds, u32 seglen,
+@@ -67,9 +67,10 @@ static inline void ath9k_hw_filltxdesc(s
  }
  
  static inline int ath9k_hw_txprocdesc(struct ath_hw *ah, void *ds,
@@ -173,11 +159,9 @@ index 624422a..4fbfa66 100644
  }
  
  static inline void ath9k_hw_set11n_txdesc(struct ath_hw *ah, void *ds,
-diff --git a/drivers/net/wireless/ath/ath9k/hw.c b/drivers/net/wireless/ath/ath9k/hw.c
-index e70d7fe..174d5b6 100644
 --- a/drivers/net/wireless/ath/ath9k/hw.c
 +++ b/drivers/net/wireless/ath/ath9k/hw.c
-@@ -2476,7 +2476,7 @@ void ath9k_hw_setrxfilter(struct ath_hw *ah, u32 bits)
+@@ -2465,7 +2465,7 @@ void ath9k_hw_setrxfilter(struct ath_hw 
  		phybits |= AR_PHY_ERR_RADAR;
  	if (bits & ATH9K_RX_FILTER_PHYERR)
  		phybits |= AR_PHY_ERR_OFDM_TIMING | AR_PHY_ERR_CCK_TIMING;
@@ -186,8 +170,6 @@ index e70d7fe..174d5b6 100644
  
  	if (phybits)
  		REG_WRITE(ah, AR_RXCFG,
-diff --git a/drivers/net/wireless/ath/ath9k/hw.h b/drivers/net/wireless/ath/ath9k/hw.h
-index ba77506..ab19f4e 100644
 --- a/drivers/net/wireless/ath/ath9k/hw.h
 +++ b/drivers/net/wireless/ath/ath9k/hw.h
 @@ -582,7 +582,7 @@ struct ath_hw_ops {
@@ -208,9 +190,6 @@ index ba77506..ab19f4e 100644
  };
  
  static inline struct ath_common *ath9k_hw_common(struct ath_hw *ah)
-diff --git a/drivers/net/wireless/ath/ath9k/pktlog.c b/drivers/net/wireless/ath/ath9k/pktlog.c
-new file mode 100644
-index 0000000..9c25645
 --- /dev/null
 +++ b/drivers/net/wireless/ath/ath9k/pktlog.c
 @@ -0,0 +1,783 @@
@@ -997,9 +976,6 @@ index 0000000..9c25645
 +	debugfs_remove(sc->pktlog.pktlog_dump);
 +	debugfs_remove(sc->pktlog.debugfs_pktlog);
 +}
-diff --git a/drivers/net/wireless/ath/ath9k/pktlog.h b/drivers/net/wireless/ath/ath9k/pktlog.h
-new file mode 100644
-index 0000000..846c662
 --- /dev/null
 +++ b/drivers/net/wireless/ath/ath9k/pktlog.h
 @@ -0,0 +1,242 @@
@@ -1245,11 +1221,9 @@ index 0000000..846c662
 +#endif /* CONFIG_ATH9K_PKTLOG */
 +
 +#endif
-diff --git a/drivers/net/wireless/ath/ath9k/rc.c b/drivers/net/wireless/ath/ath9k/rc.c
-index f5180d3..534bb75 100644
 --- a/drivers/net/wireless/ath/ath9k/rc.c
 +++ b/drivers/net/wireless/ath/ath9k/rc.c
-@@ -514,7 +514,7 @@ static u8 ath_rc_setvalid_htrates(struct ath_rate_priv *ath_rc_priv,
+@@ -514,7 +514,7 @@ static u8 ath_rc_setvalid_htrates(struct
  static u8 ath_rc_get_highest_rix(struct ath_softc *sc,
  			         struct ath_rate_priv *ath_rc_priv,
  				 const struct ath_rate_table *rate_table,
@@ -1258,7 +1232,7 @@ index f5180d3..534bb75 100644
  {
  	u32 best_thruput, this_thruput, now_msec;
  	u8 rate, next_rate, best_rate, maxindex, minindex;
-@@ -602,6 +602,8 @@ static u8 ath_rc_get_highest_rix(struct ath_softc *sc,
+@@ -602,6 +602,8 @@ static u8 ath_rc_get_highest_rix(struct 
  
  	rate = ath_rc_priv->valid_rate_index[0];
  
@@ -1267,7 +1241,7 @@ index f5180d3..534bb75 100644
  	return rate;
  }
  
-@@ -693,7 +695,7 @@ static void ath_get_rate(void *priv, struct ieee80211_sta *sta, void *priv_sta,
+@@ -693,7 +695,7 @@ static void ath_get_rate(void *priv, str
  	try_per_rate = 4;
  
  	rate_table = sc->cur_rate_table;
@@ -1276,7 +1250,7 @@ index f5180d3..534bb75 100644
  
  	/*
  	 * If we're in HT mode and both us and our peer supports LDPC.
-@@ -933,7 +935,8 @@ static bool ath_rc_update_per(struct ath_softc *sc,
+@@ -933,7 +935,8 @@ static bool ath_rc_update_per(struct ath
  static void ath_rc_update_ht(struct ath_softc *sc,
  			     struct ath_rate_priv *ath_rc_priv,
  			     struct ieee80211_tx_info *tx_info,
@@ -1286,7 +1260,7 @@ index f5180d3..534bb75 100644
  {
  	u32 now_msec = jiffies_to_msecs(jiffies);
  	int rate;
-@@ -1002,6 +1005,9 @@ static void ath_rc_update_ht(struct ath_softc *sc,
+@@ -1002,6 +1005,9 @@ static void ath_rc_update_ht(struct ath_
  	ath_debug_stat_retries(sc, tx_rate, xretries, retries,
  			       ath_rc_priv->per[tx_rate]);
  
@@ -1296,7 +1270,7 @@ index f5180d3..534bb75 100644
  }
  
  static int ath_rc_get_rateindex(const struct ath_rate_table *rate_table,
-@@ -1029,7 +1035,8 @@ static int ath_rc_get_rateindex(const struct ath_rate_table *rate_table,
+@@ -1029,7 +1035,8 @@ static int ath_rc_get_rateindex(const st
  static void ath_rc_tx_status(struct ath_softc *sc,
  			     struct ath_rate_priv *ath_rc_priv,
  			     struct ieee80211_tx_info *tx_info,
@@ -1306,7 +1280,7 @@ index f5180d3..534bb75 100644
  {
  	const struct ath_rate_table *rate_table;
  	struct ieee80211_tx_rate *rates = tx_info->status.rates;
-@@ -1058,7 +1065,7 @@ static void ath_rc_tx_status(struct ath_softc *sc,
+@@ -1058,7 +1065,7 @@ static void ath_rc_tx_status(struct ath_
  				rix = ath_rc_get_rateindex(rate_table, &rates[i]);
  				ath_rc_update_ht(sc, ath_rc_priv, tx_info,
  						rix, xretries ? 1 : 2,
@@ -1315,7 +1289,7 @@ index f5180d3..534bb75 100644
  			}
  		}
  	} else {
-@@ -1080,7 +1087,7 @@ static void ath_rc_tx_status(struct ath_softc *sc,
+@@ -1080,7 +1087,7 @@ static void ath_rc_tx_status(struct ath_
  		return;
  
  	rix = ath_rc_get_rateindex(rate_table, &rates[i]);
@@ -1324,7 +1298,7 @@ index f5180d3..534bb75 100644
  }
  
  static const
-@@ -1277,7 +1284,8 @@ static void ath_tx_status(void *priv, struct ieee80211_supported_band *sband,
+@@ -1277,7 +1284,8 @@ static void ath_tx_status(void *priv, st
  		tx_status = 1;
  
  	ath_rc_tx_status(sc, ath_rc_priv, tx_info, final_ts_idx, tx_status,
@@ -1334,11 +1308,9 @@ index f5180d3..534bb75 100644
  
  	/* Check if aggregation has to be enabled for this tid */
  	if (conf_is_ht(&sc->hw->conf) &&
-diff --git a/drivers/net/wireless/ath/ath9k/recv.c b/drivers/net/wireless/ath/ath9k/recv.c
-index 777f6a3..4733730 100644
 --- a/drivers/net/wireless/ath/ath9k/recv.c
 +++ b/drivers/net/wireless/ath/ath9k/recv.c
-@@ -1085,6 +1085,7 @@ int ath_rx_tasklet(struct ath_softc *sc, int flush, bool hp)
+@@ -1082,6 +1082,7 @@ int ath_rx_tasklet(struct ath_softc *sc,
  	struct ieee80211_rx_status *rxs;
  	struct ath_hw *ah = sc->sc_ah;
  	struct ath_common *common = ath9k_hw_common(ah);
@@ -1346,7 +1318,7 @@ index 777f6a3..4733730 100644
  	/*
  	 * The hw can techncically differ from common->hw when using ath9k
  	 * virtual wiphy so to account for that we iterate over the active
-@@ -1162,12 +1163,24 @@ int ath_rx_tasklet(struct ath_softc *sc, int flush, bool hp)
+@@ -1159,12 +1160,24 @@ int ath_rx_tasklet(struct ath_softc *sc,
  				 dma_type);
  
  		skb_put(skb, rs.rs_datalen + ah->caps.rx_status_len);
@@ -1372,11 +1344,9 @@ index 777f6a3..4733730 100644
  		/* We will now give hardware our shiny new allocated skb */
  		bf->bf_mpdu = requeue_skb;
  		bf->bf_buf_addr = dma_map_single(sc->dev, requeue_skb->data,
-diff --git a/drivers/net/wireless/ath/ath9k/xmit.c b/drivers/net/wireless/ath/ath9k/xmit.c
-index debb62d..7300a30 100644
 --- a/drivers/net/wireless/ath/ath9k/xmit.c
 +++ b/drivers/net/wireless/ath/ath9k/xmit.c
-@@ -418,6 +418,8 @@ static void ath_tx_complete_aggr(struct ath_softc *sc, struct ath_txq *txq,
+@@ -418,6 +418,8 @@ static void ath_tx_complete_aggr(struct 
  			list_move_tail(&bf->list, &bf_head);
  		}
  
@@ -1385,7 +1355,7 @@ index debb62d..7300a30 100644
  		if (!txpending) {
  			/*
  			 * complete the acked-ones/xretried ones; update
-@@ -2115,7 +2117,7 @@ static void ath_tx_processq(struct ath_softc *sc, struct ath_txq *txq)
+@@ -2117,7 +2119,7 @@ static void ath_tx_processq(struct ath_s
  		ds = lastbf->bf_desc;
  
  		memset(&ts, 0, sizeof(ts));
@@ -1394,7 +1364,7 @@ index debb62d..7300a30 100644
  		if (status == -EINPROGRESS) {
  			spin_unlock_bh(&txq->axq_lock);
  			break;
-@@ -2165,10 +2167,14 @@ static void ath_tx_processq(struct ath_softc *sc, struct ath_txq *txq)
+@@ -2167,10 +2169,14 @@ static void ath_tx_processq(struct ath_s
  			ath_tx_rc_status(bf, &ts, 0, txok, true);
  		}
  
@@ -1411,7 +1381,7 @@ index debb62d..7300a30 100644
  
  		ath_wake_mac80211_queue(sc, txq);
  
-@@ -2240,9 +2246,11 @@ void ath_tx_edma_tasklet(struct ath_softc *sc)
+@@ -2242,9 +2248,11 @@ void ath_tx_edma_tasklet(struct ath_soft
  	struct list_head bf_head;
  	int status;
  	int txok;
@@ -1424,7 +1394,7 @@ index debb62d..7300a30 100644
  		if (status == -EINPROGRESS)
  			break;
  		if (status == -EIO) {
-@@ -2295,14 +2303,18 @@ void ath_tx_edma_tasklet(struct ath_softc *sc)
+@@ -2297,14 +2305,18 @@ void ath_tx_edma_tasklet(struct ath_soft
  			ath_tx_rc_status(bf, &txs, 0, txok, true);
  		}
  
@@ -1445,6 +1415,3 @@ index debb62d..7300a30 100644
  		spin_lock_bh(&txq->axq_lock);
  		if (!list_empty(&txq->txq_fifo_pending)) {
  			INIT_LIST_HEAD(&bf_head);
--- 
-1.6.3.3
-
