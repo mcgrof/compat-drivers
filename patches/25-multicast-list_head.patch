@@ -13,7 +13,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
 
 --- a/drivers/net/atl1c/atl1c_main.c
 +++ b/drivers/net/atl1c/atl1c_main.c
-@@ -376,7 +376,11 @@ static void atl1c_set_multi(struct net_d
+@@ -407,7 +407,11 @@ static void atl1c_set_multi(struct net_d
  
  	/* comoute mc addresses' hash value ,and put it into hash table */
  	netdev_for_each_mc_addr(ha, netdev) {
@@ -162,7 +162,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  }
 --- a/drivers/net/wireless/ath/ath5k/base.c
 +++ b/drivers/net/wireless/ath/ath5k/base.c
-@@ -263,7 +263,11 @@ static void ath5k_remove_interface(struc
+@@ -262,7 +262,11 @@ static void ath5k_remove_interface(struc
  		struct ieee80211_vif *vif);
  static int ath5k_config(struct ieee80211_hw *hw, u32 changed);
  static u64 ath5k_prepare_multicast(struct ieee80211_hw *hw,
@@ -174,7 +174,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  static void ath5k_configure_filter(struct ieee80211_hw *hw,
  		unsigned int changed_flags,
  		unsigned int *new_flags,
-@@ -3107,20 +3111,42 @@ unlock:
+@@ -3104,20 +3108,42 @@ unlock:
  }
  
  static u64 ath5k_prepare_multicast(struct ieee80211_hw *hw,
@@ -217,7 +217,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  		pos ^= (val >> 18) ^ (val >> 12) ^ (val >> 6) ^ val;
  		pos &= 0x3f;
  		mfilt[pos / 32] |= (1 << (pos % 32));
-@@ -3129,6 +3155,9 @@ static u64 ath5k_prepare_multicast(struc
+@@ -3126,6 +3152,9 @@ static u64 ath5k_prepare_multicast(struc
  		* neet to inform below to not reset the mcast */
  		/* ath5k_hw_set_mcast_filterindex(ah,
  		 *      ha->addr[5]); */
@@ -475,7 +475,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  static void rtl8187_configure_filter(struct ieee80211_hw *dev,
 --- a/drivers/net/wireless/wl12xx/wl1271_main.c
 +++ b/drivers/net/wireless/wl12xx/wl1271_main.c
-@@ -1361,11 +1361,20 @@ struct wl1271_filter_params {
+@@ -1400,11 +1400,20 @@ struct wl1271_filter_params {
  	u8 mc_list[ACX_MC_ADDRESS_GROUP_MAX][ETH_ALEN];
  };
  
@@ -496,7 +496,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  	struct wl1271 *wl = hw->priv;
  
  	if (unlikely(wl->state == WL1271_STATE_OFF))
-@@ -1378,16 +1387,40 @@ static u64 wl1271_op_prepare_multicast(s
+@@ -1417,16 +1426,40 @@ static u64 wl1271_op_prepare_multicast(s
  	}
  
  	/* update multicast filtering parameters */
