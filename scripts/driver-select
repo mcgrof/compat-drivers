@@ -30,19 +30,27 @@ PURPLE="\033[35m"
 CYAN="\033[36m"
 UNDERLINE="\033[02m"
 
-SUPPORTED_DRIVERS="ath5k ath9k ath9k_htc ar9170 b43 zd1211rw rt2x00"
+SUPPORTED_80211_DRIVERS="ath5k ath9k ath9k_htc ar9170 b43 zd1211rw rt2x00"
+# b43 needs some more work for driver-select, the SSB stuff, plus
+# what if you update b44 but not b43? It will bust.
+SUPPORTED_ETH_DRIVERS="atl1 atl2 atl1e atl1c"
 
 function usage {
 	echo -e "${GREEN}Usage${NORMAL}: ${CYAN}$0${NORMAL} [ ${PURPLE}<driver-name>${NORMAL} | ${PURPLE}<driver-group-name>${NORMAL} | ${GREEN}restore${NORMAL} ]"
 
 	# These should match the switch below.
-	echo -e "Supported drivers:"
-	for i in $SUPPORTED_DRIVERS; do
+	echo -e "Supported 802.11 drivers:"
+	for i in $SUPPORTED_80211_DRIVERS; do
+		echo -e "\t${PURPLE}${i}${NORMAL}"
+	done
+
+	echo -e "\nSupported Ethernet drivers:"
+	for i in $SUPPORTED_ETH_DRIVERS; do
 		echo -e "\t${PURPLE}${i}${NORMAL}"
 	done
 
 	# These should match the switch below.
-	echo -e "Supported group drivers:"
+	echo -e "\nSupported group drivers:"
 	echo -e "\t${CYAN}atheros${NORMAL} < ${PURPLE} ath5k ath9k ar9170 zd1211rw ${NORMAL}>"
 	echo -e "\t${CYAN}ath${NORMAL} < ${PURPLE} ath5k ath9k ar9170 ${NORMAL}>"
 	echo -e "\t${CYAN}intel${NORMAL} < ${PURPLE} iwl3945 iwlagn ipw2100 ipw2200 ${NORMAL}>"
@@ -109,6 +117,12 @@ function disable_ssb
 	perl -i -ne 'print if ! /drivers\/ssb\/ \\/ ' Makefile
 }
 
+function disable_rfkill
+{
+	backup_file Makefile
+	perl -i -ne 'print if ! /CONFIG_COMPAT_RFKILL/' Makefile
+}
+
 function disable_eeprom
 {
 	disable_makefile ${EEPROM_MAKEFILE}
@@ -137,6 +151,10 @@ function disable_bt {
 	perl -i -ne 'print if ! /CONFIG_COMPAT_VAR_MODULES/' Makefile
 } 
 
+function disable_80211 {
+	perl -i -ne 'print if ! /CONFIG_COMPAT_WIRELESS/' Makefile
+}
+
 function disable_bt_usb_ethernet_var {
 	backup_file Makefile
 	disable_usbnet
@@ -144,6 +162,17 @@ function disable_bt_usb_ethernet_var {
 	disable_var_03
 	disable_bt
 } 
+
+function enable_only_ethernet {
+	backup_file Makefile
+	backup_file $DRIVERS_NET
+	disable_usbnet
+	disable_var_03
+	disable_bt
+	# rfkill may be needed if you enable b44 as you may have b43
+	disable_rfkill
+	disable_80211
+}
 
 function disable_var {
 	disable_ssb
@@ -297,6 +326,22 @@ case $1 in
 	rt2x00)
 		select_driver		CONFIG_RT2X00
 		disable_var_02
+		;;
+	atl1)
+		enable_only_ethernet
+		echo -e "obj-\$(CONFIG_ATL1) += atlx/" > $DRIVERS_NET
+		;;
+	atl2)
+		enable_only_ethernet
+		echo -e "obj-\$(CONFIG_ATL2) += atlx/" > $DRIVERS_NET
+		;;
+	atl1e)
+		enable_only_ethernet
+		echo -e "obj-\$(CONFIG_ATL1E) += atl1e/" > $DRIVERS_NET
+		;;
+	atl1c)
+		enable_only_ethernet
+		echo -e "obj-\$(CONFIG_ATL1C) += atl1c/" > $DRIVERS_NET
 		;;
 	*)
 		echo "Unsupported driver"
