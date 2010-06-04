@@ -69,7 +69,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  }
 --- a/drivers/net/b44.c
 +++ b/drivers/net/b44.c
-@@ -1687,7 +1687,11 @@ static int __b44_load_mcast(struct b44 *
+@@ -1681,7 +1681,11 @@ static int __b44_load_mcast(struct b44 *
  	netdev_for_each_mc_addr(ha, dev) {
  		if (i == num_ents)
  			break;
@@ -576,7 +576,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  	return hash.low | ((u64)hash.high << 32);
 --- a/include/net/mac80211.h
 +++ b/include/net/mac80211.h
-@@ -1686,7 +1686,11 @@ struct ieee80211_ops {
+@@ -1682,7 +1682,11 @@ struct ieee80211_ops {
  				    struct ieee80211_vif *vif,
  				    struct in_ifaddr *ifa_list);
  	u64 (*prepare_multicast)(struct ieee80211_hw *hw,
@@ -692,7 +692,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  	spin_unlock_bh(&local->filter_lock);
  
  	/* be a bit nasty */
-@@ -442,9 +446,11 @@ struct ieee80211_hw *ieee80211_alloc_hw(
+@@ -444,9 +448,11 @@ struct ieee80211_hw *ieee80211_alloc_hw(
  	local->uapsd_max_sp_len = IEEE80211_DEFAULT_MAX_SP_LEN;
  
  	INIT_LIST_HEAD(&local->interfaces);
