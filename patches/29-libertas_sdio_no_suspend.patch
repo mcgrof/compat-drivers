@@ -1,0 +1,34 @@
+Starting with commit 66fceb69b72ff7e9cd8da2ca70033982d5376e0e
+"libertas: Added callback functions to support SDIO suspend/resume."
+libertas uses new functions from the in kernel sdio framework for
+suspend and resume that are not backported.
+
+--- a/drivers/net/wireless/libertas/if_sdio.c
++++ b/drivers/net/wireless/libertas/if_sdio.c
+@@ -1212,6 +1212,7 @@ static void if_sdio_remove(struct sdio_f
+ 	lbs_deb_leave(LBS_DEB_SDIO);
+ }
+ 
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,34))
+ static int if_sdio_suspend(struct device *dev)
+ {
+ 	struct sdio_func *func = dev_to_sdio_func(dev);
+@@ -1266,15 +1267,18 @@ static const struct dev_pm_ops if_sdio_p
+ 	.suspend	= if_sdio_suspend,
+ 	.resume		= if_sdio_resume,
+ };
++#endif /* (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,34)) */
+ 
+ static struct sdio_driver if_sdio_driver = {
+ 	.name		= "libertas_sdio",
+ 	.id_table	= if_sdio_ids,
+ 	.probe		= if_sdio_probe,
+ 	.remove		= if_sdio_remove,
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,34))
+ 	.drv = {
+ 		.pm = &if_sdio_pm_ops,
+ 	},
++#endif /* (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,34)) */
+ };
+ 
+ /*******************************************************************/
