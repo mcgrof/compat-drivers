@@ -1,0 +1,26 @@
+From bd6c2c1e1308086c7c3ee9cb6bfed97935075b3e Mon Sep 17 00:00:00 2001
+From: Felix Fietkau <nbd@openwrt.org>
+Date: Wed, 2 Jun 2010 00:02:49 +0200
+Subject: [PATCH 14/24] ath9k: remove declarations of some nonexistant functions
+
+Signed-off-by: Felix Fietkau <nbd@openwrt.org>
+---
+ drivers/net/wireless/ath/ath9k/ath9k.h |    2 --
+ 1 files changed, 0 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath9k/ath9k.h b/drivers/net/wireless/ath/ath9k/ath9k.h
+index a0f1567..6b5a26f 100644
+--- a/drivers/net/wireless/ath/ath9k/ath9k.h
++++ b/drivers/net/wireless/ath/ath9k/ath9k.h
+@@ -628,8 +628,6 @@ irqreturn_t ath_isr(int irq, void *dev);
+ int ath9k_init_device(u16 devid, struct ath_softc *sc, u16 subsysid,
+ 		    const struct ath_bus_ops *bus_ops);
+ void ath9k_deinit_device(struct ath_softc *sc);
+-const char *ath_mac_bb_name(u32 mac_bb_version);
+-const char *ath_rf_name(u16 rf_version);
+ void ath9k_set_hw_capab(struct ath_softc *sc, struct ieee80211_hw *hw);
+ void ath9k_update_ichannel(struct ath_softc *sc, struct ieee80211_hw *hw,
+ 			   struct ath9k_channel *ichan);
+-- 
+1.6.3.3
+

@@ -1,0 +1,46 @@
+From 7ca3a56dd363b66f91f9e32ba8009707ef2c84f0 Mon Sep 17 00:00:00 2001
+From: Felix Fietkau <nbd@openwrt.org>
+Date: Thu, 10 Jun 2010 22:07:52 +0200
+Subject: [PATCH 18/24] ath9k: add a debugfs entry for ignoring CCA on the extension channel in HT40
+
+Debugfs requires a u32 for bool knobs though so we turn the
+ath9k_hw knob into a u32 as well.
+
+Signed-off-by: Felix Fietkau <nbd@openwrt.org>
+Signed-off-by: Luis R. Rodriguez <lrodriguez@atheros.com>
+---
+ drivers/net/wireless/ath/ath9k/debug.c |    4 ++++
+ drivers/net/wireless/ath/ath9k/hw.h    |    2 +-
+ 2 files changed, 5 insertions(+), 1 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath9k/debug.c b/drivers/net/wireless/ath/ath9k/debug.c
+index a6cb48d..54aae93 100644
+--- a/drivers/net/wireless/ath/ath9k/debug.c
++++ b/drivers/net/wireless/ath/ath9k/debug.c
+@@ -956,6 +956,10 @@ int ath9k_init_debug(struct ath_hw *ah)
+ 			sc->debug.debugfs_phy, sc, &fops_regval))
+ 		goto err;
+ 
++	if (!debugfs_create_bool("ignore_extcca", S_IRUSR | S_IWUSR,
++			sc->debug.debugfs_phy, &ah->config.cwm_ignore_extcca))
++		goto err;
++
+ 	sc->debug.regidx = 0;
+ 	return 0;
+ err:
+diff --git a/drivers/net/wireless/ath/ath9k/hw.h b/drivers/net/wireless/ath/ath9k/hw.h
+index ba84ac7..20ec29f 100644
+--- a/drivers/net/wireless/ath/ath9k/hw.h
++++ b/drivers/net/wireless/ath/ath9k/hw.h
+@@ -238,7 +238,7 @@ struct ath9k_ops_config {
+ 	int sw_beacon_response_time;
+ 	int additional_swba_backoff;
+ 	int ack_6mb;
+-	int cwm_ignore_extcca;
++	u32 cwm_ignore_extcca;
+ 	u8 pcie_powersave_enable;
+ 	u8 pcie_clock_req;
+ 	u32 pcie_waen;
+-- 
+1.6.3.3
+

@@ -1,0 +1,39 @@
+From a55ad78bc802f5df3ecc13801a96d1d457b3ee0a Mon Sep 17 00:00:00 2001
+From: Felix Fietkau <nbd@openwrt.org>
+Date: Wed, 2 Jun 2010 00:05:57 +0200
+Subject: [PATCH 15/24] ath9k: make ath_get_hal_qnum static
+
+Signed-off-by: Felix Fietkau <nbd@openwrt.org>
+---
+ drivers/net/wireless/ath/ath9k/ath9k.h |    1 -
+ drivers/net/wireless/ath/ath9k/main.c  |    2 +-
+ 2 files changed, 1 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath9k/ath9k.h b/drivers/net/wireless/ath/ath9k/ath9k.h
+index 6b5a26f..6aa8fa6 100644
+--- a/drivers/net/wireless/ath/ath9k/ath9k.h
++++ b/drivers/net/wireless/ath/ath9k/ath9k.h
+@@ -612,7 +612,6 @@ struct ath_wiphy {
+ 
+ void ath9k_tasklet(unsigned long data);
+ int ath_reset(struct ath_softc *sc, bool retry_tx);
+-int ath_get_hal_qnum(u16 queue, struct ath_softc *sc);
+ int ath_get_mac80211_qnum(u32 queue, struct ath_softc *sc);
+ int ath_cabq_update(struct ath_softc *);
+ 
+diff --git a/drivers/net/wireless/ath/ath9k/main.c b/drivers/net/wireless/ath/ath9k/main.c
+index 200e390..52ed4c8 100644
+--- a/drivers/net/wireless/ath/ath9k/main.c
++++ b/drivers/net/wireless/ath/ath9k/main.c
+@@ -808,7 +808,7 @@ int ath_reset(struct ath_softc *sc, bool retry_tx)
+ 	return r;
+ }
+ 
+-int ath_get_hal_qnum(u16 queue, struct ath_softc *sc)
++static int ath_get_hal_qnum(u16 queue, struct ath_softc *sc)
+ {
+ 	int qnum;
+ 
+-- 
+1.6.3.3
+
