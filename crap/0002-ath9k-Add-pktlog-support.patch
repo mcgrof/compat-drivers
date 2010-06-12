@@ -172,7 +172,7 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  		REG_WRITE(ah, AR_RXCFG,
 --- a/drivers/net/wireless/ath/ath9k/hw.h
 +++ b/drivers/net/wireless/ath/ath9k/hw.h
-@@ -582,7 +582,7 @@ struct ath_hw_ops {
+@@ -611,7 +611,7 @@
  			    const void *ds0, dma_addr_t buf_addr,
  			    unsigned int qcu);
  	int (*proc_txdesc)(struct ath_hw *ah, void *ds,
@@ -181,10 +181,10 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  	void (*set11n_txdesc)(struct ath_hw *ah, void *ds,
  			      u32 pktLen, enum ath9k_pkt_type type,
  			      u32 txPower, u32 keyIx,
-@@ -793,6 +793,8 @@ struct ath_hw {
+@@ -828,6 +828,8 @@
  
- 	u32 bb_watchdog_last_status;
- 	u32 bb_watchdog_timeout_ms; /* in ms, 0 to disable */
+ 	u32 paprd_gain_table_entries[PAPRD_GAIN_TABLE_ENTRIES];
+ 	u8 paprd_gain_table_index[PAPRD_GAIN_TABLE_ENTRIES];
 +
 +	bool is_pkt_logging;
  };
