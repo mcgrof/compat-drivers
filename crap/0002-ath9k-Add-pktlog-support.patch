@@ -97,7 +97,7 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  	return 0;
 --- a/drivers/net/wireless/ath/ath9k/ath9k.h
 +++ b/drivers/net/wireless/ath/ath9k/ath9k.h
-@@ -23,6 +23,7 @@
+@@ -24,6 +24,7 @@
  
  #include "debug.h"
  #include "common.h"
@@ -105,7 +105,7 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  
  /*
   * Header for the ath9k.ko driver core *only* -- hw code nor any other driver
-@@ -511,6 +512,7 @@ void ath_deinit_leds(struct ath_softc *s
+@@ -516,6 +517,7 @@ void ath_deinit_leds(struct ath_softc *s
  #define SC_OP_TSF_RESET              BIT(11)
  #define SC_OP_BT_PRIORITY_DETECTED   BIT(12)
  #define SC_OP_BT_SCAN		     BIT(13)
@@ -113,7 +113,7 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  
  /* Powersave flags */
  #define PS_WAIT_FOR_BEACON        BIT(0)
-@@ -586,6 +588,10 @@ struct ath_softc {
+@@ -594,6 +596,10 @@ struct ath_softc {
  #ifdef CONFIG_ATH9K_DEBUGFS
  	struct ath9k_debug debug;
  #endif
@@ -126,7 +126,7 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  	struct ath_btcoex btcoex;
 --- a/drivers/net/wireless/ath/ath9k/debug.c
 +++ b/drivers/net/wireless/ath/ath9k/debug.c
-@@ -1007,6 +1007,9 @@ int ath9k_init_debug(struct ath_hw *ah)
+@@ -1011,6 +1011,9 @@ int ath9k_init_debug(struct ath_hw *ah)
  			sc, &fops_regdump))
  		goto err;
  
@@ -136,7 +136,7 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  	return 0;
  err:
  	ath9k_exit_debug(ah);
-@@ -1018,6 +1021,7 @@ void ath9k_exit_debug(struct ath_hw *ah)
+@@ -1022,6 +1025,7 @@ void ath9k_exit_debug(struct ath_hw *ah)
  	struct ath_common *common = ath9k_hw_common(ah);
  	struct ath_softc *sc = (struct ath_softc *) common->priv;
  
@@ -161,7 +161,7 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  static inline void ath9k_hw_set11n_txdesc(struct ath_hw *ah, void *ds,
 --- a/drivers/net/wireless/ath/ath9k/hw.c
 +++ b/drivers/net/wireless/ath/ath9k/hw.c
-@@ -2483,7 +2483,7 @@ void ath9k_hw_setrxfilter(struct ath_hw 
+@@ -2396,7 +2396,7 @@ void ath9k_hw_setrxfilter(struct ath_hw 
  		phybits |= AR_PHY_ERR_RADAR;
  	if (bits & ATH9K_RX_FILTER_PHYERR)
  		phybits |= AR_PHY_ERR_OFDM_TIMING | AR_PHY_ERR_CCK_TIMING;
@@ -172,7 +172,7 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  		REG_WRITE(ah, AR_RXCFG,
 --- a/drivers/net/wireless/ath/ath9k/hw.h
 +++ b/drivers/net/wireless/ath/ath9k/hw.h
-@@ -611,7 +611,7 @@
+@@ -602,7 +602,7 @@ struct ath_hw_ops {
  			    const void *ds0, dma_addr_t buf_addr,
  			    unsigned int qcu);
  	int (*proc_txdesc)(struct ath_hw *ah, void *ds,
@@ -181,7 +181,7 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  	void (*set11n_txdesc)(struct ath_hw *ah, void *ds,
  			      u32 pktLen, enum ath9k_pkt_type type,
  			      u32 txPower, u32 keyIx,
-@@ -828,6 +828,8 @@
+@@ -819,6 +819,8 @@ struct ath_hw {
  
  	u32 paprd_gain_table_entries[PAPRD_GAIN_TABLE_ENTRIES];
  	u8 paprd_gain_table_index[PAPRD_GAIN_TABLE_ENTRIES];
@@ -1298,7 +1298,7 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  }
  
  static const
-@@ -1277,7 +1284,8 @@ static void ath_tx_status(void *priv, st
+@@ -1274,7 +1281,8 @@ static void ath_tx_status(void *priv, st
  		tx_status = 1;
  
  	ath_rc_tx_status(sc, ath_rc_priv, tx_info, final_ts_idx, tx_status,
@@ -1310,7 +1310,7 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  	if (conf_is_ht(&sc->hw->conf) &&
 --- a/drivers/net/wireless/ath/ath9k/recv.c
 +++ b/drivers/net/wireless/ath/ath9k/recv.c
-@@ -1086,6 +1086,7 @@ int ath_rx_tasklet(struct ath_softc *sc,
+@@ -1080,6 +1080,7 @@ int ath_rx_tasklet(struct ath_softc *sc,
  	struct ieee80211_rx_status *rxs;
  	struct ath_hw *ah = sc->sc_ah;
  	struct ath_common *common = ath9k_hw_common(ah);
@@ -1318,7 +1318,7 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  	/*
  	 * The hw can techncically differ from common->hw when using ath9k
  	 * virtual wiphy so to account for that we iterate over the active
-@@ -1163,12 +1164,24 @@ int ath_rx_tasklet(struct ath_softc *sc,
+@@ -1171,12 +1172,24 @@ int ath_rx_tasklet(struct ath_softc *sc,
  				 dma_type);
  
  		skb_put(skb, rs.rs_datalen + ah->caps.rx_status_len);
@@ -1355,7 +1355,7 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  		if (!txpending) {
  			/*
  			 * complete the acked-ones/xretried ones; update
-@@ -2104,7 +2106,7 @@ static void ath_tx_processq(struct ath_s
+@@ -2094,7 +2096,7 @@ static void ath_tx_processq(struct ath_s
  		ds = lastbf->bf_desc;
  
  		memset(&ts, 0, sizeof(ts));
@@ -1364,7 +1364,7 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  		if (status == -EINPROGRESS) {
  			spin_unlock_bh(&txq->axq_lock);
  			break;
-@@ -2154,10 +2156,14 @@ static void ath_tx_processq(struct ath_s
+@@ -2144,10 +2146,14 @@ static void ath_tx_processq(struct ath_s
  			ath_tx_rc_status(bf, &ts, 0, txok, true);
  		}
  
@@ -1381,7 +1381,7 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  
  		ath_wake_mac80211_queue(sc, txq);
  
-@@ -2229,9 +2235,11 @@ void ath_tx_edma_tasklet(struct ath_soft
+@@ -2219,9 +2225,11 @@ void ath_tx_edma_tasklet(struct ath_soft
  	struct list_head bf_head;
  	int status;
  	int txok;
@@ -1394,7 +1394,7 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  		if (status == -EINPROGRESS)
  			break;
  		if (status == -EIO) {
-@@ -2284,14 +2292,18 @@ void ath_tx_edma_tasklet(struct ath_soft
+@@ -2274,14 +2282,18 @@ void ath_tx_edma_tasklet(struct ath_soft
  			ath_tx_rc_status(bf, &txs, 0, txok, true);
  		}
  
