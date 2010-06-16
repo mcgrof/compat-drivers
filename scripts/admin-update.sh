@@ -94,8 +94,8 @@ nagometer() {
 	CHANGES=0
 
 	ORIG_CODE=$2
-	ADD=$(grep -c ^+ $1/*.patch| awk -F":" 'BEGIN {sum=0} {sum += $2} END { print sum}')
-	DEL=$(grep -c ^- $1/*.patch| awk -F":" 'BEGIN {sum=0} {sum += $2} END { print sum}')
+	ADD=$(grep -Hc ^+ $1/*.patch| awk -F":" 'BEGIN {sum=0} {sum += $2} END { print sum}')
+	DEL=$(grep -Hc ^- $1/*.patch| awk -F":" 'BEGIN {sum=0} {sum += $2} END { print sum}')
 	# Total code is irrelevant unless you take into account each part,
 	# easier to just compare against the original code.
 	# let TOTAL_CODE=$ORIG_CODE+$ADD-$DEL
