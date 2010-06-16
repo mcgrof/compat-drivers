@@ -66,28 +66,28 @@ brag_backport() {
 	printf "${GREEN}%10s${NORMAL} - backport from compat module\n" $COMPAT_FILES_CODE
 	printf "${GREEN}%10s${NORMAL} - total backport code\n" $COMPAT_ALL_CHANGES
 	printf "${RED}%10s${NORMAL} - %% of code consists of backport work\n" \
-		$(perl -e 'printf("%.2f", 100 * '$COMPAT_ALL_CHANGES' / '$1');')
+		$(perl -e 'printf("%.4f", 100 * '$COMPAT_ALL_CHANGES' / '$1');')
 }
 
 nag_next_cherry_pick() {
 	printf "${YELLOW}%10s${NORMAL} - Code changes brought in from linux-next\n" $2
 	printf "${YELLOW}%10s${NORMAL} - Code additions brought in from linux-next\n" $3
 	printf "${YELLOW}%10s${NORMAL} - Code deletions brought in from linux-next\n" $4
-	printf "${RED}%10s${NORMAL} - %% of code being cherry picked from linux-next\n" $(perl -e 'printf("%.2f", 100 * '$2' / '$1');')
+	printf "${RED}%10s${NORMAL} - %% of code being cherry picked from linux-next\n" $(perl -e 'printf("%.4f", 100 * '$2' / '$1');')
 }
 
 nag_pending() {
 	printf "${YELLOW}%10s${NORMAL} - Code changes posted but not yet merged\n" $2
 	printf "${YELLOW}%10s${NORMAL} - Code additions posted but not yet merged\n" $3
 	printf "${YELLOW}%10s${NORMAL} - Code deletions posted but not yet merged\n" $4
-	printf "${RED}%10s${NORMAL} - %% of code not yet merged\n" $(perl -e 'printf("%.2f", 100 * '$2' / '$1');')
+	printf "${RED}%10s${NORMAL} - %% of code not yet merged\n" $(perl -e 'printf("%.4f", 100 * '$2' / '$1');')
 }
 
 nag_crap() {
 	printf "${RED}%10s${NORMAL} - Crap changes not yet posted\n" $2
 	printf "${RED}%10s${NORMAL} - Crap additions not yet merged\n" $3
 	printf "${RED}%10s${NORMAL} - Crap deletions not yet posted\n" $4
-	printf "${RED}%10s${NORMAL} - %% of crap code\n" $(perl -e 'printf("%.2f", 100 * '$2' / '$1');')
+	printf "${RED}%10s${NORMAL} - %% of crap code\n" $(perl -e 'printf("%.4f", 100 * '$2' / '$1');')
 }
 
 nagometer() {
