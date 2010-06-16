@@ -1,0 +1,31 @@
+In commit f350a0a87374418635689471606454abc7beaa3a the br_port
+attribute was replaced with a private flag.
+
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -1109,7 +1109,11 @@ static int nl80211_valid_4addr(struct cf
+ 			       enum nl80211_iftype iftype)
+ {
+ 	if (!use_4addr) {
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,36))
+ 		if (netdev && (netdev->priv_flags & IFF_BRIDGE_PORT))
++#else
++		if (netdev && netdev->br_port)
++#endif
+ 			return -EBUSY;
+ 		return 0;
+ 	}
+--- a/net/wireless/util.c
++++ b/net/wireless/util.c
+@@ -770,7 +770,11 @@ int cfg80211_change_iface(struct cfg8021
+ 		return -EOPNOTSUPP;
+ 
+ 	/* if it's part of a bridge, reject changing type to station/ibss */
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,36))
+ 	if ((dev->priv_flags & IFF_BRIDGE_PORT) &&
++#else
++	if (dev->br_port &&
++#endif
+ 	    (ntype == NL80211_IFTYPE_ADHOC || ntype == NL80211_IFTYPE_STATION))
+ 		return -EBUSY;
+ 
