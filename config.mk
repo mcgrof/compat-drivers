@@ -162,8 +162,19 @@ CONFIG_BT_CMTP=m
 endif
 CONFIG_BT_HIDP=m
 
+# CONFIG_CFG80211_WEXT will be resepected for
+# future kernels but for older kenrels we need
+# to enable it against the the old CONFIG_WIRELESS_EXT.
+# By using a space here we prevent scripts/gen-compat-autoconf.sh
+# from defining CONFIG_CFG80211_WEXT through its grep sweep for ^CONFIG
+# options, instead its handled specially there based on kernel revision.
+# using this logic: if you are on older kernel and have CONFIG_WIRELESS_EXT
+# defined we'll define it.
+#
+# For newer kernels we'll just respect your own kernel's
+# autoconf.h
 ifneq ($(CONFIG_WIRELESS_EXT),)
-CONFIG_CFG80211_WEXT=y
+ CONFIG_CFG80211_WEXT=y
 endif
 
 # mac80211 test driver

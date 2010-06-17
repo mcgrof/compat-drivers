@@ -193,8 +193,7 @@ if [ -f $KLIB_BUILD/Makefile ]; then
 		rm -f $MULT_DEP_FILE
 		# Kernels >= 2.6.32 can disable WEXT :D
 		if [ $SUBLEVEL -lt 32 ]; then
-			# Handle core kernel wireless depenencies here
-			define_config_req CONFIG_WIRELESS_EXT
+			define_config_dep CONFIG_CFG80211_WEXT 1 CONFIG_WIRELESS_EXT
 		fi
 	fi
 fi
