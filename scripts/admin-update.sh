@@ -85,7 +85,7 @@ nag_pending() {
 
 nag_crap() {
 	printf "${RED}%10s${NORMAL} - Crap changes not yet posted\n" $2
-	printf "${RED}%10s${NORMAL} - Crap additions not yet merged\n" $3
+	printf "${RED}%10s${NORMAL} - Crap additions not yet posted\n" $3
 	printf "${RED}%10s${NORMAL} - Crap deletions not yet posted\n" $4
 	printf "${RED}%10s${NORMAL} - %% of crap code\n" $(perl -e 'printf("%.4f", 100 * '$2' / '$1');')
 }
