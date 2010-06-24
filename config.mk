@@ -433,7 +433,7 @@ CONFIG_SSB_SDIOHOST=y
 CONFIG_B43_SDIO=y
 CONFIG_WL1251_SDIO=m
 
-ifneq ($(CONFIG_ARM),)
+ifndef CONFIG_COMPAT_KERNEL_32
 CONFIG_WL1271_SDIO=m
 endif
 
@@ -445,12 +445,8 @@ CONFIG_LIBERTAS_SDIO=m
 NEED_LIBERTAS=y
 endif
 
-# Activate iwmc3200wifi support only on kernel >= 2.6.29.
-# iwmc3200wifi uses new netdev_ops api no supported by old kernel.
-ifndef CONFIG_COMPAT_KERNEL_29
 CONFIG_IWM=m
 # CONFIG_IWM_DEBUG=y
-endif
 
 endif # end of SDIO driver list
 
