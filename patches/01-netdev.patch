@@ -34,7 +34,7 @@ without creating a headache on maintenance of the pathes.
  
 --- a/drivers/net/wireless/rndis_wlan.c
 +++ b/drivers/net/wireless/rndis_wlan.c
-@@ -3131,7 +3131,7 @@ static int rndis_wlan_bind(struct usbnet
+@@ -3137,7 +3137,7 @@ static int rndis_wlan_bind(struct usbnet
  	 * rndis_host wants to avoid all OID as much as possible
  	 * so do promisc/multicast handling in rndis_wlan.
  	 */
@@ -217,7 +217,7 @@ without creating a headache on maintenance of the pathes.
  	net_dev->wireless_handlers = &ipw_wx_handler_def;
 --- a/drivers/net/wireless/libertas/main.c
 +++ b/drivers/net/wireless/libertas/main.c
-@@ -968,7 +968,7 @@ struct lbs_private *lbs_add_card(void *c
+@@ -866,7 +866,7 @@ struct lbs_private *lbs_add_card(void *c
  	wdev->netdev = dev;
  	priv->dev = dev;
  
@@ -225,10 +225,10 @@ without creating a headache on maintenance of the pathes.
 +	netdev_attach_ops(dev, &lbs_netdev_ops);
  	dev->watchdog_timeo = 5 * HZ;
  	dev->ethtool_ops = &lbs_ethtool_ops;
- #ifdef	WIRELESS_EXT
+ 	dev->flags |= IFF_BROADCAST | IFF_MULTICAST;
 --- a/drivers/net/wireless/libertas/mesh.c
 +++ b/drivers/net/wireless/libertas/mesh.c
-@@ -363,7 +363,7 @@ int lbs_add_mesh(struct lbs_private *pri
+@@ -364,7 +364,7 @@ int lbs_add_mesh(struct lbs_private *pri
  	mesh_dev->ml_priv = priv;
  	priv->mesh_dev = mesh_dev;
  
@@ -281,7 +281,7 @@ without creating a headache on maintenance of the pathes.
  
 --- a/net/bluetooth/bnep/netdev.c
 +++ b/net/bluetooth/bnep/netdev.c
-@@ -168,8 +168,12 @@ static inline int bnep_net_proto_filter(
+@@ -170,8 +170,12 @@ static inline int bnep_net_proto_filter(
  }
  #endif
  
@@ -296,7 +296,7 @@ without creating a headache on maintenance of the pathes.
  {
  	struct bnep_session *s = netdev_priv(dev);
  	struct sock *sk = s->sock->sk;
-@@ -229,7 +233,7 @@ void bnep_net_setup(struct net_device *d
+@@ -231,7 +235,7 @@ void bnep_net_setup(struct net_device *d
  	dev->addr_len = ETH_ALEN;
  
  	ether_setup(dev);

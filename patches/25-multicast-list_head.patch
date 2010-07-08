@@ -229,7 +229,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  	return ((u64)(mfilt[1]) << 32) | mfilt[0];
 --- a/drivers/net/wireless/libertas/main.c
 +++ b/drivers/net/wireless/libertas/main.c
-@@ -328,18 +328,34 @@ static int lbs_add_mcast_addrs(struct cm
+@@ -247,18 +247,34 @@ static int lbs_add_mcast_addrs(struct cm
  	netif_addr_lock_bh(dev);
  	cnt = netdev_mc_count(dev);
  	netdev_for_each_mc_addr(ha, dev) {
@@ -419,7 +419,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  			      size_t fw_name_len, u32 *hw_ver);
 --- a/drivers/net/wireless/rndis_wlan.c
 +++ b/drivers/net/wireless/rndis_wlan.c
-@@ -1587,7 +1587,11 @@ static void set_multicast_list(struct us
+@@ -1588,7 +1588,11 @@ static void set_multicast_list(struct us
  
  		netdev_for_each_mc_addr(ha, usbdev->net)
  			memcpy(mc_addrs + i++ * ETH_ALEN,
@@ -576,7 +576,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  	return hash.low | ((u64)hash.high << 32);
 --- a/include/net/mac80211.h
 +++ b/include/net/mac80211.h
-@@ -1686,7 +1686,11 @@ struct ieee80211_ops {
+@@ -1695,7 +1695,11 @@ struct ieee80211_ops {
  				 struct ieee80211_bss_conf *info,
  				 u32 changed);
  	u64 (*prepare_multicast)(struct ieee80211_hw *hw,
