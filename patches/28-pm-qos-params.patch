@@ -47,9 +47,9 @@ little wierd.
  	spin_unlock_irqrestore(&priv->low_lock, flags);
  
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,36))
-+	pm_qos_update_request(ipw2100_pm_qos_req, PM_QOS_DEFAULT_VALUE);
-+#elif (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,35))
  	pm_qos_update_request(&ipw2100_pm_qos_req, PM_QOS_DEFAULT_VALUE);
++#elif (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,35))
++	pm_qos_update_request(ipw2100_pm_qos_req, PM_QOS_DEFAULT_VALUE);
 +#else
 +	pm_qos_update_requirement(PM_QOS_CPU_DMA_LATENCY, "ipw2100",
 +				  PM_QOS_DEFAULT_VALUE);
@@ -83,7 +83,7 @@ little wierd.
 +#elif (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,35))
 +	pm_qos_remove_request(ipw2100_pm_qos_req);
 +#else
-+	pm_qos_remove_requirement(PM_QOS_CPU_DMA_LATENCY, "ipw2100")
++	pm_qos_remove_requirement(PM_QOS_CPU_DMA_LATENCY, "ipw2100");
 +#endif
  }
  
