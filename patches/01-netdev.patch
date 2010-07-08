@@ -8,7 +8,7 @@ without creating a headache on maintenance of the pathes.
 
 --- a/drivers/net/usb/rndis_host.c
 +++ b/drivers/net/usb/rndis_host.c
-@@ -352,7 +352,11 @@ generic_rndis_bind(struct usbnet *dev, s
+@@ -346,7 +346,11 @@ generic_rndis_bind(struct usbnet *dev, s
  	dev->rx_urb_size &= ~(dev->maxpacket - 1);
  	u.init->max_transfer_size = cpu_to_le32(dev->rx_urb_size);
  
@@ -23,7 +23,7 @@ without creating a headache on maintenance of the pathes.
  	if (unlikely(retval < 0)) {
 --- a/drivers/net/usb/usbnet.c
 +++ b/drivers/net/usb/usbnet.c
-@@ -1328,7 +1328,7 @@ usbnet_probe (struct usb_interface *udev
+@@ -1331,7 +1331,7 @@ usbnet_probe (struct usb_interface *udev
  		net->features |= NETIF_F_HIGHDMA;
  #endif
  
@@ -34,7 +34,7 @@ without creating a headache on maintenance of the pathes.
  
 --- a/drivers/net/wireless/rndis_wlan.c
 +++ b/drivers/net/wireless/rndis_wlan.c
-@@ -3131,7 +3131,7 @@ static int rndis_wlan_bind(struct usbnet
+@@ -3137,7 +3137,7 @@ static int rndis_wlan_bind(struct usbnet
  	 * rndis_host wants to avoid all OID as much as possible
  	 * so do promisc/multicast handling in rndis_wlan.
  	 */
@@ -292,7 +292,7 @@ without creating a headache on maintenance of the pathes.
  
 --- a/net/bluetooth/bnep/netdev.c
 +++ b/net/bluetooth/bnep/netdev.c
-@@ -168,8 +168,12 @@ static inline int bnep_net_proto_filter(
+@@ -170,8 +170,12 @@ static inline int bnep_net_proto_filter(
  }
  #endif
  
@@ -307,7 +307,7 @@ without creating a headache on maintenance of the pathes.
  {
  	struct bnep_session *s = netdev_priv(dev);
  	struct sock *sk = s->sock->sk;
-@@ -229,7 +233,7 @@ void bnep_net_setup(struct net_device *d
+@@ -231,7 +235,7 @@ void bnep_net_setup(struct net_device *d
  	dev->addr_len = ETH_ALEN;
  
  	ether_setup(dev);

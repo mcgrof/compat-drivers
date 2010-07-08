@@ -3,7 +3,7 @@ attribute was replaced with a private flag.
 
 --- a/net/wireless/nl80211.c
 +++ b/net/wireless/nl80211.c
-@@ -1109,7 +1109,11 @@ static int nl80211_valid_4addr(struct cf
+@@ -1140,7 +1140,11 @@ static int nl80211_valid_4addr(struct cf
  			       enum nl80211_iftype iftype)
  {
  	if (!use_4addr) {
