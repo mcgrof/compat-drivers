@@ -601,9 +601,9 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
 +			memcpy(__skb_put(skb, ETH_ALEN), ha->dmi_addr, ETH_ALEN);
 +			memcpy(__skb_put(skb, ETH_ALEN), ha->dmi_addr, ETH_ALEN);
 +#endif
+ 
+ 			i++;
  		}
- 		r->len = htons(skb->len - len);
- 	}
 --- a/net/mac80211/driver-ops.h
 +++ b/net/mac80211/driver-ops.h
 @@ -90,14 +90,28 @@ static inline void drv_bss_info_changed(
