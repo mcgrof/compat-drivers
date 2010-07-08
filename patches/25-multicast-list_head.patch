@@ -590,20 +590,21 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  				 unsigned int *total_flags,
 --- a/net/bluetooth/bnep/netdev.c
 +++ b/net/bluetooth/bnep/netdev.c
-@@ -102,8 +102,13 @@ static void bnep_net_set_mc_list(struct 
+@@ -102,9 +102,13 @@ static void bnep_net_set_mc_list(struct 
  		netdev_for_each_mc_addr(ha, dev) {
  			if (i == BNEP_MAX_MULTICAST_FILTERS)
  				break;
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,35))
  			memcpy(__skb_put(skb, ETH_ALEN), ha->addr, ETH_ALEN);
  			memcpy(__skb_put(skb, ETH_ALEN), ha->addr, ETH_ALEN);
+-
 +#else
 +			memcpy(__skb_put(skb, ETH_ALEN), ha->dmi_addr, ETH_ALEN);
 +			memcpy(__skb_put(skb, ETH_ALEN), ha->dmi_addr, ETH_ALEN);
 +#endif
+ 			i++;
  		}
  		r->len = htons(skb->len - len);
- 	}
 --- a/net/mac80211/driver-ops.h
 +++ b/net/mac80211/driver-ops.h
 @@ -84,14 +84,28 @@ static inline void drv_bss_info_changed(
