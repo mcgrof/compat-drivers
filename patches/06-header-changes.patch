@@ -16,18 +16,6 @@ cases.
  
  struct b43_wldev;
  
---- a/drivers/net/wireless/libertas/assoc.c
-+++ b/drivers/net/wireless/libertas/assoc.c
-@@ -6,6 +6,9 @@
- #include <linux/if_arp.h>
- #include <linux/slab.h>
- #include <net/lib80211.h>
-+#if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,29))
-+#include <asm/unaligned.h>
-+#endif
- 
- #include "assoc.h"
- #include "decl.h"
 --- a/drivers/net/wireless/wl12xx/wl1251_main.c
 +++ b/drivers/net/wireless/wl12xx/wl1251_main.c
 @@ -26,6 +26,9 @@
