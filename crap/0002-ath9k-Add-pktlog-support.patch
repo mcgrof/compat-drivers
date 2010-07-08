@@ -105,15 +105,15 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  
  /*
   * Header for the ath9k.ko driver core *only* -- hw code nor any other driver
-@@ -516,6 +517,7 @@ void ath_deinit_leds(struct ath_softc *s
- #define SC_OP_TSF_RESET              BIT(11)
+@@ -521,6 +522,7 @@ void ath_deinit_leds(struct ath_softc *s
  #define SC_OP_BT_PRIORITY_DETECTED   BIT(12)
  #define SC_OP_BT_SCAN		     BIT(13)
-+#define SC_OP_PKTLOGGING	     BIT(14)
+ #define SC_OP_ANI_RUN		     BIT(14)
++#define SC_OP_PKTLOGGING	     BIT(15)
  
  /* Powersave flags */
  #define PS_WAIT_FOR_BEACON        BIT(0)
-@@ -594,6 +596,10 @@ struct ath_softc {
+@@ -599,6 +601,10 @@ struct ath_softc {
  #ifdef CONFIG_ATH9K_DEBUGFS
  	struct ath9k_debug debug;
  #endif
@@ -161,7 +161,7 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  static inline void ath9k_hw_set11n_txdesc(struct ath_hw *ah, void *ds,
 --- a/drivers/net/wireless/ath/ath9k/hw.c
 +++ b/drivers/net/wireless/ath/ath9k/hw.c
-@@ -2376,7 +2376,7 @@ void ath9k_hw_setrxfilter(struct ath_hw 
+@@ -2440,7 +2440,7 @@ void ath9k_hw_setrxfilter(struct ath_hw 
  		phybits |= AR_PHY_ERR_RADAR;
  	if (bits & ATH9K_RX_FILTER_PHYERR)
  		phybits |= AR_PHY_ERR_OFDM_TIMING | AR_PHY_ERR_CCK_TIMING;
@@ -172,7 +172,7 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  		REG_WRITE(ah, AR_RXCFG,
 --- a/drivers/net/wireless/ath/ath9k/hw.h
 +++ b/drivers/net/wireless/ath/ath9k/hw.h
-@@ -602,7 +602,7 @@ struct ath_hw_ops {
+@@ -603,7 +603,7 @@ struct ath_hw_ops {
  			    const void *ds0, dma_addr_t buf_addr,
  			    unsigned int qcu);
  	int (*proc_txdesc)(struct ath_hw *ah, void *ds,
@@ -181,10 +181,10 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  	void (*set11n_txdesc)(struct ath_hw *ah, void *ds,
  			      u32 pktLen, enum ath9k_pkt_type type,
  			      u32 txPower, u32 keyIx,
-@@ -819,6 +819,8 @@ struct ath_hw {
- 
- 	u32 paprd_gain_table_entries[PAPRD_GAIN_TABLE_ENTRIES];
- 	u8 paprd_gain_table_index[PAPRD_GAIN_TABLE_ENTRIES];
+@@ -831,6 +831,8 @@ struct ath_hw {
+ 	 * this register when in sleep states.
+ 	 */
+ 	u32 WARegVal;
 +
 +	bool is_pkt_logging;
  };
@@ -1346,7 +1346,7 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  		bf->bf_buf_addr = dma_map_single(sc->dev, requeue_skb->data,
 --- a/drivers/net/wireless/ath/ath9k/xmit.c
 +++ b/drivers/net/wireless/ath/ath9k/xmit.c
-@@ -418,6 +418,8 @@ static void ath_tx_complete_aggr(struct 
+@@ -429,6 +429,8 @@ static void ath_tx_complete_aggr(struct 
  			list_move_tail(&bf->list, &bf_head);
  		}
  
@@ -1355,7 +1355,7 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  		if (!txpending) {
  			/*
  			 * complete the acked-ones/xretried ones; update
-@@ -2094,7 +2096,7 @@ static void ath_tx_processq(struct ath_s
+@@ -2112,7 +2114,7 @@ static void ath_tx_processq(struct ath_s
  		ds = lastbf->bf_desc;
  
  		memset(&ts, 0, sizeof(ts));
@@ -1364,7 +1364,7 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  		if (status == -EINPROGRESS) {
  			spin_unlock_bh(&txq->axq_lock);
  			break;
-@@ -2144,10 +2146,14 @@ static void ath_tx_processq(struct ath_s
+@@ -2161,10 +2163,14 @@ static void ath_tx_processq(struct ath_s
  			ath_tx_rc_status(bf, &ts, 0, txok, true);
  		}
  
@@ -1381,7 +1381,7 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  
  		ath_wake_mac80211_queue(sc, txq);
  
-@@ -2219,9 +2225,11 @@ void ath_tx_edma_tasklet(struct ath_soft
+@@ -2236,9 +2242,11 @@ void ath_tx_edma_tasklet(struct ath_soft
  	struct list_head bf_head;
  	int status;
  	int txok;
@@ -1394,7 +1394,7 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  		if (status == -EINPROGRESS)
  			break;
  		if (status == -EIO) {
-@@ -2274,14 +2282,18 @@ void ath_tx_edma_tasklet(struct ath_soft
+@@ -2290,14 +2298,18 @@ void ath_tx_edma_tasklet(struct ath_soft
  			ath_tx_rc_status(bf, &txs, 0, txok, true);
  		}
  
