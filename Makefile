@@ -337,8 +337,7 @@ clean:
 		$(MAKE) -C $(KLIB_BUILD) M=$(PWD) clean ;\
 	fi
 	@rm -f $(CREL_PRE)*
-	@rm -f code-metrics.txt
-	@rm -f compat_base_tree compat_base_tree_version compat_version
+
 unload:
 	@./scripts/unload.sh
 
