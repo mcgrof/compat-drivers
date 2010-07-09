@@ -14,9 +14,9 @@ CONFIG_IWL4965 has to be set to y, to build correctly.
  iwlagn-$(CONFIG_IWL5000) += iwl-5000.o
  iwlagn-$(CONFIG_IWL5000) += iwl-6000.o
  iwlagn-$(CONFIG_IWL5000) += iwl-1000.o
---- a/drivers/net/wireless/iwlwifi/iwl-agn.c	2009-11-25 15:12:44.000000000 -0800
-+++ b/drivers/net/wireless/iwlwifi/iwl-agn.c	2009-11-25 15:12:45.000000000 -0800
-@@ -3198,10 +3198,10 @@
+--- a/drivers/net/wireless/iwlwifi/iwl-agn.c
++++ b/drivers/net/wireless/iwlwifi/iwl-agn.c
+@@ -3198,10 +3198,10 @@ static void __devexit iwl_pci_remove(str
  
  /* Hardware specific file defines the PCI IDs table for that hardware module */
  static struct pci_device_id iwl_hw_card_ids[] = {
@@ -27,5 +27,5 @@ CONFIG_IWL4965 has to be set to y, to build correctly.
 -#endif /* CONFIG_IWL4965 */
 +#endif /* CONFIG_COMPAT_IWL4965 */
  #ifdef CONFIG_IWL5000
- 	{IWL_PCI_DEVICE(0x4232, 0x1205, iwl5100_bg_cfg)},
- 	{IWL_PCI_DEVICE(0x4232, 0x1305, iwl5100_bg_cfg)},
+ /* 5100 Series WiFi */
+ 	{IWL_PCI_DEVICE(0x4232, 0x1201, iwl5100_agn_cfg)}, /* Mini Card */
