@@ -49,7 +49,7 @@ calls on compat code with only slight modifications.
  	.remove		= __devexit_p(ath5k_pci_remove),
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
  	.driver.pm	= ATH5K_PM_OPS,
-+#elif defined(CONFIG_PM)
++#elif defined(CONFIG_PM_SLEEP)
 +	.suspend        = ath5k_pci_suspend_compat,
 +	.resume         = ath5k_pci_resume_compat,
 +#endif
