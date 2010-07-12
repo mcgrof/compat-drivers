@@ -3,7 +3,7 @@ here still, but for now we keep this here.
 
 --- a/drivers/bluetooth/hci_ldisc.c
 +++ b/drivers/bluetooth/hci_ldisc.c
-@@ -277,8 +277,13 @@ static int hci_uart_tty_open(struct tty_
+@@ -275,8 +275,13 @@ static int hci_uart_tty_open(struct tty_
  	/* FIXME: why is this needed. Note don't use ldisc_ref here as the
  	   open path is before the ldisc is referencable */
  
@@ -17,7 +17,7 @@ here still, but for now we keep this here.
  	tty_driver_flush_buffer(tty);
  
  	return 0;
-@@ -478,7 +483,11 @@ static int hci_uart_tty_ioctl(struct tty
+@@ -476,7 +481,11 @@ static int hci_uart_tty_ioctl(struct tty
  		return -EUNATCH;
  
  	default:
@@ -111,7 +111,7 @@ here still, but for now we keep this here.
  #include <asm/system.h>
 --- a/net/bluetooth/hci_sock.c
 +++ b/net/bluetooth/hci_sock.c
-@@ -473,7 +473,11 @@ drop:
+@@ -563,7 +563,11 @@ drop:
  	goto done;
  }
  
@@ -123,7 +123,7 @@ here still, but for now we keep this here.
  {
  	struct hci_ufilter uf = { .opcode = 0 };
  	struct sock *sk = sock->sk;
-@@ -628,8 +632,12 @@ static struct proto hci_sk_proto = {
+@@ -718,8 +722,12 @@ static struct proto hci_sk_proto = {
  	.obj_size	= sizeof(struct hci_pinfo)
  };
  
@@ -570,7 +570,7 @@ here still, but for now we keep this here.
  
 --- a/net/bluetooth/l2cap.c
 +++ b/net/bluetooth/l2cap.c
-@@ -856,8 +856,12 @@ static struct sock *l2cap_sock_alloc(str
+@@ -955,8 +955,12 @@ static struct sock *l2cap_sock_alloc(str
  	return sk;
  }
  
@@ -583,7 +583,7 @@ here still, but for now we keep this here.
  {
  	struct sock *sk;
  
-@@ -869,7 +873,11 @@ static int l2cap_sock_create(struct net 
+@@ -968,7 +972,11 @@ static int l2cap_sock_create(struct net 
  			sock->type != SOCK_DGRAM && sock->type != SOCK_RAW)
  		return -ESOCKTNOSUPPORT;
  
@@ -595,7 +595,7 @@ here still, but for now we keep this here.
  		return -EPERM;
  
  	sock->ops = &l2cap_sock_ops;
-@@ -1910,7 +1918,11 @@ static int l2cap_sock_setsockopt_old(str
+@@ -2025,7 +2033,11 @@ static int l2cap_sock_setsockopt_old(str
  	return err;
  }
  
