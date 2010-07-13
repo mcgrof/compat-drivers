@@ -8,7 +8,7 @@ without creating a headache on maintenance of the pathes.
 
 --- a/drivers/net/usb/rndis_host.c
 +++ b/drivers/net/usb/rndis_host.c
-@@ -352,7 +352,11 @@ generic_rndis_bind(struct usbnet *dev, s
+@@ -346,7 +346,11 @@ generic_rndis_bind(struct usbnet *dev, s
  	dev->rx_urb_size &= ~(dev->maxpacket - 1);
  	u.init->max_transfer_size = cpu_to_le32(dev->rx_urb_size);
  
@@ -23,7 +23,7 @@ without creating a headache on maintenance of the pathes.
  	if (unlikely(retval < 0)) {
 --- a/drivers/net/usb/usbnet.c
 +++ b/drivers/net/usb/usbnet.c
-@@ -1328,7 +1328,7 @@ usbnet_probe (struct usb_interface *udev
+@@ -1331,7 +1331,7 @@ usbnet_probe (struct usb_interface *udev
  		net->features |= NETIF_F_HIGHDMA;
  #endif
  
@@ -217,7 +217,7 @@ without creating a headache on maintenance of the pathes.
  	net_dev->wireless_handlers = &ipw_wx_handler_def;
 --- a/drivers/net/wireless/libertas/main.c
 +++ b/drivers/net/wireless/libertas/main.c
-@@ -866,7 +866,7 @@ struct lbs_private *lbs_add_card(void *c
+@@ -836,7 +836,7 @@ struct lbs_private *lbs_add_card(void *c
  	wdev->netdev = dev;
  	priv->dev = dev;
  
