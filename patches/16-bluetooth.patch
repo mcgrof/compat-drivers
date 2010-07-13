@@ -17,8 +17,8 @@ here still, but for now we keep this here.
  	tty_driver_flush_buffer(tty);
  
  	return 0;
-@@ -476,7 +481,11 @@ static int hci_uart_tty_ioctl(struct tty
- 		return -EUNATCH;
+@@ -488,7 +493,11 @@ static int hci_uart_tty_ioctl(struct tty
+ 		return hu->hdev_flags;
  
  	default:
 +#if (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,27))

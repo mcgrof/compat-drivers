@@ -228,7 +228,7 @@ without creating a headache on maintenance of the pathes.
  	wdev->netdev = ndev;
 --- a/drivers/net/wireless/libertas/main.c
 +++ b/drivers/net/wireless/libertas/main.c
-@@ -866,7 +866,7 @@ struct lbs_private *lbs_add_card(void *c
+@@ -836,7 +836,7 @@ struct lbs_private *lbs_add_card(void *c
  	wdev->netdev = dev;
  	priv->dev = dev;
  
