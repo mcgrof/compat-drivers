@@ -61,3 +61,58 @@ thread in process context as well.
  };
  
  /* Data structure for the WLAN parts (802.11 cores) of the b43 chip. */
+--- a/drivers/net/wireless/rt2x00/rt2x00.h
++++ b/drivers/net/wireless/rt2x00/rt2x00.h
+@@ -882,6 +882,9 @@ struct rt2x00_dev {
+ 	 * and interrupt thread routine.
+ 	 */
+ 	u32 irqvalue[2];
++#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,31)
++	struct compat_threaded_irq irq_compat;
++#endif
+ };
+ 
+ /*
+--- a/drivers/net/wireless/rt2x00/rt2x00pci.c
++++ b/drivers/net/wireless/rt2x00/rt2x00pci.c
+@@ -153,10 +153,18 @@ int rt2x00pci_initialize(struct rt2x00_d
+ 	/*
+ 	 * Register interrupt handler.
+ 	 */
++#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,31)
++	status = compat_request_threaded_irq(&rt2x00dev->irq_compat,
++					  rt2x00dev->irq,
++					  rt2x00dev->ops->lib->irq_handler,
++					  rt2x00dev->ops->lib->irq_handler_thread,
++					  IRQF_SHARED, rt2x00dev->name, rt2x00dev);
++#else
+ 	status = request_threaded_irq(rt2x00dev->irq,
+ 				      rt2x00dev->ops->lib->irq_handler,
+ 				      rt2x00dev->ops->lib->irq_handler_thread,
+ 				      IRQF_SHARED, rt2x00dev->name, rt2x00dev);
++#endif
+ 	if (status) {
+ 		ERROR(rt2x00dev, "IRQ %d allocation failed (error %d).\n",
+ 		      rt2x00dev->irq, status);
+@@ -180,7 +188,11 @@ void rt2x00pci_uninitialize(struct rt2x0
+ 	/*
+ 	 * Free irq line.
+ 	 */
++#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,31)
++	compat_free_threaded_irq(&rt2x00dev->irq_compat);
++#else
+ 	free_irq(rt2x00dev->irq, rt2x00dev);
++#endif
+ 
+ 	/*
+ 	 * Free DMA
+@@ -195,6 +207,9 @@ EXPORT_SYMBOL_GPL(rt2x00pci_uninitialize
+  */
+ static void rt2x00pci_free_reg(struct rt2x00_dev *rt2x00dev)
+ {
++#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,31)
++	compat_destroy_threaded_irq(&rt2x00dev->irq_compat);
++#endif
+ 	kfree(rt2x00dev->rf);
+ 	rt2x00dev->rf = NULL;
+ 
