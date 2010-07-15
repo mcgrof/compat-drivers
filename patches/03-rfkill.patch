@@ -228,6 +228,6 @@ This would do the policing from within mac80211.
 +#else
 +#include <linux/rfkill_backport.h>
 +#endif
- #include <linux/workqueue.h>
  
  #include "ath5k.h"
+ #include "debug.h"
