@@ -174,7 +174,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  static void ath5k_configure_filter(struct ieee80211_hw *hw,
  		unsigned int changed_flags,
  		unsigned int *new_flags,
-@@ -3139,20 +3143,42 @@ unlock:
+@@ -3148,20 +3152,42 @@ unlock:
  }
  
  static u64 ath5k_prepare_multicast(struct ieee80211_hw *hw,
@@ -217,7 +217,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  		pos ^= (val >> 18) ^ (val >> 12) ^ (val >> 6) ^ val;
  		pos &= 0x3f;
  		mfilt[pos / 32] |= (1 << (pos % 32));
-@@ -3161,6 +3187,9 @@ static u64 ath5k_prepare_multicast(struc
+@@ -3170,6 +3196,9 @@ static u64 ath5k_prepare_multicast(struc
  		* neet to inform below to not reset the mcast */
  		/* ath5k_hw_set_mcast_filterindex(ah,
  		 *      ha->addr[5]); */

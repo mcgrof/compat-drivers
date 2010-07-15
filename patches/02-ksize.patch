@@ -37,7 +37,7 @@ of the situation.
  		priv->keys[index].key = kzalloc(key_len, GFP_ATOMIC);
 --- a/net/wireless/scan.c
 +++ b/net/wireless/scan.c
-@@ -427,9 +427,14 @@ cfg80211_bss_update(struct cfg80211_regi
+@@ -432,9 +432,14 @@ cfg80211_bss_update(struct cfg80211_regi
  			size_t used = dev->wiphy.bss_priv_size + sizeof(*res);
  			size_t ielen = res->pub.len_proberesp_ies;
  
@@ -52,7 +52,7 @@ of the situation.
  				memcpy(found->pub.proberesp_ies,
  				       res->pub.proberesp_ies, ielen);
  				found->pub.len_proberesp_ies = ielen;
-@@ -460,9 +465,14 @@ cfg80211_bss_update(struct cfg80211_regi
+@@ -465,9 +470,14 @@ cfg80211_bss_update(struct cfg80211_regi
  			size_t used = dev->wiphy.bss_priv_size + sizeof(*res);
  			size_t ielen = res->pub.len_beacon_ies;
  
