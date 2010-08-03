@@ -1,8 +1,8 @@
 --- a/drivers/bluetooth/bluecard_cs.c
 +++ b/drivers/bluetooth/bluecard_cs.c
-@@ -869,6 +869,12 @@ static int bluecard_probe(struct pcmcia_
- 	link->io.Attributes1 = IO_DATA_PATH_WIDTH_8;
- 	link->io.NumPorts1 = 8;
+@@ -865,6 +865,12 @@ static int bluecard_probe(struct pcmcia_
+ 	info->p_dev = link;
+ 	link->priv = info;
  
 +#if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,35))
 +	link->irq.Attributes = IRQ_TYPE_DYNAMIC_SHARING;
@@ -13,7 +13,7 @@
  	link->conf.Attributes = CONF_ENABLE_IRQ;
  	link->conf.IntType = INT_MEMORY_AND_IO;
  
-@@ -904,9 +910,15 @@ static int bluecard_config(struct pcmcia
+@@ -902,9 +908,15 @@ static int bluecard_config(struct pcmcia
  	if (i != 0)
  		goto failed;
  
@@ -31,9 +31,9 @@
  	if (i != 0)
 --- a/drivers/bluetooth/bt3c_cs.c
 +++ b/drivers/bluetooth/bt3c_cs.c
-@@ -661,6 +661,12 @@ static int bt3c_probe(struct pcmcia_devi
- 	link->io.Attributes1 = IO_DATA_PATH_WIDTH_8;
- 	link->io.NumPorts1 = 8;
+@@ -660,6 +660,12 @@ static int bt3c_probe(struct pcmcia_devi
+ 	link->resource[0]->flags |= IO_DATA_PATH_WIDTH_8;
+ 	link->resource[0]->end = 8;
  
 +#if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,35))
 +	link->irq.Attributes = IRQ_TYPE_DYNAMIC_SHARING;
@@ -44,7 +44,7 @@
  	link->conf.Attributes = CONF_ENABLE_IRQ;
  	link->conf.IntType = INT_MEMORY_AND_IO;
  
-@@ -739,9 +745,15 @@ static int bt3c_config(struct pcmcia_dev
+@@ -738,9 +744,15 @@ static int bt3c_config(struct pcmcia_dev
  	goto failed;
  
  found_port:
@@ -62,9 +62,9 @@
  	if (i != 0)
 --- a/drivers/bluetooth/btuart_cs.c
 +++ b/drivers/bluetooth/btuart_cs.c
-@@ -590,6 +590,12 @@ static int btuart_probe(struct pcmcia_de
- 	link->io.Attributes1 = IO_DATA_PATH_WIDTH_8;
- 	link->io.NumPorts1 = 8;
+@@ -589,6 +589,12 @@ static int btuart_probe(struct pcmcia_de
+ 	link->resource[0]->flags |= IO_DATA_PATH_WIDTH_8;
+ 	link->resource[0]->end = 8;
  
 +#if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,35))
 +	link->irq.Attributes = IRQ_TYPE_DYNAMIC_SHARING;
@@ -75,7 +75,7 @@
  	link->conf.Attributes = CONF_ENABLE_IRQ;
  	link->conf.IntType = INT_MEMORY_AND_IO;
  
-@@ -668,9 +674,15 @@ static int btuart_config(struct pcmcia_d
+@@ -667,9 +673,15 @@ static int btuart_config(struct pcmcia_d
  	goto failed;
  
  found_port:
@@ -122,7 +122,7 @@
  	if (i != 0)
 --- a/drivers/net/wireless/b43/pcmcia.c
 +++ b/drivers/net/wireless/b43/pcmcia.c
-@@ -98,7 +98,14 @@ static int __devinit b43_pcmcia_probe(st
+@@ -89,7 +89,14 @@ static int __devinit b43_pcmcia_probe(st
  	if (res != 0)
  		goto err_disable;
  
@@ -351,7 +351,7 @@
  	}
 --- a/drivers/ssb/main.c
 +++ b/drivers/ssb/main.c
-@@ -491,7 +491,11 @@ static int ssb_devices_register(struct s
+@@ -490,7 +490,11 @@ static int ssb_devices_register(struct s
  			break;
  		case SSB_BUSTYPE_PCMCIA:
  #ifdef CONFIG_SSB_PCMCIAHOST
