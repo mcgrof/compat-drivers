@@ -93,19 +93,18 @@
  	if (i != 0)
 --- a/drivers/bluetooth/dtl1_cs.c
 +++ b/drivers/bluetooth/dtl1_cs.c
-@@ -574,6 +574,11 @@ static int dtl1_probe(struct pcmcia_devi
+@@ -574,6 +574,10 @@ static int dtl1_probe(struct pcmcia_devi
  
- 	link->io.Attributes1 = IO_DATA_PATH_WIDTH_8;
- 	link->io.NumPorts1 = 8;
+ 	link->resource[0]->flags |= IO_DATA_PATH_WIDTH_8;
+ 	link->resource[0]->end = 8;
 +#if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,35))
 +	link->irq.Attributes = IRQ_TYPE_DYNAMIC_SHARING;
-+
 +	link->irq.Handler = dtl1_interrupt;
 +#endif
  
  	link->conf.Attributes = CONF_ENABLE_IRQ;
  	link->conf.IntType = INT_MEMORY_AND_IO;
-@@ -617,9 +622,15 @@ static int dtl1_config(struct pcmcia_dev
+@@ -616,9 +620,15 @@ static int dtl1_config(struct pcmcia_dev
  	if (pcmcia_loop_config(link, dtl1_confcheck, NULL) < 0)
  		goto failed;
  
@@ -140,7 +139,7 @@
  	res = pcmcia_request_configuration(dev, &dev->conf);
 --- a/drivers/net/wireless/libertas/if_cs.c
 +++ b/drivers/net/wireless/libertas/if_cs.c
-@@ -777,7 +777,11 @@ static void if_cs_release(struct pcmcia_
+@@ -776,7 +776,11 @@ static void if_cs_release(struct pcmcia_
  
  	lbs_deb_enter(LBS_DEB_CS);
  
@@ -152,7 +151,35 @@
  	pcmcia_disable_device(p_dev);
  	if (card->iobase)
  		ioport_unmap(card->iobase);
-@@ -836,6 +840,11 @@ static int if_cs_probe(struct pcmcia_dev
+@@ -801,9 +805,15 @@ static int if_cs_ioprobe(struct pcmcia_d
+ 			 unsigned int vcc,
+ 			 void *priv_data)
+ {
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,36))
+ 	p_dev->resource[0]->flags |= IO_DATA_PATH_WIDTH_AUTO;
+ 	p_dev->resource[0]->start = cfg->io.win[0].base;
+ 	p_dev->resource[0]->end = cfg->io.win[0].len;
++#else
++	p_dev->io.Attributes1 = IO_DATA_PATH_WIDTH_AUTO;
++	p_dev->io.BasePort1 = cfg->io.win[0].base;
++	p_dev->io.NumPorts1 = cfg->io.win[0].len;
++#endif
+ 
+ 	/* Do we need to allocate an interrupt? */
+ 	p_dev->conf.Attributes |= CONF_ENABLE_IRQ;
+@@ -815,7 +825,11 @@ static int if_cs_ioprobe(struct pcmcia_d
+ 	}
+ 
+ 	/* This reserves IO space but doesn't actually enable it */
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,36))
+ 	return pcmcia_request_io(p_dev);
++#else
++	return pcmcia_request_io(p_dev, &p_dev->io);
++#endif
+ }
+ 
+ static int if_cs_probe(struct pcmcia_device *p_dev)
+@@ -835,6 +849,11 @@ static int if_cs_probe(struct pcmcia_dev
  	card->p_dev = p_dev;
  	p_dev->priv = card;
  
@@ -164,7 +191,7 @@
  	p_dev->conf.Attributes = 0;
  	p_dev->conf.IntType = INT_MEMORY_AND_IO;
  
-@@ -850,8 +859,18 @@ static int if_cs_probe(struct pcmcia_dev
+@@ -849,12 +868,26 @@ static int if_cs_probe(struct pcmcia_dev
  	 * a handler to the interrupt, unless the 'Handler' member of
  	 * the irq structure is initialized.
  	 */
@@ -182,20 +209,34 @@
 +#endif
  
  	/* Initialize io access */
- 	card->iobase = ioport_map(p_dev->io.BasePort1, p_dev->io.NumPorts1);
-@@ -874,7 +893,11 @@ static int if_cs_probe(struct pcmcia_dev
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,36))
+ 	card->iobase = ioport_map(p_dev->resource[0]->start,
+ 				resource_size(p_dev->resource[0]));
++#else
++	card->iobase = ioport_map(p_dev->io.BasePort1, p_dev->io.NumPorts1);
++#endif
+ 	if (!card->iobase) {
+ 		lbs_pr_err("error in ioport_map\n");
+ 		ret = -EIO;
+@@ -873,7 +906,17 @@ static int if_cs_probe(struct pcmcia_dev
+ 	}
  
  	/* Finally, report what we've done */
- 	lbs_deb_cs("irq %d, io 0x%04x-0x%04x\n",
-+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,35))
- 	       p_dev->irq, p_dev->io.BasePort1,
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,36))
+ 	lbs_deb_cs("irq %d, io %pR", p_dev->irq, p_dev->resource[0]);
++#elif (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,35))
++	lbs_deb_cs("irq %d, io 0x%04x-0x%04x\n",
++		  p_dev->irq, p_dev->io.BasePort1,
++		  p_dev->io.BasePort1 + p_dev->io.NumPorts1 - 1);
 +#else
-+	       p_dev->irq.AssignedIRQ, p_dev->io.BasePort1,
++	lbs_deb_cs("irq %d, io 0x%04x-0x%04x\n",
++		  p_dev->irq.AssignedIRQ, p_dev->io.BasePort1,
++		  p_dev->io.BasePort1 + p_dev->io.NumPorts1 - 1);
 +#endif
- 	       p_dev->io.BasePort1 + p_dev->io.NumPorts1 - 1);
  
  	/*
-@@ -931,7 +954,11 @@ static int if_cs_probe(struct pcmcia_dev
+ 	 * Most of the libertas cards can do unaligned register access, but some
+@@ -929,7 +972,11 @@ static int if_cs_probe(struct pcmcia_dev
  	priv->fw_ready = 1;
  
  	/* Now actually get the IRQ */
@@ -209,7 +250,7 @@
  		lbs_pr_err("error in request_irq\n");
 --- a/drivers/net/wireless/orinoco/orinoco_cs.c
 +++ b/drivers/net/wireless/orinoco/orinoco_cs.c
-@@ -80,7 +80,11 @@ orinoco_cs_hard_reset(struct orinoco_pri
+@@ -79,7 +79,11 @@ orinoco_cs_hard_reset(struct orinoco_pri
  	/* We need atomic ops here, because we're not holding the lock */
  	set_bit(0, &card->hard_reset_in_progress);
  
@@ -221,7 +262,7 @@
  	if (err)
  		return err;
  
-@@ -118,6 +122,12 @@ orinoco_cs_probe(struct pcmcia_device *l
+@@ -117,6 +121,12 @@ orinoco_cs_probe(struct pcmcia_device *l
  	card->p_dev = link;
  	link->priv = priv;
  
@@ -234,7 +275,7 @@
  	/* General socket configuration defaults can go here.  In this
  	 * client, we assume very little, and rely on the CIS for
  	 * almost everything.  In most clients, many details (i.e.,
-@@ -251,7 +261,11 @@ orinoco_cs_config(struct pcmcia_device *
+@@ -248,7 +258,11 @@ orinoco_cs_config(struct pcmcia_device *
  		goto failed;
  	}
  
@@ -246,13 +287,18 @@
  	if (ret)
  		goto failed;
  
-@@ -281,7 +295,11 @@ orinoco_cs_config(struct pcmcia_device *
+@@ -278,8 +292,16 @@ orinoco_cs_config(struct pcmcia_device *
+ 	}
  
  	/* Register an interface with the stack */
- 	if (orinoco_if_add(priv, link->io.BasePort1,
-+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,35))
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,36))
+ 	if (orinoco_if_add(priv, link->resource[0]->start,
  			   link->irq, NULL) != 0) {
++#elif (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,35))
++	if (orinoco_if_add(priv, link->io.BasePort1,
++			   link->irq, NULL) != 0) {
 +#else
++	if (orinoco_if_add(priv, link->io.BasePort1,
 +			   link->irq.AssignedIRQ, NULL) != 0) {
 +#endif
  		printk(KERN_ERR PFX "orinoco_if_add() failed\n");
@@ -260,7 +306,7 @@
  	}
 --- a/drivers/net/wireless/orinoco/spectrum_cs.c
 +++ b/drivers/net/wireless/orinoco/spectrum_cs.c
-@@ -192,6 +192,12 @@ spectrum_cs_probe(struct pcmcia_device *
+@@ -179,6 +179,12 @@ spectrum_cs_probe(struct pcmcia_device *
  	card->p_dev = link;
  	link->priv = priv;
  
@@ -273,7 +319,7 @@
  	/* General socket configuration defaults can go here.  In this
  	 * client, we assume very little, and rely on the CIS for
  	 * almost everything.  In most clients, many details (i.e.,
-@@ -325,7 +331,11 @@ spectrum_cs_config(struct pcmcia_device 
+@@ -310,7 +316,11 @@ spectrum_cs_config(struct pcmcia_device 
  		goto failed;
  	}
  
@@ -285,13 +331,19 @@
  	if (ret)
  		goto failed;
  
-@@ -360,7 +370,11 @@ spectrum_cs_config(struct pcmcia_device 
+@@ -345,8 +355,17 @@ spectrum_cs_config(struct pcmcia_device 
+ 	}
  
  	/* Register an interface with the stack */
- 	if (orinoco_if_add(priv, link->io.BasePort1,
-+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,35))
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,36))
+ 	if (orinoco_if_add(priv, link->resource[0]->start,
  			   link->irq, NULL) != 0) {
++#elif (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,35))
++	if (orinoco_if_add(priv, link->io.BasePort1,
++			   link->irq, NULL) != 0) {
 +#else
++	if (orinoco_if_add(priv, link->io.BasePort1,
++			   link->irq, NULL) != 0) {
 +			   link->irq.AssignedIRQ, NULL) != 0) {
 +#endif
  		printk(KERN_ERR PFX "orinoco_if_add() failed\n");
