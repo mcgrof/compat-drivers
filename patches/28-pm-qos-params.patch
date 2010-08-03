@@ -75,7 +75,7 @@
  					found->vif.bss_conf.beacon_int);
 --- a/net/mac80211/scan.c
 +++ b/net/mac80211/scan.c
-@@ -511,7 +511,11 @@ static int ieee80211_scan_state_decision
+@@ -515,7 +515,11 @@ static int ieee80211_scan_state_decision
  		bad_latency = time_after(jiffies +
  				ieee80211_scan_get_channel_time(next_chan),
  				local->leave_oper_channel_time +
