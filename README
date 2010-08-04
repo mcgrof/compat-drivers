@@ -111,7 +111,8 @@ be interested in.
 Driver
 adm8211
 ath5k
-ath9h
+ath9k
+ath9k_htc
 ar9170
 b43
 b43legacy
@@ -138,15 +139,17 @@ For a complete list see:
 
 http://wireless.kernel.org/en/users/Download
 
-Non-wireless drivers
+Misc-wireless drivers
 --------------------
 
 To support b43 ssb is also provided, and since ssb is also provided
-we provide b44 (the ethernet driver).
+we provide b44, the ethernet driver.
 
-The new rfkill drivers also provided and backported.
+The new rfkill drivers also provided and backported, as well as pm-qos.
 
-Bluetooth drivers:
+Bluetooth drivers
+-----------------
+
 bluetooth
 btusb
 hci_uart
@@ -154,6 +157,15 @@ btsdio
 btuart_cs
 bluecard_cs
 bfusb
+
+Ethernet drivers
+-----------------
+
+atl1
+atl2
+atl1e
+atl1c
+b44
 
 Firmware:
 ---------
