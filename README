@@ -101,10 +101,10 @@ Load:
 Unload:
 	sudo make btunload
 
-Drivers
--------
+802.11 Drivers
+--------------
 
-This is the list of drivers this package provides. It adds
+This is the list of 802.11 drivers this package provides. It adds
 all new drivers or drivers which keep being updated which you might
 be interested in.
 
@@ -122,6 +122,7 @@ ipw2100
 ipw2200
 libertas_cs (Libertas)
 ub8xxx      (Libertas)
+mwl8k
 p54pci
 p54usb
 rt2400pci (rt2x00)
