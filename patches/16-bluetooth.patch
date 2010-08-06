@@ -111,7 +111,7 @@ here still, but for now we keep this here.
  #include <asm/system.h>
 --- a/net/bluetooth/hci_sock.c
 +++ b/net/bluetooth/hci_sock.c
-@@ -563,7 +563,11 @@ drop:
+@@ -561,7 +561,11 @@ drop:
  	goto done;
  }
  
@@ -123,7 +123,7 @@ here still, but for now we keep this here.
  {
  	struct hci_ufilter uf = { .opcode = 0 };
  	struct sock *sk = sock->sk;
-@@ -718,8 +722,12 @@ static struct proto hci_sk_proto = {
+@@ -716,8 +720,12 @@ static struct proto hci_sk_proto = {
  	.obj_size	= sizeof(struct hci_pinfo)
  };
  
