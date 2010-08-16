@@ -433,7 +433,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  
 --- a/drivers/net/wireless/rtl818x/rtl8180_dev.c
 +++ b/drivers/net/wireless/rtl818x/rtl8180_dev.c
-@@ -810,10 +810,19 @@ static void rtl8180_bss_info_changed(str
+@@ -812,10 +812,19 @@ static void rtl8180_bss_info_changed(str
  	}
  }
  

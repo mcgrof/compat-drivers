@@ -57,7 +57,7 @@ little wierd.
  
  	/* We have to signal any supplicant if we are disassociating */
  	if (associated)
-@@ -6669,8 +6686,16 @@ static int __init ipw2100_init(void)
+@@ -6673,8 +6690,16 @@ static int __init ipw2100_init(void)
  	if (ret)
  		goto out;
  
@@ -74,7 +74,7 @@ little wierd.
  #ifdef CONFIG_IPW2100_DEBUG
  	ipw2100_debug_level = debug;
  	ret = driver_create_file(&ipw2100_pci_driver.driver,
-@@ -6692,7 +6717,13 @@ static void __exit ipw2100_exit(void)
+@@ -6696,7 +6721,13 @@ static void __exit ipw2100_exit(void)
  			   &driver_attr_debug_level);
  #endif
  	pci_unregister_driver(&ipw2100_pci_driver);
@@ -104,7 +104,7 @@ little wierd.
  					found->vif.bss_conf.beacon_int);
 --- a/net/mac80211/scan.c
 +++ b/net/mac80211/scan.c
-@@ -514,7 +514,11 @@ static int ieee80211_scan_state_decision
+@@ -500,7 +500,11 @@ static int ieee80211_scan_state_decision
  		bad_latency = time_after(jiffies +
  				ieee80211_scan_get_channel_time(next_chan),
  				local->leave_oper_channel_time +
