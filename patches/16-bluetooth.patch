@@ -180,14 +180,23 @@ here still, but for now we keep this here.
  	return hidp_queue_report(session, buf, rsize);
  }
  
-+#if (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,27))
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,34))
  static int hidp_output_raw_report(struct hid_device *hid, unsigned char *data, size_t count,
  		unsigned char report_type)
  {
-@@ -332,6 +333,7 @@ static int hidp_output_raw_report(struct
+@@ -332,6 +333,16 @@ static int hidp_output_raw_report(struct
  		return -ENOMEM;
  	return count;
  }
++#elif (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,27))
++static int hidp_output_raw_report(struct hid_device *hid, unsigned char *data, size_t count)
++{
++	if (hidp_send_ctrl_message(hid->driver_data,
++			HIDP_TRANS_SET_REPORT | HIDP_DATA_RTYPE_FEATURE,
++			data, count))
++		return -ENOMEM;
++	return count;
++}
 +#endif
  
  static void hidp_idle_timeout(unsigned long arg)
