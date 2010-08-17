@@ -134,9 +134,8 @@ if [[ $COMPAT_WIRELESS_BRANCH != $TARGET_KERNEL_RELEASE ]]; then
 fi
 
 
-# We should now be on the branch we want
-KERNEL_RELEASE=$(git describe --abbrev=0 | sed -e 's/v//g')
-RELEASE="compat-wireless-$KERNEL_RELEASE"
+cd $COMPAT_WIRELESS_DIR
+RELEASE=$(git describe --abbrev=0)
 if [[ $POSTFIX_RELEASE_TAG != "-" ]]; then
 	RELEASE="${RELEASE}${POSTFIX_RELEASE_TAG}"
 fi
