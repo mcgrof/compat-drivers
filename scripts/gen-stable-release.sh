@@ -135,7 +135,7 @@ fi
 
 
 cd $COMPAT_WIRELESS_DIR
-RELEASE=$(git describe --abbrev=0)
+RELEASE=$(git describe --abbrev=0 | sed -e 's/v//g')
 if [[ $POSTFIX_RELEASE_TAG != "-" ]]; then
 	RELEASE="${RELEASE}${POSTFIX_RELEASE_TAG}"
 fi
