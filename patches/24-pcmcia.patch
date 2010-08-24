@@ -594,7 +594,7 @@
  	res = pcmcia_request_configuration(dev, &dev->conf);
 --- a/drivers/net/wireless/libertas/if_cs.c
 +++ b/drivers/net/wireless/libertas/if_cs.c
-@@ -776,7 +776,11 @@ static void if_cs_release(struct pcmcia_
+@@ -774,7 +774,11 @@ static void if_cs_release(struct pcmcia_
  
  	lbs_deb_enter(LBS_DEB_CS);
  
@@ -606,7 +606,7 @@
  	pcmcia_disable_device(p_dev);
  	if (card->iobase)
  		ioport_unmap(card->iobase);
-@@ -801,9 +805,15 @@ static int if_cs_ioprobe(struct pcmcia_d
+@@ -799,9 +803,15 @@ static int if_cs_ioprobe(struct pcmcia_d
  			 unsigned int vcc,
  			 void *priv_data)
  {
@@ -622,7 +622,7 @@
  
  	/* Do we need to allocate an interrupt? */
  	p_dev->conf.Attributes |= CONF_ENABLE_IRQ;
-@@ -815,7 +825,11 @@ static int if_cs_ioprobe(struct pcmcia_d
+@@ -813,7 +823,11 @@ static int if_cs_ioprobe(struct pcmcia_d
  	}
  
  	/* This reserves IO space but doesn't actually enable it */
@@ -646,7 +646,7 @@
  	p_dev->conf.Attributes = 0;
  	p_dev->conf.IntType = INT_MEMORY_AND_IO;
  
-@@ -849,12 +868,26 @@ static int if_cs_probe(struct pcmcia_dev
+@@ -848,12 +867,26 @@ static int if_cs_probe(struct pcmcia_dev
  	 * a handler to the interrupt, unless the 'Handler' member of
  	 * the irq structure is initialized.
  	 */
@@ -673,7 +673,7 @@
  	if (!card->iobase) {
  		lbs_pr_err("error in ioport_map\n");
  		ret = -EIO;
-@@ -873,7 +906,17 @@ static int if_cs_probe(struct pcmcia_dev
+@@ -872,7 +905,17 @@ static int if_cs_probe(struct pcmcia_dev
  	}
  
  	/* Finally, report what we've done */
@@ -691,7 +691,7 @@
  
  	/*
  	 * Most of the libertas cards can do unaligned register access, but some
-@@ -929,7 +972,11 @@ static int if_cs_probe(struct pcmcia_dev
+@@ -941,7 +984,11 @@ static int if_cs_probe(struct pcmcia_dev
  	priv->fw_ready = 1;
  
  	/* Now actually get the IRQ */

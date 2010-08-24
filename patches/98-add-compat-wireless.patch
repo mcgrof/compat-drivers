@@ -27,4 +27,4 @@ added compat.h also for ssb, I forget.
 +#include <linux/compat-2.6.h>
  
  
- /*
+ /**
