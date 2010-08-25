@@ -1,6 +1,8 @@
---- a/config.mk	2010-01-11 10:27:53.000000000 -0800
-+++ b/config.mk	2010-01-11 10:32:49.000000000 -0800
-@@ -26,8 +26,8 @@
+diff --git a/config.mk b/config.mk
+index 777ebd3..2ad11fc 100644
+--- a/config.mk
++++ b/config.mk
+@@ -25,8 +25,8 @@ KERNEL_SUBLEVEL := $(shell $(MAKE) -C $(KLIB_BUILD) kernelversion | sed -n 's/^2
  COMPAT_VERSIONS := $(shell I=$(COMPAT_LATEST_VERSION); while [ "$$I" -gt $(KERNEL_SUBLEVEL) ]; do echo $$I; I=$$(($$I - 1)); done)
  $(foreach ver,$(COMPAT_VERSIONS),$(eval CONFIG_COMPAT_KERNEL_$(ver)=y))
  
@@ -12,7 +14,7 @@
  
  ifeq ($(CONFIG_CFG80211),y)
 diff --git a/scripts/gen-compat-autoconf.sh b/scripts/gen-compat-autoconf.sh
-index 6c7cae7..bb2ea6d 100755
+index 1e3002e..64dac69 100755
 --- a/scripts/gen-compat-autoconf.sh
 +++ b/scripts/gen-compat-autoconf.sh
 @@ -11,7 +11,7 @@
@@ -21,6 +23,6 @@ index 6c7cae7..bb2ea6d 100755
  # Update this if you are adding support for older kernels.
 -OLDEST_KERNEL_SUPPORTED="2.6.25"
 +OLDEST_KERNEL_SUPPORTED="2.6.23"
- COMPAT_RELEASE="compat-release"
- KERNEL_RELEASE="git-describe"
+ COMPAT_RELEASE="compat_version"
+ KERNEL_RELEASE="compat_base_tree_version"
  MULT_DEP_FILE=".compat_pivot_dep"
