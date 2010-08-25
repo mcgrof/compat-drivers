@@ -14,14 +14,14 @@ index 777ebd3..2ad11fc 100644
  
  ifeq ($(CONFIG_CFG80211),y)
 diff --git a/scripts/gen-compat-autoconf.sh b/scripts/gen-compat-autoconf.sh
-index 1e3002e..64dac69 100755
+index 1e3002e..0f0e415 100755
 --- a/scripts/gen-compat-autoconf.sh
 +++ b/scripts/gen-compat-autoconf.sh
 @@ -11,7 +11,7 @@
  
  # This indicates which is the oldest kernel we support
  # Update this if you are adding support for older kernels.
--OLDEST_KERNEL_SUPPORTED="2.6.24"
+-OLDEST_KERNEL_SUPPORTED="2.6.25"
 +OLDEST_KERNEL_SUPPORTED="2.6.24"
  COMPAT_RELEASE="compat_version"
  KERNEL_RELEASE="compat_base_tree_version"
