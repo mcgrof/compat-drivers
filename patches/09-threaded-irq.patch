@@ -63,7 +63,7 @@ thread in process context as well.
  /* Data structure for the WLAN parts (802.11 cores) of the b43 chip. */
 --- a/drivers/net/wireless/rt2x00/rt2x00.h
 +++ b/drivers/net/wireless/rt2x00/rt2x00.h
-@@ -885,6 +885,9 @@ struct rt2x00_dev {
+@@ -883,6 +883,9 @@ struct rt2x00_dev {
  	 * and interrupt thread routine.
  	 */
  	u32 irqvalue[2];

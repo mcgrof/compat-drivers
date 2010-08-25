@@ -393,7 +393,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  	if (cmd != NULL) {
 --- a/drivers/net/wireless/orinoco/hw.c
 +++ b/drivers/net/wireless/orinoco/hw.c
-@@ -1090,7 +1090,11 @@ int __orinoco_hw_set_multicast_list(stru
+@@ -1093,7 +1093,11 @@ int __orinoco_hw_set_multicast_list(stru
  		netdev_for_each_mc_addr(ha, dev) {
  			if (i == mc_count)
  				break;
