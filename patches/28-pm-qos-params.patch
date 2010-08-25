@@ -16,7 +16,7 @@ little wierd.
 
 --- a/drivers/net/wireless/ipw2x00/ipw2100.c
 +++ b/drivers/net/wireless/ipw2x00/ipw2100.c
-@@ -174,7 +174,11 @@
+@@ -174,7 +174,11 @@ that only one external action is invoked
  #define DRV_DESCRIPTION	"Intel(R) PRO/Wireless 2100 Network Driver"
  #define DRV_COPYRIGHT	"Copyright(c) 2003-2006 Intel Corporation"
  
@@ -28,7 +28,7 @@ little wierd.
  
  /* Debugging stuff */
  #ifdef CONFIG_IPW2100_DEBUG
-@@ -1741,7 +1745,13 @@
+@@ -1741,7 +1745,13 @@ static int ipw2100_up(struct ipw2100_pri
  	/* the ipw2100 hardware really doesn't want power management delays
  	 * longer than 175usec
  	 */
@@ -42,7 +42,7 @@ little wierd.
  
  	/* If the interrupt is enabled, turn it off... */
  	spin_lock_irqsave(&priv->low_lock, flags);
-@@ -1889,7 +1899,14 @@
+@@ -1889,7 +1899,14 @@ static void ipw2100_down(struct ipw2100_
  	ipw2100_disable_interrupts(priv);
  	spin_unlock_irqrestore(&priv->low_lock, flags);
  
@@ -57,7 +57,7 @@ little wierd.
  
  	/* We have to signal any supplicant if we are disassociating */
  	if (associated)
-@@ -6661,8 +6678,16 @@
+@@ -6661,8 +6678,16 @@ static int __init ipw2100_init(void)
  	printk(KERN_INFO DRV_NAME ": %s, %s\n", DRV_DESCRIPTION, DRV_VERSION);
  	printk(KERN_INFO DRV_NAME ": %s\n", DRV_COPYRIGHT);
  
@@ -74,7 +74,7 @@ little wierd.
  
  	ret = pci_register_driver(&ipw2100_pci_driver);
  	if (ret)
-@@ -6689,7 +6714,13 @@
+@@ -6689,7 +6714,13 @@ static void __exit ipw2100_exit(void)
  			   &driver_attr_debug_level);
  #endif
  	pci_unregister_driver(&ipw2100_pci_driver);
