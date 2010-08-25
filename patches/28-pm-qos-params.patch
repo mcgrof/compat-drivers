@@ -16,7 +16,7 @@ little wierd.
 
 --- a/drivers/net/wireless/ipw2x00/ipw2100.c
 +++ b/drivers/net/wireless/ipw2x00/ipw2100.c
-@@ -174,7 +174,11 @@ that only one external action is invoked
+@@ -174,7 +174,11 @@
  #define DRV_DESCRIPTION	"Intel(R) PRO/Wireless 2100 Network Driver"
  #define DRV_COPYRIGHT	"Copyright(c) 2003-2006 Intel Corporation"
  
@@ -28,7 +28,7 @@ little wierd.
  
  /* Debugging stuff */
  #ifdef CONFIG_IPW2100_DEBUG
-@@ -1741,7 +1745,13 @@ static int ipw2100_up(struct ipw2100_pri
+@@ -1741,7 +1745,13 @@
  	/* the ipw2100 hardware really doesn't want power management delays
  	 * longer than 175usec
  	 */
@@ -42,7 +42,7 @@ little wierd.
  
  	/* If the interrupt is enabled, turn it off... */
  	spin_lock_irqsave(&priv->low_lock, flags);
-@@ -1889,7 +1899,14 @@ static void ipw2100_down(struct ipw2100_
+@@ -1889,7 +1899,14 @@
  	ipw2100_disable_interrupts(priv);
  	spin_unlock_irqrestore(&priv->low_lock, flags);
  
@@ -57,24 +57,24 @@ little wierd.
  
  	/* We have to signal any supplicant if we are disassociating */
  	if (associated)
-@@ -6673,8 +6690,16 @@ static int __init ipw2100_init(void)
- 	if (ret)
- 		goto out;
+@@ -6661,8 +6678,16 @@
+ 	printk(KERN_INFO DRV_NAME ": %s, %s\n", DRV_DESCRIPTION, DRV_VERSION);
+ 	printk(KERN_INFO DRV_NAME ": %s\n", DRV_COPYRIGHT);
  
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,36))
  	pm_qos_add_request(&ipw2100_pm_qos_req, PM_QOS_CPU_DMA_LATENCY,
  			   PM_QOS_DEFAULT_VALUE);
 +#elif (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,35))
-+	ipw2100_pm_qos_req = pm_qos_add_request(PM_QOS_CPU_DMA_LATENCY,
-+						PM_QOS_DEFAULT_VALUE);
++       ipw2100_pm_qos_req = pm_qos_add_request(PM_QOS_CPU_DMA_LATENCY,
++					       PM_QOS_DEFAULT_VALUE);
 +#else
 +	pm_qos_add_requirement(PM_QOS_CPU_DMA_LATENCY, "ipw2100",
 +			       PM_QOS_DEFAULT_VALUE);
 +#endif
- #ifdef CONFIG_IPW2100_DEBUG
- 	ipw2100_debug_level = debug;
- 	ret = driver_create_file(&ipw2100_pci_driver.driver,
-@@ -6696,7 +6721,13 @@ static void __exit ipw2100_exit(void)
+ 
+ 	ret = pci_register_driver(&ipw2100_pci_driver);
+ 	if (ret)
+@@ -6689,7 +6714,13 @@
  			   &driver_attr_debug_level);
  #endif
  	pci_unregister_driver(&ipw2100_pci_driver);
