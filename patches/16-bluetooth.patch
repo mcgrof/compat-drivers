@@ -63,7 +63,7 @@ here still, but for now we keep this here.
 +#if (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,32))
  		sock_recv_ts_and_drops(msg, sk, skb);
 +#else
-+	  sock_recv_timestamp(msg, sk, skb);
++		sock_recv_timestamp(msg, sk, skb);
 +#endif
  
  	skb_free_datagram(sk, skb);
@@ -75,7 +75,7 @@ here still, but for now we keep this here.
 +#if (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,31))
  		amount = sk->sk_sndbuf - sk_wmem_alloc_get(sk);
 +#else
-+    amount = sk->sk_sndbuf - atomic_read(&sk->sk_wmem_alloc);
++		amount = sk->sk_sndbuf - atomic_read(&sk->sk_wmem_alloc);
 +#endif
  		if (amount < 0)
  			amount = 0;
@@ -201,27 +201,21 @@ here still, but for now we keep this here.
  
  static void hidp_idle_timeout(unsigned long arg)
  {
-@@ -596,10 +607,16 @@ static int hidp_session(void *arg)
- 		session->input = NULL;
+@@ -597,8 +608,14 @@ static int hidp_session(void *arg)
  	}
  
--	if (session->hid) {
--		hid_destroy_device(session->hid);
--		session->hid = NULL;
--	}
-+  if (session->hid) {
+ 	if (session->hid) {
 +#if (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,27))
-+    hid_destroy_device(session->hid);
-+    session->hid = NULL;
+ 		hid_destroy_device(session->hid);
+ 		session->hid = NULL;
 +#else
-+    if (session->hid->claimed & HID_CLAIMED_INPUT)
-+      hidinput_disconnect(session->hid);
-+    hid_free_device(session->hid);
++		if (session->hid->claimed & HID_CLAIMED_INPUT)
++			hidinput_disconnect(session->hid);
++		hid_free_device(session->hid);
 +#endif
-+  }
+ 	}
  
  	/* Wakeup user-space polling for socket errors */
- 	session->intr_sock->sk->sk_err = EUNATCH;
 @@ -711,6 +728,70 @@ static void hidp_close(struct hid_device
  {
  }
