@@ -25,9 +25,9 @@ KERNEL_SUBLEVEL := $(shell $(MAKE) -C $(KLIB_BUILD) kernelversion | sed -n 's/^2
 COMPAT_VERSIONS := $(shell I=$(COMPAT_LATEST_VERSION); while [ "$$I" -gt $(KERNEL_SUBLEVEL) ]; do echo $$I; I=$$(($$I - 1)); done)
 $(foreach ver,$(COMPAT_VERSIONS),$(eval CONFIG_COMPAT_KERNEL_$(ver)=y))
 
-ifdef CONFIG_COMPAT_KERNEL_25
-$(error "ERROR: compat-wireless by default supports kernels >= 2.6.25, try enabling only one driver though")
-endif #CONFIG_COMPAT_KERNEL_25
+ifdef CONFIG_COMPAT_KERNEL_24
+$(error "ERROR: compat-wireless by default supports kernels >= 2.6.24, try enabling only one driver though")
+endif #CONFIG_COMPAT_KERNEL_24
 
 ifeq ($(CONFIG_CFG80211),y)
 $(error "ERROR: your kernel has CONFIG_CFG80211=y, you should have it CONFIG_CFG80211=m if you want to use this thing.")
