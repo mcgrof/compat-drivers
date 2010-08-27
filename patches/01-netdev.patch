@@ -278,7 +278,7 @@ without creating a headache on maintenance of the pathes.
  	dev->tx_queue_len = 0;
 --- a/drivers/net/wireless/orinoco/main.c
 +++ b/drivers/net/wireless/orinoco/main.c
-@@ -2268,9 +2268,9 @@ int orinoco_if_add(struct orinoco_privat
+@@ -2268,14 +2268,18 @@ int orinoco_if_add(struct orinoco_privat
  #endif
  	/* Default to standard ops if not set */
  	if (ops)
@@ -289,6 +289,15 @@ without creating a headache on maintenance of the pathes.
 +		netdev_attach_ops(dev, &orinoco_netdev_ops);
  
  	/* we use the default eth_mac_addr for setting the MAC addr */
+ 
+ 	/* Reserve space in skb for the SNAP header */
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,26))
+ 	dev->needed_headroom = ENCAPS_OVERHEAD;
++#else
++	dev->hard_header_len += ENCAPS_OVERHEAD;
++#endif
+ 
+ 	netif_carrier_off(dev);
  
 --- a/net/bluetooth/bnep/netdev.c
 +++ b/net/bluetooth/bnep/netdev.c
