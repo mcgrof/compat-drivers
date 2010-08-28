@@ -5,7 +5,13 @@ CONFIG_IWL4965 has to be set to y, to build correctly.
 
 --- a/drivers/net/wireless/iwlwifi/Makefile
 +++ b/drivers/net/wireless/iwlwifi/Makefile
-@@ -14,7 +14,7 @@ iwlagn-objs		+= iwl-agn-ucode.o iwl-agn-
+@@ -1,4 +1,4 @@
+-obj-$(CONFIG_IWLWIFI)	+= iwlcore.o
++obj-$(CONFIG_COMPAT_IWLWIFI)	+= iwlcore.o
+ iwlcore-objs 		:= iwl-core.o iwl-eeprom.o iwl-hcmd.o iwl-power.o
+ iwlcore-objs 		+= iwl-rx.o iwl-tx.o iwl-sta.o
+ iwlcore-objs 		+= iwl-scan.o iwl-led.o
+@@ -14,7 +14,7 @@
  iwlagn-objs		+= iwl-agn-lib.o iwl-agn-rx.o iwl-agn-calib.o
  iwlagn-$(CONFIG_IWLWIFI_DEBUGFS) += iwl-agn-debugfs.o
  
