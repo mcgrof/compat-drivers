@@ -661,7 +661,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  			 sdata->dev->addr_len);
 +#else
 +	__dev_addr_unsync(&local->mc_list, &local->mc_count,
-+			  &dev->mc_list, &dev->mc_count);
++			  &sdata->dev->mc_list, &sdata->dev->mc_count);
 +#endif
  	spin_unlock_bh(&local->filter_lock);
  	netif_addr_unlock_bh(sdata->dev);
