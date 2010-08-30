@@ -652,20 +652,21 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  
 --- a/net/mac80211/iface.c
 +++ b/net/mac80211/iface.c
-@@ -396,7 +396,12 @@ static int ieee80211_stop(struct net_dev
+@@ -417,8 +417,13 @@
  
- 	netif_addr_lock_bh(dev);
+ 	netif_addr_lock_bh(sdata->dev);
  	spin_lock_bh(&local->filter_lock);
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,35))
- 	__hw_addr_unsync(&local->mc_list, &dev->mc, dev->addr_len);
+ 	__hw_addr_unsync(&local->mc_list, &sdata->dev->mc,
+ 			 sdata->dev->addr_len);
 +#else
 +	__dev_addr_unsync(&local->mc_list, &local->mc_count,
 +			  &dev->mc_list, &dev->mc_count);
 +#endif
  	spin_unlock_bh(&local->filter_lock);
- 	netif_addr_unlock_bh(dev);
+ 	netif_addr_unlock_bh(sdata->dev);
  
-@@ -580,7 +585,12 @@ static void ieee80211_set_multicast_list
+@@ -602,7 +607,12 @@
  		sdata->flags ^= IEEE80211_SDATA_PROMISC;
  	}
  	spin_lock_bh(&local->filter_lock);
