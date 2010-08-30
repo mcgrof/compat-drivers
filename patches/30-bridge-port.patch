@@ -23,7 +23,7 @@ compat-wireless.
 
 --- a/net/wireless/util.c
 +++ b/net/wireless/util.c
-@@ -770,7 +770,7 @@ int cfg80211_change_iface(struct cfg8021
+@@ -777,7 +777,7 @@ int cfg80211_change_iface(struct cfg8021
  		return -EOPNOTSUPP;
  
  	/* if it's part of a bridge, reject changing type to station/ibss */
@@ -34,7 +34,7 @@ compat-wireless.
  
 --- a/net/wireless/nl80211.c
 +++ b/net/wireless/nl80211.c
-@@ -1192,7 +1192,7 @@ static int nl80211_valid_4addr(struct cf
+@@ -1197,7 +1197,7 @@ static int nl80211_valid_4addr(struct cf
  			       enum nl80211_iftype iftype)
  {
  	if (!use_4addr) {
