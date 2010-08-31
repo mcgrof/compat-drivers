@@ -210,6 +210,9 @@ DRIVERS="$DRIVERS drivers/net/wireless/wl12xx"
 DRIVERS="$DRIVERS drivers/net/wireless/iwmc3200wifi"
 DRIVERS="$DRIVERS drivers/net/wireless/orinoco"
 
+# Staging drivers
+STAGING_DRIVERS="drivers/staging/ath6kl"
+
 # Ethernet drivers
 DRIVERS="$DRIVERS drivers/net/atl1c"
 DRIVERS="$DRIVERS drivers/net/atl1e"
@@ -300,6 +303,20 @@ for i in $DRIVERS; do
 	if [ -f $GIT_TREE/$i/Kconfig ]; then
 		cp $GIT_TREE/$i/Kconfig $i/
 	fi
+	rm -f $i/*.mod.c
+done
+
+# Staging drivers in their own directory
+rm -rf drivers/staging/
+mkdir -p drivers/staging/
+for i in $STAGING_DRIVERS; do
+	if [ ! -d $GIT_TREE/$i ]; then
+		continue
+	fi
+	rm -rf $i
+	echo -e "Copying ${RED}STAGING${NORMAL} $GIT_TREE/$i/*.[ch]"
+	# staging drivers tend to have their own subdirs...
+	cp -a $GIT_TREE/$i drivers/staging/
 	rm -f $i/*.mod.c
 done
 

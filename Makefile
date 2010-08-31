@@ -36,6 +36,12 @@ endif
 obj-$(CONFIG_COMPAT_BLUETOOTH) += net/bluetooth/
 obj-$(CONFIG_COMPAT_BLUETOOTH_MODULES) += drivers/bluetooth/
 
+
+ifeq ($(CONFIG_STAGING_EXCLUDE_BUILD),)
+obj-$(CONFIG_COMPAT_STAGING) += drivers/staging/ath6kl/
+endif
+
+
 else
 
 export PWD :=	$(shell pwd)
