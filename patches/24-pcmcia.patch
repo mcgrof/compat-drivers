@@ -133,7 +133,7 @@
 +#else
 +	link->io.Attributes1 = IO_DATA_PATH_WIDTH_8;
 +	link->io.NumPorts1 = 64;
-+	link->io.IOAddrLines = 6;;
++	link->io.IOAddrLines = 6;
 +#endif
  
  	for (n = 0; n < 0x400; n += 0x40) {
