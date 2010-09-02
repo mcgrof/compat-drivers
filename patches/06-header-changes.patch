@@ -18,7 +18,7 @@ cases.
  
 --- a/drivers/net/wireless/wl12xx/wl1251_boot.c
 +++ b/drivers/net/wireless/wl12xx/wl1251_boot.c
-@@ -19,7 +19,6 @@
+@@ -21,7 +21,6 @@
   *
   */
  
@@ -28,7 +28,7 @@ cases.
  #include "wl1251_reg.h"
 --- a/drivers/net/wireless/wl12xx/wl1251_main.c
 +++ b/drivers/net/wireless/wl12xx/wl1251_main.c
-@@ -24,6 +24,9 @@
+@@ -26,6 +26,9 @@
  #include <linux/firmware.h>
  #include <linux/delay.h>
  #include <linux/irq.h>
@@ -40,7 +40,7 @@ cases.
  #include <linux/vmalloc.h>
 --- a/drivers/net/wireless/wl12xx/wl1251_spi.c
 +++ b/drivers/net/wireless/wl12xx/wl1251_spi.c
-@@ -23,6 +23,9 @@
+@@ -25,6 +25,9 @@
  #include <linux/module.h>
  #include <linux/slab.h>
  #include <linux/crc7.h>
