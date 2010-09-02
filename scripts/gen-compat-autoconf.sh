@@ -147,8 +147,12 @@ kernel_version_req $OLDEST_KERNEL_SUPPORTED
 # For each CONFIG_FOO=x option
 for i in $(egrep '^CONFIG_|^ifdef CONFIG_|^ifndef CONFIG_|^endif #CONFIG_|^else #CONFIG_' $COMPAT_CONFIG | sed 's/ /+/'); do
 	case $i in
-	'ifdef+CONFIG_'* | 'ifndef+CONFIG_'* ) #
+	'ifdef+CONFIG_'* )
 		echo "#$i" | sed 's/+/ /' | sed 's/\(ifdef CONFIG_COMPAT_KERNEL_\)\([0-9]*\)/if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,\2))/'
+		continue
+		;;
+	'ifndef+CONFIG_'* )
+		echo "#$i" | sed 's/+/ /' | sed 's/\(ifndef CONFIG_COMPAT_KERNEL_\)\([0-9]*\)/if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,\2))/'
 		continue
 		;;
 	'else+#CONFIG_'* | 'endif+#CONFIG_'* )
