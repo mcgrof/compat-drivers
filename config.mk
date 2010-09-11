@@ -183,19 +183,15 @@ CONFIG_BT_HCIBTUART=m
 endif #CONFIG_PCMCIA
 
 
-# CONFIG_CFG80211_WEXT will be resepected for
-# future kernels but for older kenrels we need
-# to enable it against the the old CONFIG_WIRELESS_EXT.
-# By using a space here we prevent scripts/gen-compat-autoconf.sh
-# from defining CONFIG_CFG80211_WEXT through its grep sweep for ^CONFIG
-# options, instead its handled specially there based on kernel revision.
-# using this logic: if you are on older kernel and have CONFIG_WIRELESS_EXT
-# defined we'll define it.
-#
-# For newer kernels we'll just respect your own kernel's
-# autoconf.h
+# We need CONFIG_WIRELESS_EXT for CONFIG_CFG80211_WEXT for every kernel 
+# version. The new way CONFIG_CFG80211_WEXT is called from the kernel 
+# does not work with compat-wireless because it calls some callback 
+# function on struct wiphy. This struct is shipped with compat-wireless 
+# and changes from kernel version to version. We are using the 
+# wireless_handlers attribute which will be activated by 
+# CONFIG_WIRELESS_EXT. 
 ifdef CONFIG_WIRELESS_EXT
- CONFIG_CFG80211_WEXT=y
+CONFIG_CFG80211_WEXT=y
 else #CONFIG_CFG80211_WEXT
 $(warning "WARNING: CONFIG_CFG80211_WEXT will be deactivated or not working because kernel was compiled with CONFIG_WIRELESS_EXT=n. Tools using wext interface like iwconfig will not work. To activate it build your kernel e.g. with CONFIG_LIBIPW=m.")
 endif #CONFIG_WIRELESS_EXT

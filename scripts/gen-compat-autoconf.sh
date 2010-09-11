@@ -195,10 +195,6 @@ if [ -f $KLIB_BUILD/Makefile ]; then
 		echo CONFIG_NETDEVICES_MULTIQUEUE >> $MULT_DEP_FILE
 		define_config_multiple_deps CONFIG_MAC80211_QOS y $ALL_DEPS
 		rm -f $MULT_DEP_FILE
-		# Kernels >= 2.6.32 can disable WEXT :D
-		if [ $SUBLEVEL -le 32 ]; then
-			define_config_dep CONFIG_CFG80211_WEXT 1 CONFIG_WIRELESS_EXT
-		fi
 	fi
 fi
 echo "#endif /* COMPAT_AUTOCONF_INCLUDED */"
