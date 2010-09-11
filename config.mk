@@ -52,9 +52,11 @@ endif
 #
 # skb->requeue
 #
-ifeq ($(shell test $(KERNEL_SUBLEVEL) -ge 27 && echo yes),yes)
+# In kernel 2.6.32 both attributes were removed.
+#
+ifeq ($(shell test $(KERNEL_SUBLEVEL) -ge 27 -a $(KERNEL_SUBLEVEL) -le 31 && echo yes),yes)
 ifeq ($(CONFIG_MAC80211),)
-$(error "ERROR: Your >=2.6.27 kernel has CONFIG_MAC80211 disabled, you should have it CONFIG_MAC80211=m if you want to use this thing.")
+$(error "ERROR: Your >=2.6.27 and <= 2.6.31 kernel has CONFIG_MAC80211 disabled, you should have it CONFIG_MAC80211=m if you want to use this thing.")
 endif
 endif
 
