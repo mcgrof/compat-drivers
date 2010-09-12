@@ -196,6 +196,8 @@ endif #CONFIG_PCMCIA
 # autoconf.h
 ifdef CONFIG_WIRELESS_EXT
  CONFIG_CFG80211_WEXT=y
+else #CONFIG_CFG80211_WEXT
+$(warning "WARNING: CONFIG_CFG80211_WEXT will be deactivated or not working because kernel was compiled with CONFIG_WIRELESS_EXT=n. Tools using wext interface like iwconfig will not work. To activate it build your kernel e.g. with CONFIG_LIBIPW=m.")
 endif #CONFIG_WIRELESS_EXT
 
 ifneq ($(CONFIG_STAGING),)
