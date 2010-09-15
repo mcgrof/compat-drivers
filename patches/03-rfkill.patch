@@ -146,7 +146,7 @@ This would do the policing from within mac80211.
  	.unlocked_ioctl	= rfkill_fop_ioctl,
  	.compat_ioctl	= rfkill_fop_ioctl,
  #endif
-@@ -1267,7 +1267,7 @@ static int __init rfkill_init(void)
+@@ -1268,7 +1268,7 @@ static int __init rfkill_init(void)
  		goto out;
  	}
  
@@ -155,7 +155,7 @@ This would do the policing from within mac80211.
  	error = rfkill_handler_init();
  	if (error) {
  		misc_deregister(&rfkill_miscdev);
-@@ -1283,7 +1283,7 @@ subsys_initcall(rfkill_init);
+@@ -1284,7 +1284,7 @@ subsys_initcall(rfkill_init);
  
  static void __exit rfkill_exit(void)
  {
@@ -208,7 +208,7 @@ This would do the policing from within mac80211.
  #include <net/cfg80211.h>
 --- a/drivers/net/wireless/ath/ath9k/hw.c
 +++ b/drivers/net/wireless/ath/ath9k/hw.c
-@@ -2197,7 +2197,7 @@ int ath9k_hw_fill_cap_info(struct ath_hw
+@@ -2179,7 +2179,7 @@ int ath9k_hw_fill_cap_info(struct ath_hw
  
  	pCap->hw_caps |= ATH9K_HW_CAP_ENHANCEDPM;
  

@@ -68,7 +68,7 @@ here still, but for now we keep this here.
  
  	skb_free_datagram(sk, skb);
  
-@@ -337,7 +349,11 @@ int bt_sock_ioctl(struct socket *sock, u
+@@ -336,7 +348,11 @@ int bt_sock_ioctl(struct socket *sock, u
  		if (sk->sk_state == BT_LISTEN)
  			return -EINVAL;
  
