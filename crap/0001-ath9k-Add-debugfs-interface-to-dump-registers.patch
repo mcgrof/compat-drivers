@@ -42,13 +42,10 @@ Signed-off-by: Felix Fietkau <nbd@openwrt.org>
  #ifdef CONFIG_ATH_DEBUG
  
  static ssize_t read_file_debug(struct file *file, char __user *user_buf,
-@@ -893,7 +907,38 @@ static ssize_t write_file_regval(struct 
- static const struct file_operations fops_regval = {
- 	.read = read_file_regval,
- 	.write = write_file_regval,
--	.open = ath9k_debugfs_open,
-+};
-+
+@@ -908,6 +922,40 @@ static const struct file_operations fops
+ 	.llseek = default_llseek,/* read accesses f_pos */
+ };
+ 
 +#define REGDUMP_LINE_SIZE	20
 +#define REGDUMP_NUM_REGS	(0x16bd4 / 4 + 1)
 +#define REGDUMP_DATA_LEN	(REGDUMP_NUM_REGS * REGDUMP_LINE_SIZE + 1)
@@ -79,10 +76,14 @@ Signed-off-by: Felix Fietkau <nbd@openwrt.org>
 +	.open = open_file_regdump,
 +	.read = ath9k_debugfs_read_buf,
 +	.release = ath9k_debugfs_release_buf,
- 	.owner = THIS_MODULE
- };
- 
-@@ -961,6 +1006,11 @@ int ath9k_init_debug(struct ath_hw *ah)
++	.owner = THIS_MODULE,
++	.llseek = default_llseek,/* read accesses f_pos */
++};
++
+ int ath9k_init_debug(struct ath_hw *ah)
+ {
+ 	struct ath_common *common = ath9k_hw_common(ah);
+@@ -972,6 +1020,11 @@ int ath9k_init_debug(struct ath_hw *ah)
  		goto err;
  
  	sc->debug.regidx = 0;
@@ -94,7 +95,7 @@ Signed-off-by: Felix Fietkau <nbd@openwrt.org>
  	return 0;
  err:
  	ath9k_exit_debug(ah);
-@@ -972,6 +1022,7 @@ void ath9k_exit_debug(struct ath_hw *ah)
+@@ -983,6 +1036,7 @@ void ath9k_exit_debug(struct ath_hw *ah)
  	struct ath_common *common = ath9k_hw_common(ah);
  	struct ath_softc *sc = (struct ath_softc *) common->priv;
  
