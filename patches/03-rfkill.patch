@@ -146,7 +146,7 @@ This would do the policing from within mac80211.
  	.unlocked_ioctl	= rfkill_fop_ioctl,
  	.compat_ioctl	= rfkill_fop_ioctl,
  #endif
-@@ -1268,7 +1268,7 @@ static int __init rfkill_init(void)
+@@ -1267,7 +1267,7 @@ static int __init rfkill_init(void)
  		goto out;
  	}
  
@@ -155,7 +155,7 @@ This would do the policing from within mac80211.
  	error = rfkill_handler_init();
  	if (error) {
  		misc_deregister(&rfkill_miscdev);
-@@ -1284,7 +1284,7 @@ subsys_initcall(rfkill_init);
+@@ -1283,7 +1283,7 @@ subsys_initcall(rfkill_init);
  
  static void __exit rfkill_exit(void)
  {
