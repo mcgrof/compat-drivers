@@ -124,12 +124,12 @@ CONFIG_MAC80211_DEBUG_COUNTERS=y
 # CONFIG_MAC80211_DRIVER_API_TRACER=y
 
 # choose between pid and minstrel as default rate control algorithm
-CONFIG_MAC80211_RC_DEFAULT=minstrel
+CONFIG_MAC80211_RC_DEFAULT=minstrel_ht
 CONFIG_MAC80211_RC_DEFAULT_MINSTREL=y
 # CONFIG_MAC80211_RC_DEFAULT_PID=y
 # This is the one used by our compat-wireless net/mac80211/rate.c
 # in case you have and old kernel which is overriding this to pid.
-CONFIG_COMPAT_MAC80211_RC_DEFAULT=minstrel
+CONFIG_COMPAT_MAC80211_RC_DEFAULT=minstrel_ht
 CONFIG_MAC80211_RC_PID=y
 CONFIG_MAC80211_RC_MINSTREL=y
 CONFIG_MAC80211_RC_MINSTREL_HT=y
