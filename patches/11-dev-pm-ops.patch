@@ -9,10 +9,10 @@ calls on compat code with only slight modifications.
 
 --- a/drivers/net/wireless/ath/ath5k/base.c
 +++ b/drivers/net/wireless/ath/ath5k/base.c
-@@ -199,6 +199,33 @@ static void __devexit	ath5k_pci_remove(s
- #ifdef CONFIG_PM_SLEEP
- static int		ath5k_pci_suspend(struct device *dev);
- static int		ath5k_pci_resume(struct device *dev);
+@@ -3499,6 +3499,34 @@ static int ath5k_pci_resume(struct devic
+ 	return 0;
+ }
+ 
 +#if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,29))
 +static int ath5k_pci_suspend_compat(struct pci_dev *pdev, pm_message_t state)
 +{
@@ -40,10 +40,11 @@ calls on compat code with only slight modifications.
 +	return ath5k_pci_resume(&pdev->dev);
 +}
 +#endif
- 
++
  static SIMPLE_DEV_PM_OPS(ath5k_pm_ops, ath5k_pci_suspend, ath5k_pci_resume);
  #define ATH5K_PM_OPS	(&ath5k_pm_ops)
-@@ -211,7 +238,12 @@ static struct pci_driver ath5k_pci_drive
+ #else
+@@ -3510,7 +3538,12 @@ static struct pci_driver ath5k_pci_drive
  	.id_table	= ath5k_pci_id_table,
  	.probe		= ath5k_pci_probe,
  	.remove		= __devexit_p(ath5k_pci_remove),
@@ -55,4 +56,4 @@ calls on compat code with only slight modifications.
 +#endif
  };
  
- 
+ /*
