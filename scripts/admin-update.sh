@@ -214,7 +214,6 @@ DRIVERS="$DRIVERS drivers/net/wireless/orinoco"
 
 # Staging drivers
 STAGING_DRIVERS="drivers/staging/ath6kl"
-STAGING_DRIVERS="$STAGING_DRIVERS drivers/staging/brcm80211"
 
 # Ethernet drivers
 DRIVERS="$DRIVERS drivers/net/atl1c"

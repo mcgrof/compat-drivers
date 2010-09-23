@@ -39,7 +39,6 @@ obj-$(CONFIG_COMPAT_BLUETOOTH_MODULES) += drivers/bluetooth/
 
 ifeq ($(CONFIG_STAGING_EXCLUDE_BUILD),)
 obj-$(CONFIG_COMPAT_STAGING) += drivers/staging/ath6kl/
-obj-$(CONFIG_COMPAT_STAGING) += drivers/staging/brcm80211/
 endif
 
 
