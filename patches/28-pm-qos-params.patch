@@ -90,7 +90,7 @@ little wierd.
  module_init(ipw2100_init);
 --- a/net/mac80211/mlme.c
 +++ b/net/mac80211/mlme.c
-@@ -596,7 +596,11 @@ void ieee80211_recalc_ps(struct ieee8021
+@@ -609,7 +609,11 @@ void ieee80211_recalc_ps(struct ieee8021
  		s32 beaconint_us;
  
  		if (latency < 0)
