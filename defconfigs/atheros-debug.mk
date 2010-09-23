@@ -216,6 +216,13 @@ CONFIG_ATH9K=m
 CONFIG_ATH9K_COMMON=m
 CONFIG_ATH9K_DEBUGFS=y
 CONFIG_ATH9K_PKTLOG=y
+# Disable this to get minstrel as default, we leave the ath9k
+# rate control algorithm as the default for now as that is also
+# default upstream on the kernel. We will move this to minstrel
+# as default once we get minstrel properly tested and blessed by
+# our systems engineering team. CCK rates also need to be used
+# for long range considerations.
+CONFIG_ATH9K_RATE_CONTROL=y
 
 
 CONFIG_COMPAT_IWLWIFI=m
@@ -249,8 +256,6 @@ CONFIG_B43LEGACY_DMA=y
 CONFIG_B43LEGACY_PIO=y
 
 ifdef CONFIG_WIRELESS_EXT
-ifdef CONFIG_WEXT_SPY
-ifdef CONFIG_WEXT_PRIV
 # The Intel ipws
 CONFIG_LIBIPW=m
 # CONFIG_LIBIPW_DEBUG=y
@@ -276,8 +281,6 @@ CONFIG_IPW2200_QOS=y
 # it on via sysfs:
 #
 # % echo 1 > /sys/bus/pci/drivers/ipw2200/*/rtap_iface
-endif #CONFIG_WEXT_PRIV
-endif #CONFIG_WEXT_SPY
 endif #CONFIG_WIRELESS_EXT
 
 ifdef CONFIG_SSB
@@ -337,8 +340,6 @@ CONFIG_ATL1C=m
 endif #CONFIG_COMPAT_KERNEL_27
 
 ifdef CONFIG_WIRELESS_EXT
-ifdef CONFIG_WEXT_SPY
-ifdef CONFIG_WEXT_PRIV
 CONFIG_HERMES=m
 CONFIG_HERMES_CACHE_FW_ON_INIT=y
 ifdef CONFIG_PPC_PMAC
@@ -352,8 +353,6 @@ ifdef CONFIG_PCMCIA
 CONFIG_PCMCIA_HERMES=m
 CONFIG_PCMCIA_SPECTRUM=m
 endif #CONFIG_PCMCIA
-endif #CONFIG_WEXT_PRIV
-endif #CONFIG_WEXT_SPY
 endif #CONFIG_WIRELESS_EXT
 
 endif #CONFIG_PCI
@@ -412,6 +411,18 @@ ifndef CONFIG_COMPAT_KERNEL_28
 CONFIG_AR9170_USB=m
 CONFIG_AR9170_LEDS=y
 endif #CONFIG_COMPAT_KERNEL_28
+
+ifndef CONFIG_COMPAT_KERNEL_29
+CONFIG_CARL9170=m
+CONFIG_CARL9170_LEDS=y
+CONFIG_CARL9170_DEBUGFS=y
+CONFIG_CARL9170_WPC=y
+endif #CONFIG_COMPAT_KERNEL_29
+
+# This activates a threading fix for usb urb.
+# this is mainline commit: b3e670443b7fb8a2d29831b62b44a039c283e351
+# This fix will be included in some stable releases.
+CONFIG_COMPAT_USB_URB_THREAD_FIX=y
 
 CONFIG_ATH9K_HTC=m
 CONFIG_ATH9K_HTC_DEBUGFS=y
@@ -481,7 +492,9 @@ ifdef CONFIG_CRC7
 CONFIG_WL1251_SDIO=m
 
 ifndef CONFIG_COMPAT_KERNEL_32
+ifdef CONFIG_WL12XX_PLATFORM_DATA
 CONFIG_WL1271_SDIO=m
+endif #CONFIG_WL12XX_PLATFORM_DATA
 endif #CONFIG_COMPAT_KERNEL_32
 
 endif #CONFIG_CRC7
