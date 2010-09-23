@@ -216,6 +216,13 @@ CONFIG_ATH9K=m
 CONFIG_ATH9K_COMMON=m
 # CONFIG_ATH9K_DEBUGFS=y
 # CONFIG_ATH9K_PKTLOG=y
+# Disable this to get minstrel as default, we leave the ath9k
+# rate control algorithm as the default for now as that is also
+# default upstream on the kernel. We will move this to minstrel
+# as default once we get minstrel properly tested and blessed by
+# our systems engineering team. CCK rates also need to be used
+# for long range considerations.
+CONFIG_ATH9K_RATE_CONTROL=y
 
 
 CONFIG_COMPAT_IWLWIFI=m
