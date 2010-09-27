@@ -55,7 +55,7 @@ FORCE_UPDATE="no"
 
 while [ $# -ne 0 ]; do
 	if [[ "$1" = "-s" ]]; then
-		UPDATE_ARGS="${UPDATE_ARGS} $s"
+		UPDATE_ARGS="${UPDATE_ARGS} $1 refresh"
 		POSTFIX_RELEASE_TAG="${POSTFIX_RELEASE_TAG}s"
 		shift; continue;
 	fi
