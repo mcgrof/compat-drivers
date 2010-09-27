@@ -17,11 +17,9 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  drivers/net/atlx/atl1.c |    5 +++--
  1 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/atlx/atl1.c b/drivers/net/atlx/atl1.c
-index 63b9ba0..bbd6e30 100644
 --- a/drivers/net/atlx/atl1.c
 +++ b/drivers/net/atlx/atl1.c
-@@ -2847,10 +2847,11 @@ static int atl1_resume(struct pci_dev *pdev)
+@@ -2847,10 +2847,11 @@ static int atl1_resume(struct pci_dev *p
  	pci_enable_wake(pdev, PCI_D3cold, 0);
  
  	atl1_reset_hw(&adapter->hw);
@@ -35,6 +33,3 @@ index 63b9ba0..bbd6e30 100644
  	netif_device_attach(netdev);
  
  	return 0;
--- 
-1.7.0.4
-

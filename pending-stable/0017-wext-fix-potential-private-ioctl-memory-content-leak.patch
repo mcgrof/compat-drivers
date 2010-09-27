@@ -21,11 +21,9 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  net/wireless/wext-priv.c |    2 +-
  1 files changed, 1 insertions(+), 1 deletions(-)
 
-diff --git a/net/wireless/wext-priv.c b/net/wireless/wext-priv.c
-index 3feb28e..674d426 100644
 --- a/net/wireless/wext-priv.c
 +++ b/net/wireless/wext-priv.c
-@@ -152,7 +152,7 @@ static int ioctl_private_iw_point(struct iw_point *iwp, unsigned int cmd,
+@@ -152,7 +152,7 @@ static int ioctl_private_iw_point(struct
  	} else if (!iwp->pointer)
  		return -EFAULT;
  
@@ -34,6 +32,3 @@ index 3feb28e..674d426 100644
  	if (!extra)
  		return -ENOMEM;
  
--- 
-1.7.0.4
-

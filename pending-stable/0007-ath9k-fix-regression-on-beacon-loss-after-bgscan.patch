@@ -54,11 +54,9 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  drivers/net/wireless/ath/ath9k/main.c |    6 ++++--
  1 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/main.c b/drivers/net/wireless/ath/ath9k/main.c
-index 1dd8768..3295c63 100644
 --- a/drivers/net/wireless/ath/ath9k/main.c
 +++ b/drivers/net/wireless/ath/ath9k/main.c
-@@ -258,9 +258,11 @@ int ath_set_channel(struct ath_softc *sc, struct ieee80211_hw *hw,
+@@ -257,9 +257,11 @@ int ath_set_channel(struct ath_softc *sc
  	if (!(sc->sc_flags & (SC_OP_OFFCHANNEL | SC_OP_SCANNING))) {
  		ath_start_ani(common);
  		ieee80211_queue_delayed_work(sc->hw, &sc->tx_complete_work, 0);
@@ -71,7 +69,7 @@ index 1dd8768..3295c63 100644
   ps_restore:
  	ath9k_ps_restore(sc);
  	return r;
-@@ -957,7 +959,7 @@ int ath_reset(struct ath_softc *sc, bool retry_tx)
+@@ -951,7 +953,7 @@ int ath_reset(struct ath_softc *sc, bool
  
  	ath_update_txpow(sc);
  
@@ -80,6 +78,3 @@ index 1dd8768..3295c63 100644
  		ath_beacon_config(sc, NULL);	/* restart beacons */
  
  	ath9k_hw_set_interrupts(ah, ah->imask);
--- 
-1.7.0.4
-

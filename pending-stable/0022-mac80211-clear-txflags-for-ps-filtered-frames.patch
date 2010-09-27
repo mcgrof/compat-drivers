@@ -18,11 +18,9 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  net/mac80211/status.c |    1 +
  1 files changed, 1 insertions(+), 0 deletions(-)
 
-diff --git a/net/mac80211/status.c b/net/mac80211/status.c
-index 571b32b..dd85006 100644
 --- a/net/mac80211/status.c
 +++ b/net/mac80211/status.c
-@@ -58,6 +58,7 @@ static void ieee80211_handle_filtered_frame(struct ieee80211_local *local,
+@@ -58,6 +58,7 @@ static void ieee80211_handle_filtered_fr
  	info->control.vif = &sta->sdata->vif;
  	info->flags |= IEEE80211_TX_INTFL_NEED_TXPROCESSING |
  		       IEEE80211_TX_INTFL_RETRANSMISSION;
@@ -30,6 +28,3 @@ index 571b32b..dd85006 100644
  
  	sta->tx_filtered_count++;
  
--- 
-1.7.0.4
-

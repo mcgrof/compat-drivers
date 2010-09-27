@@ -39,11 +39,9 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  net/mac80211/mlme.c |   13 +++++++++++--
  1 files changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 07d03e7..8b733cf 100644
 --- a/net/mac80211/mlme.c
 +++ b/net/mac80211/mlme.c
-@@ -1038,10 +1038,19 @@ static void ieee80211_mgd_probe_ap_send(struct ieee80211_sub_if_data *sdata)
+@@ -1030,10 +1030,19 @@ static void ieee80211_mgd_probe_ap_send(
  {
  	struct ieee80211_if_managed *ifmgd = &sdata->u.mgd;
  	const u8 *ssid;
@@ -65,6 +63,3 @@ index 07d03e7..8b733cf 100644
  
  	ifmgd->probe_send_count++;
  	ifmgd->probe_timeout = jiffies + IEEE80211_PROBE_WAIT;
--- 
-1.7.0.4
-

@@ -18,11 +18,9 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  drivers/net/wireless/ath/ath9k/xmit.c  |   10 ++++++++--
  3 files changed, 13 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/ath9k.h b/drivers/net/wireless/ath/ath9k/ath9k.h
-index 79217c3..004533d 100644
 --- a/drivers/net/wireless/ath/ath9k/ath9k.h
 +++ b/drivers/net/wireless/ath/ath9k/ath9k.h
-@@ -346,8 +346,8 @@ void ath_tx_tasklet(struct ath_softc *sc);
+@@ -346,8 +346,8 @@ void ath_tx_tasklet(struct ath_softc *sc
  void ath_tx_edma_tasklet(struct ath_softc *sc);
  void ath_tx_cabq(struct ieee80211_hw *hw, struct sk_buff *skb);
  bool ath_tx_aggr_check(struct ath_softc *sc, struct ath_node *an, u8 tidno);
@@ -33,11 +31,9 @@ index 79217c3..004533d 100644
  void ath_tx_aggr_stop(struct ath_softc *sc, struct ieee80211_sta *sta, u16 tid);
  void ath_tx_aggr_resume(struct ath_softc *sc, struct ieee80211_sta *sta, u16 tid);
  void ath9k_enable_ps(struct ath_softc *sc);
-diff --git a/drivers/net/wireless/ath/ath9k/main.c b/drivers/net/wireless/ath/ath9k/main.c
-index 5056733..8b327bc 100644
 --- a/drivers/net/wireless/ath/ath9k/main.c
 +++ b/drivers/net/wireless/ath/ath9k/main.c
-@@ -1970,8 +1970,9 @@ static int ath9k_ampdu_action(struct ieee80211_hw *hw,
+@@ -1971,8 +1971,9 @@ static int ath9k_ampdu_action(struct iee
  		break;
  	case IEEE80211_AMPDU_TX_START:
  		ath9k_ps_wakeup(sc);
@@ -49,11 +45,9 @@ index 5056733..8b327bc 100644
  		ath9k_ps_restore(sc);
  		break;
  	case IEEE80211_AMPDU_TX_STOP:
-diff --git a/drivers/net/wireless/ath/ath9k/xmit.c b/drivers/net/wireless/ath/ath9k/xmit.c
-index 5323a4d..d629bfb 100644
 --- a/drivers/net/wireless/ath/ath9k/xmit.c
 +++ b/drivers/net/wireless/ath/ath9k/xmit.c
-@@ -783,17 +783,23 @@ static void ath_tx_sched_aggr(struct ath_softc *sc, struct ath_txq *txq,
+@@ -785,17 +785,23 @@ static void ath_tx_sched_aggr(struct ath
  		 status != ATH_AGGR_BAW_CLOSED);
  }
  
@@ -79,6 +73,3 @@ index 5323a4d..d629bfb 100644
  }
  
  void ath_tx_aggr_stop(struct ath_softc *sc, struct ieee80211_sta *sta, u16 tid)
--- 
-1.7.0.4
-

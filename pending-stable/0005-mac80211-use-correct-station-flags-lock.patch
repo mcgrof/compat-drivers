@@ -18,11 +18,9 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  net/mac80211/cfg.c |    5 +++--
  1 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 5de1ca3..171e8ff 100644
 --- a/net/mac80211/cfg.c
 +++ b/net/mac80211/cfg.c
-@@ -577,6 +577,7 @@ static void sta_apply_parameters(struct ieee80211_local *local,
+@@ -634,6 +634,7 @@ static void sta_apply_parameters(struct 
  				 struct sta_info *sta,
  				 struct station_parameters *params)
  {
@@ -30,7 +28,7 @@ index 5de1ca3..171e8ff 100644
  	u32 rates;
  	int i, j;
  	struct ieee80211_supported_band *sband;
-@@ -585,7 +586,7 @@ static void sta_apply_parameters(struct ieee80211_local *local,
+@@ -642,7 +643,7 @@ static void sta_apply_parameters(struct 
  
  	sband = local->hw.wiphy->bands[local->oper_channel->band];
  
@@ -39,7 +37,7 @@ index 5de1ca3..171e8ff 100644
  	mask = params->sta_flags_mask;
  	set = params->sta_flags_set;
  
-@@ -612,7 +613,7 @@ static void sta_apply_parameters(struct ieee80211_local *local,
+@@ -669,7 +670,7 @@ static void sta_apply_parameters(struct 
  		if (set & BIT(NL80211_STA_FLAG_MFP))
  			sta->flags |= WLAN_STA_MFP;
  	}
@@ -48,6 +46,3 @@ index 5de1ca3..171e8ff 100644
  
  	/*
  	 * cfg80211 validates this (1-2007) and allows setting the AID
--- 
-1.7.0.4
-

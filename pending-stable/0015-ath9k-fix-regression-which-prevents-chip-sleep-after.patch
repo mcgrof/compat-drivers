@@ -38,11 +38,9 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  drivers/net/wireless/ath/ath9k/recv.c |    2 +-
  1 files changed, 1 insertions(+), 1 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/recv.c b/drivers/net/wireless/ath/ath9k/recv.c
-index 007df33..c5e7af4 100644
 --- a/drivers/net/wireless/ath/ath9k/recv.c
 +++ b/drivers/net/wireless/ath/ath9k/recv.c
-@@ -639,7 +639,7 @@ static void ath_rx_ps(struct ath_softc *sc, struct sk_buff *skb)
+@@ -631,7 +631,7 @@ static void ath_rx_ps(struct ath_softc *
  		 * No more broadcast/multicast frames to be received at this
  		 * point.
  		 */
@@ -51,6 +49,3 @@ index 007df33..c5e7af4 100644
  		ath_print(common, ATH_DBG_PS,
  			  "All PS CAB frames received, back to sleep\n");
  	} else if ((sc->ps_flags & PS_WAIT_FOR_PSPOLL_DATA) &&
--- 
-1.7.0.4
-
