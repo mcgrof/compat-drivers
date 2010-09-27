@@ -136,6 +136,7 @@ nagometer() {
 EXTRA_PATCHES="patches"
 REFRESH="n"
 GET_STABLE_PENDING="n"
+POSTFIX_RELEASE_TAG=""
 if [ $# -ge 1 ]; then
 	if [ $# -gt 4 ]; then
 		usage $0
@@ -149,18 +150,22 @@ if [ $# -ge 1 ]; then
 		if [[ "$1" = "-s" ]]; then
 			GET_STABLE_PENDING="y"
 			EXTRA_PATCHES="${EXTRA_PATCHES} pending-stable" 
+			POSTFIX_RELEASE_TAG="${POSTFIX_RELEASE_TAG}s"
 			shift; continue;
 		fi
 		if [[ "$1" = "-n" ]]; then
 			EXTRA_PATCHES="${EXTRA_PATCHES} linux-next-cherry-picks"
+			POSTFIX_RELEASE_TAG="${POSTFIX_RELEASE_TAG}n"
 			shift; continue;
 		fi
 		if [[ "$1" = "-p" ]]; then
 			EXTRA_PATCHES="${EXTRA_PATCHES} linux-next-pending"
+			POSTFIX_RELEASE_TAG="${POSTFIX_RELEASE_TAG}p"
 			shift; continue;
 		fi
 		if [[ "$1" = "-c" ]]; then
 			EXTRA_PATCHES="${EXTRA_PATCHES} crap"
+			POSTFIX_RELEASE_TAG="${POSTFIX_RELEASE_TAG}c"
 			shift; continue;
 		fi
 		if [[ "$1" = "refresh" ]]; then
@@ -526,7 +531,11 @@ echo -e "${GREEN}Updated${NORMAL} from local tree: ${BLUE}${GIT_TREE}${NORMAL}"
 echo -e "Origin remote URL: ${CYAN}${GIT_REMOTE_URL}${NORMAL}"
 cd $DIR
 if [ -d ./.git ]; then
-	git describe > compat_version
+	if [[ ${POSTFIX_RELEASE_TAG} != "" ]]; then
+		echo -e "$(git describe)-${POSTFIX_RELEASE_TAG}" > compat_version
+	else
+		echo -e "$(git describe)" > compat_version
+	fi
 
 	cd $GIT_TREE
 	TREE_NAME=${GIT_REMOTE_URL##*/}
