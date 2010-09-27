@@ -253,6 +253,7 @@ install-scripts:
 
 uninstall:
 	@# New location, matches upstream
+	@rm -rf $(KLIB)/$(KMODDIR)/compat/
 	@rm -rf $(KLIB)/$(KMODDIR)/net/mac80211/
 	@rm -rf $(KLIB)/$(KMODDIR)/net/rfkill/
 	@rm -rf $(KLIB)/$(KMODDIR)/net/wireless/
