@@ -71,6 +71,13 @@ brag_backport() {
 		$(perl -e 'printf("%.4f", 100 * '$COMPAT_ALL_CHANGES' / '$1');')
 }
 
+nag_pending_stable() {
+	printf "${YELLOW}%10s${NORMAL} - Code changes brought in from pending-stable\n" $2
+	printf "${YELLOW}%10s${NORMAL} - Code additions brought in from pending-stable\n" $3
+	printf "${YELLOW}%10s${NORMAL} - Code deletions brought in from pending-stable\n" $4
+	printf "${RED}%10s${NORMAL} - %% of code being cherry picked from pending-stable\n" $(perl -e 'printf("%.4f", 100 * '$2' / '$1');')
+}
+
 nag_next_cherry_pick() {
 	printf "${YELLOW}%10s${NORMAL} - Code changes brought in from linux-next\n" $2
 	printf "${YELLOW}%10s${NORMAL} - Code additions brought in from linux-next\n" $3
@@ -107,6 +114,9 @@ nagometer() {
 	case $1 in
 	"patches")
 		brag_backport $ORIG_CODE $CHANGES $ADD $DEL
+		;;
+	"pending-stable")
+		nag_pending_stable $ORIG_CODE $CHANGES $ADD $DEL
 		;;
 	"linux-next-cherry-picks")
 		nag_next_cherry_pick $ORIG_CODE $CHANGES $ADD $DEL
