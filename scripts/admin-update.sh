@@ -394,6 +394,7 @@ export WSTABLE="
         include/linux/nl80211.h
         include/linux/rfkill.h
         include/net/cfg80211.h
+	include/net/mac80211.h
         include/net/regulatory.h
         include/net/cfg80211.h"
 
