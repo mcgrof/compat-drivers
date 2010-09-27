@@ -54,6 +54,11 @@ POSTFIX_RELEASE_TAG="-"
 FORCE_UPDATE="no"
 
 while [ $# -ne 0 ]; do
+	if [[ "$1" = "-s" ]]; then
+		UPDATE_ARGS="${UPDATE_ARGS} $s"
+		POSTFIX_RELEASE_TAG="${POSTFIX_RELEASE_TAG}s"
+		shift; continue;
+	fi
 	if [[ "$1" = "-n" ]]; then
 		UPDATE_ARGS="${UPDATE_ARGS} $1"
 		POSTFIX_RELEASE_TAG="${POSTFIX_RELEASE_TAG}n"
