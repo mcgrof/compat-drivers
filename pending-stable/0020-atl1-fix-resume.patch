@@ -1,0 +1,40 @@
+From ec5a32f67c603b11d68eb283d94eb89a4f6cfce1 Mon Sep 17 00:00:00 2001
+From: Luca Tettamanti <kronos.it@gmail.com>
+Date: Wed, 22 Sep 2010 10:41:58 +0000
+Subject: [PATCH 20/23] atl1: fix resume
+
+adapter->cmb.cmb is initialized when the device is opened and freed when
+it's closed. Accessing it unconditionally during resume results either
+in a crash (NULL pointer dereference, when the interface has not been
+opened yet) or data corruption (when the interface has been used and
+brought down adapter->cmb.cmb points to a deallocated memory area).
+
+Cc: stable@kernel.org
+Signed-off-by: Luca Tettamanti <kronos.it@gmail.com>
+Acked-by: Chris Snook <chris.snook@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+---
+ drivers/net/atlx/atl1.c |    5 +++--
+ 1 files changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/atlx/atl1.c b/drivers/net/atlx/atl1.c
+index 63b9ba0..bbd6e30 100644
+--- a/drivers/net/atlx/atl1.c
++++ b/drivers/net/atlx/atl1.c
+@@ -2847,10 +2847,11 @@ static int atl1_resume(struct pci_dev *pdev)
+ 	pci_enable_wake(pdev, PCI_D3cold, 0);
+ 
+ 	atl1_reset_hw(&adapter->hw);
+-	adapter->cmb.cmb->int_stats = 0;
+ 
+-	if (netif_running(netdev))
++	if (netif_running(netdev)) {
++		adapter->cmb.cmb->int_stats = 0;
+ 		atl1_up(adapter);
++	}
+ 	netif_device_attach(netdev);
+ 
+ 	return 0;
+-- 
+1.7.0.4
+

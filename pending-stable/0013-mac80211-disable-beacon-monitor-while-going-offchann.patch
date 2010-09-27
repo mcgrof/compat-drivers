@@ -1,0 +1,44 @@
+From 3bc3c0d748402e8c1f31b8569f5924d25d7b8e30 Mon Sep 17 00:00:00 2001
+From: Luis R. Rodriguez <lrodriguez@atheros.com>
+Date: Thu, 16 Sep 2010 15:12:33 -0400
+Subject: [PATCH 13/23] mac80211: disable beacon monitor while going offchannel
+
+The beacon monitor should be disabled when going off channel
+to prevent spurious warnings and triggering connection
+deterioration work such as sending probe requests. Re-enable
+the beacon monitor once we come back to the home channel.
+
+This patch has fixes for stable kernels [2.6.34+].
+
+Cc: stable@kernel.org
+Cc: Paul Stewart <pstew@google.com>
+Cc: Amod Bodas <amod.bodas@atheros.com>
+Signed-off-by: Luis R. Rodriguez <lrodriguez@atheros.com>
+Signed-off-by: John W. Linville <linville@tuxdriver.com>
+---
+ net/mac80211/offchannel.c |    2 ++
+ 1 files changed, 2 insertions(+), 0 deletions(-)
+
+diff --git a/net/mac80211/offchannel.c b/net/mac80211/offchannel.c
+index 627a33e..4b56409 100644
+--- a/net/mac80211/offchannel.c
++++ b/net/mac80211/offchannel.c
+@@ -29,6 +29,7 @@ static void ieee80211_offchannel_ps_enable(struct ieee80211_sub_if_data *sdata)
+ 	/* FIXME: what to do when local->pspolling is true? */
+ 
+ 	del_timer_sync(&local->dynamic_ps_timer);
++	del_timer_sync(&ifmgd->bcn_mon_timer);
+ 	del_timer_sync(&ifmgd->conn_mon_timer);
+ 
+ 	cancel_work_sync(&local->dynamic_ps_enable_work);
+@@ -89,6 +90,7 @@ static void ieee80211_offchannel_ps_disable(struct ieee80211_sub_if_data *sdata)
+ 			  msecs_to_jiffies(local->hw.conf.dynamic_ps_timeout));
+ 	}
+ 
++	ieee80211_sta_reset_beacon_monitor(sdata);
+ 	ieee80211_sta_reset_conn_monitor(sdata);
+ }
+ 
+-- 
+1.7.0.4
+

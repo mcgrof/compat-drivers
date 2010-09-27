@@ -1,0 +1,39 @@
+From df6d02300f7c2fbd0fbe626d819c8e5237d72c62 Mon Sep 17 00:00:00 2001
+From: Johannes Berg <johannes.berg@intel.com>
+Date: Fri, 17 Sep 2010 00:38:25 +0200
+Subject: [PATCH 17/23] wext: fix potential private ioctl memory content leak
+
+When a driver doesn't fill the entire buffer, old
+heap contents may remain, and if it also doesn't
+update the length properly, this old heap content
+will be copied back to userspace.
+
+It is very unlikely that this happens in any of
+the drivers using private ioctls since it would
+show up as junk being reported by iwpriv, but it
+seems better to be safe here, so use kzalloc.
+
+Reported-by: Jeff Mahoney <jeffm@suse.com>
+Cc: stable@kernel.org
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: John W. Linville <linville@tuxdriver.com>
+---
+ net/wireless/wext-priv.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/net/wireless/wext-priv.c b/net/wireless/wext-priv.c
+index 3feb28e..674d426 100644
+--- a/net/wireless/wext-priv.c
++++ b/net/wireless/wext-priv.c
+@@ -152,7 +152,7 @@ static int ioctl_private_iw_point(struct iw_point *iwp, unsigned int cmd,
+ 	} else if (!iwp->pointer)
+ 		return -EFAULT;
+ 
+-	extra = kmalloc(extra_size, GFP_KERNEL);
++	extra = kzalloc(extra_size, GFP_KERNEL);
+ 	if (!extra)
+ 		return -ENOMEM;
+ 
+-- 
+1.7.0.4
+
