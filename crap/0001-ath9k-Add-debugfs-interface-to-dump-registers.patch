@@ -43,7 +43,7 @@ Signed-off-by: Felix Fietkau <nbd@openwrt.org>
  
  static ssize_t read_file_debug(struct file *file, char __user *user_buf,
 @@ -941,6 +955,40 @@ static const struct file_operations fops
- 	.llseek = default_llseek,/* read accesses f_pos */
+ 	.llseek = default_llseek,
  };
  
 +#define REGDUMP_LINE_SIZE	20
