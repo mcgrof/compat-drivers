@@ -1,6 +1,6 @@
 --- a/drivers/staging/brcm80211/Makefile
 +++ b/drivers/staging/brcm80211/Makefile
-@@ -24,10 +24,10 @@
+@@ -24,10 +24,10 @@ ccflags-y :=					\
  	-DDBAND					\
  	-DBCMDMA32				\
  	-DBCMNVRAMR				\
