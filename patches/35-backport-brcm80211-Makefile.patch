@@ -1,11 +1,17 @@
 --- a/drivers/staging/brcm80211/Makefile
 +++ b/drivers/staging/brcm80211/Makefile
-@@ -15,7 +15,7 @@
- # OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
- # CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
- 
--EXTRA_CFLAGS := -DBCMDBG -DWLC_HIGH -DSTA -DWME -DWL11N -DDBAND -DBCMDMA32 -DBCMNVRAMR -Idrivers/staging/brcm80211/sys -Idrivers/staging/brcm80211/phy -Idrivers/staging/brcm80211/util -Idrivers/staging/brcm80211/include -Wall -Wstrict-prototypes -Werror -Wmissing-prototypes
-+EXTRA_CFLAGS := -DBCMDBG -DWLC_HIGH -DSTA -DWME -DWL11N -DDBAND -DBCMDMA32 -DBCMNVRAMR -I$(obj)/sys -I$(obj)/phy -I$(obj)/util -I$(obj)/include -Wall -Wstrict-prototypes -Werror -Wmissing-prototypes
+@@ -24,10 +24,10 @@
+ 	-DDBAND					\
+ 	-DBCMDMA32				\
+ 	-DBCMNVRAMR				\
+-	-Idrivers/staging/brcm80211/sys		\
+-	-Idrivers/staging/brcm80211/phy		\
+-	-Idrivers/staging/brcm80211/util	\
+-	-Idrivers/staging/brcm80211/include
++	-I$(obj)/sys		\
++	-I$(obj)/phy		\
++	-I$(obj)/util	\
++	-I$(obj)/include
  
  PCI_CFLAGS := -DWLC_LOW
  
