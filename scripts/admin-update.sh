@@ -48,9 +48,10 @@ NET_DIRS="wireless mac80211 rfkill"
 CODE_METRICS=code-metrics.txt
 
 usage() {
-	printf "Usage: $0 [ refresh] [ --help | -h | -n | -p | -c ]\n"
+	printf "Usage: $0 [ refresh] [ --help | -h | -s | -n | -p | -c ]\n"
 
 	printf "${GREEN}%10s${NORMAL} - will update your all your patch offsets using quilt\n" "refresh"
+	printf "${GREEN}%10s${NORMAL} - get and apply pending-stable/ fixes purging old files there\n" "-s"
 	printf "${GREEN}%10s${NORMAL} - apply the patches linux-next-cherry-picks directory\n" "-n"
 	printf "${GREEN}%10s${NORMAL} - apply the patches on the linux-next-pending directory\n" "-p"
 	printf "${GREEN}%10s${NORMAL} - apply the patches on the crap directory\n" "-c"
@@ -123,6 +124,7 @@ nagometer() {
 
 EXTRA_PATCHES="patches"
 REFRESH="n"
+GET_STABLE_PENDING="n"
 if [ $# -ge 1 ]; then
 	if [ $# -gt 4 ]; then
 		usage $0
@@ -133,6 +135,11 @@ if [ $# -ge 1 ]; then
 		exit
 	fi
 	while [ $# -ne 0 ]; do
+		if [[ "$1" = "-s" ]]; then
+			GET_STABLE_PENDING="y"
+			EXTRA_PATCHES="${EXTRA_PATCHES} pending-stable" 
+			shift; continue;
+		fi
 		if [[ "$1" = "-n" ]]; then
 			EXTRA_PATCHES="${EXTRA_PATCHES} linux-next-cherry-picks"
 			shift; continue;
@@ -356,6 +363,58 @@ cp -a $GIT_COMPAT_TREE/include/net/* include/net/
 cp -a $GIT_COMPAT_TREE/include/trace/* include/trace/
 cp -a $GIT_COMPAT_TREE/include/pcmcia/* include/pcmcia/
 rm -f $COMPAT/*.mod.c
+
+# files we suck in for compat-wireless
+export WSTABLE="
+        net/wireless/
+        net/wireless/
+        net/mac80211/
+        net/rfkill/
+        drivers/net/wireless/
+        net/bluetooth/
+        drivers/bluetooth/
+        drivers/net/atl1c/
+        drivers/net/atl1e/
+        drivers/net/atlx/
+        include/linux/nl80211.h
+        include/linux/rfkill.h
+        include/net/cfg80211.h
+        include/net/regulatory.h
+        include/net/cfg80211.h"
+
+# Stable pending, if -n was passed
+if [[ "$GET_STABLE_PENDING" = y ]]; then
+	LAST_DIR=$PWD
+	cd $GIT_TREE
+	if [ -f localversion* ]; then
+		echo -e "You should be using a stable tree to use the -s option"
+		exit 1
+	fi
+
+	# we now assume you are using a stable tree
+	cd $GIT_TREE
+	LAST_STABLE_UPDATE=$(git describe --abbrev=0)
+	NEXT_TREE="/home/$USER/linux-next/"
+	if [ ! -d $NEXT_TREE ]; then
+		echo -e "You are expected to have $NEXT_TREE directory when using -s"
+		exit 1
+	fi
+	cd $NEXT_TREE
+	PENDING_STABLE_DIR="pending-stable/"
+
+	rm -rf $CHERRY_PICK_DIR
+	echo -e "${GREEN}Generating stable cherry picks... ${NORMAL}"
+	git format-patch --grep="stable@kernel.org" -o $PENDING_STABLE_DIR ${LAST_STABLE_UPDATE}.. $WSTABLE
+	if [ ! -d ${LAST_DIR}/${PENDING_STABLE_DIR} ]; then
+		echo -e "Assumption that ${LAST_DIR}/${PENDING_STABLE_DIR} directory exists failed"
+		exit 1
+	fi
+	echo -e "${GREEN}Purging old stable cherry picks... ${NORMAL}"
+	rm -f ${LAST_DIR}/${PENDING_STABLE_DIR}/*.patch
+	cp ${PENDING_STABLE_DIR}/*.patch ${LAST_DIR}/${PENDING_STABLE_DIR}/
+	echo -e "${GREEN}Updated stable cherry picks, review with git diff and update hunks with ./scripts/admin-update.sh -s refresh${NORMAL}"
+	cd $LAST_DIR
+fi
 
 # Refresh patches using quilt
 patchRefresh() {
