@@ -352,8 +352,6 @@ case $1 in
 		disable_bt_usb_ethernet_var
 		disable_ath6kl
 		select_driver		CONFIG_NOTHING
-		sed -e 's|net/mac80211/||' Makefile > Makefile.ath6kl
-		mv Makefile.ath6kl Makefile
 		;;
 	rtl818x)
 		select_drivers		CONFIG_RTL8180 CONFIG_RTL8187
