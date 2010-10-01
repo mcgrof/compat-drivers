@@ -171,6 +171,7 @@ function disable_bt_usb_ethernet_var {
 function enable_only_ethernet {
 	backup_file Makefile
 	backup_file $DRIVERS_NET
+	disable_staging
 	disable_usbnet
 	disable_var_03
 	disable_bt
@@ -195,6 +196,11 @@ function disable_var_02 {
 	disable_lib80211
 	disable_ssb
 	disable_usbnet
+}
+
+function disable_staging {
+	backup_file Makefile
+	perl -i -ne 'print if ! /CONFIG_COMPAT_STAGING/ ' Makefile
 }
 
 function select_ath_driver 
@@ -272,6 +278,7 @@ case $1 in
 	atheros)
 		select_drivers		CONFIG_ATH_COMMON \
 					CONFIG_ZD1211RW
+		disable_staging
 		disable_var_01
 		;;
 	ath)
@@ -282,33 +289,40 @@ case $1 in
 	intel)
 		select_drivers		CONFIG_IWLWIFI \
 					CONFIG_IPW
+		disable_staging
 		disable_var
 		;;
 	iwlwifi)
 		select_driver		CONFIG_IWLWIFI
+		disable_staging
 		disable_var_01
 		;;
 	wl12xx)
 		select_drivers		CONFIG_WL12XX
+		disable_staging
 		disable_var_01
 		;;
 	ath5k)
+		disable_staging
 		disable_bt_usb_ethernet_var
 		select_driver		CONFIG_ATH_COMMON
 		select_ath_driver	CONFIG_ATH5K
 		#patch -p1 < enable-older-kernels/enable-2.6.23.patch
 		;;
 	ath9k)
+		disable_staging
 		disable_bt_usb_ethernet_var
 		select_driver		CONFIG_ATH_COMMON
 		select_ath9k_driver
 		;;
 	carl9170)
+		disable_staging
 		disable_bt_usb_ethernet_var
 		select_driver		CONFIG_ATH_COMMON
 		select_ath_driver	CONFIG_CARL9170
 		;;
 	ath9k_htc)
+		disable_staging
 		disable_bt_usb_ethernet_var
 		select_driver		CONFIG_ATH_COMMON
 		select_ath9k_driver
@@ -321,13 +335,16 @@ case $1 in
 		;;
 	rtl818x)
 		select_drivers		CONFIG_RTL8180 CONFIG_RTL8187
+		disable_staging
 		disable_var_02
 		;;
 	zd1211rw)
 		select_driver		CONFIG_ZD1211RW
+		disable_staging
 		disable_var_01
 		;;
 	b43)
+		disable_staging
 		disable_usbnet
 		disable_ethernet
 		disable_var_03
@@ -335,6 +352,7 @@ case $1 in
 		;;
 	rt2x00)
 		select_driver		CONFIG_RT2X00
+		disable_staging
 		disable_var_02
 		;;
 	atl1)
