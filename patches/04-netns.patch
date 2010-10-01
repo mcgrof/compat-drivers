@@ -16,7 +16,7 @@ files...
  };
  
  /* internal helper: get rdev and dev */
-@@ -4479,7 +4481,9 @@ static int nl80211_wiphy_netns(struct sk
+@@ -4462,7 +4464,9 @@ static int nl80211_wiphy_netns(struct sk
  
  	err = cfg80211_switch_netns(rdev, net);
   out_put_net:
@@ -44,7 +44,7 @@ files...
  
  static void cfg80211_rfkill_poll(struct rfkill *rfkill, void *data)
  {
-@@ -381,7 +383,9 @@ struct wiphy *wiphy_new(const struct cfg
+@@ -376,7 +378,9 @@ struct wiphy *wiphy_new(const struct cfg
  	rdev->wiphy.flags |= WIPHY_FLAG_PS_ON_BY_DEFAULT;
  #endif
  
@@ -54,7 +54,7 @@ files...
  
  	rdev->rfkill_ops.set_block = cfg80211_rfkill_set_block;
  	rdev->rfkill = rfkill_alloc(dev_name(&rdev->wiphy.dev),
-@@ -699,8 +703,10 @@ static int cfg80211_netdev_notifier_call
+@@ -694,8 +698,10 @@ static int cfg80211_netdev_notifier_call
  		mutex_lock(&rdev->devlist_mtx);
  		list_add_rcu(&wdev->list, &rdev->netdev_list);
  		rdev->devlist_generation++;
@@ -65,7 +65,7 @@ files...
  
  		if (sysfs_create_link(&dev->dev.kobj, &rdev->wiphy.dev.kobj,
  				      "phy80211")) {
-@@ -846,6 +852,7 @@ static struct notifier_block cfg80211_ne
+@@ -841,6 +847,7 @@ static struct notifier_block cfg80211_ne
  	.notifier_call = cfg80211_netdev_notifier_call,
  };
  
@@ -73,7 +73,7 @@ files...
  static void __net_exit cfg80211_pernet_exit(struct net *net)
  {
  	struct cfg80211_registered_device *rdev;
-@@ -863,14 +870,17 @@ static void __net_exit cfg80211_pernet_e
+@@ -858,14 +865,17 @@ static void __net_exit cfg80211_pernet_e
  static struct pernet_operations cfg80211_pernet_ops = {
  	.exit = cfg80211_pernet_exit,
  };
@@ -91,7 +91,7 @@ files...
  
  	err = wiphy_sysfs_init();
  	if (err)
-@@ -905,8 +915,10 @@ out_fail_nl80211:
+@@ -900,8 +910,10 @@ out_fail_nl80211:
  out_fail_notifier:
  	wiphy_sysfs_exit();
  out_fail_sysfs:
@@ -102,7 +102,7 @@ files...
  	return err;
  }
  subsys_initcall(cfg80211_init);
-@@ -918,7 +930,9 @@ static void __exit cfg80211_exit(void)
+@@ -913,7 +925,9 @@ static void __exit cfg80211_exit(void)
  	unregister_netdevice_notifier(&cfg80211_netdev_notifier);
  	wiphy_sysfs_exit();
  	regulatory_exit();
