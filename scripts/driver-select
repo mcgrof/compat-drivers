@@ -36,6 +36,10 @@ if [ -d drivers/staging/ath6kl ]; then
 	SUPPORTED_80211_DRIVERS="$SUPPORTED_80211_DRIVERS ath6kl"
 fi
 
+if [ -d drivers/staging/brcm80211 ]; then
+	SUPPORTED_80211_DRIVERS="$SUPPORTED_80211_DRIVERS brcm80211"
+fi
+
 # b43 needs some more work for driver-select, the SSB stuff, plus
 # what if you update b44 but not b43? It will bust.
 SUPPORTED_ETH_DRIVERS="atl1 atl2 atl1e atl1c"
@@ -203,6 +207,16 @@ function disable_staging {
 	perl -i -ne 'print if ! /CONFIG_COMPAT_STAGING/ ' Makefile
 }
 
+function disable_ath6kl {
+	backup_file Makefile
+	perl -i -ne 'print if ! /ath6kl/ ' Makefile
+}
+
+function disable_brcm80211 {
+	backup_file Makefile
+	perl -i -ne 'print if ! /brcm80211/ ' Makefile
+}
+
 function select_ath_driver 
 {
 	backup_file $ATH_MAKEFILE
@@ -329,6 +343,14 @@ case $1 in
 		;;
 	ath6kl)
 		disable_bt_usb_ethernet_var
+		disable_brcm80211
+		select_driver		CONFIG_NOTHING
+		sed -e 's|net/mac80211/||' Makefile > Makefile.ath6kl
+		mv Makefile.ath6kl Makefile
+		;;
+	brcm80211)
+		disable_bt_usb_ethernet_var
+		disable_ath6kl
 		select_driver		CONFIG_NOTHING
 		sed -e 's|net/mac80211/||' Makefile > Makefile.ath6kl
 		mv Makefile.ath6kl Makefile
