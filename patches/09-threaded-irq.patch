@@ -51,7 +51,7 @@ thread in process context as well.
  	b43_release_firmware(dev);
 --- a/drivers/net/wireless/b43/b43.h
 +++ b/drivers/net/wireless/b43/b43.h
-@@ -756,6 +756,9 @@ struct b43_wldev {
+@@ -757,6 +757,9 @@ struct b43_wldev {
  	unsigned int tx_count;
  	unsigned int rx_count;
  #endif
@@ -63,10 +63,11 @@ thread in process context as well.
  /* Data structure for the WLAN parts (802.11 cores) of the b43 chip. */
 --- a/drivers/net/wireless/rt2x00/rt2x00.h
 +++ b/drivers/net/wireless/rt2x00/rt2x00.h
-@@ -884,6 +884,9 @@ struct rt2x00_dev {
- 	 * and interrupt thread routine.
+@@ -902,6 +902,10 @@ struct rt2x00_dev {
+ 	 * Tasklet for processing tx status reports (rt2800pci).
  	 */
- 	u32 irqvalue[2];
+ 	struct tasklet_struct txstatus_tasklet;
++
 +#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,31)
 +	struct compat_threaded_irq irq_compat;
 +#endif
