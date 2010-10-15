@@ -231,6 +231,7 @@ DRIVERS="$DRIVERS drivers/net/wireless/rtl818x"
 DRIVERS="$DRIVERS drivers/net/wireless/libertas_tf"
 DRIVERS="$DRIVERS drivers/net/wireless/ipw2x00"
 DRIVERS="$DRIVERS drivers/net/wireless/wl12xx"
+DRIVERS="$DRIVERS drivers/net/wireless/wl1251"
 DRIVERS="$DRIVERS drivers/net/wireless/iwmc3200wifi"
 DRIVERS="$DRIVERS drivers/net/wireless/orinoco"
 

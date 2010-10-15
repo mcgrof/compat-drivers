@@ -6,18 +6,19 @@ cases.
 
 --- a/drivers/net/wireless/b43/phy_common.h
 +++ b/drivers/net/wireless/b43/phy_common.h
-@@ -2,6 +2,9 @@
+@@ -2,7 +2,10 @@
  #define LINUX_B43_PHY_COMMON_H_
  
  #include <linux/types.h>
+ #include <linux/nl80211.h>
 +#if (LINUX_VERSION_CODE == KERNEL_VERSION(2,6,28))
 +#include <asm/atomic.h>
 +#endif
  
  struct b43_wldev;
  
---- a/drivers/net/wireless/wl12xx/wl1251_boot.c
-+++ b/drivers/net/wireless/wl12xx/wl1251_boot.c
+--- a/drivers/net/wireless/wl1251/boot.c
++++ b/drivers/net/wireless/wl1251/boot.c
 @@ -19,7 +19,6 @@
   *
   */
@@ -26,8 +27,8 @@ cases.
  #include <linux/slab.h>
  
  #include "wl1251_reg.h"
---- a/drivers/net/wireless/wl12xx/wl1251_main.c
-+++ b/drivers/net/wireless/wl12xx/wl1251_main.c
+--- a/drivers/net/wireless/wl1251/main.c
++++ b/drivers/net/wireless/wl1251/main.c
 @@ -24,6 +24,9 @@
  #include <linux/firmware.h>
  #include <linux/delay.h>
@@ -38,8 +39,8 @@ cases.
  #include <linux/crc32.h>
  #include <linux/etherdevice.h>
  #include <linux/vmalloc.h>
---- a/drivers/net/wireless/wl12xx/wl1251_spi.c
-+++ b/drivers/net/wireless/wl12xx/wl1251_spi.c
+--- a/drivers/net/wireless/wl1251/spi.c
++++ b/drivers/net/wireless/wl1251/spi.c
 @@ -23,6 +23,9 @@
  #include <linux/module.h>
  #include <linux/slab.h>
