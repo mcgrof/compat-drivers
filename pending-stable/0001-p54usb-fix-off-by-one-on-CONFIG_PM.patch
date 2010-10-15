@@ -18,11 +18,9 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  drivers/net/wireless/p54/p54usb.c |    2 +-
  1 files changed, 1 insertions(+), 1 deletions(-)
 
-diff --git a/drivers/net/wireless/p54/p54usb.c b/drivers/net/wireless/p54/p54usb.c
-index ad59595..063248b 100644
 --- a/drivers/net/wireless/p54/p54usb.c
 +++ b/drivers/net/wireless/p54/p54usb.c
-@@ -930,8 +930,8 @@ static int __devinit p54u_probe(struct usb_interface *intf,
+@@ -930,8 +930,8 @@ static int __devinit p54u_probe(struct u
  #ifdef CONFIG_PM
  		/* ISL3887 needs a full reset on resume */
  		udev->reset_resume = 1;
@@ -32,6 +30,3 @@ index ad59595..063248b 100644
  
  		priv->hw_type = P54U_3887;
  		dev->extra_tx_headroom += sizeof(struct lm87_tx_hdr);
--- 
-1.7.0.4
-

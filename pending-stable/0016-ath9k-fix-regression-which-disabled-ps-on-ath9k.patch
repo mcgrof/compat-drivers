@@ -23,11 +23,9 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  drivers/net/wireless/ath/ath9k/init.c |    3 ++-
  1 files changed, 2 insertions(+), 1 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/init.c b/drivers/net/wireless/ath/ath9k/init.c
-index 224df6d..0364167 100644
 --- a/drivers/net/wireless/ath/ath9k/init.c
 +++ b/drivers/net/wireless/ath/ath9k/init.c
-@@ -643,7 +643,8 @@ void ath9k_set_hw_capab(struct ath_softc *sc, struct ieee80211_hw *hw)
+@@ -641,7 +641,8 @@ void ath9k_set_hw_capab(struct ath_softc
  		BIT(NL80211_IFTYPE_ADHOC) |
  		BIT(NL80211_IFTYPE_MESH_POINT);
  
@@ -37,6 +35,3 @@ index 224df6d..0364167 100644
  
  	hw->queues = 4;
  	hw->max_rates = 4;
--- 
-1.7.0.4
-

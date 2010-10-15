@@ -17,11 +17,9 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  net/mac80211/mlme.c        |   15 ++++++++++-----
  2 files changed, 11 insertions(+), 5 deletions(-)
 
-diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index 4e635e2..737fd0f 100644
 --- a/net/mac80211/ieee80211_i.h
 +++ b/net/mac80211/ieee80211_i.h
-@@ -1041,6 +1041,7 @@ void ieee80211_sta_restart(struct ieee80211_sub_if_data *sdata);
+@@ -1008,6 +1008,7 @@ void ieee80211_sta_restart(struct ieee80
  void ieee80211_sta_work(struct ieee80211_sub_if_data *sdata);
  void ieee80211_sta_rx_queued_mgmt(struct ieee80211_sub_if_data *sdata,
  				  struct sk_buff *skb);
@@ -29,11 +27,9 @@ index 4e635e2..737fd0f 100644
  
  /* IBSS code */
  void ieee80211_ibss_notify_scan_completed(struct ieee80211_local *local);
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index bfb0eab..2d86a4d 100644
 --- a/net/mac80211/mlme.c
 +++ b/net/mac80211/mlme.c
-@@ -124,6 +124,15 @@ static void mod_beacon_timer(struct ieee80211_sub_if_data *sdata)
+@@ -118,6 +118,15 @@ static void mod_beacon_timer(struct ieee
  		  round_jiffies_up(jiffies + IEEE80211_BEACON_LOSS_TIME));
  }
  
@@ -49,7 +45,7 @@ index bfb0eab..2d86a4d 100644
  static int ecw2cw(int ecw)
  {
  	return (1 << ecw) - 1;
-@@ -1018,11 +1027,7 @@ void ieee80211_sta_rx_notify(struct ieee80211_sub_if_data *sdata,
+@@ -1010,11 +1019,7 @@ void ieee80211_sta_rx_notify(struct ieee
  	if (is_multicast_ether_addr(hdr->addr1))
  		return;
  
@@ -62,6 +58,3 @@ index bfb0eab..2d86a4d 100644
  }
  
  static void ieee80211_mgd_probe_ap_send(struct ieee80211_sub_if_data *sdata)
--- 
-1.7.0.4
-
