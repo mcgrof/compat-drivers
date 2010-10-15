@@ -1,7 +1,7 @@
 From be099e82e9cf6d5d65d044e9ef6fc8bee3c7a113 Mon Sep 17 00:00:00 2001
 From: Luis R. Rodriguez <lrodriguez@atheros.com>
 Date: Thu, 16 Sep 2010 15:12:29 -0400
-Subject: [PATCH 09/23] mac80211: add helper for reseting the connection monitor
+Subject: [PATCH 09/30] mac80211: add helper for reseting the connection monitor
 
 This will be used in another place later. The connection
 monitor was added as of 2.6.35 so these fixes will be
@@ -17,9 +17,11 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  net/mac80211/mlme.c        |   15 ++++++++++-----
  2 files changed, 11 insertions(+), 5 deletions(-)
 
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index 4e635e2..737fd0f 100644
 --- a/net/mac80211/ieee80211_i.h
 +++ b/net/mac80211/ieee80211_i.h
-@@ -1008,6 +1008,7 @@ void ieee80211_sta_restart(struct ieee80
+@@ -1041,6 +1041,7 @@ void ieee80211_sta_restart(struct ieee80211_sub_if_data *sdata);
  void ieee80211_sta_work(struct ieee80211_sub_if_data *sdata);
  void ieee80211_sta_rx_queued_mgmt(struct ieee80211_sub_if_data *sdata,
  				  struct sk_buff *skb);
@@ -27,9 +29,11 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  
  /* IBSS code */
  void ieee80211_ibss_notify_scan_completed(struct ieee80211_local *local);
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index bfb0eab..2d86a4d 100644
 --- a/net/mac80211/mlme.c
 +++ b/net/mac80211/mlme.c
-@@ -118,6 +118,15 @@ static void mod_beacon_timer(struct ieee
+@@ -124,6 +124,15 @@ static void mod_beacon_timer(struct ieee80211_sub_if_data *sdata)
  		  round_jiffies_up(jiffies + IEEE80211_BEACON_LOSS_TIME));
  }
  
@@ -45,7 +49,7 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  static int ecw2cw(int ecw)
  {
  	return (1 << ecw) - 1;
-@@ -1010,11 +1019,7 @@ void ieee80211_sta_rx_notify(struct ieee
+@@ -1018,11 +1027,7 @@ void ieee80211_sta_rx_notify(struct ieee80211_sub_if_data *sdata,
  	if (is_multicast_ether_addr(hdr->addr1))
  		return;
  
@@ -58,3 +62,6 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  }
  
  static void ieee80211_mgd_probe_ap_send(struct ieee80211_sub_if_data *sdata)
+-- 
+1.7.0.4
+
