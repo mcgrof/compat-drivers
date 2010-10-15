@@ -434,7 +434,7 @@ here still, but for now we keep this here.
  module_init(hidp_init);
 --- a/net/bluetooth/rfcomm/sock.c
 +++ b/net/bluetooth/rfcomm/sock.c
-@@ -325,8 +325,13 @@ static struct sock *rfcomm_sock_alloc(st
+@@ -329,8 +329,13 @@ static struct sock *rfcomm_sock_alloc(st
  	return sk;
  }
  
@@ -448,7 +448,7 @@ here still, but for now we keep this here.
  {
  	struct sock *sk;
  
-@@ -707,7 +712,11 @@ static int rfcomm_sock_recvmsg(struct ki
+@@ -711,7 +716,11 @@ static int rfcomm_sock_recvmsg(struct ki
  		copied += chunk;
  		size   -= chunk;
  
@@ -460,7 +460,7 @@ here still, but for now we keep this here.
  
  		if (!(flags & MSG_PEEK)) {
  			atomic_sub(chunk, &sk->sk_rmem_alloc);
-@@ -770,7 +779,11 @@ static int rfcomm_sock_setsockopt_old(st
+@@ -774,7 +783,11 @@ static int rfcomm_sock_setsockopt_old(st
  	return err;
  }
  
@@ -598,7 +598,7 @@ here still, but for now we keep this here.
  		return -EPERM;
  
  	sock->ops = &l2cap_sock_ops;
-@@ -2027,7 +2035,11 @@ static int l2cap_sock_setsockopt_old(str
+@@ -2022,7 +2030,11 @@ static int l2cap_sock_setsockopt_old(str
  	return err;
  }
  
