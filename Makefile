@@ -194,10 +194,14 @@ install-scripts:
 	@$(MODPROBE) -l at76c50x-usb
 	@$(MODPROBE) -l ath
 	@$(MODPROBE) -l ath5k
+	@$(MODPROBE) -l ath6kl
 	@$(MODPROBE) -l ath9k
+	@$(MODPROBE) -l ath9k_htc
 	@$(MODPROBE) -l b43
 	@$(MODPROBE) -l b43legacy
 	@$(MODPROBE) -l b44
+	@$(MODPROBE) -l carl9170
+	@$(MODPROBE) -l brcm80211
 	@$(MODPROBE) -l cdc_ether
 	@$(MODPROBE) -l eeprom_93cx6
 	@$(MODPROBE) -l ipw2100
@@ -205,6 +209,7 @@ install-scripts:
 	@$(MODPROBE) -l iwl3945
 	@$(MODPROBE) -l iwlagn
 	@$(MODPROBE) -l iwlcore
+	@$(MODPROBE) -l iwmc3200wifi
 	@$(MODPROBE) -l lib80211_crypt_ccmp
 	@$(MODPROBE) -l lib80211_crypt_tkip
 	@$(MODPROBE) -l lib80211_crypt_wep
@@ -217,6 +222,13 @@ install-scripts:
 	@$(MODPROBE) -l libipw
 	@$(MODPROBE) -l mac80211_hwsim
 	@$(MODPROBE) -l mwl8k
+	@$(MODPROBE) -l orinoco_cs
+	@$(MODPROBE) -l orinoco_nortel
+	@$(MODPROBE) -l orinoco_pci
+	@$(MODPROBE) -l orinoco_plx
+	@$(MODPROBE) -l orinoco_tld
+	@$(MODPROBE) -l orinoco_usb
+	@$(MODPROBE) -l orinoco
 	@$(MODPROBE) -l p54common
 	@$(MODPROBE) -l p54pci
 	@$(MODPROBE) -l p54spi
@@ -226,6 +238,8 @@ install-scripts:
 	@$(MODPROBE) -l rt2400pci
 	@$(MODPROBE) -l rt2500pci
 	@$(MODPROBE) -l rt2500usb
+	@$(MODPROBE) -l rt2800pci
+	@$(MODPROBE) -l rt2800usb
 	@$(MODPROBE) -l rt2x00lib
 	@$(MODPROBE) -l rt2x00pci
 	@$(MODPROBE) -l rt2x00usb
@@ -233,9 +247,12 @@ install-scripts:
 	@$(MODPROBE) -l rt73usb
 	@$(MODPROBE) -l rtl8180
 	@$(MODPROBE) -l rtl8187
+	@$(MODPROBE) -l spectrum_cs
 	@$(MODPROBE) -l ssb
 	@$(MODPROBE) -l usb8xxx
 	@$(MODPROBE) -l usbnet
+	@$(MODPROBE) -l wl1251
+	@$(MODPROBE) -l wl1271
 	@$(MODPROBE) -l zd1211rw
 	@echo
 	@echo "Currently detected bluetooth subsystem modules:"
@@ -284,10 +301,14 @@ uninstall:
 	@$(MODPROBE) -l at76c50x-usb
 	@$(MODPROBE) -l ath
 	@$(MODPROBE) -l ath5k
+	@$(MODPROBE) -l ath6kl
 	@$(MODPROBE) -l ath9k
+	@$(MODPROBE) -l ath9k_htc
 	@$(MODPROBE) -l b43
 	@$(MODPROBE) -l b43legacy
 	@$(MODPROBE) -l b44
+	@$(MODPROBE) -l carl9170
+	@$(MODPROBE) -l brcm80211
 	@$(MODPROBE) -l cdc_ether
 	@$(MODPROBE) -l eeprom_93cx6
 	@$(MODPROBE) -l ipw2100
@@ -295,6 +316,7 @@ uninstall:
 	@$(MODPROBE) -l iwl3945
 	@$(MODPROBE) -l iwlagn
 	@$(MODPROBE) -l iwlcore
+	@$(MODPROBE) -l iwmc3200wifi
 	@$(MODPROBE) -l lib80211_crypt_ccmp
 	@$(MODPROBE) -l lib80211_crypt_tkip
 	@$(MODPROBE) -l lib80211_crypt_wep
@@ -307,6 +329,13 @@ uninstall:
 	@$(MODPROBE) -l libipw
 	@$(MODPROBE) -l mac80211_hwsim
 	@$(MODPROBE) -l mwl8k
+	@$(MODPROBE) -l orinoco_cs
+	@$(MODPROBE) -l orinoco_nortel
+	@$(MODPROBE) -l orinoco_pci
+	@$(MODPROBE) -l orinoco_plx
+	@$(MODPROBE) -l orinoco_tld
+	@$(MODPROBE) -l orinoco_usb
+	@$(MODPROBE) -l orinoco
 	@$(MODPROBE) -l p54common
 	@$(MODPROBE) -l p54pci
 	@$(MODPROBE) -l p54spi
@@ -316,6 +345,8 @@ uninstall:
 	@$(MODPROBE) -l rt2400pci
 	@$(MODPROBE) -l rt2500pci
 	@$(MODPROBE) -l rt2500usb
+	@$(MODPROBE) -l rt2800pci
+	@$(MODPROBE) -l rt2800usb
 	@$(MODPROBE) -l rt2x00lib
 	@$(MODPROBE) -l rt2x00pci
 	@$(MODPROBE) -l rt2x00usb
@@ -323,9 +354,12 @@ uninstall:
 	@$(MODPROBE) -l rt73usb
 	@$(MODPROBE) -l rtl8180
 	@$(MODPROBE) -l rtl8187
+	@$(MODPROBE) -l spectrum_cs
 	@$(MODPROBE) -l ssb
 	@$(MODPROBE) -l usb8xxx
 	@$(MODPROBE) -l usbnet
+	@$(MODPROBE) -l wl1251
+	@$(MODPROBE) -l wl1271
 	@$(MODPROBE) -l zd1211rw
 	@echo
 	@echo "Your old bluetooth subsystem modules were left intact:"
