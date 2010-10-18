@@ -255,6 +255,13 @@ install-scripts:
 	@$(MODPROBE) -l wl1271
 	@$(MODPROBE) -l zd1211rw
 	@echo
+	@echo "Currently detected ethernet subsystem modules:"
+	@echo
+	@$(MODPROBE) -l atl1
+	@$(MODPROBE) -l atl2
+	@$(MODPROBE) -l atl1e
+	@$(MODPROBE) -l atl1c
+	@echo
 	@echo "Currently detected bluetooth subsystem modules:"
 	@echo
 	@$(MODPROBE) -l sco
@@ -284,6 +291,8 @@ uninstall:
 	@rm -rf $(KLIB)/$(KMODDIR)/drivers/ssb/
 	@rm -rf $(KLIB)/$(KMODDIR)/drivers/net/usb/
 	@rm -rf $(KLIB)/$(KMODDIR)/drivers/net/wireless/
+	@rm -rf $(KLIB)/$(KMODDIR)/drivers/staging/
+	@rm -rf $(KLIB)/$(KMODDIR)/drivers/net/atl*
 	@# Lets only remove the stuff we are sure we are providing
 	@# on the misc directory.
 	@rm -f $(KLIB)/$(KMODDIR)/drivers/misc/eeprom/eeprom_93cx6.ko*
@@ -361,6 +370,13 @@ uninstall:
 	@$(MODPROBE) -l wl1251
 	@$(MODPROBE) -l wl1271
 	@$(MODPROBE) -l zd1211rw
+	@echo
+	@echo "Your old ethernet subsystem modules are left intact:"
+	@echo
+	@$(MODPROBE) -l atl1
+	@$(MODPROBE) -l atl2
+	@$(MODPROBE) -l atl1e
+	@$(MODPROBE) -l atl1c
 	@echo
 	@echo "Your old bluetooth subsystem modules were left intact:"
 	@echo
