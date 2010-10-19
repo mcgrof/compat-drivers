@@ -31,17 +31,16 @@ obj-$(CONFIG_COMPAT_NET_USB_MODULES) += drivers/net/usb/
 
 obj-$(CONFIG_COMPAT_NETWORK_MODULES) += drivers/net/
 obj-$(CONFIG_COMPAT_VAR_MODULES) +=  drivers/ssb/ drivers/misc/eeprom/
-endif
-
-obj-$(CONFIG_COMPAT_BLUETOOTH) += net/bluetooth/
-obj-$(CONFIG_COMPAT_BLUETOOTH_MODULES) += drivers/bluetooth/
-
 
 ifeq ($(CONFIG_STAGING_EXCLUDE_BUILD),)
 obj-$(CONFIG_COMPAT_STAGING) += drivers/staging/ath6kl/
 obj-$(CONFIG_COMPAT_STAGING) += drivers/staging/brcm80211/
 endif
 
+endif
+
+obj-$(CONFIG_COMPAT_BLUETOOTH) += net/bluetooth/
+obj-$(CONFIG_COMPAT_BLUETOOTH_MODULES) += drivers/bluetooth/
 
 else
 
