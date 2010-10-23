@@ -1,5 +1,6 @@
 #!/bin/bash
-MODULES="hidp rfcomm bnep l2cap sco btusb bluetooth"
+MODULES="$MODULES ath3k bcm203x bluecard_cs bnep bpa10x bt3c_cs btmrvl btmrvl_sdio btsdio"
+MODULES="$MODULES btusb btuart_cs cmtp dtl1_cs hidp hci_vhci hci_uart rfcomm sco bluetooth l2cap"
 echo Stoping bluetooth service..
 /etc/init.d/bluetooth stop
 /etc/init.d/bluetooth status

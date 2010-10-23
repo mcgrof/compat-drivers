@@ -27,14 +27,16 @@ MODULES="$MODULES rtl8180 rtl8187"
 MODULES="$MODULES mwl8k mac80211_hwsim"
 MODULES="$MODULES at76c50x_usb at76_usb"
 MODULES="$MODULES rndis_wlan rndis_host cdc_ether usbnet"
-MODULES="$MODULES atl1 atl2 atl1e atl1c"
 # eeprom_93cx6 is used by rt2x00 (rt61pci, rt2500pci, rt2400pci) 
 # and Realtek drivers ( rtl8187, rtl8180)
 MODULES="$MODULES eeprom_93cx6"
 MODULES="$MODULES lib80211_crypt_ccmp lib80211_crypt_tkip lib80211_crypt_wep"
 MODULES="$MODULES mac80211 cfg80211 lib80211"
-MODULES="$MODULES hidp rfcomm bnep l2cap sco btusb bluetooth"
 MODULES="$MODULES compat"
+# Bluetooth modules
+MODULES="$MODULES ath3k bcm203x bluecard_cs bnep bpa10x bt3c_cs btmrvl btmrvl_sdio btsdio"
+MODULES="$MODULES btusb btuart_cs cmtp dtl1_cs hidp hci_vhci hci_uart rfcomm sco bluetooth l2cap"
+MODULES="$MODULES atl1 atl2 atl1e atl1c"
 echo Stoping bluetooth service..
 /etc/init.d/bluetooth stop
 /etc/init.d/bluetooth status
