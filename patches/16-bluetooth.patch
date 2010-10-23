@@ -56,7 +56,7 @@ here still, but for now we keep this here.
  		bt_sock_reclassify_lock(sock, proto);
  		module_put(bt_proto[proto]->owner);
  	}
-@@ -445,7 +457,11 @@ int bt_sock_ioctl(struct socket *sock, u
+@@ -445,7 +453,11 @@ int bt_sock_ioctl(struct socket *sock, u
  		if (sk->sk_state == BT_LISTEN)
  			return -EINVAL;
  
@@ -138,7 +138,7 @@ here still, but for now we keep this here.
  	&bt_link_group,
  	NULL
  };
-@@ -127,7 +131,11 @@ static void del_conn(struct work_struct 
+@@ -127,7 +131,11 @@ static void del_conn(struct work_struct
  		dev = device_find_child(&conn->dev, NULL, __match_tty);
  		if (!dev)
  			break;
@@ -562,7 +562,7 @@ here still, but for now we keep this here.
  {
  	struct sock *sk;
  
-@@ -970,7 +974,11 @@ static int l2cap_sock_create(struct net 
+@@ -970,7 +974,11 @@ static int l2cap_sock_create(struct net
  			sock->type != SOCK_DGRAM && sock->type != SOCK_RAW)
  		return -ESOCKTNOSUPPORT;
  

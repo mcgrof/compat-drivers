@@ -395,7 +395,7 @@
  
  	do {
  		info->hdev->stat.byte_rx++;
-@@ -296,7 +304,11 @@ static irqreturn_t btuart_interrupt(int 
+@@ -296,7 +304,11 @@ static irqreturn_t btuart_interrupt(int
  		/* our irq handler is shared */
  		return IRQ_NONE;
  
@@ -1315,7 +1315,7 @@
  
  static int
  spectrum_cs_config(struct pcmcia_device *link)
-@@ -201,10 +304,12 @@ spectrum_cs_config(struct pcmcia_device 
+@@ -201,10 +304,12 @@ spectrum_cs_config(struct pcmcia_device
  	int ret;
  	void __iomem *mem;
  
@@ -1328,7 +1328,7 @@
  	ret = pcmcia_loop_config(link, spectrum_cs_config_check, NULL);
  	if (ret) {
  		if (!ignore_cis_vcc)
-@@ -214,15 +319,23 @@ spectrum_cs_config(struct pcmcia_device 
+@@ -214,15 +319,23 @@ spectrum_cs_config(struct pcmcia_device
  		goto failed;
  	}
  
@@ -1352,7 +1352,7 @@
  	if (!mem)
  		goto failed;
  
-@@ -244,8 +357,16 @@ spectrum_cs_config(struct pcmcia_device 
+@@ -244,8 +357,16 @@ spectrum_cs_config(struct pcmcia_device
  	}
  
  	/* Register an interface with the stack */
