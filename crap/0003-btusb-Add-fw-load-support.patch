@@ -30,34 +30,30 @@ Subject: [PATCH] Added support to load firmware to target RAM from btusb transpo
  create mode 100644 drivers/bluetooth/fwload.c
  create mode 100644 drivers/bluetooth/fwload.h
 
-diff --git a/drivers/bluetooth/Makefile b/drivers/bluetooth/Makefile
-index 71bdf13..5a55cbb 100644
 --- a/drivers/bluetooth/Makefile
 +++ b/drivers/bluetooth/Makefile
-@@ -13,6 +13,7 @@ obj-$(CONFIG_BT_HCIBLUECARD)	+= bluecard_cs.o
+@@ -13,6 +13,7 @@ obj-$(CONFIG_BT_HCIBLUECARD)	+= bluecard
  obj-$(CONFIG_BT_HCIBTUART)	+= btuart_cs.o
-
+ 
  obj-$(CONFIG_BT_HCIBTUSB)	+= btusb.o
 +obj-$(CONFIG_BT_HCIBTUSB)	+= fwload.o
  obj-$(CONFIG_BT_HCIBTSDIO)	+= btsdio.o
-
+ 
  obj-$(CONFIG_BT_ATH3K)		+= ath3k.o
-diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index d22ce3c..13e0fb8 100644
 --- a/drivers/bluetooth/btusb.c
 +++ b/drivers/bluetooth/btusb.c
 @@ -34,6 +34,7 @@
-
+ 
  #include <net/bluetooth/bluetooth.h>
  #include <net/bluetooth/hci_core.h>
 +#include "fwload.h"
-
+ 
  #define VERSION "0.6"
-
+ 
 @@ -55,6 +56,26 @@ static struct usb_driver btusb_driver;
  #define BTUSB_BROKEN_ISOC	0x20
  #define BTUSB_WRONG_SCO_MTU	0x40
-
+ 
 +static struct usb_device_id ath_table[] = {
 +	/* Atheros AR3011 */
 +	{ USB_DEVICE(0x0CF3, 0x3002) },
@@ -81,18 +77,18 @@ index d22ce3c..13e0fb8 100644
  static struct usb_device_id btusb_table[] = {
  	/* Generic Bluetooth USB device */
  	{ USB_DEVICE_INFO(0xe0, 0x01, 0x01) },
-@@ -863,6 +884,7 @@ static int btusb_probe(struct usb_interface *intf,
+@@ -869,6 +890,7 @@ static int btusb_probe(struct usb_interf
  	struct btusb_data *data;
  	struct hci_dev *hdev;
  	int i, err;
 +	const struct usb_device_id *match;
-
+ 
  	BT_DBG("intf %p id %p", intf, id);
-
-@@ -922,6 +944,19 @@ static int btusb_probe(struct usb_interface *intf,
+ 
+@@ -928,6 +950,19 @@ static int btusb_probe(struct usb_interf
  	data->udev = interface_to_usbdev(intf);
  	data->intf = intf;
-
+ 
 +	for (i = 0; btusb_fwcbs[i].fwfile; i++) {
 +		match = usb_match_id(intf, btusb_fwcbs[i].usb_id_table);
 +		if (match) {
@@ -107,20 +103,20 @@ index d22ce3c..13e0fb8 100644
 +	}
 +
  	spin_lock_init(&data->lock);
-
+ 
  	INIT_WORK(&data->work, btusb_work);
-@@ -1030,12 +1065,26 @@ static void btusb_disconnect(struct usb_interface *intf)
+@@ -1038,12 +1073,26 @@ static void btusb_disconnect(struct usb_
  {
  	struct btusb_data *data = usb_get_intfdata(intf);
  	struct hci_dev *hdev;
 +	const struct usb_device_id *match;
 +	int i;
-
+ 
  	BT_DBG("intf %p", intf);
-
+ 
  	if (!data)
  		return;
-
+ 
 +	for (i = 0; btusb_fwcbs[i].fwfile; i++) {
 +		match = usb_match_id(intf, btusb_fwcbs[i].usb_id_table);
 +		if (match) {
@@ -134,20 +130,20 @@ index d22ce3c..13e0fb8 100644
 +	}
 +
  	hdev = data->hdev;
-
+ 
  	__hci_dev_hold(hdev);
-@@ -1061,12 +1110,22 @@ static void btusb_disconnect(struct usb_interface *intf)
+@@ -1069,12 +1118,22 @@ static void btusb_disconnect(struct usb_
  static int btusb_suspend(struct usb_interface *intf, pm_message_t message)
  {
  	struct btusb_data *data = usb_get_intfdata(intf);
 +	const struct usb_device_id *match;
 +	int i;
-
+ 
  	BT_DBG("intf %p", intf);
-
+ 
  	if (data->suspend_count++)
  		return 0;
-
+ 
 +	for (i = 0; btusb_fwcbs[i].fwfile; i++) {
 +		match = usb_match_id(intf, btusb_fwcbs[i].usb_id_table);
 +		if (match) {
@@ -159,8 +155,8 @@ index d22ce3c..13e0fb8 100644
  	spin_lock_irq(&data->txlock);
  	if (!((message.event & PM_EVENT_AUTO) && data->tx_in_flight)) {
  		set_bit(BTUSB_SUSPENDING, &data->flags);
-@@ -1179,6 +1238,14 @@ static int __init btusb_init(void)
-
+@@ -1187,6 +1246,14 @@ static int __init btusb_init(void)
+ 
  static void __exit btusb_exit(void)
  {
 +	int i;
@@ -173,10 +169,7 @@ index d22ce3c..13e0fb8 100644
 +	}
  	usb_deregister(&btusb_driver);
  }
-
-diff --git a/drivers/bluetooth/fwload.c b/drivers/bluetooth/fwload.c
-new file mode 100644
-index 0000000..a9a586a
+ 
 --- /dev/null
 +++ b/drivers/bluetooth/fwload.c
 @@ -0,0 +1,199 @@
@@ -379,9 +372,6 @@ index 0000000..a9a586a
 +MODULE_DESCRIPTION("Firmware load driver");
 +MODULE_VERSION(VERSION);
 +MODULE_LICENSE("GPL");
-diff --git a/drivers/bluetooth/fwload.h b/drivers/bluetooth/fwload.h
-new file mode 100644
-index 0000000..5c1136a
 --- /dev/null
 +++ b/drivers/bluetooth/fwload.h
 @@ -0,0 +1,39 @@
@@ -424,6 +414,3 @@ index 0000000..5c1136a
 +void ath_fw_unload(void *pdata, bool bsuspend);
 +
 +#endif /* _FWLOAD_H_ */
---
-1.6.3.3
-

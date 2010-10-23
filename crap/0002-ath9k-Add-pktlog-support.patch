@@ -87,7 +87,7 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  {
  	struct ar9003_txs *ads;
  
-@@ -305,6 +306,7 @@ static int ar9003_hw_proc_txdesc(struct 
+@@ -305,6 +306,7 @@ static int ar9003_hw_proc_txdesc(struct
  
  	ts->tid = MS(ads->status8, AR_TxTid);
  
@@ -161,7 +161,7 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  static inline void ath9k_hw_set11n_txdesc(struct ath_hw *ah, void *ds,
 --- a/drivers/net/wireless/ath/ath9k/hw.c
 +++ b/drivers/net/wireless/ath/ath9k/hw.c
-@@ -2129,7 +2129,7 @@ void ath9k_hw_setrxfilter(struct ath_hw 
+@@ -2129,7 +2129,7 @@ void ath9k_hw_setrxfilter(struct ath_hw
  		phybits |= AR_PHY_ERR_RADAR;
  	if (bits & ATH9K_RX_FILTER_PHYERR)
  		phybits |= AR_PHY_ERR_OFDM_TIMING | AR_PHY_ERR_CCK_TIMING;
@@ -1232,7 +1232,7 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  {
  	u32 best_thruput, this_thruput, now_msec;
  	u8 rate, next_rate, best_rate, maxindex, minindex;
-@@ -690,6 +690,8 @@ static u8 ath_rc_get_highest_rix(struct 
+@@ -690,6 +690,8 @@ static u8 ath_rc_get_highest_rix(struct
  
  	rate = ath_rc_priv->valid_rate_index[0];
  
@@ -1346,7 +1346,7 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  		bf->bf_buf_addr = dma_map_single(sc->dev, requeue_skb->data,
 --- a/drivers/net/wireless/ath/ath9k/xmit.c
 +++ b/drivers/net/wireless/ath/ath9k/xmit.c
-@@ -436,6 +436,8 @@ static void ath_tx_complete_aggr(struct 
+@@ -436,6 +436,8 @@ static void ath_tx_complete_aggr(struct
  			list_move_tail(&bf->list, &bf_head);
  		}
  
