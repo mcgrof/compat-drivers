@@ -24,11 +24,12 @@ NET_BT_DIRS="bluetooth bluetooth/bnep bluetooth/cmtp bluetooth/rfcomm bluetooth/
 INCLUDE_LINUX="ieee80211.h nl80211.h"
 INCLUDE_LINUX="$INCLUDE_LINUX pci_ids.h eeprom_93cx6.h"
 INCLUDE_LINUX="$INCLUDE_LINUX ath9k_platform.h"
+INCLUDE_LINUX="$INCLUDE_LINUX wl12xx.h"
 
 # For rndis_wext
 INCLUDE_LINUX_USB="usbnet.h rndis_host.h"
 
-INCLUDE_LINUX_SPI="wl12xx.h libertas_spi.h"
+INCLUDE_LINUX_SPI="libertas_spi.h"
 
 # The good new yummy stuff
 INCLUDE_NET="cfg80211.h ieee80211_radiotap.h"
