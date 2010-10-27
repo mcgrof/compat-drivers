@@ -1,0 +1,27 @@
+Backport commit 99b88a0ecbdbc6df03527292571b2b442965814a
+
+--- a/net/mac80211/main.c
++++ b/net/mac80211/main.c
+@@ -754,7 +754,11 @@ int ieee80211_register_hw(struct ieee802
+ 		hw->queues = IEEE80211_MAX_QUEUES;
+ 
+ 	local->workqueue =
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,37))
+ 		alloc_ordered_workqueue(wiphy_name(local->hw.wiphy), 0);
++#else
++		create_singlethread_workqueue(wiphy_name(local->hw.wiphy));
++#endif
+ 	if (!local->workqueue) {
+ 		result = -ENOMEM;
+ 		goto fail_workqueue;
+@@ -968,6 +972,10 @@ static void __exit ieee80211_exit(void)
+ 	rc80211_minstrel_ht_exit();
+ 	rc80211_minstrel_exit();
+ 
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,37))
++	flush_scheduled_work();
++#endif
++
+ 	if (mesh_allocated)
+ 		ieee80211s_stop();
+ 
