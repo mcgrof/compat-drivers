@@ -4,6 +4,18 @@ for the other changes. It'd be nice to figure out a way to
 bring thise here cleanly and seprately but they touch the same
 files...
 
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -3904,7 +3904,9 @@ static int nl80211_wiphy_netns(struct sk
+ 	if (!net_eq(wiphy_net(&rdev->wiphy), net))
+ 		err = cfg80211_switch_netns(rdev, net);
+ 
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,24))
+ 	put_net(net);
++#endif
+ 	return err;
+ }
+ 
 --- a/net/wireless/core.c
 +++ b/net/wireless/core.c
 @@ -224,6 +224,7 @@ int cfg80211_dev_rename(struct cfg80211_
