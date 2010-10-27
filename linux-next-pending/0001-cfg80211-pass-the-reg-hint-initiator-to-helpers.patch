@@ -1,0 +1,61 @@
+From 907f7c1287bba78364f425c4e9090457945f52de Mon Sep 17 00:00:00 2001
+From: Luis R. Rodriguez <lrodriguez@atheros.com>
+Date: Tue, 19 Oct 2010 12:50:53 -0700
+Subject: [PATCH 01/10] cfg80211: pass the reg hint initiator to helpers
+
+This is required later.
+
+Cc: Easwar Krishnan <easwar.krishnan@atheros.com>
+Cc: stable@kernel.org
+Signed-off-by: Luis R. Rodriguez <lrodriguez@atheros.com>
+---
+ net/wireless/reg.c |   12 ++++++++----
+ 1 files changed, 8 insertions(+), 4 deletions(-)
+
+diff --git a/net/wireless/reg.c b/net/wireless/reg.c
+index f180db0..d783c62 100644
+--- a/net/wireless/reg.c
++++ b/net/wireless/reg.c
+@@ -723,7 +723,9 @@ EXPORT_SYMBOL(freq_reg_info);
+  * on the wiphy with the target_bw specified. Then we can simply use
+  * that below for the desired_bw_khz below.
+  */
+-static void handle_channel(struct wiphy *wiphy, enum ieee80211_band band,
++static void handle_channel(struct wiphy *wiphy,
++			   enum nl80211_reg_initiator initiator,
++			   enum ieee80211_band band,
+ 			   unsigned int chan_idx)
+ {
+ 	int r;
+@@ -787,7 +789,9 @@ static void handle_channel(struct wiphy *wiphy, enum ieee80211_band band,
+ 		chan->max_power = (int) MBM_TO_DBM(power_rule->max_eirp);
+ }
+ 
+-static void handle_band(struct wiphy *wiphy, enum ieee80211_band band)
++static void handle_band(struct wiphy *wiphy,
++			enum ieee80211_band band,
++			enum nl80211_reg_initiator initiator)
+ {
+ 	unsigned int i;
+ 	struct ieee80211_supported_band *sband;
+@@ -796,7 +800,7 @@ static void handle_band(struct wiphy *wiphy, enum ieee80211_band band)
+ 	sband = wiphy->bands[band];
+ 
+ 	for (i = 0; i < sband->n_channels; i++)
+-		handle_channel(wiphy, band, i);
++		handle_channel(wiphy, initiator, band, i);
+ }
+ 
+ static bool ignore_reg_update(struct wiphy *wiphy,
+@@ -1033,7 +1037,7 @@ void wiphy_update_regulatory(struct wiphy *wiphy,
+ 		goto out;
+ 	for (band = 0; band < IEEE80211_NUM_BANDS; band++) {
+ 		if (wiphy->bands[band])
+-			handle_band(wiphy, band);
++			handle_band(wiphy, band, initiator);
+ 	}
+ out:
+ 	reg_process_beacons(wiphy);
+-- 
+1.7.3.2.90.gd4c43
+

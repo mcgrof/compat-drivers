@@ -1,0 +1,63 @@
+From 9d886acf6f0f2d100a3afc7cc6ef74e3a8b07b41 Mon Sep 17 00:00:00 2001
+From: Luis R. Rodriguez <lrodriguez@atheros.com>
+Date: Tue, 19 Oct 2010 12:53:42 -0700
+Subject: [PATCH 02/10] cfg80211: fix allowing country IEs for WIPHY_FLAG_STRICT_REGULATORY
+
+We should be enabling country IE hints for WIPHY_FLAG_STRICT_REGULATORY
+even if we haven't yet recieved regulatory domain hint for the driver
+if it needed one. Without this Country IEs are not passed on to drivers
+that have set WIPHY_FLAG_STRICT_REGULATORY, today this is just all
+Atheros chipset drivers: ath5k, ath9k, ar9170, carl9170.
+
+This was part of the original design, however it was completely
+overlooked...
+
+Cc: Easwar Krishnan <easwar.krishnan@atheros.com>
+Cc: stable@kernel.org
+Signed-off-by: Luis R. Rodriguez <lrodriguez@atheros.com>
+---
+ include/net/cfg80211.h |   15 ++++++++-------
+ net/wireless/reg.c     |    1 +
+ 2 files changed, 9 insertions(+), 7 deletions(-)
+
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index 2fd06c6..45b1826 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -1201,13 +1201,14 @@ struct cfg80211_ops {
+  * 	initiator is %REGDOM_SET_BY_CORE).
+  * @WIPHY_FLAG_STRICT_REGULATORY: tells us the driver for this device will
+  *	ignore regulatory domain settings until it gets its own regulatory
+- *	domain via its regulatory_hint(). After its gets its own regulatory
+- *	domain it will only allow further regulatory domain settings to
+- *	further enhance compliance. For example if channel 13 and 14 are
+- *	disabled by this regulatory domain no user regulatory domain can
+- *	enable these channels at a later time. This can be used for devices
+- *	which do not have calibration information gauranteed for frequencies
+- *	or settings outside of its regulatory domain.
++ *	domain via its regulatory_hint() unless the regulatory hint is
++ *	from a country IE. After its gets its own regulatory domain it will
++ *	only allow further regulatory domain settings to further enhance
++ *	compliance. For example if channel 13 and 14 are disabled by this
++ *	regulatory domain no user regulatory domain can enable these channels
++ *	at a later time. This can be used for devices which do not have
++ *	calibration information gauranteed for frequencies or settings
++ *	outside of its regulatory domain.
+  * @WIPHY_FLAG_DISABLE_BEACON_HINTS: enable this if your driver needs to ensure
+  *	that passive scan flags and beaconing flags may not be lifted by
+  *	cfg80211 due to regulatory beacon hints. For more information on beacon
+diff --git a/net/wireless/reg.c b/net/wireless/reg.c
+index d783c62..ac18eb5 100644
+--- a/net/wireless/reg.c
++++ b/net/wireless/reg.c
+@@ -816,6 +816,7 @@ static bool ignore_reg_update(struct wiphy *wiphy,
+ 	 * desired regulatory domain set
+ 	 */
+ 	if (wiphy->flags & WIPHY_FLAG_STRICT_REGULATORY && !wiphy->regd &&
++	    initiator != NL80211_REGDOM_SET_BY_COUNTRY_IE &&
+ 	    !is_world_regdom(last_request->alpha2))
+ 		return true;
+ 	return false;
+-- 
+1.7.3.2.90.gd4c43
+
