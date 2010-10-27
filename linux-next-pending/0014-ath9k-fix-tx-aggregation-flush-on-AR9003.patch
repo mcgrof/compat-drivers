@@ -1,0 +1,56 @@
+From 364e64b5fb9155c92049ba97a9d2b14b01125815 Mon Sep 17 00:00:00 2001
+From: Felix Fietkau <nbd@openwrt.org>
+Date: Wed, 27 Oct 2010 14:55:25 -0700
+Subject: [PATCH 3/3] ath9k: fix tx aggregation flush on AR9003
+
+Completing aggregate frames can lead to new buffers being pushed into
+the tid queues due to software retransmission.
+When the tx queues are being drained, all pending aggregates must be
+completed before the tid queues get drained, otherwise buffers might be
+leaked.
+
+Signed-off-by: Felix Fietkau <nbd@openwrt.org>
+Cc: stable@kernel.org
+---
+ drivers/net/wireless/ath/ath9k/xmit.c |   18 +++++++++---------
+ 1 files changed, 9 insertions(+), 9 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath9k/xmit.c b/drivers/net/wireless/ath/ath9k/xmit.c
+index 314b3ac..ac6ee2b 100644
+--- a/drivers/net/wireless/ath/ath9k/xmit.c
++++ b/drivers/net/wireless/ath/ath9k/xmit.c
+@@ -1103,15 +1103,6 @@ void ath_draintxq(struct ath_softc *sc, struct ath_txq *txq, bool retry_tx)
+ 	txq->axq_tx_inprogress = false;
+ 	spin_unlock_bh(&txq->axq_lock);
+ 
+-	/* flush any pending frames if aggregation is enabled */
+-	if (sc->sc_flags & SC_OP_TXAGGR) {
+-		if (!retry_tx) {
+-			spin_lock_bh(&txq->axq_lock);
+-			ath_txq_drain_pending_buffers(sc, txq);
+-			spin_unlock_bh(&txq->axq_lock);
+-		}
+-	}
+-
+ 	if (sc->sc_ah->caps.hw_caps & ATH9K_HW_CAP_EDMA) {
+ 		spin_lock_bh(&txq->axq_lock);
+ 		while (!list_empty(&txq->txq_fifo_pending)) {
+@@ -1132,6 +1123,15 @@ void ath_draintxq(struct ath_softc *sc, struct ath_txq *txq, bool retry_tx)
+ 		}
+ 		spin_unlock_bh(&txq->axq_lock);
+ 	}
++
++	/* flush any pending frames if aggregation is enabled */
++	if (sc->sc_flags & SC_OP_TXAGGR) {
++		if (!retry_tx) {
++			spin_lock_bh(&txq->axq_lock);
++			ath_txq_drain_pending_buffers(sc, txq);
++			spin_unlock_bh(&txq->axq_lock);
++		}
++	}
+ }
+ 
+ void ath_drain_all_txq(struct ath_softc *sc, bool retry_tx)
+-- 
+1.7.3.2.90.gd4c43
+
