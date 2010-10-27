@@ -1,0 +1,56 @@
+From 3207390a8b58bfc1335750f91cf6783c48ca19ca Mon Sep 17 00:00:00 2001
+From: Johannes Berg <johannes.berg@intel.com>
+Date: Wed, 6 Oct 2010 21:18:04 +0200
+Subject: [PATCH 26/31] cfg80211: fix BSS double-unlinking
+
+When multiple interfaces are actively trying
+to associate with the same BSS, they may both
+find that the BSS isn't there and then try to
+unlink it. This can cause errors since the
+unlinking code can't currently deal with items
+that have already been unlinked.
+
+Normally this doesn't happen as most people
+don't try to use multiple station interfaces
+that associate at the same time too.
+
+Fix this by using the list entry as a flag to
+see if the item is still on a list.
+
+Cc: stable@kernel.org
+Reported-by: Ben Greear <greearb@candelatech.com>
+Tested-by: Hun-Kyi Wynn <hkwynn@candelatech.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: John W. Linville <linville@tuxdriver.com>
+---
+ net/wireless/scan.c |   12 ++++++------
+ 1 files changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/net/wireless/scan.c b/net/wireless/scan.c
+index 5ca8c71..503ebb8 100644
+--- a/net/wireless/scan.c
++++ b/net/wireless/scan.c
+@@ -650,14 +650,14 @@ void cfg80211_unlink_bss(struct wiphy *wiphy, struct cfg80211_bss *pub)
+ 	bss = container_of(pub, struct cfg80211_internal_bss, pub);
+ 
+ 	spin_lock_bh(&dev->bss_lock);
++	if (!list_empty(&bss->list)) {
++		list_del_init(&bss->list);
++		dev->bss_generation++;
++		rb_erase(&bss->rbn, &dev->bss_tree);
+ 
+-	list_del(&bss->list);
+-	dev->bss_generation++;
+-	rb_erase(&bss->rbn, &dev->bss_tree);
+-
++		kref_put(&bss->ref, bss_release);
++	}
+ 	spin_unlock_bh(&dev->bss_lock);
+-
+-	kref_put(&bss->ref, bss_release);
+ }
+ EXPORT_SYMBOL(cfg80211_unlink_bss);
+ 
+-- 
+1.7.3.2.90.gd4c43
+

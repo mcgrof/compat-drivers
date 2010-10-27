@@ -1,7 +1,7 @@
 From d3a910a8e4e846b9a767d35483f4dc7c6de7af82 Mon Sep 17 00:00:00 2001
 From: Luis R. Rodriguez <lrodriguez@atheros.com>
 Date: Thu, 16 Sep 2010 15:12:32 -0400
-Subject: [PATCH 12/30] mac80211: make the beacon monitor available externally
+Subject: [PATCH 12/31] mac80211: make the beacon monitor available externally
 
 This will be used by other components next. The beacon
 monitor was added as of 2.6.34 so these fixes are applicable
@@ -17,9 +17,11 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  net/mac80211/mlme.c        |    8 ++++----
  2 files changed, 5 insertions(+), 4 deletions(-)
 
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index 737fd0f..9346a6b 100644
 --- a/net/mac80211/ieee80211_i.h
 +++ b/net/mac80211/ieee80211_i.h
-@@ -1008,6 +1008,7 @@ void ieee80211_sta_restart(struct ieee80
+@@ -1041,6 +1041,7 @@ void ieee80211_sta_restart(struct ieee80211_sub_if_data *sdata);
  void ieee80211_sta_work(struct ieee80211_sub_if_data *sdata);
  void ieee80211_sta_rx_queued_mgmt(struct ieee80211_sub_if_data *sdata,
  				  struct sk_buff *skb);
@@ -27,9 +29,11 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  void ieee80211_sta_reset_conn_monitor(struct ieee80211_sub_if_data *sdata);
  
  /* IBSS code */
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index d7915ab..07d03e7 100644
 --- a/net/mac80211/mlme.c
 +++ b/net/mac80211/mlme.c
-@@ -109,7 +109,7 @@ static void run_again(struct ieee80211_i
+@@ -115,7 +115,7 @@ static void run_again(struct ieee80211_if_managed *ifmgd,
  		mod_timer(&ifmgd->timer, timeout);
  }
  
@@ -38,7 +42,7 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  {
  	if (sdata->local->hw.flags & IEEE80211_HW_BEACON_FILTER)
  		return;
-@@ -1375,7 +1375,7 @@ static bool ieee80211_assoc_success(stru
+@@ -1390,7 +1390,7 @@ static bool ieee80211_assoc_success(struct ieee80211_work *wk,
  	 * Also start the timer that will detect beacon loss.
  	 */
  	ieee80211_sta_rx_notify(sdata, (struct ieee80211_hdr *)mgmt);
@@ -47,7 +51,7 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  
  	return true;
  }
-@@ -1478,7 +1478,7 @@ static void ieee80211_rx_mgmt_probe_resp
+@@ -1493,7 +1493,7 @@ static void ieee80211_rx_mgmt_probe_resp(struct ieee80211_sub_if_data *sdata,
  		 * we have or will be receiving any beacons or data, so let's
  		 * schedule the timers again, just in case.
  		 */
@@ -56,7 +60,7 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  
  		mod_timer(&ifmgd->conn_mon_timer,
  			  round_jiffies_up(jiffies +
-@@ -1601,7 +1601,7 @@ static void ieee80211_rx_mgmt_beacon(str
+@@ -1619,7 +1619,7 @@ static void ieee80211_rx_mgmt_beacon(struct ieee80211_sub_if_data *sdata,
  	 * Push the beacon loss detection into the future since
  	 * we are processing a beacon from the AP just now.
  	 */
@@ -65,3 +69,6 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  
  	ncrc = crc32_be(0, (void *)&mgmt->u.beacon.beacon_int, 4);
  	ncrc = ieee802_11_parse_elems_crc(mgmt->u.beacon.variable,
+-- 
+1.7.3.2.90.gd4c43
+

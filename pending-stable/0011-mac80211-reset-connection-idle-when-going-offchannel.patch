@@ -1,7 +1,7 @@
 From 4730d5977f3e12b828d354f7752cffd94bdf39e5 Mon Sep 17 00:00:00 2001
 From: Luis R. Rodriguez <lrodriguez@atheros.com>
 Date: Thu, 16 Sep 2010 15:12:31 -0400
-Subject: [PATCH 11/30] mac80211: reset connection idle when going offchannel
+Subject: [PATCH 11/31] mac80211: reset connection idle when going offchannel
 
 When we go offchannel mac80211 currently leaves alive the
 connection idle monitor. This should be instead postponed
@@ -23,6 +23,8 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  net/mac80211/offchannel.c |    5 +++++
  1 files changed, 5 insertions(+), 0 deletions(-)
 
+diff --git a/net/mac80211/offchannel.c b/net/mac80211/offchannel.c
+index eeacaa5..627a33e 100644
 --- a/net/mac80211/offchannel.c
 +++ b/net/mac80211/offchannel.c
 @@ -22,12 +22,15 @@
@@ -41,7 +43,7 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  	cancel_work_sync(&local->dynamic_ps_enable_work);
  
  	if (local->hw.conf.flags & IEEE80211_CONF_PS) {
-@@ -85,6 +88,8 @@ static void ieee80211_offchannel_ps_disa
+@@ -85,6 +88,8 @@ static void ieee80211_offchannel_ps_disable(struct ieee80211_sub_if_data *sdata)
  		mod_timer(&local->dynamic_ps_timer, jiffies +
  			  msecs_to_jiffies(local->hw.conf.dynamic_ps_timeout));
  	}
@@ -50,3 +52,6 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  }
  
  void ieee80211_offchannel_stop_beaconing(struct ieee80211_local *local)
+-- 
+1.7.3.2.90.gd4c43
+

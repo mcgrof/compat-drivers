@@ -1,7 +1,7 @@
 From 3fac6dfdcd2b893c22b20a03dd1bf1af8b627c4b Mon Sep 17 00:00:00 2001
 From: Senthil Balasubramanian <senthilkumar@atheros.com>
 Date: Thu, 16 Sep 2010 15:12:35 -0400
-Subject: [PATCH 15/30] ath9k: fix regression which prevents chip sleep after CAB data
+Subject: [PATCH 15/31] ath9k: fix regression which prevents chip sleep after CAB data
 
 The patch:
 
@@ -38,9 +38,11 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  drivers/net/wireless/ath/ath9k/recv.c |    2 +-
  1 files changed, 1 insertions(+), 1 deletions(-)
 
+diff --git a/drivers/net/wireless/ath/ath9k/recv.c b/drivers/net/wireless/ath/ath9k/recv.c
+index 007df33..c5e7af4 100644
 --- a/drivers/net/wireless/ath/ath9k/recv.c
 +++ b/drivers/net/wireless/ath/ath9k/recv.c
-@@ -631,7 +631,7 @@ static void ath_rx_ps(struct ath_softc *
+@@ -639,7 +639,7 @@ static void ath_rx_ps(struct ath_softc *sc, struct sk_buff *skb)
  		 * No more broadcast/multicast frames to be received at this
  		 * point.
  		 */
@@ -49,3 +51,6 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  		ath_print(common, ATH_DBG_PS,
  			  "All PS CAB frames received, back to sleep\n");
  	} else if ((sc->ps_flags & PS_WAIT_FOR_PSPOLL_DATA) &&
+-- 
+1.7.3.2.90.gd4c43
+

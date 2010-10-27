@@ -1,7 +1,7 @@
 From 008443def34db1dcc8016763587a288254ea5735 Mon Sep 17 00:00:00 2001
 From: Luis R. Rodriguez <lrodriguez@atheros.com>
 Date: Thu, 16 Sep 2010 15:12:36 -0400
-Subject: [PATCH 16/30] ath9k: fix regression which disabled ps on ath9k
+Subject: [PATCH 16/31] ath9k: fix regression which disabled ps on ath9k
 
 The patch titled "ath9k: Add new file init.c" shuffled some code
 around but in dong so for some reason also removed the revision
@@ -23,9 +23,11 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  drivers/net/wireless/ath/ath9k/init.c |    3 ++-
  1 files changed, 2 insertions(+), 1 deletions(-)
 
+diff --git a/drivers/net/wireless/ath/ath9k/init.c b/drivers/net/wireless/ath/ath9k/init.c
+index 224df6d..0364167 100644
 --- a/drivers/net/wireless/ath/ath9k/init.c
 +++ b/drivers/net/wireless/ath/ath9k/init.c
-@@ -641,7 +641,8 @@ void ath9k_set_hw_capab(struct ath_softc
+@@ -643,7 +643,8 @@ void ath9k_set_hw_capab(struct ath_softc *sc, struct ieee80211_hw *hw)
  		BIT(NL80211_IFTYPE_ADHOC) |
  		BIT(NL80211_IFTYPE_MESH_POINT);
  
@@ -35,3 +37,6 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  
  	hw->queues = 4;
  	hw->max_rates = 4;
+-- 
+1.7.3.2.90.gd4c43
+

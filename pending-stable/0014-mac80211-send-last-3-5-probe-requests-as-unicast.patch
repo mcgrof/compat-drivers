@@ -1,7 +1,7 @@
 From f01a067d9e4598c71e3c9ee3a84859d2e8af4f8e Mon Sep 17 00:00:00 2001
 From: Luis R. Rodriguez <lrodriguez@atheros.com>
 Date: Thu, 16 Sep 2010 15:12:34 -0400
-Subject: [PATCH 14/30] mac80211: send last 3/5 probe requests as unicast
+Subject: [PATCH 14/31] mac80211: send last 3/5 probe requests as unicast
 
 Some buggy APs do not respond to unicast probe requests
 or send unicast probe requests very delayed so in the
@@ -39,9 +39,11 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  net/mac80211/mlme.c |   13 +++++++++++--
  1 files changed, 11 insertions(+), 2 deletions(-)
 
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index 07d03e7..8b733cf 100644
 --- a/net/mac80211/mlme.c
 +++ b/net/mac80211/mlme.c
-@@ -1030,10 +1030,19 @@ static void ieee80211_mgd_probe_ap_send(
+@@ -1038,10 +1038,19 @@ static void ieee80211_mgd_probe_ap_send(struct ieee80211_sub_if_data *sdata)
  {
  	struct ieee80211_if_managed *ifmgd = &sdata->u.mgd;
  	const u8 *ssid;
@@ -63,3 +65,6 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  
  	ifmgd->probe_send_count++;
  	ifmgd->probe_timeout = jiffies + IEEE80211_PROBE_WAIT;
+-- 
+1.7.3.2.90.gd4c43
+

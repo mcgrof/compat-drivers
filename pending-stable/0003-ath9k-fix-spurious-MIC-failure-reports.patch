@@ -1,7 +1,7 @@
 From 56363ddeeed3afc5277ca227209773bc1042cc7b Mon Sep 17 00:00:00 2001
 From: Felix Fietkau <nbd@openwrt.org>
 Date: Sat, 28 Aug 2010 18:21:21 +0200
-Subject: [PATCH 03/30] ath9k: fix spurious MIC failure reports
+Subject: [PATCH 03/31] ath9k: fix spurious MIC failure reports
 
 According to the hardware documentation, the MIC failure bit is only
 valid if the frame was decrypted using a valid TKIP key and is not a
@@ -20,6 +20,8 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  drivers/net/wireless/ath/ath9k/recv.c   |   19 +++++++++++--------
  4 files changed, 25 insertions(+), 9 deletions(-)
 
+diff --git a/drivers/net/wireless/ath/ath.h b/drivers/net/wireless/ath/ath.h
+index d32f282..a706202 100644
 --- a/drivers/net/wireless/ath/ath.h
 +++ b/drivers/net/wireless/ath/ath.h
 @@ -119,6 +119,7 @@ struct ath_common {
@@ -30,11 +32,13 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  	u8 splitmic;
  
  	struct ath_regulatory regulatory;
+diff --git a/drivers/net/wireless/ath/ath9k/common.c b/drivers/net/wireless/ath/ath9k/common.c
+index 31cfe46..2dab64b 100644
 --- a/drivers/net/wireless/ath/ath9k/common.c
 +++ b/drivers/net/wireless/ath/ath9k/common.c
-@@ -366,9 +366,13 @@ int ath9k_cmn_key_config(struct ath_comm
+@@ -372,9 +372,13 @@ int ath9k_cmn_key_config(struct ath_common *common,
  	set_bit(idx, common->keymap);
- 	if (key->alg == ALG_TKIP) {
+ 	if (key->cipher == WLAN_CIPHER_SUITE_TKIP) {
  		set_bit(idx + 64, common->keymap);
 +		set_bit(idx, common->tkip_keymap);
 +		set_bit(idx + 64, common->tkip_keymap);
@@ -46,7 +50,7 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  		}
  	}
  
-@@ -393,10 +397,17 @@ void ath9k_cmn_key_delete(struct ath_com
+@@ -399,10 +403,17 @@ void ath9k_cmn_key_delete(struct ath_common *common,
  		return;
  
  	clear_bit(key->hw_key_idx + 64, common->keymap);
@@ -64,9 +68,11 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  	}
  }
  EXPORT_SYMBOL(ath9k_cmn_key_delete);
+diff --git a/drivers/net/wireless/ath/ath9k/mac.c b/drivers/net/wireless/ath/ath9k/mac.c
+index e955bb9d..0b7d125 100644
 --- a/drivers/net/wireless/ath/ath9k/mac.c
 +++ b/drivers/net/wireless/ath/ath9k/mac.c
-@@ -711,7 +711,8 @@ int ath9k_hw_rxprocdesc(struct ath_hw *a
+@@ -711,7 +711,8 @@ int ath9k_hw_rxprocdesc(struct ath_hw *ah, struct ath_desc *ds,
  			rs->rs_phyerr = phyerr;
  		} else if (ads.ds_rxstatus8 & AR_DecryptCRCErr)
  			rs->rs_status |= ATH9K_RXERR_DECRYPT;
@@ -76,9 +82,11 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  			rs->rs_status |= ATH9K_RXERR_MIC;
  	}
  
+diff --git a/drivers/net/wireless/ath/ath9k/recv.c b/drivers/net/wireless/ath/ath9k/recv.c
+index a3fc987..534a91b 100644
 --- a/drivers/net/wireless/ath/ath9k/recv.c
 +++ b/drivers/net/wireless/ath/ath9k/recv.c
-@@ -870,15 +870,18 @@ static bool ath9k_rx_accept(struct ath_c
+@@ -870,15 +870,18 @@ static bool ath9k_rx_accept(struct ath_common *common,
  		if (rx_stats->rs_status & ATH9K_RXERR_DECRYPT) {
  			*decrypt_error = true;
  		} else if (rx_stats->rs_status & ATH9K_RXERR_MIC) {
@@ -105,3 +113,6 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  		}
  		/*
  		 * Reject error frames with the exception of
+-- 
+1.7.3.2.90.gd4c43
+

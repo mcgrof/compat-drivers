@@ -1,7 +1,7 @@
 From 48a6a468198aadb54bc5d3fdd065364d43ff5197 Mon Sep 17 00:00:00 2001
 From: Luis R. Rodriguez <lrodriguez@atheros.com>
 Date: Thu, 16 Sep 2010 15:12:28 -0400
-Subject: [PATCH 08/30] ath9k: fix enabling ANI / tx monitor after bg scan
+Subject: [PATCH 08/31] ath9k: fix enabling ANI / tx monitor after bg scan
 
 ath9k's entire logic with SC_OP_SCANNING is incorrect due to the
 way mac80211 currently implements the scan complete callback and
@@ -35,9 +35,11 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  drivers/net/wireless/ath/ath9k/recv.c  |    4 ++--
  3 files changed, 5 insertions(+), 10 deletions(-)
 
+diff --git a/drivers/net/wireless/ath/ath9k/ath9k.h b/drivers/net/wireless/ath/ath9k/ath9k.h
+index c8ff417..98b57e6 100644
 --- a/drivers/net/wireless/ath/ath9k/ath9k.h
 +++ b/drivers/net/wireless/ath/ath9k/ath9k.h
-@@ -516,7 +516,6 @@ void ath_deinit_leds(struct ath_softc *s
+@@ -563,7 +563,6 @@ struct ath_ant_comb {
  #define SC_OP_RXFLUSH                BIT(7)
  #define SC_OP_LED_ASSOCIATED         BIT(8)
  #define SC_OP_LED_ON                 BIT(9)
@@ -45,9 +47,11 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  #define SC_OP_TSF_RESET              BIT(11)
  #define SC_OP_BT_PRIORITY_DETECTED   BIT(12)
  #define SC_OP_BT_SCAN		     BIT(13)
+diff --git a/drivers/net/wireless/ath/ath9k/main.c b/drivers/net/wireless/ath/ath9k/main.c
+index 3295c63..5056733 100644
 --- a/drivers/net/wireless/ath/ath9k/main.c
 +++ b/drivers/net/wireless/ath/ath9k/main.c
-@@ -254,14 +254,12 @@ int ath_set_channel(struct ath_softc *sc
+@@ -255,14 +255,12 @@ int ath_set_channel(struct ath_softc *sc, struct ieee80211_hw *hw,
  	ath_update_txpow(sc);
  	ath9k_hw_set_interrupts(ah, ah->imask);
  
@@ -65,7 +69,7 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
   ps_restore:
  	ath9k_ps_restore(sc);
  	return r;
-@@ -2037,7 +2035,6 @@ static void ath9k_sw_scan_start(struct i
+@@ -2036,7 +2034,6 @@ static void ath9k_sw_scan_start(struct ieee80211_hw *hw)
  
  	aphy->state = ATH_WIPHY_SCAN;
  	ath9k_wiphy_pause_all_forced(sc, aphy);
@@ -73,7 +77,7 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  	mutex_unlock(&sc->mutex);
  }
  
-@@ -2052,7 +2049,6 @@ static void ath9k_sw_scan_complete(struc
+@@ -2051,7 +2048,6 @@ static void ath9k_sw_scan_complete(struct ieee80211_hw *hw)
  
  	mutex_lock(&sc->mutex);
  	aphy->state = ATH_WIPHY_ACTIVE;
@@ -81,9 +85,11 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  	mutex_unlock(&sc->mutex);
  }
  
+diff --git a/drivers/net/wireless/ath/ath9k/recv.c b/drivers/net/wireless/ath/ath9k/recv.c
+index 3e7b8fe..007df33 100644
 --- a/drivers/net/wireless/ath/ath9k/recv.c
 +++ b/drivers/net/wireless/ath/ath9k/recv.c
-@@ -292,7 +292,7 @@ static void ath_edma_start_recv(struct a
+@@ -300,7 +300,7 @@ static void ath_edma_start_recv(struct ath_softc *sc)
  
  	ath_opmode_init(sc);
  
@@ -92,7 +98,7 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  }
  
  static void ath_edma_stop_recv(struct ath_softc *sc)
-@@ -498,7 +498,7 @@ int ath_startrecv(struct ath_softc *sc)
+@@ -506,7 +506,7 @@ int ath_startrecv(struct ath_softc *sc)
  start_recv:
  	spin_unlock_bh(&sc->rx.rxbuflock);
  	ath_opmode_init(sc);
@@ -101,3 +107,6 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  
  	return 0;
  }
+-- 
+1.7.3.2.90.gd4c43
+

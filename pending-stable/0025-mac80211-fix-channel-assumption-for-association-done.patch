@@ -1,0 +1,55 @@
+From e7480bbb926c5816e4fbfca70748096bbe0e4978 Mon Sep 17 00:00:00 2001
+From: Luis R. Rodriguez <lrodriguez@atheros.com>
+Date: Fri, 1 Oct 2010 17:05:19 -0400
+Subject: [PATCH 25/31] mac80211: fix channel assumption for association done work
+
+Be consistent and use the wk->chan instead of the
+local->hw.conf.channel for the association done work.
+This prevents any possible races against channel changes
+while we run this work.
+
+In the case that the race did happen we would be initializing
+the bit rates for the new AP under the assumption of a wrong
+channel and in the worst case, wrong band. This could lead
+to trying to assuming we could use CCK frames on 5 GHz, for
+example.
+
+This patch has a fix for kernels >= v2.6.34
+
+Cc: stable@kernel.org
+Signed-off-by: Luis R. Rodriguez <lrodriguez@atheros.com>
+Signed-off-by: John W. Linville <linville@tuxdriver.com>
+---
+ net/mac80211/mlme.c |    6 +++---
+ 1 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index 2b29827..cd13aa8 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -1291,7 +1291,7 @@ static bool ieee80211_assoc_success(struct ieee80211_work *wk,
+ 
+ 	rates = 0;
+ 	basic_rates = 0;
+-	sband = local->hw.wiphy->bands[local->hw.conf.channel->band];
++	sband = local->hw.wiphy->bands[wk->chan->band];
+ 
+ 	for (i = 0; i < elems.supp_rates_len; i++) {
+ 		int rate = (elems.supp_rates[i] & 0x7f) * 5;
+@@ -1327,11 +1327,11 @@ static bool ieee80211_assoc_success(struct ieee80211_work *wk,
+ 		}
+ 	}
+ 
+-	sta->sta.supp_rates[local->hw.conf.channel->band] = rates;
++	sta->sta.supp_rates[wk->chan->band] = rates;
+ 	sdata->vif.bss_conf.basic_rates = basic_rates;
+ 
+ 	/* cf. IEEE 802.11 9.2.12 */
+-	if (local->hw.conf.channel->band == IEEE80211_BAND_2GHZ &&
++	if (wk->chan->band == IEEE80211_BAND_2GHZ &&
+ 	    have_higher_than_11mbit)
+ 		sdata->flags |= IEEE80211_SDATA_OPERATING_GMODE;
+ 	else
+-- 
+1.7.3.2.90.gd4c43
+
