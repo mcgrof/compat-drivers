@@ -169,6 +169,7 @@ function disable_bt_usb_ethernet_var {
 	disable_ethernet
 	disable_var_03
 	disable_bt
+	disable_update-initramfs
 } 
 
 function enable_only_ethernet {
@@ -187,6 +188,7 @@ function disable_var {
 	disable_ssb
 	disable_usbnet
 	disable_eeprom
+	disable_update-initramfs
 } 
 
 function disable_var_01 {
@@ -199,6 +201,7 @@ function disable_var_02 {
 	disable_lib80211
 	disable_ssb
 	disable_usbnet
+	disable_update-initramfs
 }
 
 function disable_staging {
@@ -214,6 +217,12 @@ function disable_ath6kl {
 function disable_brcm80211 {
 	backup_file Makefile
 	perl -i -ne 'print if ! /brcm80211/ ' Makefile
+}
+
+function disable_update-initramfs
+{
+	backup_file Makefile
+	perl -i -ne 'print if ! /update-initramfs/' Makefile
 }
 
 function select_ath_driver 
@@ -408,6 +417,7 @@ case $1 in
 		select_drivers		CONFIG_ATL1 CONFIG_ATL2 CONFIG_ATL1E CONFIG_ATL1C
 		enable_only_ethernet
 		disable_b44
+		disable_update-initramfs
 		;;
 	bt)
 		select_driver 		CONFIG_BT
