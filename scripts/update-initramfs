@@ -10,16 +10,18 @@
 
 LSB_RED_ID=$(/usr/bin/lsb_release -i -s)
 
-KLIB=/lib/modules/2.6.31-wl/build
+KLIB=/lib/modules/$(uname -r)/build
 ver=$(echo $KLIB | awk -F "/lib/modules/" '{print $2}' | awk -F"/" '{print $1}')
 dir=/boot/
 
 case $LSB_RED_ID in
 "Ubuntu")
 	echo "Updating Ubuntu's initramfs for $ver under $dir ..."
-	mkinitramfs -o $dir/initrd.img-$ver $ver
-	echo "Will now run update-grub to ensure grub will find the new initramfs ..."
-	update-grub
+#	mkinitramfs -o $dir/initrd.img-$ver $ver
+	update-initramfs -u
+	echo "update complete"
+#	echo "Will now run update-grub to ensure grub will find the new initramfs ..."
+#	update-grub
 	;;
 *)
 	echo "Warning:"
