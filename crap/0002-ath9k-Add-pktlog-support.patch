@@ -1310,7 +1310,7 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  	if (conf_is_ht(&sc->hw->conf) &&
 --- a/drivers/net/wireless/ath/ath9k/recv.c
 +++ b/drivers/net/wireless/ath/ath9k/recv.c
-@@ -1630,6 +1630,7 @@ int ath_rx_tasklet(struct ath_softc *sc,
+@@ -1629,6 +1629,7 @@ int ath_rx_tasklet(struct ath_softc *sc,
  	struct ieee80211_rx_status *rxs;
  	struct ath_hw *ah = sc->sc_ah;
  	struct ath_common *common = ath9k_hw_common(ah);
@@ -1318,7 +1318,7 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  	/*
  	 * The hw can techncically differ from common->hw when using ath9k
  	 * virtual wiphy so to account for that we iterate over the active
-@@ -1722,12 +1723,24 @@ int ath_rx_tasklet(struct ath_softc *sc,
+@@ -1721,12 +1722,24 @@ int ath_rx_tasklet(struct ath_softc *sc,
  				 dma_type);
  
  		skb_put(skb, rs.rs_datalen + ah->caps.rx_status_len);
@@ -1355,7 +1355,7 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  		if (!txpending || (tid->state & AGGR_CLEANUP)) {
  			/*
  			 * complete the acked-ones/xretried ones; update
-@@ -2078,7 +2080,7 @@ static void ath_tx_processq(struct ath_s
+@@ -2084,7 +2086,7 @@ static void ath_tx_processq(struct ath_s
  		ds = lastbf->bf_desc;
  
  		memset(&ts, 0, sizeof(ts));
@@ -1364,7 +1364,7 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  		if (status == -EINPROGRESS) {
  			spin_unlock_bh(&txq->axq_lock);
  			break;
-@@ -2115,10 +2117,14 @@ static void ath_tx_processq(struct ath_s
+@@ -2121,10 +2123,14 @@ static void ath_tx_processq(struct ath_s
  			ath_tx_rc_status(bf, &ts, txok ? 0 : 1, txok, true);
  		}
  
@@ -1381,7 +1381,7 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  
  		ath_wake_mac80211_queue(sc, txq);
  
-@@ -2190,9 +2196,11 @@ void ath_tx_edma_tasklet(struct ath_soft
+@@ -2196,9 +2202,11 @@ void ath_tx_edma_tasklet(struct ath_soft
  	struct list_head bf_head;
  	int status;
  	int txok;
@@ -1394,7 +1394,7 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  		if (status == -EINPROGRESS)
  			break;
  		if (status == -EIO) {
-@@ -2233,14 +2241,18 @@ void ath_tx_edma_tasklet(struct ath_soft
+@@ -2239,14 +2247,18 @@ void ath_tx_edma_tasklet(struct ath_soft
  			ath_tx_rc_status(bf, &txs, txok ? 0 : 1, txok, true);
  		}
  
