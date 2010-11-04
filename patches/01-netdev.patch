@@ -336,7 +336,7 @@ without creating a headache on maintenance of the pathes.
  	atl1e_set_ethtool_ops(netdev);
 --- a/drivers/net/atl1c/atl1c_main.c
 +++ b/drivers/net/atl1c/atl1c_main.c
-@@ -2606,7 +2606,7 @@ static int atl1c_init_netdev(struct net_
+@@ -2608,7 +2608,7 @@ static int atl1c_init_netdev(struct net_
  	pci_set_drvdata(pdev, netdev);
  
  	netdev->irq  = pdev->irq;
@@ -347,7 +347,7 @@ without creating a headache on maintenance of the pathes.
  
 --- a/drivers/net/atlx/atl1.c
 +++ b/drivers/net/atlx/atl1.c
-@@ -2986,7 +2986,7 @@ static int __devinit atl1_probe(struct p
+@@ -2988,7 +2988,7 @@ static int __devinit atl1_probe(struct p
  	adapter->mii.phy_id_mask = 0x1f;
  	adapter->mii.reg_num_mask = 0x1f;
  
