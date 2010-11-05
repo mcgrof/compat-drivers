@@ -150,6 +150,7 @@ if [ $# -ge 1 ]; then
 		if [[ "$1" = "-s" ]]; then
 			GET_STABLE_PENDING="y"
 			EXTRA_PATCHES="${EXTRA_PATCHES} pending-stable" 
+			EXTRA_PATCHES="${EXTRA_PATCHES} pending-stable/backports/"
 			POSTFIX_RELEASE_TAG="${POSTFIX_RELEASE_TAG}s"
 			shift; continue;
 		fi
@@ -449,6 +450,12 @@ if [[ "$GET_STABLE_PENDING" = y ]]; then
 	echo -e "${GREEN}Purging old stable cherry picks... ${NORMAL}"
 	rm -f ${LAST_DIR}/${PENDING_STABLE_DIR}/*.patch
 	cp ${PENDING_STABLE_DIR}/*.patch ${LAST_DIR}/${PENDING_STABLE_DIR}/
+	if [ -f ${LAST_DIR}/${PENDING_STABLE_DIR}/.ignore ]; then
+		for i in $(cat ${LAST_DIR}/${PENDING_STABLE_DIR}/.ignore) ; do
+			echo -e "Skipping $i from generated stable patches..."
+			rm -f ${LAST_DIR}/${PENDING_STABLE_DIR}/*$i*
+		done
+	fi
 	echo -e "${GREEN}Updated stable cherry picks, review with git diff and update hunks with ./scripts/admin-update.sh -s refresh${NORMAL}"
 	cd $LAST_DIR
 fi
