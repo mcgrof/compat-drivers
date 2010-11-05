@@ -1,7 +1,7 @@
 From 48a6a468198aadb54bc5d3fdd065364d43ff5197 Mon Sep 17 00:00:00 2001
 From: Luis R. Rodriguez <lrodriguez@atheros.com>
 Date: Thu, 16 Sep 2010 15:12:28 -0400
-Subject: [PATCH 08/31] ath9k: fix enabling ANI / tx monitor after bg scan
+Subject: [PATCH 08/44] ath9k: fix enabling ANI / tx monitor after bg scan
 
 ath9k's entire logic with SC_OP_SCANNING is incorrect due to the
 way mac80211 currently implements the scan complete callback and

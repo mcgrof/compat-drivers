@@ -1,7 +1,7 @@
 From 1a92795dac419128eb511dce30a6aad672064b88 Mon Sep 17 00:00:00 2001
 From: Christian Lamparter <chunkeey@googlemail.com>
 Date: Fri, 1 Oct 2010 22:01:24 +0200
-Subject: [PATCH 24/31] p54usb: add five more USBIDs
+Subject: [PATCH 24/44] p54usb: add five more USBIDs
 
 Source:
 http://www.wikidevi.com/wiki/Intersil/p54/usb/windows

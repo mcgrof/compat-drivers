@@ -1,7 +1,7 @@
 From eb7d3066cf864342e8ae6a5c1126a1602c4d06c0 Mon Sep 17 00:00:00 2001
 From: Christian Lamparter <chunkeey@googlemail.com>
 Date: Tue, 21 Sep 2010 21:36:18 +0200
-Subject: [PATCH 19/31] mac80211: clear txflags for ps-filtered frames
+Subject: [PATCH 19/44] mac80211: clear txflags for ps-filtered frames
 
 This patch fixes stale mac80211_tx_control_flags for
 filtered / retried frames.

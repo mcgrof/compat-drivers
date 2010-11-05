@@ -1,7 +1,7 @@
 From 15d46f38df87f89242e470f5797120fa384c1fc3 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Bj=C3=B6rn=20Smedman?= <bjorn.smedman@venatech.se>
 Date: Sun, 10 Oct 2010 22:14:25 +0200
-Subject: [PATCH 28/31] mac80211: minstrel_ht A-MPDU fix
+Subject: [PATCH 28/44] mac80211: minstrel_ht A-MPDU fix
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit

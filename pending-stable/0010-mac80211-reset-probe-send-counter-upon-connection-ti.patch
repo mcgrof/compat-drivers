@@ -1,7 +1,7 @@
 From 0c699c3a75d4e8d0d2c317f83048d8fd3ffe692a Mon Sep 17 00:00:00 2001
 From: Luis R. Rodriguez <lrodriguez@atheros.com>
 Date: Thu, 16 Sep 2010 15:12:30 -0400
-Subject: [PATCH 10/31] mac80211: reset probe send counter upon connection timer reset
+Subject: [PATCH 10/44] mac80211: reset probe send counter upon connection timer reset
 
 Upon beacon loss we send probe requests after 30 seconds of idle
 time and we wait for each probe response 1/2 second. We send a

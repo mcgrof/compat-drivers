@@ -1,7 +1,7 @@
 From 56363ddeeed3afc5277ca227209773bc1042cc7b Mon Sep 17 00:00:00 2001
 From: Felix Fietkau <nbd@openwrt.org>
 Date: Sat, 28 Aug 2010 18:21:21 +0200
-Subject: [PATCH 03/31] ath9k: fix spurious MIC failure reports
+Subject: [PATCH 03/44] ath9k: fix spurious MIC failure reports
 
 According to the hardware documentation, the MIC failure bit is only
 valid if the frame was decrypted using a valid TKIP key and is not a

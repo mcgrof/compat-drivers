@@ -1,7 +1,7 @@
 From 3bc3c0d748402e8c1f31b8569f5924d25d7b8e30 Mon Sep 17 00:00:00 2001
 From: Luis R. Rodriguez <lrodriguez@atheros.com>
 Date: Thu, 16 Sep 2010 15:12:33 -0400
-Subject: [PATCH 13/31] mac80211: disable beacon monitor while going offchannel
+Subject: [PATCH 13/44] mac80211: disable beacon monitor while going offchannel
 
 The beacon monitor should be disabled when going off channel
 to prevent spurious warnings and triggering connection

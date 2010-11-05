@@ -1,7 +1,7 @@
 From be099e82e9cf6d5d65d044e9ef6fc8bee3c7a113 Mon Sep 17 00:00:00 2001
 From: Luis R. Rodriguez <lrodriguez@atheros.com>
 Date: Thu, 16 Sep 2010 15:12:29 -0400
-Subject: [PATCH 09/31] mac80211: add helper for reseting the connection monitor
+Subject: [PATCH 09/44] mac80211: add helper for reseting the connection monitor
 
 This will be used in another place later. The connection
 monitor was added as of 2.6.35 so these fixes will be

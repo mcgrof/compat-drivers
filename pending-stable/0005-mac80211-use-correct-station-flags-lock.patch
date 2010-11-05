@@ -1,7 +1,7 @@
 From f5521b13880f4f4f612e1d20dd4f565122d16e04 Mon Sep 17 00:00:00 2001
 From: Johannes Berg <johannes.berg@intel.com>
 Date: Tue, 14 Sep 2010 22:06:53 +0200
-Subject: [PATCH 05/31] mac80211: use correct station flags lock
+Subject: [PATCH 05/44] mac80211: use correct station flags lock
 
 This code is modifying the station flags, and
 as such should hold the flags lock so it can

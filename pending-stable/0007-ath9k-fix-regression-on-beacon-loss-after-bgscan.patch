@@ -1,7 +1,7 @@
 From 52b8ac92496e03d6b5619204d7f3bae6ce6eae45 Mon Sep 17 00:00:00 2001
 From: Luis R. Rodriguez <lrodriguez@atheros.com>
 Date: Thu, 16 Sep 2010 15:12:27 -0400
-Subject: [PATCH 07/31] ath9k: fix regression on beacon loss after bgscan
+Subject: [PATCH 07/44] ath9k: fix regression on beacon loss after bgscan
 
 When we return to the home channel we were never reseting our beacon
 timers, this was casued by the fact that the scanning flag was still

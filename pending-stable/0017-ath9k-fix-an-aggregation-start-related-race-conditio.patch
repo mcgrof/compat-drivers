@@ -1,7 +1,7 @@
 From 231c3a1f0630c07a584905507a1cb7b705a56ab7 Mon Sep 17 00:00:00 2001
 From: Felix Fietkau <nbd@openwrt.org>
 Date: Mon, 20 Sep 2010 19:35:28 +0200
-Subject: [PATCH 17/31] ath9k: fix an aggregation start related race condition
+Subject: [PATCH 17/44] ath9k: fix an aggregation start related race condition
 
 A new aggregation session start can be issued by mac80211, even when the
 cleanup of the previous session has not completed yet. Since the data structure

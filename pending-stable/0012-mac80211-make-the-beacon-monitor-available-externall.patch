@@ -1,7 +1,7 @@
 From d3a910a8e4e846b9a767d35483f4dc7c6de7af82 Mon Sep 17 00:00:00 2001
 From: Luis R. Rodriguez <lrodriguez@atheros.com>
 Date: Thu, 16 Sep 2010 15:12:32 -0400
-Subject: [PATCH 12/31] mac80211: make the beacon monitor available externally
+Subject: [PATCH 12/44] mac80211: make the beacon monitor available externally
 
 This will be used by other components next. The beacon
 monitor was added as of 2.6.34 so these fixes are applicable

@@ -1,7 +1,7 @@
 From d12c74528e3065c90df70fbc06ec6ffd6e804738 Mon Sep 17 00:00:00 2001
 From: Christian Lamparter <chunkeey@googlemail.com>
 Date: Fri, 8 Oct 2010 22:27:07 +0200
-Subject: [PATCH 27/31] mac80211: fix possible null-pointer de-reference
+Subject: [PATCH 27/44] mac80211: fix possible null-pointer de-reference
 
 This patch not only fixes a null-pointer de-reference
 that would be triggered by a PLINK_OPEN frame with mis-

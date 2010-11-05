@@ -1,7 +1,7 @@
 From 8d4780eb1ece4e8109b4f6b2e5e61f7fc593c3f4 Mon Sep 17 00:00:00 2001
 From: Luis R. Rodriguez <lrodriguez@atheros.com>
 Date: Fri, 24 Sep 2010 21:59:57 -0400
-Subject: [PATCH 21/31] mac80211: fix offchannel assumption upon association
+Subject: [PATCH 21/44] mac80211: fix offchannel assumption upon association
 
 Association is dealt with as an atomic offchannel operation,
 we do this because we don't know we are associated until we

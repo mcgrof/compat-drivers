@@ -1,7 +1,7 @@
 From 9094537c3a9ef9e127e844254a74186735c9a90b Mon Sep 17 00:00:00 2001
 From: Vasanthakumar Thiagarajan <vasanth@atheros.com>
 Date: Mon, 20 Sep 2010 22:54:46 -0700
-Subject: [PATCH 20/31] ath9k: Fix tx struck state with paprd
+Subject: [PATCH 20/44] ath9k: Fix tx struck state with paprd
 
 Paprd needs to be done only on active chains(not for all the chains
 that hw can support). The paprd training frames which are sent

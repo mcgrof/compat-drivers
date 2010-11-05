@@ -1,7 +1,7 @@
 From a8909cfb1832ac623142898df2a9374722cfe68f Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Bj=C3=B6rn=20Smedman?= <bjorn.smedman@venatech.se>
 Date: Sun, 10 Oct 2010 22:51:54 +0200
-Subject: [PATCH 30/31] ath9k: built-in rate control A-MPDU fix
+Subject: [PATCH 30/44] ath9k: built-in rate control A-MPDU fix
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit

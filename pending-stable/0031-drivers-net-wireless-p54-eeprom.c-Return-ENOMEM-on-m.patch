@@ -1,7 +1,7 @@
 From 0d91f22b75347d9503b17a42b6c74d3f7750acd6 Mon Sep 17 00:00:00 2001
 From: Julia Lawall <julia@diku.dk>
 Date: Fri, 15 Oct 2010 15:00:06 +0200
-Subject: [PATCH 31/31] drivers/net/wireless/p54/eeprom.c: Return -ENOMEM on memory allocation failure
+Subject: [PATCH 31/44] drivers/net/wireless/p54/eeprom.c: Return -ENOMEM on memory allocation failure
 
 In this code, 0 is returned on memory allocation failure, even though other
 failures return -ENOMEM or other similar values.

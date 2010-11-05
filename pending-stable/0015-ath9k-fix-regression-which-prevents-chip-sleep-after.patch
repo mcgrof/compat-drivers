@@ -1,7 +1,7 @@
 From 3fac6dfdcd2b893c22b20a03dd1bf1af8b627c4b Mon Sep 17 00:00:00 2001
 From: Senthil Balasubramanian <senthilkumar@atheros.com>
 Date: Thu, 16 Sep 2010 15:12:35 -0400
-Subject: [PATCH 15/31] ath9k: fix regression which prevents chip sleep after CAB data
+Subject: [PATCH 15/44] ath9k: fix regression which prevents chip sleep after CAB data
 
 The patch:
 

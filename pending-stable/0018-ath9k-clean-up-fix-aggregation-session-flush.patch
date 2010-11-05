@@ -1,7 +1,7 @@
 From 90fa539ca3f07323da5a90f5c8f4e5cd952875e7 Mon Sep 17 00:00:00 2001
 From: Felix Fietkau <nbd@openwrt.org>
 Date: Mon, 20 Sep 2010 13:45:38 +0200
-Subject: [PATCH 18/31] ath9k: clean up / fix aggregation session flush
+Subject: [PATCH 18/44] ath9k: clean up / fix aggregation session flush
 
 The tid aggregation cleanup is a bit fragile, as it discards failed
 subframes in some places, and retransmits them in others. This could

@@ -1,7 +1,7 @@
 From f01a067d9e4598c71e3c9ee3a84859d2e8af4f8e Mon Sep 17 00:00:00 2001
 From: Luis R. Rodriguez <lrodriguez@atheros.com>
 Date: Thu, 16 Sep 2010 15:12:34 -0400
-Subject: [PATCH 14/31] mac80211: send last 3/5 probe requests as unicast
+Subject: [PATCH 14/44] mac80211: send last 3/5 probe requests as unicast
 
 Some buggy APs do not respond to unicast probe requests
 or send unicast probe requests very delayed so in the

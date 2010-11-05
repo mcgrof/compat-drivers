@@ -1,7 +1,7 @@
 From 11791a6f7534906b4a01ffb54ba0b02ca39398ef Mon Sep 17 00:00:00 2001
 From: Christian Lamparter <chunkeey@googlemail.com>
 Date: Sun, 22 Aug 2010 22:41:33 +0200
-Subject: [PATCH 01/31] p54usb: fix off-by-one on !CONFIG_PM
+Subject: [PATCH 01/44] p54usb: fix off-by-one on !CONFIG_PM
 
 The ISL3887 chip needs a USB reset, whenever the
 usb-frontend module "p54usb" is reloaded.

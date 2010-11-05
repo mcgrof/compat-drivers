@@ -1,7 +1,7 @@
 From ebd022873aa61937603d2c4dfea19ce63ea1a3c8 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Bj=C3=B6rn=20Smedman?= <bjorn.smedman@venatech.se>
 Date: Sun, 10 Oct 2010 22:44:39 +0200
-Subject: [PATCH 29/31] ath9k: A-MPDU rate control info fix
+Subject: [PATCH 29/44] ath9k: A-MPDU rate control info fix
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit

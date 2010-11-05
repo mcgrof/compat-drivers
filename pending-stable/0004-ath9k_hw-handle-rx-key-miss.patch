@@ -1,7 +1,7 @@
 From 3ae74c33c4f799f6bf6d67240a94a0814a8f1944 Mon Sep 17 00:00:00 2001
 From: Felix Fietkau <nbd@openwrt.org>
 Date: Tue, 14 Sep 2010 18:38:26 +0200
-Subject: [PATCH 04/31] ath9k_hw: handle rx key miss
+Subject: [PATCH 04/44] ath9k_hw: handle rx key miss
 
 If AR_KeyMiss is set in the rx descriptor and AR_RxFrameOK is unset,
 the hardware could not locate a valid key during a decryption attempt.

@@ -1,7 +1,7 @@
 From 4730d5977f3e12b828d354f7752cffd94bdf39e5 Mon Sep 17 00:00:00 2001
 From: Luis R. Rodriguez <lrodriguez@atheros.com>
 Date: Thu, 16 Sep 2010 15:12:31 -0400
-Subject: [PATCH 11/31] mac80211: reset connection idle when going offchannel
+Subject: [PATCH 11/44] mac80211: reset connection idle when going offchannel
 
 When we go offchannel mac80211 currently leaves alive the
 connection idle monitor. This should be instead postponed

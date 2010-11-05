@@ -1,7 +1,7 @@
 From f209f5298217cf54cd5a9163e18b08d093faf8d9 Mon Sep 17 00:00:00 2001
 From: Felix Fietkau <nbd@openwrt.org>
 Date: Fri, 1 Oct 2010 01:06:53 +0200
-Subject: [PATCH 23/31] ath9k: fix channel flag / regd issues with multiple cards
+Subject: [PATCH 23/44] ath9k: fix channel flag / regd issues with multiple cards
 
 Since the regulatory code touches the channel array, it needs to be
 copied for each device instance. That way the original channel array

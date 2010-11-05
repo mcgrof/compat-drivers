@@ -1,7 +1,7 @@
 From 2234362c427e2ef667595b9b81c0125003ac5607 Mon Sep 17 00:00:00 2001
 From: Johannes Berg <johannes.berg@intel.com>
 Date: Thu, 30 Sep 2010 22:17:43 +0200
-Subject: [PATCH 22/31] cfg80211: fix locking
+Subject: [PATCH 22/44] cfg80211: fix locking
 
 Add missing unlocking of the wiphy in set_channel,
 and don't try to unlock a non-existing wiphy in

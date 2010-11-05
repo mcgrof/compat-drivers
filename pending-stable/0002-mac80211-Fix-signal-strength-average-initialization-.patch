@@ -1,7 +1,7 @@
 From 3ba06c6fbd651ed3377e584026d1c112b492cc8b Mon Sep 17 00:00:00 2001
 From: Jouni Malinen <j@w1.fi>
 Date: Fri, 27 Aug 2010 22:21:13 +0300
-Subject: [PATCH 02/31] mac80211: Fix signal strength average initialization for CQM events
+Subject: [PATCH 02/44] mac80211: Fix signal strength average initialization for CQM events
 
 The ave_beacon_signal value uses 1/16 dB unit and as such, must be
 initialized with the signal level of the first Beacon frame multiplied

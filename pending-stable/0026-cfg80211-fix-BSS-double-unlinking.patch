@@ -1,7 +1,7 @@
 From 3207390a8b58bfc1335750f91cf6783c48ca19ca Mon Sep 17 00:00:00 2001
 From: Johannes Berg <johannes.berg@intel.com>
 Date: Wed, 6 Oct 2010 21:18:04 +0200
-Subject: [PATCH 26/31] cfg80211: fix BSS double-unlinking
+Subject: [PATCH 26/44] cfg80211: fix BSS double-unlinking
 
 When multiple interfaces are actively trying
 to associate with the same BSS, they may both

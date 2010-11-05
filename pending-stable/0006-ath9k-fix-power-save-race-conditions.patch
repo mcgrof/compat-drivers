@@ -1,7 +1,7 @@
 From 8ab2cd09fecc8819bbaee2d0fd8f3a092d866ce3 Mon Sep 17 00:00:00 2001
 From: Luis R. Rodriguez <lrodriguez@atheros.com>
 Date: Thu, 16 Sep 2010 15:12:26 -0400
-Subject: [PATCH 06/31] ath9k: fix power save race conditions
+Subject: [PATCH 06/44] ath9k: fix power save race conditions
 
 ath9k has a race on putting the chip into network sleep and
 having registers read from hardware. The race occurs because
