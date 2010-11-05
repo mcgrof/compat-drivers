@@ -15,11 +15,9 @@ Cc: stable@kernel.org
  drivers/net/wireless/ath/ath9k/ar9002_mac.c |   16 +++++++++-------
  1 files changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/ar9002_mac.c b/drivers/net/wireless/ath/ath9k/ar9002_mac.c
-index 50dda39..bd94b39 100644
 --- a/drivers/net/wireless/ath/ath9k/ar9002_mac.c
 +++ b/drivers/net/wireless/ath/ath9k/ar9002_mac.c
-@@ -229,13 +229,15 @@ static int ar9002_hw_proc_txdesc(struct ath_hw *ah, void *ds,
+@@ -229,13 +229,15 @@ static int ar9002_hw_proc_txdesc(struct
  
  	if (ads->ds_txstatus1 & AR_FrmXmitOK)
  		ts->ts_status |= ATH9K_TX_ACKED;
@@ -42,6 +40,3 @@ index 50dda39..bd94b39 100644
  	}
  	if (ads->ds_txstatus9 & AR_TxOpExceeded)
  		ts->ts_status |= ATH9K_TXERR_XTXOP;
--- 
-1.7.3.2.90.gd4c43
-

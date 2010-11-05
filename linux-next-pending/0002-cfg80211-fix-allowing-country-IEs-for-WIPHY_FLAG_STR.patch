@@ -20,11 +20,9 @@ Signed-off-by: Luis R. Rodriguez <lrodriguez@atheros.com>
  net/wireless/reg.c     |    1 +
  2 files changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index 2fd06c6..45b1826 100644
 --- a/include/net/cfg80211.h
 +++ b/include/net/cfg80211.h
-@@ -1201,13 +1201,14 @@ struct cfg80211_ops {
+@@ -1202,13 +1202,14 @@ struct cfg80211_ops {
   * 	initiator is %REGDOM_SET_BY_CORE).
   * @WIPHY_FLAG_STRICT_REGULATORY: tells us the driver for this device will
   *	ignore regulatory domain settings until it gets its own regulatory
@@ -46,11 +44,9 @@ index 2fd06c6..45b1826 100644
   * @WIPHY_FLAG_DISABLE_BEACON_HINTS: enable this if your driver needs to ensure
   *	that passive scan flags and beaconing flags may not be lifted by
   *	cfg80211 due to regulatory beacon hints. For more information on beacon
-diff --git a/net/wireless/reg.c b/net/wireless/reg.c
-index d783c62..ac18eb5 100644
 --- a/net/wireless/reg.c
 +++ b/net/wireless/reg.c
-@@ -816,6 +816,7 @@ static bool ignore_reg_update(struct wiphy *wiphy,
+@@ -816,6 +816,7 @@ static bool ignore_reg_update(struct wip
  	 * desired regulatory domain set
  	 */
  	if (wiphy->flags & WIPHY_FLAG_STRICT_REGULATORY && !wiphy->regd &&
@@ -58,6 +54,3 @@ index d783c62..ac18eb5 100644
  	    !is_world_regdom(last_request->alpha2))
  		return true;
  	return false;
--- 
-1.7.3.2.90.gd4c43
-

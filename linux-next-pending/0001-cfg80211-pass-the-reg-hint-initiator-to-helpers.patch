@@ -12,8 +12,6 @@ Signed-off-by: Luis R. Rodriguez <lrodriguez@atheros.com>
  net/wireless/reg.c |   12 ++++++++----
  1 files changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/net/wireless/reg.c b/net/wireless/reg.c
-index f180db0..d783c62 100644
 --- a/net/wireless/reg.c
 +++ b/net/wireless/reg.c
 @@ -723,7 +723,9 @@ EXPORT_SYMBOL(freq_reg_info);
@@ -27,7 +25,7 @@ index f180db0..d783c62 100644
  			   unsigned int chan_idx)
  {
  	int r;
-@@ -787,7 +789,9 @@ static void handle_channel(struct wiphy *wiphy, enum ieee80211_band band,
+@@ -787,7 +789,9 @@ static void handle_channel(struct wiphy
  		chan->max_power = (int) MBM_TO_DBM(power_rule->max_eirp);
  }
  
@@ -38,7 +36,7 @@ index f180db0..d783c62 100644
  {
  	unsigned int i;
  	struct ieee80211_supported_band *sband;
-@@ -796,7 +800,7 @@ static void handle_band(struct wiphy *wiphy, enum ieee80211_band band)
+@@ -796,7 +800,7 @@ static void handle_band(struct wiphy *wi
  	sband = wiphy->bands[band];
  
  	for (i = 0; i < sband->n_channels; i++)
@@ -47,7 +45,7 @@ index f180db0..d783c62 100644
  }
  
  static bool ignore_reg_update(struct wiphy *wiphy,
-@@ -1033,7 +1037,7 @@ void wiphy_update_regulatory(struct wiphy *wiphy,
+@@ -1033,7 +1037,7 @@ void wiphy_update_regulatory(struct wiph
  		goto out;
  	for (band = 0; band < IEEE80211_NUM_BANDS; band++) {
  		if (wiphy->bands[band])
@@ -56,6 +54,3 @@ index f180db0..d783c62 100644
  	}
  out:
  	reg_process_beacons(wiphy);
--- 
-1.7.3.2.90.gd4c43
-
