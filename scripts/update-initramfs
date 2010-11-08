@@ -10,7 +10,7 @@
 
 LSB_RED_ID=$(/usr/bin/lsb_release -i -s)
 
-KLIB=/lib/modules/2.6.31-wl/build
+KLIB=/lib/modules/$(uname -r)/build
 ver=$(echo $KLIB | awk -F "/lib/modules/" '{print $2}' | awk -F"/" '{print $1}')
 dir=/boot/
 
