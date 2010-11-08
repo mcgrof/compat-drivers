@@ -161,6 +161,7 @@ function disable_bt_usb_ethernet_var {
 	disable_ethernet
 	disable_var_03
 	disable_bt
+	disable_update-initramfs
 } 
 
 function enable_only_ethernet {
@@ -178,6 +179,7 @@ function disable_var {
 	disable_ssb
 	disable_usbnet
 	disable_eeprom
+	disable_update-initramfs
 } 
 
 function disable_var_01 {
@@ -190,6 +192,13 @@ function disable_var_02 {
 	disable_lib80211
 	disable_ssb
 	disable_usbnet
+	disable_update-initramfs
+}
+
+function disable_update-initramfs
+{
+	backup_file Makefile
+	perl -i -ne 'print if ! /update-initramfs/' Makefile
 }
 
 function select_ath_driver 
