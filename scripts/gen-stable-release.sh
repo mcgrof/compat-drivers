@@ -27,7 +27,7 @@ STAGING=/tmp/staging/compat-wireless/
 
 function usage()
 {
-	echo -e "Usage: ${GREEN}$1${NORMAL} ${BLUE}[ -n | -p | -c | -f ]${NORMAL} ${CYAN}[ linux-2.6.X.y ]${NORMAL}"
+	echo -e "Usage: ${GREEN}$1${NORMAL} ${BLUE}[ -n | -p | -c | -f | -i ]${NORMAL} ${CYAN}[ linux-2.6.X.y ]${NORMAL}"
 	echo
 	echo Examples usages:
 	echo
@@ -74,6 +74,10 @@ while [ $# -ne 0 ]; do
 		POSTFIX_RELEASE_TAG="${POSTFIX_RELEASE_TAG}c"
 		shift; continue;
 	fi
+	if [[ "$1" = "-i" ]]; then
+		IGNORE_UPDATE="yes"
+		shift; continue;
+	fi
 	if [[ "$1" = "-f" ]]; then
 		FORCE_UPDATE="yes"
 		shift; continue;
@@ -107,8 +111,9 @@ case $LOCAL_BRANCH in
 	echo "On master branch on $ALL_STABLE_TREE"
 	;;
 *) # Based on a stable 2.6.x.y release, lets just move to the master branch,
-   # git pull, nuke the old branch and start a fresh new branch.
-	if [[ $FORCE_UPDATE = "yes" || "$EXISTING_BRANCH" != "$LOCAL_BRANCH" ]]; then
+   # git pull, nuke the old branch and start a fresh new branch. Unless you
+   # specified to ignore the update
+	if [[ $IGNORE_UPDATE == "yes" && $FORCE_UPDATE = "yes" || "$EXISTING_BRANCH" != "$LOCAL_BRANCH" ]]; then
 		git checkout -f
 		git fetch
 		if [[ "$EXISTING_BRANCH" = "$LOCAL_BRANCH" ]]; then
