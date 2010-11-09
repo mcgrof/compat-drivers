@@ -229,6 +229,14 @@ index 5d21704..e2eacf5 100644
  void ath_debug_stat_rx(struct ath_softc *sc, struct ath_rx_status *rs);
  void ath_debug_stat_retries(struct ath_softc *sc, int rix,
  			    int xretries, int retries, u8 per);
+@@ -203,7 +203,6 @@
+ }
+ 
+ static inline void ath_debug_stat_tx(struct ath_softc *sc,
+-				     struct ath_txq *txq,
+ 				     struct ath_buf *bf,
+ 				     struct ath_tx_status *ts)
+ {
 diff --git a/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c b/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c
 index 2a6e45a..50b7609 100644
 --- a/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c
@@ -775,11 +783,3 @@ index a3f771d..f54e8d4 100644
  
  		spin_lock_bh(&txq->axq_lock);
  
-@@ -203,7 +203,6 @@
- }
- 
- static inline void ath_debug_stat_tx(struct ath_softc *sc,
--				     struct ath_txq *txq,
- 				     struct ath_buf *bf,
- 				     struct ath_tx_status *ts)
- {
