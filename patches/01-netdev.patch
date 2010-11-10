@@ -23,7 +23,7 @@ without creating a headache on maintenance of the pathes.
  	if (unlikely(retval < 0)) {
 --- a/drivers/net/usb/usbnet.c
 +++ b/drivers/net/usb/usbnet.c
-@@ -1332,7 +1332,7 @@ usbnet_probe (struct usb_interface *udev
+@@ -1343,7 +1343,7 @@ usbnet_probe (struct usb_interface *udev
  		net->features |= NETIF_F_HIGHDMA;
  #endif
  
@@ -228,7 +228,7 @@ without creating a headache on maintenance of the pathes.
  	wdev->netdev = ndev;
 --- a/drivers/net/wireless/libertas/main.c
 +++ b/drivers/net/wireless/libertas/main.c
-@@ -824,7 +824,7 @@ struct lbs_private *lbs_add_card(void *c
+@@ -831,7 +831,7 @@ struct lbs_private *lbs_add_card(void *c
  	wdev->netdev = dev;
  	priv->dev = dev;
  
