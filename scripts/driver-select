@@ -214,6 +214,11 @@ function disable_ath6kl {
 	perl -i -ne 'print if ! /ath6kl/ ' Makefile
 }
 
+function disable_ar9170 {
+	backup_file drivers/net/wireless/ath/Makefile
+	perl -i -ne 'print if ! /ar9170/ ' drivers/net/wireless/ath/Makefile
+}
+
 function disable_brcm80211 {
 	backup_file Makefile
 	perl -i -ne 'print if ! /brcm80211/ ' Makefile
@@ -306,6 +311,7 @@ case $1 in
 		;;
 	ath)
 		disable_bt_usb_ethernet_var
+		disable_ar9170
 		select_drivers		CONFIG_ATH_COMMON
 		disable_var_01
 		;;
