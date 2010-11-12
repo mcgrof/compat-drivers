@@ -178,7 +178,7 @@ calls on compat code with only slight modifications.
 +EXPORT_SYMBOL(iwl_pci_resume_compat);
 +#endif
 +
-+SIMPLE_DEV_PM_OPS(iwl_pm_ops, iwl_pci_suspend, iwl_pci_resume);
++const SIMPLE_DEV_PM_OPS(iwl_pm_ops, iwl_pci_suspend, iwl_pci_resume);
 +
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
  EXPORT_SYMBOL(iwl_pm_ops);
