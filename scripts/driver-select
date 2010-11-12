@@ -311,6 +311,7 @@ case $1 in
 		;;
 	ath)
 		disable_bt_usb_ethernet_var
+		disable_brcm80211
 		disable_ar9170
 		select_drivers		CONFIG_ATH_COMMON
 		disable_var_01
