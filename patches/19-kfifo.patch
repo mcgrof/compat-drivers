@@ -3,7 +3,7 @@ not be backported easily with defines in the compat module.
 
 --- a/drivers/net/wireless/libertas/dev.h
 +++ b/drivers/net/wireless/libertas/dev.h
-@@ -120,7 +120,11 @@ struct lbs_private {
+@@ -121,7 +121,11 @@ struct lbs_private {
  	u32 resp_len[2];
  
  	/* Events sent from hardware to driver */
@@ -17,7 +17,7 @@ not be backported easily with defines in the compat module.
  	struct task_struct *main_thread;
 --- a/drivers/net/wireless/libertas/main.c
 +++ b/drivers/net/wireless/libertas/main.c
-@@ -746,8 +746,14 @@ static int lbs_init_adapter(struct lbs_p
+@@ -753,8 +753,14 @@ static int lbs_init_adapter(struct lbs_p
  	priv->resp_len[0] = priv->resp_len[1] = 0;
  
  	/* Create the event FIFO */
