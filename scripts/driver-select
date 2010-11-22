@@ -30,7 +30,7 @@ PURPLE="\033[35m"
 CYAN="\033[36m"
 UNDERLINE="\033[02m"
 
-SUPPORTED_80211_DRIVERS="ath5k ath9k ath9k_htc carl9170 b43 zd1211rw rt2x00 wl1251 wl12xx"
+SUPPORTED_80211_DRIVERS="ath5k ath9k ath9k_htc carl9170 b43 zd1211rw rt2x00 wl1251 wl1271"
 
 if [ -d drivers/staging/ath6kl ]; then
 	SUPPORTED_80211_DRIVERS="$SUPPORTED_80211_DRIVERS ath6kl"
@@ -60,7 +60,7 @@ function usage {
 	echo -e "\t${CYAN}intel${NORMAL} < ${PURPLE} iwl3945 iwlagn ipw2100 ipw2200 ${NORMAL}>"
 	echo -e "\t${CYAN}iwlwifi${NORMAL} < ${PURPLE} iwl3945 iwlagn ${NORMAL}>"
 	echo -e "\t${CYAN}rtl818x${NORMAL} < ${PURPLE} rtl8180 rtl8187 ${NORMAL}>"
-	echo -e "\t${CYAN}wl12xx${NORMAL} < ${PURPLE} wl1251 wl12xx (SPI and SDIO)${NORMAL}>"
+	echo -e "\t${CYAN}wl12xx${NORMAL} < ${PURPLE} wl1251 wl1271 (SPI and SDIO)${NORMAL}>"
 	
 	echo -e "\nSupported group drivers: Bluetooth & Ethernet:"
 	echo -e "\t${BLUE}atlxx${NORMAL} < ${PURPLE} atl1 atl2 atl1e atl1c ${NORMAL}>"
@@ -398,7 +398,7 @@ case $1 in
 		disable_staging
 		disable_var_01
 		;;
-	wl12xx)
+	wl1271)
 		select_drivers		CONFIG_WL12XX
 		disable_staging
 		disable_var_01

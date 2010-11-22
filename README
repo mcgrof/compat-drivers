@@ -162,7 +162,7 @@ rtl8187
 spectrum_cs
 ssb
 wl1251
-wl12xx
+wl1271
 zd1211rw
 
 This package also provides more drivers which may be documented here
