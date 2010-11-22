@@ -42,7 +42,7 @@ Signed-off-by: Felix Fietkau <nbd@openwrt.org>
  #ifdef CONFIG_ATH_DEBUG
  
  static ssize_t read_file_debug(struct file *file, char __user *user_buf,
-@@ -871,6 +885,40 @@ static const struct file_operations fops
+@@ -873,6 +887,40 @@ static const struct file_operations fops
  	.llseek = default_llseek,
  };
  
@@ -83,7 +83,7 @@ Signed-off-by: Felix Fietkau <nbd@openwrt.org>
  int ath9k_init_debug(struct ath_hw *ah)
  {
  	struct ath_common *common = ath9k_hw_common(ah);
-@@ -931,6 +979,11 @@ int ath9k_init_debug(struct ath_hw *ah)
+@@ -933,6 +981,11 @@ int ath9k_init_debug(struct ath_hw *ah)
  		goto err;
  
  	sc->debug.regidx = 0;
@@ -95,7 +95,7 @@ Signed-off-by: Felix Fietkau <nbd@openwrt.org>
  	return 0;
  err:
  	ath9k_exit_debug(ah);
-@@ -942,6 +995,7 @@ void ath9k_exit_debug(struct ath_hw *ah)
+@@ -944,6 +997,7 @@ void ath9k_exit_debug(struct ath_hw *ah)
  	struct ath_common *common = ath9k_hw_common(ah);
  	struct ath_softc *sc = (struct ath_softc *) common->priv;
  
