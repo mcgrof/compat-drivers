@@ -45,7 +45,7 @@ define for something else in arch/um/include/asm/pda.h on older kernels.
  	int (*program_end)(struct hermes *hw);
 --- a/drivers/net/wireless/orinoco/orinoco_usb.c
 +++ b/drivers/net/wireless/orinoco/orinoco_usb.c
-@@ -1549,7 +1549,7 @@ static const struct hermes_ops ezusb_ops
+@@ -1548,7 +1548,7 @@ static const struct hermes_ops ezusb_ops
  	.read_ltv = ezusb_read_ltv,
  	.write_ltv = ezusb_write_ltv,
  	.bap_pread = ezusb_bap_pread,
