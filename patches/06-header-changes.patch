@@ -59,7 +59,7 @@ cases.
 -#include <linux/gpio.h>
  #include <linux/slab.h>
  
- #include "wl1271_acx.h"
+ #include "acx.h"
 --- a/net/mac80211/key.c
 +++ b/net/mac80211/key.c
 @@ -22,6 +22,9 @@
