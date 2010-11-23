@@ -50,8 +50,8 @@ cases.
  #include <linux/spi/spi.h>
  #include <linux/wl12xx.h>
  
---- a/drivers/net/wireless/wl12xx/wl1271_boot.c
-+++ b/drivers/net/wireless/wl12xx/wl1271_boot.c
+--- a/drivers/net/wireless/wl12xx/boot.c
++++ b/drivers/net/wireless/wl12xx/boot.c
 @@ -21,7 +21,6 @@
   *
   */

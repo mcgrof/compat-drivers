@@ -276,7 +276,7 @@ install-scripts:
 	@$(MODPROBE) -l usb8xxx
 	@$(MODPROBE) -l usbnet
 	@$(MODPROBE) -l wl1251
-	@$(MODPROBE) -l wl1271
+	@$(MODPROBE) -l wl12xx
 	@$(MODPROBE) -l zd1211rw
 	@echo
 	@echo "Currently detected ethernet subsystem modules:"
@@ -405,7 +405,7 @@ uninstall:
 	@$(MODPROBE) -l usb8xxx
 	@$(MODPROBE) -l usbnet
 	@$(MODPROBE) -l wl1251
-	@$(MODPROBE) -l wl1271
+	@$(MODPROBE) -l wl12xx
 	@$(MODPROBE) -l zd1211rw
 	@echo
 	@echo "Your old ethernet subsystem modules are left intact:"
