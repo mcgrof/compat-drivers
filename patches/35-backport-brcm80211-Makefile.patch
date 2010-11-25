@@ -15,3 +15,18 @@
  
  PCI_CFLAGS := -DWLC_LOW
  
+--- a/drivers/staging/brcm80211/brcmfmac/Makefile
++++ b/drivers/staging/brcm80211/brcmfmac/Makefile
+@@ -33,9 +33,9 @@ ccflags-y :=			\
+ 	-DPKT_FILTER_SUPPORT	\
+ 	-DSHOW_EVENTS		\
+ 	-DTOE			\
+-	-Idrivers/staging/brcm80211/brcmfmac		\
+-	-Idrivers/staging/brcm80211/include		\
+-	-Idrivers/staging/brcm80211/util
++	-I$(obj)		\
++	-I$(obj)/../include		\
++	-I$(obj)/../util
+ 
+ DHDOFILES = dhd_linux.o ../util/linux_osl.o ../util/bcmutils.o dhd_common.o dhd_custom_gpio.o	\
+ 	wl_iw.o wl_cfg80211.o ../util/siutils.o ../util/sbutils.o ../util/aiutils.o ../util/hndpmu.o ../util/bcmwifi.o dhd_sdio.o	\
