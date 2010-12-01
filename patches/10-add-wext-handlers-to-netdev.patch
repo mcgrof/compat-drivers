@@ -18,7 +18,7 @@ CONFIG_WIRELESS_EXT in compat-wireless.
 
 --- a/net/wireless/core.c
 +++ b/net/wireless/core.c
-@@ -366,10 +366,6 @@ struct wiphy *wiphy_new(const struct cfg
+@@ -367,10 +367,6 @@ struct wiphy *wiphy_new(const struct cfg
  	INIT_LIST_HEAD(&rdev->bss_list);
  	INIT_WORK(&rdev->scan_done_wk, __cfg80211_scan_done);
  

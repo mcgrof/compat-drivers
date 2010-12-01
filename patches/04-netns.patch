@@ -6,7 +6,7 @@ files...
 
 --- a/net/wireless/nl80211.c
 +++ b/net/wireless/nl80211.c
-@@ -3941,7 +3941,9 @@ static int nl80211_wiphy_netns(struct sk
+@@ -3970,7 +3970,9 @@ static int nl80211_wiphy_netns(struct sk
  	if (!net_eq(wiphy_net(&rdev->wiphy), net))
  		err = cfg80211_switch_netns(rdev, net);
  
@@ -18,7 +18,7 @@ files...
  
 --- a/net/wireless/core.c
 +++ b/net/wireless/core.c
-@@ -224,6 +224,7 @@ int cfg80211_dev_rename(struct cfg80211_
+@@ -225,6 +225,7 @@ int cfg80211_dev_rename(struct cfg80211_
  	return 0;
  }
  
@@ -26,7 +26,7 @@ files...
  int cfg80211_switch_netns(struct cfg80211_registered_device *rdev,
  			  struct net *net)
  {
-@@ -264,6 +265,7 @@ int cfg80211_switch_netns(struct cfg8021
+@@ -265,6 +266,7 @@ int cfg80211_switch_netns(struct cfg8021
  
  	return 0;
  }
@@ -34,7 +34,7 @@ files...
  
  static void cfg80211_rfkill_poll(struct rfkill *rfkill, void *data)
  {
-@@ -376,7 +378,9 @@ struct wiphy *wiphy_new(const struct cfg
+@@ -377,7 +379,9 @@ struct wiphy *wiphy_new(const struct cfg
  	rdev->wiphy.flags |= WIPHY_FLAG_PS_ON_BY_DEFAULT;
  #endif
  
@@ -44,7 +44,7 @@ files...
  
  	rdev->rfkill_ops.set_block = cfg80211_rfkill_set_block;
  	rdev->rfkill = rfkill_alloc(dev_name(&rdev->wiphy.dev),
-@@ -694,8 +698,10 @@ static int cfg80211_netdev_notifier_call
+@@ -695,8 +699,10 @@ static int cfg80211_netdev_notifier_call
  		mutex_lock(&rdev->devlist_mtx);
  		list_add_rcu(&wdev->list, &rdev->netdev_list);
  		rdev->devlist_generation++;

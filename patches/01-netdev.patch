@@ -156,7 +156,7 @@ without creating a headache on maintenance of the pathes.
  static struct nlmsghdr *rtnetlink_ifinfo_prep(struct net_device *dev,
  					      struct sk_buff *skb)
  {
-@@ -593,8 +617,13 @@ void wireless_send_event(struct net_devi
+@@ -595,8 +619,13 @@ void wireless_send_event(struct net_devi
  
  	skb_shinfo(skb)->frag_list = compskb;
  #endif
@@ -170,7 +170,7 @@ without creating a headache on maintenance of the pathes.
  }
  EXPORT_SYMBOL(wireless_send_event);
  
-@@ -919,8 +948,13 @@ static int wireless_process_ioctl(struct
+@@ -921,8 +950,13 @@ static int wireless_process_ioctl(struct
  			return private(dev, iwr, cmd, info, handler);
  	}
  	/* Old driver API : call driver ioctl handler */
@@ -278,7 +278,7 @@ without creating a headache on maintenance of the pathes.
  	dev->tx_queue_len = 0;
 --- a/drivers/net/wireless/orinoco/main.c
 +++ b/drivers/net/wireless/orinoco/main.c
-@@ -2268,14 +2268,18 @@ int orinoco_if_add(struct orinoco_privat
+@@ -2266,14 +2266,18 @@ int orinoco_if_add(struct orinoco_privat
  #endif
  	/* Default to standard ops if not set */
  	if (ops)
