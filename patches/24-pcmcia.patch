@@ -1385,7 +1385,7 @@
  	.suspend	= spectrum_cs_suspend,
 --- a/drivers/ssb/main.c
 +++ b/drivers/ssb/main.c
-@@ -489,7 +489,11 @@ static int ssb_devices_register(struct s
+@@ -519,7 +519,11 @@ static int ssb_devices_register(struct s
  			break;
  		case SSB_BUSTYPE_PCMCIA:
  #ifdef CONFIG_SSB_PCMCIAHOST

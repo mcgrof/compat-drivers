@@ -99,7 +99,7 @@ here still, but for now we keep this here.
  #include <asm/system.h>
 --- a/net/bluetooth/hci_sock.c
 +++ b/net/bluetooth/hci_sock.c
-@@ -561,7 +561,11 @@ drop:
+@@ -566,7 +566,11 @@ drop:
  	goto done;
  }
  
@@ -111,7 +111,7 @@ here still, but for now we keep this here.
  {
  	struct hci_ufilter uf = { .opcode = 0 };
  	struct sock *sk = sock->sk;
-@@ -716,8 +720,12 @@ static struct proto hci_sk_proto = {
+@@ -721,8 +725,12 @@ static struct proto hci_sk_proto = {
  	.obj_size	= sizeof(struct hci_pinfo)
  };
  
@@ -450,7 +450,7 @@ here still, but for now we keep this here.
  	struct bt_security sec;
 --- a/net/bluetooth/rfcomm/tty.c
 +++ b/net/bluetooth/rfcomm/tty.c
-@@ -729,8 +729,12 @@ static int rfcomm_tty_open(struct tty_st
+@@ -733,8 +733,12 @@ static int rfcomm_tty_open(struct tty_st
  	remove_wait_queue(&dev->wait, &wait);
  
  	if (err == 0)
@@ -463,7 +463,7 @@ here still, but for now we keep this here.
  
  	rfcomm_tty_copy_pending(dev);
  
-@@ -750,7 +754,11 @@ static void rfcomm_tty_close(struct tty_
+@@ -754,7 +758,11 @@ static void rfcomm_tty_close(struct tty_
  
  	if (atomic_dec_and_test(&dev->opened)) {
  		if (dev->tty_dev->parent)
@@ -477,7 +477,7 @@ here still, but for now we keep this here.
  		rfcomm_dlc_close(dev->dlc, 0);
 --- a/net/bluetooth/sco.c
 +++ b/net/bluetooth/sco.c
-@@ -428,8 +428,12 @@ static struct sock *sco_sock_alloc(struc
+@@ -430,8 +430,12 @@ static struct sock *sco_sock_alloc(struc
  	return sk;
  }
  
@@ -490,7 +490,7 @@ here still, but for now we keep this here.
  {
  	struct sock *sk;
  
-@@ -644,7 +648,11 @@ static int sco_sock_sendmsg(struct kiocb
+@@ -647,7 +651,11 @@ static int sco_sock_sendmsg(struct kiocb
  	return err;
  }
  

@@ -167,7 +167,7 @@ calls on compat code with only slight modifications.
  static int __init iwl3945_init(void)
 --- a/drivers/net/wireless/ath/ath5k/pci.c
 +++ b/drivers/net/wireless/ath/ath5k/pci.c
-@@ -285,6 +285,34 @@
+@@ -285,6 +285,34 @@ static int ath5k_pci_resume(struct devic
  	return 0;
  }
  
@@ -202,7 +202,7 @@ calls on compat code with only slight modifications.
  static SIMPLE_DEV_PM_OPS(ath5k_pm_ops, ath5k_pci_suspend, ath5k_pci_resume);
  #define ATH5K_PM_OPS	(&ath5k_pm_ops)
  #else
-@@ -296,7 +324,12 @@
+@@ -296,7 +324,12 @@ static struct pci_driver ath5k_pci_drive
  	.id_table	= ath5k_pci_id_table,
  	.probe		= ath5k_pci_probe,
  	.remove		= __devexit_p(ath5k_pci_remove),
