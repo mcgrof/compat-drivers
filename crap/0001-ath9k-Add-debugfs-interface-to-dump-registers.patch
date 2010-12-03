@@ -22,7 +22,7 @@ Signed-off-by: Felix Fietkau <nbd@openwrt.org>
  #include <asm/unaligned.h>
  
  #include "ath9k.h"
-@@ -32,6 +33,19 @@ static int ath9k_debugfs_open(struct ino
+@@ -30,6 +31,19 @@ static int ath9k_debugfs_open(struct ino
  	return 0;
  }
  
@@ -42,7 +42,7 @@ Signed-off-by: Felix Fietkau <nbd@openwrt.org>
  #ifdef CONFIG_ATH_DEBUG
  
  static ssize_t read_file_debug(struct file *file, char __user *user_buf,
-@@ -873,6 +887,40 @@ static const struct file_operations fops
+@@ -871,6 +885,40 @@ static const struct file_operations fops
  	.llseek = default_llseek,
  };
  
@@ -83,26 +83,17 @@ Signed-off-by: Felix Fietkau <nbd@openwrt.org>
  int ath9k_init_debug(struct ath_hw *ah)
  {
  	struct ath_common *common = ath9k_hw_common(ah);
-@@ -933,6 +981,11 @@ int ath9k_init_debug(struct ath_hw *ah)
+@@ -927,6 +975,10 @@ int ath9k_init_debug(struct ath_hw *ah)
+ 			sc->debug.debugfs_phy, &ah->config.cwm_ignore_extcca))
  		goto err;
  
- 	sc->debug.regidx = 0;
-+
 +	if (!debugfs_create_file("regdump", S_IRUSR, sc->debug.debugfs_phy,
 +			sc, &fops_regdump))
 +		goto err;
 +
+ 	sc->debug.regidx = 0;
  	return 0;
  err:
- 	ath9k_exit_debug(ah);
-@@ -944,6 +997,7 @@ void ath9k_exit_debug(struct ath_hw *ah)
- 	struct ath_common *common = ath9k_hw_common(ah);
- 	struct ath_softc *sc = (struct ath_softc *) common->priv;
- 
-+	debugfs_remove(sc->debug.debugfs_regdump);
- 	debugfs_remove_recursive(sc->debug.debugfs_phy);
- }
- 
 --- a/drivers/net/wireless/ath/ath9k/debug.h
 +++ b/drivers/net/wireless/ath/ath9k/debug.h
 @@ -160,6 +160,14 @@ struct ath_stats {
