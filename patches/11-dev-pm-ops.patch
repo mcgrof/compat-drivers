@@ -7,56 +7,6 @@ calls on compat code with only slight modifications.
 
 [1] http://lxr.linux.no/#linux+v2.6.29/include/linux/pm.h#L170
 
---- a/drivers/net/wireless/ath/ath5k/base.c
-+++ b/drivers/net/wireless/ath/ath5k/base.c
-@@ -3739,6 +3739,34 @@ static int ath5k_pci_resume(struct devic
- 	return 0;
- }
- 
-+#if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,29))
-+static int ath5k_pci_suspend_compat(struct pci_dev *pdev, pm_message_t state)
-+{
-+	int r;
-+
-+	r = ath5k_pci_suspend(&pdev->dev);
-+	if (r)
-+		return r;
-+
-+	pci_save_state(pdev);
-+	pci_disable_device(pdev);
-+	pci_set_power_state(pdev, PCI_D3hot);
-+	return 0;
-+}
-+
-+static int ath5k_pci_resume_compat(struct pci_dev *pdev)
-+{
-+	int r;
-+
-+	pci_restore_state(pdev);
-+	r = pci_enable_device(pdev);
-+	if (r)
-+		return r;
-+
-+	return ath5k_pci_resume(&pdev->dev);
-+}
-+#endif
-+
- static SIMPLE_DEV_PM_OPS(ath5k_pm_ops, ath5k_pci_suspend, ath5k_pci_resume);
- #define ATH5K_PM_OPS	(&ath5k_pm_ops)
- #else
-@@ -3750,7 +3778,12 @@ static struct pci_driver ath5k_pci_drive
- 	.id_table	= ath5k_pci_id_table,
- 	.probe		= ath5k_pci_probe,
- 	.remove		= __devexit_p(ath5k_pci_remove),
-+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
- 	.driver.pm	= ATH5K_PM_OPS,
-+#elif defined(CONFIG_PM_SLEEP)
-+	.suspend        = ath5k_pci_suspend_compat,
-+	.resume         = ath5k_pci_resume_compat,
-+#endif
- };
- 
- /*
 --- a/drivers/net/wireless/ath/ath9k/pci.c
 +++ b/drivers/net/wireless/ath/ath9k/pci.c
 @@ -300,14 +300,36 @@ static int ath_pci_resume(struct device
@@ -215,3 +165,53 @@ calls on compat code with only slight modifications.
  };
  
  static int __init iwl3945_init(void)
+--- a/drivers/net/wireless/ath/ath5k/pci.c
++++ b/drivers/net/wireless/ath/ath5k/pci.c
+@@ -285,6 +285,34 @@
+ 	return 0;
+ }
+ 
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,29))
++static int ath5k_pci_suspend_compat(struct pci_dev *pdev, pm_message_t state)
++{
++	int r;
++
++	r = ath5k_pci_suspend(&pdev->dev);
++	if (r)
++		return r;
++
++	pci_save_state(pdev);
++	pci_disable_device(pdev);
++	pci_set_power_state(pdev, PCI_D3hot);
++	return 0;
++}
++
++static int ath5k_pci_resume_compat(struct pci_dev *pdev)
++{
++	int r;
++
++	pci_restore_state(pdev);
++	r = pci_enable_device(pdev);
++	if (r)
++		return r;
++
++	return ath5k_pci_resume(&pdev->dev);
++}
++#endif
++
+ static SIMPLE_DEV_PM_OPS(ath5k_pm_ops, ath5k_pci_suspend, ath5k_pci_resume);
+ #define ATH5K_PM_OPS	(&ath5k_pm_ops)
+ #else
+@@ -296,7 +324,12 @@
+ 	.id_table	= ath5k_pci_id_table,
+ 	.probe		= ath5k_pci_probe,
+ 	.remove		= __devexit_p(ath5k_pci_remove),
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
+ 	.driver.pm	= ATH5K_PM_OPS,
++#elif defined(CONFIG_PM_SLEEP)
++	.suspend        = ath5k_pci_suspend_compat,
++	.resume         = ath5k_pci_resume_compat,
++#endif
+ };
+ 
+ /*
