@@ -13,7 +13,7 @@ only the wireless stuff.
  obj-$(CONFIG_EEPROM_93CX6)	+= eeprom_93cx6.o
 --- a/drivers/net/usb/Makefile
 +++ b/drivers/net/usb/Makefile
-@@ -2,28 +2,7 @@
+@@ -2,29 +2,7 @@
  # Makefile for USB Network drivers
  #
  
@@ -41,6 +41,7 @@ only the wireless stuff.
 -obj-$(CONFIG_USB_IPHETH)	+= ipheth.o
 -obj-$(CONFIG_USB_SIERRA_NET)	+= sierra_net.o
 -obj-$(CONFIG_USB_NET_CX82310_ETH)	+= cx82310_eth.o
+-obj-$(CONFIG_USB_NET_CDC_NCM)	+= cdc_ncm.o
  
 --- a/drivers/net/wireless/Makefile
 +++ b/drivers/net/wireless/Makefile
@@ -88,5 +89,5 @@ only the wireless stuff.
 -obj-$(CONFIG_WEXT_PRIV) += wext-priv.o
 -
  cfg80211-y += core.o sysfs.o radiotap.o util.o reg.o scan.o nl80211.o
- cfg80211-y += mlme.o ibss.o sme.o chan.o ethtool.o
+ cfg80211-y += mlme.o ibss.o sme.o chan.o ethtool.o mesh.o
  cfg80211-$(CONFIG_CFG80211_DEBUGFS) += debugfs.o
