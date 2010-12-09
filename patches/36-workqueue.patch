@@ -2,7 +2,7 @@ Backport commit 99b88a0ecbdbc6df03527292571b2b442965814a
 
 --- a/net/mac80211/main.c
 +++ b/net/mac80211/main.c
-@@ -755,7 +755,11 @@ int ieee80211_register_hw(struct ieee802
+@@ -758,7 +758,11 @@ int ieee80211_register_hw(struct ieee802
  		hw->queues = IEEE80211_MAX_QUEUES;
  
  	local->workqueue =
@@ -14,7 +14,7 @@ Backport commit 99b88a0ecbdbc6df03527292571b2b442965814a
  	if (!local->workqueue) {
  		result = -ENOMEM;
  		goto fail_workqueue;
-@@ -969,6 +973,10 @@ static void __exit ieee80211_exit(void)
+@@ -972,6 +976,10 @@ static void __exit ieee80211_exit(void)
  	rc80211_minstrel_ht_exit();
  	rc80211_minstrel_exit();
  
