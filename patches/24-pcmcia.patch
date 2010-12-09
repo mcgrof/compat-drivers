@@ -1134,21 +1134,10 @@
  	ret = pcmcia_loop_config(link, orinoco_cs_config_check, NULL);
  	if (ret) {
  		if (!ignore_cis_vcc)
-@@ -151,15 +260,23 @@ orinoco_cs_config(struct pcmcia_device *
+@@ -151,8 +260,12 @@ orinoco_cs_config(struct pcmcia_device *
  		goto failed;
  	}
  
-+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,35))
- 	ret = pcmcia_request_irq(link, orinoco_interrupt);
-+#else
-+	ret = pcmcia_request_irq(link, &link->irq);
-+#endif
- 	if (ret)
- 		goto failed;
- 
- 	/* We initialize the hermes structure before completing PCMCIA
- 	 * configuration just in case the interrupt handler gets
- 	 * called. */
 +#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,36)
  	mem = ioport_map(link->resource[0]->start,
  			resource_size(link->resource[0]));
@@ -1156,6 +1145,18 @@
 +	mem = ioport_map(link->io.BasePort1, link->io.NumPorts1);
 +#endif
  	if (!mem)
+ 		goto failed;
+ 
+@@ -161,7 +274,11 @@ orinoco_cs_config(struct pcmcia_device *
+ 	 * called. */
+ 	hermes_struct_init(hw, mem, HERMES_16BIT_REGSPACING);
+ 
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,35))
+ 	ret = pcmcia_request_irq(link, orinoco_interrupt);
++#else
++	ret = pcmcia_request_irq(link, &link->irq);
++#endif
+ 	if (ret)
  		goto failed;
  
 @@ -176,8 +293,16 @@ orinoco_cs_config(struct pcmcia_device *
@@ -1328,21 +1329,10 @@
  	ret = pcmcia_loop_config(link, spectrum_cs_config_check, NULL);
  	if (ret) {
  		if (!ignore_cis_vcc)
-@@ -214,15 +319,23 @@ spectrum_cs_config(struct pcmcia_device
+@@ -214,8 +319,12 @@ spectrum_cs_config(struct pcmcia_device
  		goto failed;
  	}
  
-+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,35))
- 	ret = pcmcia_request_irq(link, orinoco_interrupt);
-+#else
-+	ret = pcmcia_request_irq(link, &link->irq);
-+#endif
- 	if (ret)
- 		goto failed;
- 
- 	/* We initialize the hermes structure before completing PCMCIA
- 	 * configuration just in case the interrupt handler gets
- 	 * called. */
 +#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,36)
  	mem = ioport_map(link->resource[0]->start,
  			resource_size(link->resource[0]));
@@ -1350,6 +1340,18 @@
 +	mem = ioport_map(link->io.BasePort1, link->io.NumPorts1);
 +#endif
  	if (!mem)
+ 		goto failed;
+ 
+@@ -225,7 +334,11 @@ spectrum_cs_config(struct pcmcia_device
+ 	hermes_struct_init(hw, mem, HERMES_16BIT_REGSPACING);
+ 	hw->eeprom_pda = true;
+ 
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,35))
+ 	ret = pcmcia_request_irq(link, orinoco_interrupt);
++#else
++	ret = pcmcia_request_irq(link, &link->irq);
++#endif
+ 	if (ret)
  		goto failed;
  
 @@ -244,8 +357,16 @@ spectrum_cs_config(struct pcmcia_device
