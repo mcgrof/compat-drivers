@@ -1,0 +1,28 @@
+From c8b576061d87e2a4fb100e70c6a6dae189b3a310 Mon Sep 17 00:00:00 2001
+From: Luis R. Rodriguez <lrodriguez@atheros.com>
+Date: Tue, 23 Nov 2010 15:05:01 -0800
+Subject: [PATCH] ath9k: avoid aggregation for VO traffic
+
+This should help with latency issues which can happen when
+using aggregation.
+
+Cc: Matt Smith <matt.smith@atheros.com>
+Cc: Senthil Balasubramanian <senthilkumar@atheros.com>
+Signed-off-by: Luis R. Rodriguez <lrodriguez@atheros.com>
+Signed-off-by: John W. Linville <linville@tuxdriver.com>
+---
+ drivers/net/wireless/ath/ath9k/rc.c |    3 ++-
+ 1 files changed, 2 insertions(+), 1 deletions(-)
+
+--- a/drivers/net/wireless/ath/ath9k/rc.c
++++ b/drivers/net/wireless/ath/ath9k/rc.c
+@@ -1398,7 +1398,8 @@ static void ath_tx_status(void *priv, st
+ 	/* Check if aggregation has to be enabled for this tid */
+ 	if (conf_is_ht(&sc->hw->conf) &&
+ 	    !(skb->protocol == cpu_to_be16(ETH_P_PAE))) {
+-		if (ieee80211_is_data_qos(fc)) {
++		if (ieee80211_is_data_qos(fc) &&
++		    skb_get_queue_mapping(skb) != IEEE80211_AC_VO) {
+ 			u8 *qc, tid;
+ 			struct ath_node *an;
+ 

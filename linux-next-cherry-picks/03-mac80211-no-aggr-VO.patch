@@ -1,0 +1,29 @@
+From 48124d1a91fb77defc9734b4556350d59671fb2c Mon Sep 17 00:00:00 2001
+From: Luis R. Rodriguez <lrodriguez@atheros.com>
+Date: Tue, 23 Nov 2010 15:05:02 -0800
+Subject: [PATCH] mac80211: avoid aggregation for VO traffic
+
+This should help with latency issues which can happen when
+using aggregation.
+
+Cc: Felix Fietkau <nbd@openwrt.org>
+Cc: Matt Smith <matt.smith@atheros.com>
+Cc: Senthil Balasubramanian <senthilkumar@atheros.com>
+Signed-off-by: Luis R. Rodriguez <lrodriguez@atheros.com>
+Signed-off-by: John W. Linville <linville@tuxdriver.com>
+---
+ net/mac80211/rc80211_minstrel_ht.c |    3 +++
+ 1 files changed, 3 insertions(+), 0 deletions(-)
+
+--- a/net/mac80211/rc80211_minstrel_ht.c
++++ b/net/mac80211/rc80211_minstrel_ht.c
+@@ -371,6 +371,9 @@ minstrel_aggr_check(struct minstrel_priv
+ 	if (likely(sta->ampdu_mlme.tid_tx[tid]))
+ 		return;
+ 
++	if (skb_get_queue_mapping(skb) == IEEE80211_AC_VO)
++		return;
++
+ 	ieee80211_start_tx_ba_session(pubsta, tid);
+ }
+ 
