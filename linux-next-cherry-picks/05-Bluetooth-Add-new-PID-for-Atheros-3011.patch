@@ -1,0 +1,49 @@
+From be93112accb42c5586a459683d71975cc70673ca Mon Sep 17 00:00:00 2001
+From: Bala Shanmugam <sbalashanmugam@atheros.com>
+Date: Fri, 26 Nov 2010 17:35:46 +0530
+Subject: [PATCH] Bluetooth: Add new PID for Atheros 3011
+
+Atheros 3011 has small sflash firmware and needs to be
+blacklisted in transport driver to load actual firmware
+in DFU driver.
+
+Signed-off-by: Bala Shanmugam <sbalashanmugam@atheros.com>
+Acked-by: Marcel Holtmann <marcel@holtmann.org>
+Signed-off-by: Gustavo F. Padovan <padovan@profusion.mobi>
+---
+ drivers/bluetooth/ath3k.c |    4 ++++
+ drivers/bluetooth/btusb.c |    3 +++
+ 2 files changed, 7 insertions(+), 0 deletions(-)
+
+diff --git a/drivers/bluetooth/ath3k.c b/drivers/bluetooth/ath3k.c
+index 128cae4..949ed09 100644
+--- a/drivers/bluetooth/ath3k.c
++++ b/drivers/bluetooth/ath3k.c
+@@ -35,6 +35,10 @@
+ static struct usb_device_id ath3k_table[] = {
+ 	/* Atheros AR3011 */
+ 	{ USB_DEVICE(0x0CF3, 0x3000) },
++
++	/* Atheros AR3011 with sflash firmware*/
++	{ USB_DEVICE(0x0CF3, 0x3002) },
++
+ 	{ }	/* Terminating entry */
+ };
+ 
+diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+index d323c1a..1da773f 100644
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -99,6 +99,9 @@ static struct usb_device_id blacklist_table[] = {
+ 	/* Broadcom BCM2033 without firmware */
+ 	{ USB_DEVICE(0x0a5c, 0x2033), .driver_info = BTUSB_IGNORE },
+ 
++	/* Atheros 3011 with sflash firmware */
++	{ USB_DEVICE(0x0cf3, 0x3002), .driver_info = BTUSB_IGNORE },
++
+ 	/* Broadcom BCM2035 */
+ 	{ USB_DEVICE(0x0a5c, 0x2035), .driver_info = BTUSB_WRONG_SCO_MTU },
+ 	{ USB_DEVICE(0x0a5c, 0x200a), .driver_info = BTUSB_WRONG_SCO_MTU },
+-- 
+1.7.3.2.90.gd4c43
+
