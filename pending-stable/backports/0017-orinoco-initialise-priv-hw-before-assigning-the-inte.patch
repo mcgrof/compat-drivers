@@ -1,0 +1,104 @@
+From 229bd792be0bad245b78ed8f119952733a4752e5 Mon Sep 17 00:00:00 2001
+From: David Kilroy <kilroyd@googlemail.com>
+Date: Tue, 7 Dec 2010 18:50:42 +0000
+Subject: [PATCH 17/20] orinoco: initialise priv->hw before assigning the interrupt
+
+The interrupt handler takes a lock - but since commit bcad6e80f3f this
+lock goes through an indirection specified in the hermes_t structure.
+We must therefore initialise the structure before setting up the
+interrupt handler.
+
+Fix orinoco_cs and spectrum_cs
+
+<https://bugzilla.kernel.org/show_bug.cgi?id=23932>
+
+Bisected by: Matt Domsch <Matt_Domsch@dell.com>
+Signed-off by: David Kilroy <kilroyd@googlemail.com>
+Cc: stable@kernel.org
+Signed-off-by: John W. Linville <linville@tuxdriver.com>
+---
+ drivers/net/wireless/orinoco/orinoco_cs.c  |   14 +++++++-------
+ drivers/net/wireless/orinoco/spectrum_cs.c |   14 +++++++-------
+ 2 files changed, 14 insertions(+), 14 deletions(-)
+
+--- a/drivers/net/wireless/orinoco/orinoco_cs.c
++++ b/drivers/net/wireless/orinoco/orinoco_cs.c
+@@ -260,17 +260,6 @@ orinoco_cs_config(struct pcmcia_device *
+ 		goto failed;
+ 	}
+ 
+-#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,35))
+-	ret = pcmcia_request_irq(link, orinoco_interrupt);
+-#else
+-	ret = pcmcia_request_irq(link, &link->irq);
+-#endif
+-	if (ret)
+-		goto failed;
+-
+-	/* We initialize the hermes structure before completing PCMCIA
+-	 * configuration just in case the interrupt handler gets
+-	 * called. */
+ #if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,36)
+ 	mem = ioport_map(link->resource[0]->start,
+ 			resource_size(link->resource[0]));
+@@ -280,8 +269,19 @@ orinoco_cs_config(struct pcmcia_device *
+ 	if (!mem)
+ 		goto failed;
+ 
++	/* We initialize the hermes structure before completing PCMCIA
++	 * configuration just in case the interrupt handler gets
++	 * called. */
+ 	hermes_struct_init(hw, mem, HERMES_16BIT_REGSPACING);
+ 
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,35))
++	ret = pcmcia_request_irq(link, orinoco_interrupt);
++#else
++	ret = pcmcia_request_irq(link, &link->irq);
++#endif
++	if (ret)
++		goto failed;
++
+ 	ret = pcmcia_enable_device(link);
+ 	if (ret)
+ 		goto failed;
+--- a/drivers/net/wireless/orinoco/spectrum_cs.c
++++ b/drivers/net/wireless/orinoco/spectrum_cs.c
+@@ -319,17 +319,6 @@
+ 		goto failed;
+ 	}
+ 
+-#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,35))
+-	ret = pcmcia_request_irq(link, orinoco_interrupt);
+-#else
+-	ret = pcmcia_request_irq(link, &link->irq);
+-#endif
+-	if (ret)
+-		goto failed;
+-
+-	/* We initialize the hermes structure before completing PCMCIA
+-	 * configuration just in case the interrupt handler gets
+-	 * called. */
+ #if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,36)
+ 	mem = ioport_map(link->resource[0]->start,
+ 			resource_size(link->resource[0]));
+@@ -339,9 +328,20 @@
+ 	if (!mem)
+ 		goto failed;
+ 
++	/* We initialize the hermes structure before completing PCMCIA
++	 * configuration just in case the interrupt handler gets
++	 * called. */
+ 	hermes_struct_init(hw, mem, HERMES_16BIT_REGSPACING);
+ 	hw->eeprom_pda = true;
+ 
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,35))
++	ret = pcmcia_request_irq(link, orinoco_interrupt);
++#else
++	ret = pcmcia_request_irq(link, &link->irq);
++#endif
++	if (ret)
++		goto failed;
++
+ 	ret = pcmcia_enable_device(link);
+ 	if (ret)
+ 		goto failed;
