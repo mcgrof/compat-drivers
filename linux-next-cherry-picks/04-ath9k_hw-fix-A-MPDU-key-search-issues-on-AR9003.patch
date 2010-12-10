@@ -29,7 +29,7 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  
 --- a/drivers/net/wireless/ath/ath9k/reg.h
 +++ b/drivers/net/wireless/ath/ath9k/reg.h
-@@ -1572,6 +1572,7 @@ enum {
+@@ -1574,6 +1574,7 @@ enum {
  #define AR_PCU_TBTT_PROTECT        0x00200000
  #define AR_PCU_CLEAR_VMF           0x01000000
  #define AR_PCU_CLEAR_BA_VALID      0x04000000

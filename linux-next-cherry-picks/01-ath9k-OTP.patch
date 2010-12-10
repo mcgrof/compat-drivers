@@ -18,7 +18,7 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
 
 --- a/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c
 +++ b/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c
-@@ -748,6 +748,36 @@ error:
+@@ -753,6 +753,36 @@ error:
  	return false;
  }
  
@@ -55,7 +55,7 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  static void ar9300_comp_hdr_unpack(u8 *best, int *code, int *reference,
  				   int *length, int *major, int *minor)
  {
-@@ -863,6 +893,26 @@ static int ar9300_compress_decision(stru
+@@ -868,6 +898,26 @@ static int ar9300_compress_decision(stru
  	return 0;
  }
  
@@ -82,7 +82,7 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  /*
   * Read the configuration data from the eeprom.
   * The data can be put in any specified memory buffer.
-@@ -883,6 +933,7 @@ static int ar9300_eeprom_restore_interna
+@@ -888,6 +938,7 @@ static int ar9300_eeprom_restore_interna
  	int it;
  	u16 checksum, mchecksum;
  	struct ath_common *common = ath9k_hw_common(ah);
@@ -90,7 +90,7 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  
  	word = kzalloc(2048, GFP_KERNEL);
  	if (!word)
-@@ -890,14 +941,42 @@ static int ar9300_eeprom_restore_interna
+@@ -895,14 +946,42 @@ static int ar9300_eeprom_restore_interna
  
  	memcpy(mptr, &ar9300_default, mdata_size);
  
@@ -137,7 +137,7 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  			break;
  
  		ar9300_comp_hdr_unpack(word, &code, &reference,
-@@ -914,8 +993,7 @@ static int ar9300_eeprom_restore_interna
+@@ -919,8 +998,7 @@ static int ar9300_eeprom_restore_interna
  		}
  
  		osize = length;
