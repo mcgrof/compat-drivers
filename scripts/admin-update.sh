@@ -440,7 +440,7 @@ if [[ "$GET_STABLE_PENDING" = y ]]; then
 	cd $NEXT_TREE
 	PENDING_STABLE_DIR="pending-stable/"
 
-	rm -rf $CHERRY_PICK_DIR
+	rm -rf $PENDING_STABLE_DIR
 	echo -e "${GREEN}Generating stable cherry picks... ${NORMAL}"
 	git format-patch --grep="stable@kernel.org" -o $PENDING_STABLE_DIR ${LAST_STABLE_UPDATE}.. $WSTABLE
 	if [ ! -d ${LAST_DIR}/${PENDING_STABLE_DIR} ]; then
