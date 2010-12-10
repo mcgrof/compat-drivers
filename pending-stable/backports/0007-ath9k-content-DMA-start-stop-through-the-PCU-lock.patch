@@ -237,11 +237,9 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  	ath9k_ps_restore(sc);
  
  	/* Finally, put the chip in FULL SLEEP mode */
-diff --git a/drivers/net/wireless/ath/ath9k/xmit.c b/drivers/net/wireless/ath/ath9k/xmit.c
-index d97b7a3..2bc422e 100644
 --- a/drivers/net/wireless/ath/ath9k/xmit.c
 +++ b/drivers/net/wireless/ath/ath9k/xmit.c
-@@ -1148,13 +1148,11 @@ void ath_drain_all_txq(struct ath_softc *sc, bool retry_tx)
+@@ -1148,13 +1148,11 @@ void ath_drain_all_txq(struct ath_softc
  		ath_print(common, ATH_DBG_FATAL,
  			  "Failed to stop TX DMA. Resetting hardware!\n");
  
@@ -255,6 +253,3 @@ index d97b7a3..2bc422e 100644
  	}
  
  	for (i = 0; i < ATH9K_NUM_TX_QUEUES; i++) {
--- 
-1.7.3.2.90.gd4c43
-

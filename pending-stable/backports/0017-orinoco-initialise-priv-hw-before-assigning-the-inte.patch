@@ -63,7 +63,7 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  		goto failed;
 --- a/drivers/net/wireless/orinoco/spectrum_cs.c
 +++ b/drivers/net/wireless/orinoco/spectrum_cs.c
-@@ -319,17 +319,6 @@
+@@ -319,17 +319,6 @@ spectrum_cs_config(struct pcmcia_device
  		goto failed;
  	}
  
@@ -81,7 +81,7 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  #if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,36)
  	mem = ioport_map(link->resource[0]->start,
  			resource_size(link->resource[0]));
-@@ -339,9 +328,20 @@
+@@ -339,9 +328,20 @@ spectrum_cs_config(struct pcmcia_device
  	if (!mem)
  		goto failed;
  

@@ -1,0 +1,63 @@
+From 7ca43d03b1291481bdf894bbaec5d580e7684e7d Mon Sep 17 00:00:00 2001
+From: Luis R. Rodriguez <lrodriguez@atheros.com>
+Date: Wed, 20 Oct 2010 10:18:53 -0700
+Subject: [PATCH 01/20] cfg80211: pass the reg hint initiator to helpers
+
+This is required later.
+
+Cc: Easwar Krishnan <easwar.krishnan@atheros.com>
+Cc: stable@kernel.org
+signed-off-by: Luis R. Rodriguez <lrodriguez@atheros.com>
+
+Signed-off-by: John W. Linville <linville@tuxdriver.com>
+---
+ net/wireless/reg.c |   12 ++++++++----
+ 1 files changed, 8 insertions(+), 4 deletions(-)
+
+diff --git a/net/wireless/reg.c b/net/wireless/reg.c
+index 4b9f891..b64596f 100644
+--- a/net/wireless/reg.c
++++ b/net/wireless/reg.c
+@@ -720,7 +720,9 @@ EXPORT_SYMBOL(freq_reg_info);
+  * on the wiphy with the target_bw specified. Then we can simply use
+  * that below for the desired_bw_khz below.
+  */
+-static void handle_channel(struct wiphy *wiphy, enum ieee80211_band band,
++static void handle_channel(struct wiphy *wiphy,
++			   enum nl80211_reg_initiator initiator,
++			   enum ieee80211_band band,
+ 			   unsigned int chan_idx)
+ {
+ 	int r;
+@@ -784,7 +786,9 @@ static void handle_channel(struct wiphy *wiphy, enum ieee80211_band band,
+ 		chan->max_power = (int) MBM_TO_DBM(power_rule->max_eirp);
+ }
+ 
+-static void handle_band(struct wiphy *wiphy, enum ieee80211_band band)
++static void handle_band(struct wiphy *wiphy,
++			enum ieee80211_band band,
++			enum nl80211_reg_initiator initiator)
+ {
+ 	unsigned int i;
+ 	struct ieee80211_supported_band *sband;
+@@ -793,7 +797,7 @@ static void handle_band(struct wiphy *wiphy, enum ieee80211_band band)
+ 	sband = wiphy->bands[band];
+ 
+ 	for (i = 0; i < sband->n_channels; i++)
+-		handle_channel(wiphy, band, i);
++		handle_channel(wiphy, initiator, band, i);
+ }
+ 
+ static bool ignore_reg_update(struct wiphy *wiphy,
+@@ -1030,7 +1034,7 @@ void wiphy_update_regulatory(struct wiphy *wiphy,
+ 		goto out;
+ 	for (band = 0; band < IEEE80211_NUM_BANDS; band++) {
+ 		if (wiphy->bands[band])
+-			handle_band(wiphy, band);
++			handle_band(wiphy, band, initiator);
+ 	}
+ out:
+ 	reg_process_beacons(wiphy);
+-- 
+1.7.3.2.90.gd4c43
+

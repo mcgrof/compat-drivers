@@ -1,0 +1,61 @@
+From 0a54917c3fc295cb61f3fb52373c173fd3b69f48 Mon Sep 17 00:00:00 2001
+From: David Kilroy <kilroyd@googlemail.com>
+Date: Sun, 5 Dec 2010 15:43:55 +0000
+Subject: [PATCH 20/20] orinoco: fix TKIP countermeasure behaviour
+
+Enable the port when disabling countermeasures, and disable it on
+enabling countermeasures.
+
+This bug causes the response of the system to certain attacks to be
+ineffective.
+
+It also prevents wpa_supplicant from getting scan results, as
+wpa_supplicant disables countermeasures on startup - preventing the
+hardware from scanning.
+
+wpa_supplicant works with ap_mode=2 despite this bug because the commit
+handler re-enables the port.
+
+The log tends to look like:
+
+State: DISCONNECTED -> SCANNING
+Starting AP scan for wildcard SSID
+Scan requested (ret=0) - scan timeout 5 seconds
+EAPOL: disable timer tick
+EAPOL: Supplicant port status: Unauthorized
+Scan timeout - try to get results
+Failed to get scan results
+Failed to get scan results - try scanning again
+Setting scan request: 1 sec 0 usec
+Starting AP scan for wildcard SSID
+Scan requested (ret=-1) - scan timeout 5 seconds
+Failed to initiate AP scan.
+
+Reported by: Giacomo Comes <comes@naic.edu>
+Signed-off by: David Kilroy <kilroyd@googlemail.com>
+Cc: stable@kernel.org
+Signed-off-by: John W. Linville <linville@tuxdriver.com>
+---
+ drivers/net/wireless/orinoco/wext.c |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/wireless/orinoco/wext.c b/drivers/net/wireless/orinoco/wext.c
+index 93505f9..e5afabe 100644
+--- a/drivers/net/wireless/orinoco/wext.c
++++ b/drivers/net/wireless/orinoco/wext.c
+@@ -911,10 +911,10 @@ static int orinoco_ioctl_set_auth(struct net_device *dev,
+ 		 */
+ 		if (param->value) {
+ 			priv->tkip_cm_active = 1;
+-			ret = hermes_enable_port(hw, 0);
++			ret = hermes_disable_port(hw, 0);
+ 		} else {
+ 			priv->tkip_cm_active = 0;
+-			ret = hermes_disable_port(hw, 0);
++			ret = hermes_enable_port(hw, 0);
+ 		}
+ 		break;
+ 
+-- 
+1.7.3.2.90.gd4c43
+

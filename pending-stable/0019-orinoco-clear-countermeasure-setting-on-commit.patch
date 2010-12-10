@@ -1,0 +1,42 @@
+From ba34fcee476d11e7c9df95932787a22a96ff6e68 Mon Sep 17 00:00:00 2001
+From: David Kilroy <kilroyd@googlemail.com>
+Date: Sun, 5 Dec 2010 15:45:58 +0000
+Subject: [PATCH 19/20] orinoco: clear countermeasure setting on commit
+
+... and interface up.
+
+In these situations, you are usually trying to connect to a new AP, so
+keeping TKIP countermeasures active is confusing. This is already how
+the driver behaves (inadvertently). However, querying SIOCGIWAUTH may
+tell userspace that countermeasures are active when they aren't.
+
+Clear the setting so that the reporting matches what the driver has
+done..
+
+Signed-off by: David Kilroy <kilroyd@googlemail.com>
+Cc: stable@kernel.org
+Signed-off-by: John W. Linville <linville@tuxdriver.com>
+---
+ drivers/net/wireless/orinoco/main.c |    6 ++++++
+ 1 files changed, 6 insertions(+), 0 deletions(-)
+
+diff --git a/drivers/net/wireless/orinoco/main.c b/drivers/net/wireless/orinoco/main.c
+index fa0cf74..f3d396e 100644
+--- a/drivers/net/wireless/orinoco/main.c
++++ b/drivers/net/wireless/orinoco/main.c
+@@ -1811,6 +1811,12 @@ static int __orinoco_commit(struct orinoco_private *priv)
+ 	struct net_device *dev = priv->ndev;
+ 	int err = 0;
+ 
++	/* If we've called commit, we are reconfiguring or bringing the
++	 * interface up. Maintaining countermeasures across this would
++	 * be confusing, so note that we've disabled them. The port will
++	 * be enabled later in orinoco_commit or __orinoco_up. */
++	priv->tkip_cm_active = 0;
++
+ 	err = orinoco_hw_program_rids(priv);
+ 
+ 	/* FIXME: what about netif_tx_lock */
+-- 
+1.7.3.2.90.gd4c43
+

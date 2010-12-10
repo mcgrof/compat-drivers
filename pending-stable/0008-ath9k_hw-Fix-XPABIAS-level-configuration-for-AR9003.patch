@@ -1,0 +1,52 @@
+From 52a0e2477dac2106bc1688cbe9615cdafc9deb7d Mon Sep 17 00:00:00 2001
+From: Vasanthakumar Thiagarajan <vasanth@atheros.com>
+Date: Wed, 10 Nov 2010 05:03:11 -0800
+Subject: [PATCH 08/20] ath9k_hw: Fix XPABIAS level configuration for AR9003
+
+Improper configuration of 0x16288 and 0x16290 would affect transmission.
+
+Cc:stable@kernel.org
+Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
+Signed-off-by: John W. Linville <linville@tuxdriver.com>
+---
+ drivers/net/wireless/ath/ath9k/ar9003_eeprom.c |   14 ++++++++------
+ 1 files changed, 8 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c b/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c
+index 3d467fc..17f73e4 100644
+--- a/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c
++++ b/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c
+@@ -22,12 +22,14 @@
+ #define COMP_CKSUM_LEN 2
+ 
+ #define AR_CH0_TOP (0x00016288)
+-#define AR_CH0_TOP_XPABIASLVL (0x3)
++#define AR_CH0_TOP_XPABIASLVL (0x300)
+ #define AR_CH0_TOP_XPABIASLVL_S (8)
+ 
+ #define AR_CH0_THERM (0x00016290)
+-#define AR_CH0_THERM_SPARE (0x3f)
+-#define AR_CH0_THERM_SPARE_S (0)
++#define AR_CH0_THERM_XPABIASLVL_MSB 0x3
++#define AR_CH0_THERM_XPABIASLVL_MSB_S 0
++#define AR_CH0_THERM_XPASHORT2GND 0x4
++#define AR_CH0_THERM_XPASHORT2GND_S 2
+ 
+ #define AR_SWITCH_TABLE_COM_ALL (0xffff)
+ #define AR_SWITCH_TABLE_COM_ALL_S (0)
+@@ -3336,9 +3338,9 @@ static s32 ar9003_hw_xpa_bias_level_get(struct ath_hw *ah, bool is2ghz)
+ static void ar9003_hw_xpa_bias_level_apply(struct ath_hw *ah, bool is2ghz)
+ {
+ 	int bias = ar9003_hw_xpa_bias_level_get(ah, is2ghz);
+-	REG_RMW_FIELD(ah, AR_CH0_TOP, AR_CH0_TOP_XPABIASLVL, (bias & 0x3));
+-	REG_RMW_FIELD(ah, AR_CH0_THERM, AR_CH0_THERM_SPARE,
+-		      ((bias >> 2) & 0x3));
++	REG_RMW_FIELD(ah, AR_CH0_TOP, AR_CH0_TOP_XPABIASLVL, bias);
++	REG_RMW_FIELD(ah, AR_CH0_THERM, AR_CH0_THERM_XPABIASLVL_MSB, bias >> 2);
++	REG_RMW_FIELD(ah, AR_CH0_THERM, AR_CH0_THERM_XPASHORT2GND, 1);
+ }
+ 
+ static u32 ar9003_hw_ant_ctrl_common_get(struct ath_hw *ah, bool is2ghz)
+-- 
+1.7.3.2.90.gd4c43
+
