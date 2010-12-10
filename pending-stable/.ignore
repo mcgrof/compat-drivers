@@ -1,1 +1,4 @@
-ath9k-lock-reset-and-PCU-start-stopping.patch
+ath9k_hw-fix-potential-spurious-tx-error-bit-interpr.patch
+ath9k-content-DMA-start-stop-through-the-PCU-lock.patch
+ath9k-Fix-STA-disconnect-issue-due-to-received-MIC-f.patch
+orinoco-initialise-priv-hw-before-assigning-the-inte.patch
