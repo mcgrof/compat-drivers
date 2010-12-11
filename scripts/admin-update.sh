@@ -511,7 +511,7 @@ for dir in $EXTRA_PATCHES; do
 		patchRefresh $dir
 	fi
 
-	FOUND=$(find $dir/ -name \*.patch | wc -l)
+	FOUND=$(find $dir/ -maxdepth 1 -name \*.patch | wc -l)
 	if [ $FOUND -eq 0 ]; then
 		continue
 	fi
