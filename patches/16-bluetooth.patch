@@ -3,7 +3,7 @@ here still, but for now we keep this here.
 
 --- a/drivers/bluetooth/hci_ldisc.c
 +++ b/drivers/bluetooth/hci_ldisc.c
-@@ -275,8 +275,13 @@ static int hci_uart_tty_open(struct tty_
+@@ -282,8 +282,13 @@ static int hci_uart_tty_open(struct tty_
  	/* FIXME: why is this needed. Note don't use ldisc_ref here as the
  	   open path is before the ldisc is referencable */
  
@@ -17,7 +17,7 @@ here still, but for now we keep this here.
  	tty_driver_flush_buffer(tty);
  
  	return 0;
-@@ -488,7 +493,11 @@ static int hci_uart_tty_ioctl(struct tty
+@@ -495,7 +500,11 @@ static int hci_uart_tty_ioctl(struct tty
  		return hu->hdev_flags;
  
  	default:
@@ -56,7 +56,7 @@ here still, but for now we keep this here.
  		bt_sock_reclassify_lock(sock, proto);
  		module_put(bt_proto[proto]->owner);
  	}
-@@ -257,7 +265,11 @@ int bt_sock_recvmsg(struct kiocb *iocb, 
+@@ -257,7 +265,11 @@ int bt_sock_recvmsg(struct kiocb *iocb,
  	skb_reset_transport_header(skb);
  	err = skb_copy_datagram_iovec(skb, 0, msg->msg_iov, copied);
  	if (err == 0)
@@ -150,7 +150,7 @@ here still, but for now we keep this here.
  	&bt_link_group,
  	NULL
  };
-@@ -129,7 +133,11 @@ static void del_conn(struct work_struct 
+@@ -129,7 +133,11 @@ static void del_conn(struct work_struct
  		dev = device_find_child(&conn->dev, NULL, __match_tty);
  		if (!dev)
  			break;
@@ -586,7 +586,7 @@ here still, but for now we keep this here.
  {
  	struct sock *sk;
  
-@@ -970,7 +974,11 @@ static int l2cap_sock_create(struct net 
+@@ -970,7 +974,11 @@ static int l2cap_sock_create(struct net
  			sock->type != SOCK_DGRAM && sock->type != SOCK_RAW)
  		return -ESOCKTNOSUPPORT;
  

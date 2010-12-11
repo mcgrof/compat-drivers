@@ -576,7 +576,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  	return hash.low | ((u64)hash.high << 32);
 --- a/include/net/mac80211.h
 +++ b/include/net/mac80211.h
-@@ -1702,7 +1702,11 @@ struct ieee80211_ops {
+@@ -1718,7 +1718,11 @@ struct ieee80211_ops {
  				 struct ieee80211_bss_conf *info,
  				 u32 changed);
  	u64 (*prepare_multicast)(struct ieee80211_hw *hw,
@@ -590,7 +590,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  				 unsigned int *total_flags,
 --- a/net/bluetooth/bnep/netdev.c
 +++ b/net/bluetooth/bnep/netdev.c
-@@ -102,8 +102,13 @@ static void bnep_net_set_mc_list(struct 
+@@ -102,8 +102,13 @@ static void bnep_net_set_mc_list(struct
  		netdev_for_each_mc_addr(ha, dev) {
  			if (i == BNEP_MAX_MULTICAST_FILTERS)
  				break;
@@ -692,7 +692,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  	spin_unlock_bh(&local->filter_lock);
  
  	/* be a bit nasty */
-@@ -451,9 +455,11 @@ struct ieee80211_hw *ieee80211_alloc_hw(
+@@ -452,9 +456,11 @@ struct ieee80211_hw *ieee80211_alloc_hw(
  	local->uapsd_max_sp_len = IEEE80211_DEFAULT_MAX_SP_LEN;
  
  	INIT_LIST_HEAD(&local->interfaces);

@@ -6,7 +6,7 @@ files...
 
 --- a/net/wireless/nl80211.c
 +++ b/net/wireless/nl80211.c
-@@ -30,7 +30,9 @@ static struct genl_family nl80211_fam = 
+@@ -30,7 +30,9 @@ static struct genl_family nl80211_fam =
  	.hdrsize = 0,		/* no private header */
  	.version = 1,		/* no particular meaning now */
  	.maxattr = NL80211_ATTR_MAX,
@@ -16,7 +16,7 @@ files...
  };
  
  /* internal helper: get rdev and dev */
-@@ -4376,7 +4378,9 @@ static int nl80211_wiphy_netns(struct sk
+@@ -4378,7 +4380,9 @@ static int nl80211_wiphy_netns(struct sk
  
  	err = cfg80211_switch_netns(rdev, net);
   out_put_net:
