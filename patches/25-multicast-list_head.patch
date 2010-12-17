@@ -162,7 +162,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  }
 --- a/drivers/net/wireless/ath/ath5k/base.c
 +++ b/drivers/net/wireless/ath/ath5k/base.c
-@@ -3122,20 +3122,42 @@ unlock:
+@@ -3131,20 +3131,42 @@ unlock:
  }
  
  static u64 ath5k_prepare_multicast(struct ieee80211_hw *hw,
@@ -205,7 +205,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  		pos ^= (val >> 18) ^ (val >> 12) ^ (val >> 6) ^ val;
  		pos &= 0x3f;
  		mfilt[pos / 32] |= (1 << (pos % 32));
-@@ -3144,6 +3166,9 @@ static u64 ath5k_prepare_multicast(struc
+@@ -3153,6 +3175,9 @@ static u64 ath5k_prepare_multicast(struc
  		* neet to inform below to not reset the mcast */
  		/* ath5k_hw_set_mcast_filterindex(ah,
  		 *      ha->addr[5]); */
@@ -501,7 +501,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  static void rtl8187_configure_filter(struct ieee80211_hw *dev,
 --- a/drivers/net/wireless/wl12xx/main.c
 +++ b/drivers/net/wireless/wl12xx/main.c
-@@ -1481,11 +1481,20 @@ struct wl1271_filter_params {
+@@ -1501,11 +1501,20 @@ struct wl1271_filter_params {
  	u8 mc_list[ACX_MC_ADDRESS_GROUP_MAX][ETH_ALEN];
  };
  
@@ -522,7 +522,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  	struct wl1271 *wl = hw->priv;
  
  	if (unlikely(wl->state == WL1271_STATE_OFF))
-@@ -1498,16 +1507,40 @@ static u64 wl1271_op_prepare_multicast(s
+@@ -1518,16 +1527,40 @@ static u64 wl1271_op_prepare_multicast(s
  	}
  
  	/* update multicast filtering parameters */
@@ -607,11 +607,11 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  		if (!cnt)
  			break;
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,35))
- 		memcpy(bufp, ha->addr, ETHER_ADDR_LEN);
+ 		memcpy(bufp, ha->addr, ETH_ALEN);
 +#else
-+		memcpy(bufp, ha->dmi_addr, ETHER_ADDR_LEN);
++		memcpy(bufp, ha->dmi_addr, ETH_ALEN);
 +#endif
- 		bufp += ETHER_ADDR_LEN;
+ 		bufp += ETH_ALEN;
  		cnt--;
  	}
 --- a/include/net/mac80211.h
@@ -677,7 +677,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  
 --- a/net/mac80211/ieee80211_i.h
 +++ b/net/mac80211/ieee80211_i.h
-@@ -718,7 +718,12 @@ struct ieee80211_local {
+@@ -719,7 +719,12 @@ struct ieee80211_local {
  	struct work_struct recalc_smps;
  
  	/* aggregated multicast list */
@@ -733,7 +733,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  	spin_unlock_bh(&local->filter_lock);
  
  	/* be a bit nasty */
-@@ -550,9 +554,11 @@ struct ieee80211_hw *ieee80211_alloc_hw(
+@@ -555,9 +559,11 @@ struct ieee80211_hw *ieee80211_alloc_hw(
  	local->uapsd_max_sp_len = IEEE80211_DEFAULT_MAX_SP_LEN;
  
  	INIT_LIST_HEAD(&local->interfaces);
