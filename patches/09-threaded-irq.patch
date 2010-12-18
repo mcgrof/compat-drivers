@@ -6,7 +6,7 @@ thread in process context as well.
 
 --- a/drivers/net/wireless/b43/main.c
 +++ b/drivers/net/wireless/b43/main.c
-@@ -3952,8 +3952,13 @@ redo:
+@@ -3948,8 +3948,13 @@ redo:
  	if (dev->dev->bus->bustype == SSB_BUSTYPE_SDIO) {
  		b43_sdio_free_irq(dev);
  	} else {
@@ -20,7 +20,7 @@ thread in process context as well.
  	}
  	mutex_lock(&wl->mutex);
  	dev = wl->current_dev;
-@@ -3993,9 +3998,17 @@ static int b43_wireless_core_start(struc
+@@ -3989,9 +3994,17 @@ static int b43_wireless_core_start(struc
  			goto out;
  		}
  	} else {
@@ -38,7 +38,7 @@ thread in process context as well.
  		if (err) {
  			b43err(dev->wl, "Cannot request IRQ-%d\n", dev->dev->irq);
  			goto out;
-@@ -4724,6 +4737,10 @@ static int b43_setup_bands(struct b43_wl
+@@ -4720,6 +4733,10 @@ static int b43_setup_bands(struct b43_wl
  
  static void b43_wireless_core_detach(struct b43_wldev *dev)
  {
@@ -63,7 +63,7 @@ thread in process context as well.
  /* Data structure for the WLAN parts (802.11 cores) of the b43 chip. */
 --- a/drivers/net/wireless/rt2x00/rt2x00.h
 +++ b/drivers/net/wireless/rt2x00/rt2x00.h
-@@ -908,6 +908,10 @@ struct rt2x00_dev {
+@@ -914,6 +914,10 @@ struct rt2x00_dev {
  	 * Tasklet for processing tx status reports (rt2800pci).
  	 */
  	struct tasklet_struct txstatus_tasklet;
@@ -76,7 +76,7 @@ thread in process context as well.
  /*
 --- a/drivers/net/wireless/rt2x00/rt2x00pci.c
 +++ b/drivers/net/wireless/rt2x00/rt2x00pci.c
-@@ -153,10 +153,18 @@ int rt2x00pci_initialize(struct rt2x00_d
+@@ -160,10 +160,18 @@ int rt2x00pci_initialize(struct rt2x00_d
  	/*
  	 * Register interrupt handler.
  	 */
@@ -95,7 +95,7 @@ thread in process context as well.
  	if (status) {
  		ERROR(rt2x00dev, "IRQ %d allocation failed (error %d).\n",
  		      rt2x00dev->irq, status);
-@@ -180,7 +188,11 @@ void rt2x00pci_uninitialize(struct rt2x0
+@@ -187,7 +195,11 @@ void rt2x00pci_uninitialize(struct rt2x0
  	/*
  	 * Free irq line.
  	 */
@@ -107,7 +107,7 @@ thread in process context as well.
  
  	/*
  	 * Free DMA
-@@ -195,6 +207,9 @@ EXPORT_SYMBOL_GPL(rt2x00pci_uninitialize
+@@ -202,6 +214,9 @@ EXPORT_SYMBOL_GPL(rt2x00pci_uninitialize
   */
  static void rt2x00pci_free_reg(struct rt2x00_dev *rt2x00dev)
  {

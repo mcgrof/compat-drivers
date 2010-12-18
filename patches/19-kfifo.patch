@@ -34,7 +34,7 @@ not be backported easily with defines in the compat module.
  	}
 --- a/drivers/net/wireless/rt2x00/rt2x00.h
 +++ b/drivers/net/wireless/rt2x00/rt2x00.h
-@@ -902,7 +902,11 @@ struct rt2x00_dev {
+@@ -908,7 +908,11 @@ struct rt2x00_dev {
  	/*
  	 * FIFO for storing tx status reports between isr and tasklet.
  	 */
@@ -48,7 +48,7 @@ not be backported easily with defines in the compat module.
  	 * Tasklet for processing tx status reports (rt2800pci).
 --- a/drivers/net/wireless/rt2x00/rt2x00dev.c
 +++ b/drivers/net/wireless/rt2x00/rt2x00dev.c
-@@ -827,10 +827,16 @@ static int rt2x00lib_probe_hw(struct rt2
+@@ -822,10 +822,16 @@ static int rt2x00lib_probe_hw(struct rt2
  		 * queues gets reported before we've got a chance to handle
  		 * them) 24*4=384 tx status reports need to be cached.
  		 */

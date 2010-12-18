@@ -42,7 +42,7 @@ Remove this patch if these symbols are backported.
  {
 --- a/drivers/net/wireless/Makefile
 +++ b/drivers/net/wireless/Makefile
-@@ -29,7 +29,7 @@ obj-$(CONFIG_RTL8187)		+= rtl818x/
+@@ -30,7 +30,7 @@ obj-$(CONFIG_RTL8192CE)		+= rtlwifi/
  obj-$(CONFIG_PCMCIA_RAYCS)	+= ray_cs.o
  obj-$(CONFIG_PCMCIA_WL3501)	+= wl3501_cs.o
  

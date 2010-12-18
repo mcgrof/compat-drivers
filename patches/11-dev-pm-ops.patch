@@ -9,7 +9,7 @@ calls on compat code with only slight modifications.
 
 --- a/drivers/net/wireless/ath/ath9k/pci.c
 +++ b/drivers/net/wireless/ath/ath9k/pci.c
-@@ -312,14 +312,36 @@ static int ath_pci_resume(struct device
+@@ -315,14 +315,36 @@ static int ath_pci_resume(struct device
  	return 0;
  }
  
@@ -54,7 +54,7 @@ calls on compat code with only slight modifications.
  
  #define ATH9K_PM_OPS	(&ath9k_pm_ops)
  
-@@ -337,7 +359,12 @@ static struct pci_driver ath_pci_driver
+@@ -340,7 +362,12 @@ static struct pci_driver ath_pci_driver
  	.id_table   = ath_pci_id_table,
  	.probe      = ath_pci_probe,
  	.remove     = ath_pci_remove,
@@ -84,7 +84,7 @@ calls on compat code with only slight modifications.
  static int __init iwl_init(void)
 --- a/drivers/net/wireless/iwlwifi/iwl-core.c
 +++ b/drivers/net/wireless/iwlwifi/iwl-core.c
-@@ -2081,14 +2081,42 @@ int iwl_pci_resume(struct device *device
+@@ -2098,14 +2098,42 @@ int iwl_pci_resume(struct device *device
  }
  EXPORT_SYMBOL(iwl_pci_resume);
  
@@ -137,7 +137,7 @@ calls on compat code with only slight modifications.
  #endif /* CONFIG_PM */
 --- a/drivers/net/wireless/iwlwifi/iwl-core.h
 +++ b/drivers/net/wireless/iwlwifi/iwl-core.h
-@@ -631,7 +631,12 @@ __le32 iwl_add_beacon_time(struct iwl_pr
+@@ -635,7 +635,12 @@ __le32 iwl_add_beacon_time(struct iwl_pr
  #ifdef CONFIG_PM
  int iwl_pci_suspend(struct device *device);
  int iwl_pci_resume(struct device *device);

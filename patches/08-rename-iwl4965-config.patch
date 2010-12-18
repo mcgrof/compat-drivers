@@ -5,7 +5,7 @@ CONFIG_IWL4965 has to be set to y, to build correctly.
 
 --- a/drivers/net/wireless/Makefile
 +++ b/drivers/net/wireless/Makefile
-@@ -40,7 +40,7 @@ obj-$(CONFIG_ADM8211)	+= adm8211.o
+@@ -41,7 +41,7 @@ obj-$(CONFIG_ADM8211)	+= adm8211.o
  
  obj-$(CONFIG_MWL8K)	+= mwl8k.o
  
