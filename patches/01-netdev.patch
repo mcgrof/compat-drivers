@@ -107,7 +107,7 @@ without creating a headache on maintenance of the pathes.
  		ieee80211_sdata_set_mesh_id(sdata,
 --- a/drivers/net/b44.c
 +++ b/drivers/net/b44.c
-@@ -2164,7 +2164,7 @@ static int __devinit b44_init_one(struct
+@@ -2163,7 +2163,7 @@ static int __devinit b44_init_one(struct
  	bp->rx_pending = B44_DEF_RX_RING_PENDING;
  	bp->tx_pending = B44_DEF_TX_RING_PENDING;
  
@@ -278,7 +278,7 @@ without creating a headache on maintenance of the pathes.
  	dev->tx_queue_len = 0;
 --- a/drivers/net/wireless/orinoco/main.c
 +++ b/drivers/net/wireless/orinoco/main.c
-@@ -2268,14 +2268,18 @@ int orinoco_if_add(struct orinoco_privat
+@@ -2272,14 +2272,18 @@ int orinoco_if_add(struct orinoco_privat
  #endif
  	/* Default to standard ops if not set */
  	if (ops)
