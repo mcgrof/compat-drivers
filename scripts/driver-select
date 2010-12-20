@@ -45,7 +45,7 @@ fi
 SUPPORTED_ETH_DRIVERS=""
 
 function usage {
-	echo -e "${GREEN}Usage${NORMAL}: ${CYAN}$0${NORMAL} [ ${PURPLE}<driver-name>${NORMAL} | ${PURPLE}<driver-group-name>${NORMAL} | ${GREEN}restore${NORMAL} ]"
+	echo -e "${GREEN}Usage${NORMAL}: ${BOLD}$0${NORMAL} [ ${PURPLE}<driver-name>${NORMAL} | ${CYAN}<driver-group-name>${NORMAL} | ${GREEN}restore${NORMAL} ]"
 
 	# These should match the switch below.
 	echo -e "Supported 802.11 drivers:"
@@ -64,8 +64,8 @@ function usage {
 	echo -e "\t${CYAN}wl12xx${NORMAL} < ${PURPLE} wl1251 wl12xx (SPI and SDIO)${NORMAL}>"
 	
 	echo -e "\nSupported group drivers: Bluetooth & Ethernet:"
-	echo -e "\t${BLUE}atlxx${NORMAL} < ${PURPLE} atl1 atl2 atl1e atl1c ${NORMAL}>"
-	echo -e "\t${BLUE}bt${NORMAL} < ${PURPLE} Linux bluetooth drivers ${NORMAL}>"
+	echo -e "\t${CYAN}atlxx${NORMAL} < ${PURPLE} atl1 atl2 atl1e atl1c ${NORMAL}>"
+	echo -e "\t${CYAN}bt${NORMAL} < ${PURPLE} Linux bluetooth drivers ${NORMAL}>"
 
 	echo -e "Restoring compat-wireless:"
 	echo -e "\t${GREEN}restore${NORMAL}: you can use this option to restore compat-wireless to the original state"
