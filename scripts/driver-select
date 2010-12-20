@@ -60,6 +60,7 @@ function usage {
 	echo -e "\t${CYAN}intel${NORMAL} < ${PURPLE} iwl3945 iwlagn ipw2100 ipw2200 ${NORMAL}>"
 	echo -e "\t${CYAN}iwlwifi${NORMAL} < ${PURPLE} iwl3945 iwlagn ${NORMAL}>"
 	echo -e "\t${CYAN}rtl818x${NORMAL} < ${PURPLE} rtl8180 rtl8187 ${NORMAL}>"
+	echo -e "\t${CYAN}rtlwifi${NORMAL} < ${PURPLE} rtl8192ce ${NORMAL}>"
 	echo -e "\t${CYAN}wl12xx${NORMAL} < ${PURPLE} wl1251 wl12xx (SPI and SDIO)${NORMAL}>"
 	
 	echo -e "\nSupported group drivers: Bluetooth & Ethernet:"
@@ -331,6 +332,11 @@ case $1 in
 		select_drivers		CONFIG_RTL8180 CONFIG_RTL8187
 		disable_staging
 		disable_var_02
+		;;
+	rtlwifi)
+		select_drivers		CONFIG_RTL8192CE CONFIG_RTLWIFI
+		disable_staging
+		disable_bt_usb_ethernet_var
 		;;
 	wl12xx)
 		select_drivers		CONFIG_WL1251 \

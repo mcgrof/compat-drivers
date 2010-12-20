@@ -271,6 +271,8 @@ install-scripts:
 	@$(MODPROBE) -l rt73usb
 	@$(MODPROBE) -l rtl8180
 	@$(MODPROBE) -l rtl8187
+	@$(MODPROBE) -l rtlwifi
+	@$(MODPROBE) -l rtl8192ce
 	@$(MODPROBE) -l spectrum_cs
 	@$(MODPROBE) -l ssb
 	@$(MODPROBE) -l usb8xxx
@@ -400,6 +402,8 @@ uninstall:
 	@$(MODPROBE) -l rt73usb
 	@$(MODPROBE) -l rtl8180
 	@$(MODPROBE) -l rtl8187
+	@$(MODPROBE) -l rtlwifi
+	@$(MODPROBE) -l rtl8192ce
 	@$(MODPROBE) -l spectrum_cs
 	@$(MODPROBE) -l ssb
 	@$(MODPROBE) -l usb8xxx

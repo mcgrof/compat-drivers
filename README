@@ -159,6 +159,8 @@ rt61pci
 rt73usb
 rtl8180
 rtl8187
+rtlwifi
+rtl8192ce
 spectrum_cs
 ssb
 wl1251
