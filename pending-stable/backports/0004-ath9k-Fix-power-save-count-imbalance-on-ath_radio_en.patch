@@ -28,11 +28,11 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
 
 --- a/drivers/net/wireless/ath/ath9k/main.c
 +++ b/drivers/net/wireless/ath/ath9k/main.c
-@@ -896,9 +896,7 @@ void ath_radio_enable(struct ath_softc *
+@@ -896,9 +896,8 @@ void ath_radio_enable(struct ath_softc *
  	ath_update_txpow(sc);
  	if (ath_startrecv(sc) != 0) {
  		ath_print(common, ATH_DBG_FATAL,
--			  "Unable to restart recv logic\n");
+ 			  "Unable to restart recv logic\n");
 -		spin_unlock_bh(&sc->sc_pcu_lock);
 -		return;
 +		goto out;
