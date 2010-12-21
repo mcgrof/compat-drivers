@@ -1,7 +1,7 @@
 From 7ca43d03b1291481bdf894bbaec5d580e7684e7d Mon Sep 17 00:00:00 2001
 From: Luis R. Rodriguez <lrodriguez@atheros.com>
 Date: Wed, 20 Oct 2010 10:18:53 -0700
-Subject: [PATCH 01/20] cfg80211: pass the reg hint initiator to helpers
+Subject: [PATCH 01/14] cfg80211: pass the reg hint initiator to helpers
 
 This is required later.
 

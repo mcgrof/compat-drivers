@@ -1,7 +1,7 @@
 From 4bdd1e978ede034c1211957eb17eaf50de00d234 Mon Sep 17 00:00:00 2001
 From: Luis R. Rodriguez <lrodriguez@atheros.com>
 Date: Tue, 26 Oct 2010 15:27:24 -0700
-Subject: [PATCH 06/20] ath9k: move the PCU lock to the sc structure
+Subject: [PATCH 06/14] ath9k: move the PCU lock to the sc structure
 
 The PCU lock should be used to contend TX DMA as well,
 this will be done next.
@@ -218,26 +218,3 @@ index 87fabf8..60300b2 100644
  	sc->sc_flags &= ~SC_OP_RXFLUSH;
  	spin_lock_init(&sc->rx.rxbuflock);
  
-diff --git a/drivers/net/wireless/ath/ath9k/xmit.c b/drivers/net/wireless/ath/ath9k/xmit.c
-index e662eca..d97b7a3 100644
---- a/drivers/net/wireless/ath/ath9k/xmit.c
-+++ b/drivers/net/wireless/ath/ath9k/xmit.c
-@@ -1148,13 +1148,13 @@ void ath_drain_all_txq(struct ath_softc *sc, bool retry_tx)
- 		ath_print(common, ATH_DBG_FATAL,
- 			  "Failed to stop TX DMA. Resetting hardware!\n");
- 
--		spin_lock_bh(&sc->rx.pcu_lock);
-+		spin_lock_bh(&sc->sc_pcu_lock);
- 		r = ath9k_hw_reset(ah, sc->sc_ah->curchan, ah->caldata, false);
- 		if (r)
- 			ath_print(common, ATH_DBG_FATAL,
- 				  "Unable to reset hardware; reset status %d\n",
- 				  r);
--		spin_unlock_bh(&sc->rx.pcu_lock);
-+		spin_unlock_bh(&sc->sc_pcu_lock);
- 	}
- 
- 	for (i = 0; i < ATH9K_NUM_TX_QUEUES; i++) {
--- 
-1.7.3.2.90.gd4c43
-

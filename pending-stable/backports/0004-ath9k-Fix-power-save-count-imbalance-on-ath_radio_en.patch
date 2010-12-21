@@ -1,0 +1,54 @@
+From c2731b814e2aaaa40072ee761b7373c052d86e37 Mon Sep 17 00:00:00 2001
+From: Luis R. Rodriguez <lrodriguez@atheros.com>
+Date: Tue, 7 Dec 2010 15:13:19 -0800
+Subject: [PATCH 11/14] ath9k: Fix power save count imbalance on ath_radio_enable()
+
+Upon a failure we never call ath9k_ps_restore() on ath_radio_enable(),
+this will throw off the sc->ps_usecount. When the sc->ps_usecount
+is > 0 we never put the chip to full sleep. This drains battery,
+and will also make the chip fail upon resume with:
+
+ath: Starting driver with initial channel: 5745 MHz
+ath: timeout (100000 us) on reg 0x7000: 0xdeadbeef & 0x00000003 != 0x00000000
+
+This would make the chip useless upon resume.
+
+I cannot prove this can happen but in theory it is so best to
+avoid this race completely and not have users complain about
+a broken device after resume.
+
+Cc: stable@kernel.org
+Cc: Paul Stewart <pstew@google.com>
+Cc: Amod Bodas <amod.bodas@atheros.com>
+Signed-off-by: Luis R. Rodriguez <lrodriguez@atheros.com>
+Signed-off-by: John W. Linville <linville@tuxdriver.com>
+---
+ drivers/net/wireless/ath/ath9k/main.c |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath9k/main.c b/drivers/net/wireless/ath/ath9k/main.c
+index daa3c9f..ef298f4 100644
+--- a/drivers/net/wireless/ath/ath9k/main.c
++++ b/drivers/net/wireless/ath/ath9k/main.c
+@@ -900,9 +900,7 @@ void ath_radio_enable(struct ath_softc *sc, struct ieee80211_hw *hw)
+ 	ath_update_txpow(sc);
+ 	if (ath_startrecv(sc) != 0) {
+ 		ath_print(common, ATH_DBG_FATAL,
+-			  "Unable to restart recv logic\n");
+-		spin_unlock_bh(&sc->sc_pcu_lock);
+-		return;
++		goto out;
+ 	}
+ 	if (sc->sc_flags & SC_OP_BEACONS)
+ 		ath_beacon_config(sc, NULL);	/* restart beacons */
+@@ -915,6 +914,7 @@ void ath_radio_enable(struct ath_softc *sc, struct ieee80211_hw *hw)
+ 	ath9k_hw_set_gpio(ah, ah->led_pin, 0);
+ 
+ 	ieee80211_wake_queues(hw);
++out:
+ 	spin_unlock_bh(&sc->sc_pcu_lock);
+ 
+ 	ath9k_ps_restore(sc);
+-- 
+1.7.3.2.90.gd4c43
+

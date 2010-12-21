@@ -1,7 +1,7 @@
 From ca4ffe8f2848169a8ded0ea8a60b2d81925564c9 Mon Sep 17 00:00:00 2001
 From: Luis R. Rodriguez <lrodriguez@atheros.com>
 Date: Wed, 20 Oct 2010 10:18:55 -0700
-Subject: [PATCH 03/20] cfg80211: fix disabling channels based on hints
+Subject: [PATCH 03/14] cfg80211: fix disabling channels based on hints
 
 After a module loads you will have loaded the world roaming regulatory
 domain or a custom regulatory domain. Further regulatory hints are
