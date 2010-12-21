@@ -24,11 +24,9 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  drivers/net/wireless/ath/ath9k/xmit.c  |    4 +-
  4 files changed, 25 insertions(+), 25 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/ath9k.h b/drivers/net/wireless/ath/ath9k/ath9k.h
-index cb9194a..61d4507 100644
 --- a/drivers/net/wireless/ath/ath9k/ath9k.h
 +++ b/drivers/net/wireless/ath/ath9k/ath9k.h
-@@ -309,7 +309,6 @@ struct ath_rx {
+@@ -311,7 +311,6 @@ struct ath_rx {
  	u8 rxotherant;
  	u32 *rxlink;
  	unsigned int rxfilter;
@@ -36,7 +34,7 @@ index cb9194a..61d4507 100644
  	spinlock_t rxbuflock;
  	struct list_head rxbuf;
  	struct ath_descdma rxdma;
-@@ -601,6 +600,7 @@ struct ath_softc {
+@@ -603,6 +602,7 @@ struct ath_softc {
  	int irq;
  	spinlock_t sc_serial_rw;
  	spinlock_t sc_pm_lock;
@@ -44,20 +42,18 @@ index cb9194a..61d4507 100644
  	struct mutex mutex;
  	struct work_struct paprd_work;
  	struct work_struct hw_check_work;
-diff --git a/drivers/net/wireless/ath/ath9k/main.c b/drivers/net/wireless/ath/ath9k/main.c
-index 341d587..463ac12 100644
 --- a/drivers/net/wireless/ath/ath9k/main.c
 +++ b/drivers/net/wireless/ath/ath9k/main.c
-@@ -242,7 +242,7 @@ int ath_set_channel(struct ath_softc *sc, struct ieee80211_hw *hw,
- 	ath9k_hw_disable_interrupts(ah);
- 	ath_drain_all_txq(sc, false);
+@@ -246,7 +246,7 @@ int ath_set_channel(struct ath_softc *sc
+ 	ath9k_hw_set_interrupts(ah, 0);
+ 	stopped = ath_drain_all_txq(sc, false);
  
 -	spin_lock_bh(&sc->rx.pcu_lock);
 +	spin_lock_bh(&sc->sc_pcu_lock);
  
- 	stopped = ath_stoprecv(sc);
- 
-@@ -268,7 +268,7 @@ int ath_set_channel(struct ath_softc *sc, struct ieee80211_hw *hw,
+ 	if (!ath_stoprecv(sc))
+ 		stopped = false;
+@@ -273,7 +273,7 @@ int ath_set_channel(struct ath_softc *sc
  			  "Unable to reset channel (%u MHz), "
  			  "reset status %d\n",
  			  channel->center_freq, r);
@@ -66,7 +62,7 @@ index 341d587..463ac12 100644
  		goto ps_restore;
  	}
  
-@@ -276,11 +276,11 @@ int ath_set_channel(struct ath_softc *sc, struct ieee80211_hw *hw,
+@@ -281,11 +281,11 @@ int ath_set_channel(struct ath_softc *sc
  		ath_print(common, ATH_DBG_FATAL,
  			  "Unable to restart recv logic\n");
  		r = -EIO;
@@ -80,7 +76,7 @@ index 341d587..463ac12 100644
  
  	ath_update_txpow(sc);
  	ath9k_hw_set_interrupts(ah, ah->imask);
-@@ -615,7 +615,7 @@ void ath9k_tasklet(unsigned long data)
+@@ -621,7 +621,7 @@ void ath9k_tasklet(unsigned long data)
  		rxmask = (ATH9K_INT_RX | ATH9K_INT_RXEOL | ATH9K_INT_RXORN);
  
  	if (status & rxmask) {
@@ -89,7 +85,7 @@ index 341d587..463ac12 100644
  
  		/* Check for high priority Rx first */
  		if ((ah->caps.hw_caps & ATH9K_HW_CAP_EDMA) &&
-@@ -623,7 +623,7 @@ void ath9k_tasklet(unsigned long data)
+@@ -629,7 +629,7 @@ void ath9k_tasklet(unsigned long data)
  			ath_rx_tasklet(sc, 0, true);
  
  		ath_rx_tasklet(sc, 0, false);
@@ -98,7 +94,7 @@ index 341d587..463ac12 100644
  	}
  
  	if (status & ATH9K_INT_TX) {
-@@ -881,7 +881,7 @@ void ath_radio_enable(struct ath_softc *sc, struct ieee80211_hw *hw)
+@@ -884,7 +884,7 @@ void ath_radio_enable(struct ath_softc *
  	if (!ah->curchan)
  		ah->curchan = ath_get_curchannel(sc, sc->hw);
  
@@ -107,7 +103,7 @@ index 341d587..463ac12 100644
  	r = ath9k_hw_reset(ah, ah->curchan, ah->caldata, false);
  	if (r) {
  		ath_print(common, ATH_DBG_FATAL,
-@@ -894,10 +894,10 @@ void ath_radio_enable(struct ath_softc *sc, struct ieee80211_hw *hw)
+@@ -897,10 +897,10 @@ void ath_radio_enable(struct ath_softc *
  	if (ath_startrecv(sc) != 0) {
  		ath_print(common, ATH_DBG_FATAL,
  			  "Unable to restart recv logic\n");
@@ -120,7 +116,7 @@ index 341d587..463ac12 100644
  
  	if (sc->sc_flags & SC_OP_BEACONS)
  		ath_beacon_config(sc, NULL);	/* restart beacons */
-@@ -937,7 +937,7 @@ void ath_radio_disable(struct ath_softc *sc, struct ieee80211_hw *hw)
+@@ -940,7 +940,7 @@ void ath_radio_disable(struct ath_softc
  
  	ath_drain_all_txq(sc, false);	/* clear pending tx frames */
  
@@ -129,7 +125,7 @@ index 341d587..463ac12 100644
  
  	ath_stoprecv(sc);		/* turn off frame recv */
  	ath_flushrecv(sc);		/* flush recv queue */
-@@ -955,7 +955,7 @@ void ath_radio_disable(struct ath_softc *sc, struct ieee80211_hw *hw)
+@@ -958,7 +958,7 @@ void ath_radio_disable(struct ath_softc
  
  	ath9k_hw_phy_disable(ah);
  
@@ -138,8 +134,8 @@ index 341d587..463ac12 100644
  
  	ath9k_hw_configpcipowersave(ah, 1, 1);
  	ath9k_ps_restore(sc);
-@@ -977,7 +977,7 @@ int ath_reset(struct ath_softc *sc, bool retry_tx)
- 	ath9k_hw_disable_interrupts(ah);
+@@ -980,7 +980,7 @@ int ath_reset(struct ath_softc *sc, bool
+ 	ath9k_hw_set_interrupts(ah, 0);
  	ath_drain_all_txq(sc, retry_tx);
  
 -	spin_lock_bh(&sc->rx.pcu_lock);
@@ -147,7 +143,7 @@ index 341d587..463ac12 100644
  
  	ath_stoprecv(sc);
  	ath_flushrecv(sc);
-@@ -991,7 +991,7 @@ int ath_reset(struct ath_softc *sc, bool retry_tx)
+@@ -994,7 +994,7 @@ int ath_reset(struct ath_softc *sc, bool
  		ath_print(common, ATH_DBG_FATAL,
  			  "Unable to start recv logic\n");
  
@@ -156,7 +152,7 @@ index 341d587..463ac12 100644
  
  	/*
  	 * We may be doing a reset in response to a request
-@@ -1155,14 +1155,14 @@ static int ath9k_start(struct ieee80211_hw *hw)
+@@ -1158,14 +1158,14 @@ static int ath9k_start(struct ieee80211_
  	 * be followed by initialization of the appropriate bits
  	 * and then setup of the interrupt mask.
  	 */
@@ -173,7 +169,7 @@ index 341d587..463ac12 100644
  		goto mutex_unlock;
  	}
  
-@@ -1183,10 +1183,10 @@ static int ath9k_start(struct ieee80211_hw *hw)
+@@ -1186,10 +1186,10 @@ static int ath9k_start(struct ieee80211_
  		ath_print(common, ATH_DBG_FATAL,
  			  "Unable to start recv logic\n");
  		r = -EIO;
@@ -186,7 +182,7 @@ index 341d587..463ac12 100644
  
  	/* Setup our intr mask. */
  	ah->imask = ATH9K_INT_TX | ATH9K_INT_RXEOL |
-@@ -1387,14 +1387,14 @@ static void ath9k_stop(struct ieee80211_hw *hw)
+@@ -1393,14 +1393,14 @@ static void ath9k_stop(struct ieee80211_
  
  	if (!(sc->sc_flags & SC_OP_INVALID)) {
  		ath_drain_all_txq(sc, false);
@@ -205,11 +201,9 @@ index 341d587..463ac12 100644
  	}
  
  	/* disable HAL and put h/w to sleep */
-diff --git a/drivers/net/wireless/ath/ath9k/recv.c b/drivers/net/wireless/ath/ath9k/recv.c
-index 87fabf8..60300b2 100644
 --- a/drivers/net/wireless/ath/ath9k/recv.c
 +++ b/drivers/net/wireless/ath/ath9k/recv.c
-@@ -317,7 +317,7 @@ int ath_rx_init(struct ath_softc *sc, int nbufs)
+@@ -317,7 +317,7 @@ int ath_rx_init(struct ath_softc *sc, in
  	struct ath_buf *bf;
  	int error = 0;
  
