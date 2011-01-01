@@ -26,16 +26,6 @@ cases.
  #include "wifi.h"
  #include "rc.h"
  #include "base.h"
---- a/drivers/net/wireless/wl1251/boot.c
-+++ b/drivers/net/wireless/wl1251/boot.c
-@@ -19,7 +19,6 @@
-  *
-  */
- 
--#include <linux/gpio.h>
- #include <linux/slab.h>
- 
- #include "reg.h"
 --- a/drivers/net/wireless/wl1251/main.c
 +++ b/drivers/net/wireless/wl1251/main.c
 @@ -24,6 +24,9 @@
@@ -60,16 +50,6 @@ cases.
  #include <linux/spi/spi.h>
  #include <linux/wl12xx.h>
  
---- a/drivers/net/wireless/wl12xx/boot.c
-+++ b/drivers/net/wireless/wl12xx/boot.c
-@@ -21,7 +21,6 @@
-  *
-  */
- 
--#include <linux/gpio.h>
- #include <linux/slab.h>
- 
- #include "acx.h"
 --- a/net/mac80211/key.c
 +++ b/net/mac80211/key.c
 @@ -22,6 +22,9 @@
