@@ -1,3 +1,23 @@
+When some other headers are included in some makefile it must be 
+relative to the current object file processed. When giving the full 
+path the make process will search in the kernel tree for the headers.
+
+--- a/drivers/net/wireless/rtl818x/rtl8180/Makefile
++++ b/drivers/net/wireless/rtl818x/rtl8180/Makefile
+@@ -2,4 +2,4 @@ rtl8180-objs		:= dev.o rtl8225.o sa2400.
+ 
+ obj-$(CONFIG_RTL8180)	+= rtl8180.o
+ 
+-ccflags-y += -Idrivers/net/wireless/rtl818x
++ccflags-y += -I$(obj)/..
+--- a/drivers/net/wireless/rtl818x/rtl8187/Makefile
++++ b/drivers/net/wireless/rtl818x/rtl8187/Makefile
+@@ -2,4 +2,4 @@ rtl8187-objs		:= dev.o rtl8225.o leds.o
+ 
+ obj-$(CONFIG_RTL8187)	+= rtl8187.o
+ 
+-ccflags-y += -Idrivers/net/wireless/rtl818x
++ccflags-y += -I$(obj)/..
 --- a/drivers/staging/brcm80211/Makefile
 +++ b/drivers/staging/brcm80211/Makefile
 @@ -24,10 +24,10 @@ ccflags-y :=					\
