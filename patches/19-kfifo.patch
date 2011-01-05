@@ -32,20 +32,6 @@ not be backported easily with defines in the compat module.
  		lbs_pr_err("Out of memory allocating event FIFO buffer\n");
  		goto out;
  	}
---- a/drivers/net/wireless/rt2x00/rt2x00.h
-+++ b/drivers/net/wireless/rt2x00/rt2x00.h
-@@ -908,7 +908,11 @@ struct rt2x00_dev {
- 	/*
- 	 * FIFO for storing tx status reports between isr and tasklet.
- 	 */
-+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,33))
- 	struct kfifo txstatus_fifo;
-+#else
-+	struct kfifo *txstatus_fifo;
-+#endif
- 
- 	/*
- 	 * Tasklet for processing tx status reports (rt2800pci).
 --- a/drivers/net/wireless/rt2x00/rt2x00dev.c
 +++ b/drivers/net/wireless/rt2x00/rt2x00dev.c
 @@ -822,10 +822,16 @@ static int rt2x00lib_probe_hw(struct rt2
