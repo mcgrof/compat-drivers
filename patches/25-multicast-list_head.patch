@@ -160,16 +160,16 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  
  	return mchash;
  }
---- a/drivers/net/wireless/ath/ath5k/base.c
-+++ b/drivers/net/wireless/ath/ath5k/base.c
-@@ -3135,20 +3135,42 @@ unlock:
- }
+--- a/drivers/net/wireless/ath/ath5k/mac80211-ops.c
++++ b/drivers/net/wireless/ath/ath5k/mac80211-ops.c
+@@ -331,20 +331,42 @@ ath5k_bss_info_changed(struct ieee80211_
  
- static u64 ath5k_prepare_multicast(struct ieee80211_hw *hw,
+ static u64
+ ath5k_prepare_multicast(struct ieee80211_hw *hw,
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,35))
- 				   struct netdev_hw_addr_list *mc_list)
+ 			struct netdev_hw_addr_list *mc_list)
 +#else
-+				   int mc_count, struct dev_addr_list *ha)
++			int mc_count, struct dev_addr_list *ha)
 +#endif
  {
  	u32 mfilt[2], val;
@@ -205,7 +205,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  		pos ^= (val >> 18) ^ (val >> 12) ^ (val >> 6) ^ val;
  		pos &= 0x3f;
  		mfilt[pos / 32] |= (1 << (pos % 32));
-@@ -3157,6 +3179,9 @@ static u64 ath5k_prepare_multicast(struc
+@@ -353,6 +375,9 @@ ath5k_prepare_multicast(struct ieee80211
  		* neet to inform below to not reset the mcast */
  		/* ath5k_hw_set_mcast_filterindex(ah,
  		 *      ha->addr[5]); */
