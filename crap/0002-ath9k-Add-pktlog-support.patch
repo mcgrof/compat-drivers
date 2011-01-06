@@ -105,7 +105,7 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  
  /*
   * Header for the ath9k.ko driver core *only* -- hw code nor any other driver
-@@ -548,6 +549,7 @@ struct ath_ant_comb {
+@@ -549,6 +550,7 @@ struct ath_ant_comb {
  #define SC_OP_BT_SCAN		     BIT(13)
  #define SC_OP_ANI_RUN		     BIT(14)
  #define SC_OP_ENABLE_APM	     BIT(15)
@@ -113,7 +113,7 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  
  /* Powersave flags */
  #define PS_WAIT_FOR_BEACON        BIT(0)
-@@ -625,6 +627,10 @@ struct ath_softc {
+@@ -626,6 +628,10 @@ struct ath_softc {
  #ifdef CONFIG_ATH9K_DEBUGFS
  	struct ath9k_debug debug;
  #endif
@@ -161,7 +161,7 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  static inline void ath9k_hw_set11n_txdesc(struct ath_hw *ah, void *ds,
 --- a/drivers/net/wireless/ath/ath9k/hw.c
 +++ b/drivers/net/wireless/ath/ath9k/hw.c
-@@ -2148,7 +2148,7 @@ void ath9k_hw_setrxfilter(struct ath_hw
+@@ -2150,7 +2150,7 @@ void ath9k_hw_setrxfilter(struct ath_hw
  		phybits |= AR_PHY_ERR_RADAR;
  	if (bits & ATH9K_RX_FILTER_PHYERR)
  		phybits |= AR_PHY_ERR_OFDM_TIMING | AR_PHY_ERR_CCK_TIMING;
@@ -172,7 +172,7 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  		REG_WRITE(ah, AR_RXCFG,
 --- a/drivers/net/wireless/ath/ath9k/hw.h
 +++ b/drivers/net/wireless/ath/ath9k/hw.h
-@@ -617,7 +617,7 @@ struct ath_hw_ops {
+@@ -616,7 +616,7 @@ struct ath_hw_ops {
  			    const void *ds0, dma_addr_t buf_addr,
  			    unsigned int qcu);
  	int (*proc_txdesc)(struct ath_hw *ah, void *ds,
@@ -181,7 +181,7 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  	void (*set11n_txdesc)(struct ath_hw *ah, void *ds,
  			      u32 pktLen, enum ath9k_pkt_type type,
  			      u32 txPower, u32 keyIx,
-@@ -848,6 +848,8 @@ struct ath_hw {
+@@ -852,6 +852,8 @@ struct ath_hw {
  
  	/* Enterprise mode cap */
  	u32 ent_mode;
@@ -1298,19 +1298,18 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  }
  
  static const
-@@ -1358,7 +1365,8 @@ static void ath_tx_status(void *priv, st
+@@ -1358,7 +1365,7 @@ static void ath_tx_status(void *priv, st
  		tx_status = 1;
  
  	ath_rc_tx_status(sc, ath_rc_priv, tx_info, final_ts_idx, tx_status,
--			 (is_underrun) ? sc->hw->max_rate_tries : long_retry);
-+			 (is_underrun) ? sc->hw->max_rate_tries : long_retry,
-+			 skb_get_queue_mapping(skb));
+-			 long_retry);
++			 long_retry, skb_get_queue_mapping(skb));
  
  	/* Check if aggregation has to be enabled for this tid */
  	if (conf_is_ht(&sc->hw->conf) &&
 --- a/drivers/net/wireless/ath/ath9k/recv.c
 +++ b/drivers/net/wireless/ath/ath9k/recv.c
-@@ -1626,6 +1626,7 @@ int ath_rx_tasklet(struct ath_softc *sc,
+@@ -1627,6 +1627,7 @@ int ath_rx_tasklet(struct ath_softc *sc,
  	struct ieee80211_rx_status *rxs;
  	struct ath_hw *ah = sc->sc_ah;
  	struct ath_common *common = ath9k_hw_common(ah);
@@ -1318,7 +1317,7 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  	/*
  	 * The hw can technically differ from common->hw when using ath9k
  	 * virtual wiphy so to account for that we iterate over the active
-@@ -1718,12 +1719,24 @@ int ath_rx_tasklet(struct ath_softc *sc,
+@@ -1719,12 +1720,24 @@ int ath_rx_tasklet(struct ath_softc *sc,
  				 dma_type);
  
  		skb_put(skb, rs.rs_datalen + ah->caps.rx_status_len);
@@ -1355,7 +1354,7 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  		if (!txpending || (tid->state & AGGR_CLEANUP)) {
  			/*
  			 * complete the acked-ones/xretried ones; update
-@@ -2018,7 +2020,7 @@ static void ath_tx_processq(struct ath_s
+@@ -2028,7 +2030,7 @@ static void ath_tx_processq(struct ath_s
  		ds = lastbf->bf_desc;
  
  		memset(&ts, 0, sizeof(ts));
@@ -1364,7 +1363,7 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  		if (status == -EINPROGRESS) {
  			spin_unlock_bh(&txq->axq_lock);
  			break;
-@@ -2057,11 +2059,15 @@ static void ath_tx_processq(struct ath_s
+@@ -2070,11 +2072,15 @@ static void ath_tx_processq(struct ath_s
  
  		qnum = skb_get_queue_mapping(bf->bf_mpdu);
  
@@ -1382,7 +1381,7 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  
  		if (txq == sc->tx.txq_map[qnum])
  			ath_wake_mac80211_queue(sc, qnum);
-@@ -2135,9 +2141,11 @@ void ath_tx_edma_tasklet(struct ath_soft
+@@ -2148,9 +2154,11 @@ void ath_tx_edma_tasklet(struct ath_soft
  	int status;
  	int txok;
  	int qnum;
@@ -1395,7 +1394,7 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  		if (status == -EINPROGRESS)
  			break;
  		if (status == -EIO) {
-@@ -2180,16 +2188,20 @@ void ath_tx_edma_tasklet(struct ath_soft
+@@ -2195,16 +2203,20 @@ void ath_tx_edma_tasklet(struct ath_soft
  
  		qnum = skb_get_queue_mapping(bf->bf_mpdu);
  
