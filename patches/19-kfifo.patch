@@ -34,7 +34,7 @@ not be backported easily with defines in the compat module.
  	}
 --- a/drivers/net/wireless/rt2x00/rt2x00dev.c
 +++ b/drivers/net/wireless/rt2x00/rt2x00dev.c
-@@ -822,10 +822,16 @@ static int rt2x00lib_probe_hw(struct rt2
+@@ -808,10 +808,16 @@ static int rt2x00lib_probe_hw(struct rt2
  		 * queues gets reported before we've got a chance to handle
  		 * them) 24*4=384 tx status reports need to be cached.
  		 */
@@ -50,4 +50,4 @@ not be backported easily with defines in the compat module.
 +#endif
  
  		/* tasklet for processing the tx status reports. */
- 		tasklet_init(&rt2x00dev->txstatus_tasklet,
+ 		if (rt2x00dev->ops->lib->txstatus_tasklet)
