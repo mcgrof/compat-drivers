@@ -1,7 +1,7 @@
 From 39ec2997c374b528cdbf65099b6d6b8593a67f7f Mon Sep 17 00:00:00 2001
 From: Vasanthakumar Thiagarajan <vasanth@atheros.com>
 Date: Wed, 10 Nov 2010 05:03:15 -0800
-Subject: [PATCH 09/14] ath9k: Fix bug in delimiter padding computation
+Subject: [PATCH 09/18] ath9k: Fix bug in delimiter padding computation
 
 There is a roundng error in delimiter padding computation
 which causes severe throughput drop with some of AR9003.
