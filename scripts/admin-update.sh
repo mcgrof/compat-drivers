@@ -191,7 +191,7 @@ if [ -z $GIT_TREE ]; then
 		echo "  export GIT_TREE=/home/$USER/linux-next/"
 		echo
 		echo "If you do not have one you can clone the repository:"
-		echo "  git-clone $GIT_URL"
+		echo "  git clone $GIT_URL"
 		exit 1
 	fi
 else
@@ -207,7 +207,7 @@ if [ -z $GIT_COMPAT_TREE ]; then
 		echo "  export GIT_COMPAT_TREE=/home/$USER/compat/"
 		echo
 		echo "If you do not have one you can clone the repository:"
-		echo "  git-clone $GIT_COMPAT_URL"
+		echo "  git clone $GIT_COMPAT_URL"
 		exit 1
 	fi
 else
