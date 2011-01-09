@@ -1,27 +1,25 @@
-diff --git a/config.mk b/config.mk
-index 777ebd3..2ad11fc 100644
 --- a/config.mk
 +++ b/config.mk
-@@ -25,8 +25,8 @@ KERNEL_SUBLEVEL := $(shell $(MAKE) -C $(KLIB_BUILD) kernelversion | sed -n 's/^2
+@@ -25,9 +25,9 @@
  COMPAT_VERSIONS := $(shell I=$(COMPAT_LATEST_VERSION); while [ "$$I" -gt $(KERNEL_SUBLEVEL) ]; do echo $$I; I=$$(($$I - 1)); done)
  $(foreach ver,$(COMPAT_VERSIONS),$(eval CONFIG_COMPAT_KERNEL_$(ver)=y))
  
--ifdef CONFIG_COMPAT_KERNEL_25
--$(error "ERROR: compat-wireless by default supports kernels >= 2.6.25, try enabling only one driver though")
-+ifdef CONFIG_COMPAT_WIRELESS_23
-+$(error "ERROR: compat-wireless for selected driver requires a kernel >= 2.6.23")
- endif
+-ifdef CONFIG_COMPAT_KERNEL_24
+-$(error "ERROR: compat-wireless by default supports kernels >= 2.6.24, try enabling only one driver though")
+-endif #CONFIG_COMPAT_KERNEL_24
++ifdef CONFIG_COMPAT_KERNEL_23
++$(error "ERROR: compat-wireless by default supports kernels >= 2.6.23, try enabling only one driver though")
++endif #CONFIG_COMPAT_KERNEL_23
  
  ifeq ($(CONFIG_CFG80211),y)
-diff --git a/scripts/gen-compat-autoconf.sh b/scripts/gen-compat-autoconf.sh
-index 1e3002e..64dac69 100755
+ $(error "ERROR: your kernel has CONFIG_CFG80211=y, you should have it CONFIG_CFG80211=m if you want to use this thing.")
 --- a/scripts/gen-compat-autoconf.sh
 +++ b/scripts/gen-compat-autoconf.sh
 @@ -11,7 +11,7 @@
  
  # This indicates which is the oldest kernel we support
  # Update this if you are adding support for older kernels.
--OLDEST_KERNEL_SUPPORTED="2.6.25"
+-OLDEST_KERNEL_SUPPORTED="2.6.24"
 +OLDEST_KERNEL_SUPPORTED="2.6.23"
  COMPAT_RELEASE="compat_version"
  KERNEL_RELEASE="compat_base_tree_version"
