@@ -426,6 +426,23 @@ export WSTABLE="
 
 # Stable pending, if -n was passed
 if [[ "$GET_STABLE_PENDING" = y ]]; then
+
+	if [ -z $NEXT_TREE ]; then
+		NEXT_TREE="/home/$USER/linux-next/"
+		if [ ! -d $NEXT_TREE ]; then
+			echo "Please tell me where your linux-next git tree is."
+			echo "You can do this by exporting its location as follows:"
+			echo
+			echo "  export NEXT_TREE=/home/$USER/linux-next/"
+			echo
+			echo "If you do not have one you can clone the repository:"
+			echo "  git clone git://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git"
+			exit 1
+		fi
+	else
+		echo "You said to use git tree at: $NEXT_TREE for linux-next"
+	fi
+
 	LAST_DIR=$PWD
 	cd $GIT_TREE
 	if [ -f localversion* ]; then
@@ -436,11 +453,6 @@ if [[ "$GET_STABLE_PENDING" = y ]]; then
 	# we now assume you are using a stable tree
 	cd $GIT_TREE
 	LAST_STABLE_UPDATE=$(git describe --abbrev=0)
-	NEXT_TREE="/home/$USER/linux-next/"
-	if [ ! -d $NEXT_TREE ]; then
-		echo -e "You are expected to have $NEXT_TREE directory when using -s"
-		exit 1
-	fi
 	cd $NEXT_TREE
 	PENDING_STABLE_DIR="pending-stable/"
 
