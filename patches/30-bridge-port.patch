@@ -23,7 +23,7 @@ compat-wireless.
 
 --- a/net/wireless/util.c
 +++ b/net/wireless/util.c
-@@ -785,7 +785,7 @@ int cfg80211_change_iface(struct cfg8021
+@@ -796,7 +796,7 @@ int cfg80211_change_iface(struct cfg8021
  		return -EOPNOTSUPP;
  
  	/* if it's part of a bridge, reject changing type to station/ibss */
