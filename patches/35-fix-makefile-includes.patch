@@ -18,26 +18,9 @@ path the make process will search in the kernel tree for the headers.
  
 -ccflags-y += -Idrivers/net/wireless/rtl818x
 +ccflags-y += -I$(obj)/..
---- a/drivers/staging/brcm80211/Makefile
-+++ b/drivers/staging/brcm80211/Makefile
-@@ -24,10 +24,10 @@ ccflags-y :=					\
- 	-DDBAND					\
- 	-DBCMDMA32				\
- 	-DBCMNVRAMR				\
--	-Idrivers/staging/brcm80211/sys		\
--	-Idrivers/staging/brcm80211/phy		\
--	-Idrivers/staging/brcm80211/util	\
--	-Idrivers/staging/brcm80211/include
-+	-I$(obj)/sys		\
-+	-I$(obj)/phy		\
-+	-I$(obj)/util	\
-+	-I$(obj)/include
- 
- PCI_CFLAGS := -DWLC_LOW
- 
 --- a/drivers/staging/brcm80211/brcmfmac/Makefile
 +++ b/drivers/staging/brcm80211/brcmfmac/Makefile
-@@ -33,9 +33,9 @@ ccflags-y :=			\
+@@ -32,9 +32,9 @@ ccflags-y :=			\
  	-DPKT_FILTER_SUPPORT	\
  	-DSHOW_EVENTS		\
  	-DTOE			\
@@ -45,8 +28,25 @@ path the make process will search in the kernel tree for the headers.
 -	-Idrivers/staging/brcm80211/include		\
 -	-Idrivers/staging/brcm80211/util
 +	-I$(obj)		\
-+	-I$(obj)/../include		\
++	-I$(obj)/../include	\
 +	-I$(obj)/../util
  
- DHDOFILES = dhd_linux.o ../util/linux_osl.o ../util/bcmutils.o dhd_common.o dhd_custom_gpio.o	\
- 	wl_iw.o wl_cfg80211.o ../util/siutils.o ../util/sbutils.o ../util/aiutils.o ../util/hndpmu.o ../util/bcmwifi.o dhd_sdio.o	\
+ DHDOFILES = \
+ 	wl_cfg80211.o \
+--- a/drivers/staging/brcm80211/brcmsmac/Makefile
++++ b/drivers/staging/brcm80211/brcmsmac/Makefile
+@@ -24,10 +24,10 @@ ccflags-y :=					\
+ 	-DDBAND					\
+ 	-DBCMDMA32				\
+ 	-DBCMNVRAMR				\
+-	-Idrivers/staging/brcm80211/brcmsmac \
+-	-Idrivers/staging/brcm80211/brcmsmac/phy \
+-	-Idrivers/staging/brcm80211/util \
+-	-Idrivers/staging/brcm80211/include
++	-I$(obj)				\
++	-I$(obj)/phy				\
++	-I$(obj)/../util			\
++	-I$(obj)/../include
+ 
+ BRCMSMAC_OFILES := \
+ 	wl_mac80211.o \
