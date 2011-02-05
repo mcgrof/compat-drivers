@@ -420,7 +420,15 @@ if [[ "$GET_STABLE_PENDING" = y ]]; then
 	PENDING_STABLE_DIR="pending-stable/"
 
 	rm -rf $PENDING_STABLE_DIR
+
+	git tag -l | grep $LAST_STABLE_UPDATE 2>&1 > /dev/null
+	if [[ $? -ne 0 ]]; then
+		echo -e "${BLUE}Tag $LAST_STABLE_UPDATE not found on $NEXT_TREE tree: bailing out${NORMAL}"
+		exit 1
+	fi
 	echo -e "${GREEN}Generating stable cherry picks... ${NORMAL}"
+	echo -e "\nUsing command on directory $PWD:"
+	echo -e "\ngit format-patch --grep=\"stable@kernel.org\" -o $PENDING_STABLE_DIR ${LAST_STABLE_UPDATE}.. $WSTABLE"
 	git format-patch --grep="stable@kernel.org" -o $PENDING_STABLE_DIR ${LAST_STABLE_UPDATE}.. $WSTABLE
 	if [ ! -d ${LAST_DIR}/${PENDING_STABLE_DIR} ]; then
 		echo -e "Assumption that ${LAST_DIR}/${PENDING_STABLE_DIR} directory exists failed"
