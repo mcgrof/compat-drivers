@@ -531,6 +531,10 @@ for dir in $EXTRA_PATCHES; do
 done
 
 for dir in $EXTRA_PATCHES; do
+	if [[ ! -d $dir ]]; then
+		echo -e "${RED}Patches: $dir empty, skipping...${NORMAL}\n"
+		continue
+	fi
 	if [[ $LAST_ELEM = $dir && "$REFRESH" = y ]]; then
 		patchRefresh $dir
 	fi
