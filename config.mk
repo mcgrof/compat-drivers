@@ -387,8 +387,12 @@ CONFIG_EEPROM_93CX6=m
 
 # USB Drivers
 ifdef CONFIG_USB
+ifndef CONFIG_COMPAT_KERNEL_29
 CONFIG_ZD1211RW=m
 # CONFIG_ZD1211RW_DEBUG=y
+else
+CONFIG_ZD1211RW=n
+endif #CONFIG_COMPAT_KERNEL_29
 
 # Sorry, rndis_wlan uses cancel_work_sync which is new and can't be done in compat...
 
