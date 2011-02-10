@@ -20,11 +20,11 @@ path the make process will search in the kernel tree for the headers.
 +ccflags-y += -I$(obj)/..
 --- a/drivers/staging/brcm80211/brcmfmac/Makefile
 +++ b/drivers/staging/brcm80211/brcmfmac/Makefile
-@@ -32,9 +32,9 @@ ccflags-y :=			\
- 	-DPKT_FILTER_SUPPORT	\
- 	-DSHOW_EVENTS		\
- 	-DTOE			\
--	-Idrivers/staging/brcm80211/brcmfmac		\
+@@ -35,9 +35,9 @@ ccflags-y :=			\
+ ccflags-$(CONFIG_BRCMDBG)	+= -DDHD_DEBUG
+ 
+ ccflags-y += \
+-	-Idrivers/staging/brcm80211/brcmfmac	\
 -	-Idrivers/staging/brcm80211/include		\
 -	-Idrivers/staging/brcm80211/util
 +	-I$(obj)		\
@@ -35,9 +35,9 @@ path the make process will search in the kernel tree for the headers.
  	wl_cfg80211.o \
 --- a/drivers/staging/brcm80211/brcmsmac/Makefile
 +++ b/drivers/staging/brcm80211/brcmsmac/Makefile
-@@ -24,10 +24,10 @@ ccflags-y :=					\
+@@ -23,10 +23,10 @@ ccflags-y :=				\
+ 	-DWL11N					\
  	-DDBAND					\
- 	-DBCMDMA32				\
  	-DBCMNVRAMR				\
 -	-Idrivers/staging/brcm80211/brcmsmac \
 -	-Idrivers/staging/brcm80211/brcmsmac/phy \

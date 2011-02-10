@@ -547,9 +547,21 @@ here still, but for now we keep this here.
  {
  	struct sock *sk;
  
---- a/net/bluetooth/l2cap.c
-+++ b/net/bluetooth/l2cap.c
-@@ -982,8 +982,12 @@ static struct sock *l2cap_sock_alloc(str
+--- a/net/bluetooth/l2cap_sock.c
++++ b/net/bluetooth/l2cap_sock.c
+@@ -520,7 +520,11 @@ static int l2cap_sock_getsockopt(struct
+ 	return err;
+ }
+ 
++#if (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,31))
+ static int l2cap_sock_setsockopt_old(struct socket *sock, int optname, char __user *optval, unsigned int optlen)
++#else
++static int l2cap_sock_setsockopt(struct socket *sock, int level, int optname, char __user *optval, int optlen)
++#endif
+ {
+ 	struct sock *sk = sock->sk;
+ 	struct l2cap_options opts;
+@@ -1067,8 +1071,12 @@ struct sock *l2cap_sock_alloc(struct net
  	return sk;
  }
  
@@ -562,7 +574,7 @@ here still, but for now we keep this here.
  {
  	struct sock *sk;
  
-@@ -995,7 +999,11 @@ static int l2cap_sock_create(struct net
+@@ -1080,7 +1088,11 @@ static int l2cap_sock_create(struct net
  			sock->type != SOCK_DGRAM && sock->type != SOCK_RAW)
  		return -ESOCKTNOSUPPORT;
  
@@ -574,15 +586,3 @@ here still, but for now we keep this here.
  		return -EPERM;
  
  	sock->ops = &l2cap_sock_ops;
-@@ -2043,7 +2051,11 @@ static int l2cap_sock_setsockopt_old(str
- 	return err;
- }
- 
-+#if (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,31))
- static int l2cap_sock_setsockopt(struct socket *sock, int level, int optname, char __user *optval, unsigned int optlen)
-+#else
-+static int l2cap_sock_setsockopt(struct socket *sock, int level, int optname, char __user *optval, int optlen)
-+#endif
- {
- 	struct sock *sk = sock->sk;
- 	struct bt_security sec;
