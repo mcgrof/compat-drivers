@@ -1,7 +1,7 @@
 From ca4ffe8f2848169a8ded0ea8a60b2d81925564c9 Mon Sep 17 00:00:00 2001
 From: Luis R. Rodriguez <lrodriguez@atheros.com>
 Date: Wed, 20 Oct 2010 10:18:55 -0700
-Subject: [PATCH 03/18] cfg80211: fix disabling channels based on hints
+Subject: [PATCH 03/37] cfg80211: fix disabling channels based on hints
 
 After a module loads you will have loaded the world roaming regulatory
 domain or a custom regulatory domain. Further regulatory hints are
@@ -86,5 +86,5 @@ index 1bc8131..8ab65f2 100644
  	power_rule = &reg_rule->power_rule;
  	freq_range = &reg_rule->freq_range;
 -- 
-1.7.3.2.90.gd4c43
+1.7.4.15.g7811d
 

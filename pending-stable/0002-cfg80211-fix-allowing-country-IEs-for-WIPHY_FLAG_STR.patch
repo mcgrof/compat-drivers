@@ -1,7 +1,7 @@
 From 749b527b21465fb079796c03ffb4302584dc31c1 Mon Sep 17 00:00:00 2001
 From: Luis R. Rodriguez <lrodriguez@atheros.com>
 Date: Wed, 20 Oct 2010 10:18:54 -0700
-Subject: [PATCH 02/18] cfg80211: fix allowing country IEs for WIPHY_FLAG_STRICT_REGULATORY
+Subject: [PATCH 02/37] cfg80211: fix allowing country IEs for WIPHY_FLAG_STRICT_REGULATORY
 
 We should be enabling country IE hints for WIPHY_FLAG_STRICT_REGULATORY
 even if we haven't yet recieved regulatory domain hint for the driver
@@ -60,5 +60,5 @@ index b64596f..1bc8131 100644
  		return true;
  	return false;
 -- 
-1.7.3.2.90.gd4c43
+1.7.4.15.g7811d
 
