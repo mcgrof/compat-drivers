@@ -1,7 +1,7 @@
-From 6a6733f256f18cbcf4875e13f59eedb593b755a8 Mon Sep 17 00:00:00 2001
+From c714b50baa5d0d9121a11255f7387d343993310d Mon Sep 17 00:00:00 2001
 From: Luis R. Rodriguez <lrodriguez@atheros.com>
-Date: Tue, 26 Oct 2010 15:27:25 -0700
-Subject: [PATCH 07/20] ath9k: content DMA start / stop through the PCU lock
+Date: Mon, 14 Feb 2011 14:51:07 -0800
+Subject: [PATCH] ath9k: content DMA start / stop through the PCU lock
 
 This helps align resets / RX enable & disable / TX stop / start.
 Locking around the PCU is important to ensure the hardware doesn't
@@ -20,12 +20,13 @@ Signed-off-by: Luis R. Rodriguez <lrodriguez@atheros.com>
 Signed-off-by: John W. Linville <linville@tuxdriver.com>
 ---
  drivers/net/wireless/ath/ath9k/main.c |   52 ++++++++++++++++----------------
- drivers/net/wireless/ath/ath9k/xmit.c |    2 -
- 2 files changed, 26 insertions(+), 28 deletions(-)
+ 1 files changed, 26 insertions(+), 26 deletions(-)
 
+diff --git a/drivers/net/wireless/ath/ath9k/main.c b/drivers/net/wireless/ath/ath9k/main.c
+index 0c2c614..8a659a2 100644
 --- a/drivers/net/wireless/ath/ath9k/main.c
 +++ b/drivers/net/wireless/ath/ath9k/main.c
-@@ -234,6 +234,8 @@ int ath_set_channel(struct ath_softc *sc
+@@ -234,6 +234,8 @@ int ath_set_channel(struct ath_softc *sc, struct ieee80211_hw *hw,
  
  	ath9k_ps_wakeup(sc);
  
@@ -34,7 +35,7 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  	/*
  	 * This is only performed if the channel settings have
  	 * actually changed.
-@@ -246,8 +248,6 @@ int ath_set_channel(struct ath_softc *sc
+@@ -246,8 +248,6 @@ int ath_set_channel(struct ath_softc *sc, struct ieee80211_hw *hw,
  	ath9k_hw_set_interrupts(ah, 0);
  	stopped = ath_drain_all_txq(sc, false);
  
@@ -43,7 +44,7 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  	if (!ath_stoprecv(sc))
  		stopped = false;
  
-@@ -273,7 +273,6 @@ int ath_set_channel(struct ath_softc *sc
+@@ -273,7 +273,6 @@ int ath_set_channel(struct ath_softc *sc, struct ieee80211_hw *hw,
  			  "Unable to reset channel (%u MHz), "
  			  "reset status %d\n",
  			  channel->center_freq, r);
@@ -51,7 +52,7 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  		goto ps_restore;
  	}
  
-@@ -281,12 +280,9 @@ int ath_set_channel(struct ath_softc *sc
+@@ -281,12 +280,9 @@ int ath_set_channel(struct ath_softc *sc, struct ieee80211_hw *hw,
  		ath_print(common, ATH_DBG_FATAL,
  			  "Unable to restart recv logic\n");
  		r = -EIO;
@@ -64,7 +65,7 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  	ath_update_txpow(sc);
  	ath9k_hw_set_interrupts(ah, ah->imask);
  
-@@ -297,6 +293,8 @@ int ath_set_channel(struct ath_softc *sc
+@@ -297,6 +293,8 @@ int ath_set_channel(struct ath_softc *sc, struct ieee80211_hw *hw,
  	}
  
   ps_restore:
@@ -107,7 +108,7 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  	ath9k_ps_restore(sc);
  }
  
-@@ -879,12 +878,13 @@ void ath_radio_enable(struct ath_softc *
+@@ -879,12 +878,13 @@ void ath_radio_enable(struct ath_softc *sc, struct ieee80211_hw *hw)
  	int r;
  
  	ath9k_ps_wakeup(sc);
@@ -122,7 +123,7 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  	r = ath9k_hw_reset(ah, ah->curchan, ah->caldata, false);
  	if (r) {
  		ath_print(common, ATH_DBG_FATAL,
-@@ -900,8 +900,6 @@ void ath_radio_enable(struct ath_softc *
+@@ -900,8 +900,6 @@ void ath_radio_enable(struct ath_softc *sc, struct ieee80211_hw *hw)
  		spin_unlock_bh(&sc->sc_pcu_lock);
  		return;
  	}
@@ -131,7 +132,7 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  	if (sc->sc_flags & SC_OP_BEACONS)
  		ath_beacon_config(sc, NULL);	/* restart beacons */
  
-@@ -914,6 +912,8 @@ void ath_radio_enable(struct ath_softc *
+@@ -914,6 +912,8 @@ void ath_radio_enable(struct ath_softc *sc, struct ieee80211_hw *hw)
  	ath9k_hw_set_gpio(ah, ah->led_pin, 0);
  
  	ieee80211_wake_queues(hw);
@@ -140,7 +141,7 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  	ath9k_ps_restore(sc);
  }
  
-@@ -924,6 +924,8 @@ void ath_radio_disable(struct ath_softc
+@@ -924,6 +924,8 @@ void ath_radio_disable(struct ath_softc *sc, struct ieee80211_hw *hw)
  	int r;
  
  	ath9k_ps_wakeup(sc);
@@ -149,7 +150,7 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  	ieee80211_stop_queues(hw);
  
  	/*
-@@ -940,8 +942,6 @@ void ath_radio_disable(struct ath_softc
+@@ -940,8 +942,6 @@ void ath_radio_disable(struct ath_softc *sc, struct ieee80211_hw *hw)
  
  	ath_drain_all_txq(sc, false);	/* clear pending tx frames */
  
@@ -158,7 +159,7 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  	ath_stoprecv(sc);		/* turn off frame recv */
  	ath_flushrecv(sc);		/* flush recv queue */
  
-@@ -958,10 +958,11 @@ void ath_radio_disable(struct ath_softc
+@@ -958,10 +958,11 @@ void ath_radio_disable(struct ath_softc *sc, struct ieee80211_hw *hw)
  
  	ath9k_hw_phy_disable(ah);
  
@@ -172,7 +173,7 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  	ath9k_setpower(sc, ATH9K_PM_FULL_SLEEP);
  }
  
-@@ -975,13 +976,13 @@ int ath_reset(struct ath_softc *sc, bool
+@@ -975,13 +976,13 @@ int ath_reset(struct ath_softc *sc, bool retry_tx)
  	/* Stop ANI */
  	del_timer_sync(&common->ani.timer);
  
@@ -188,7 +189,7 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  	ath_stoprecv(sc);
  	ath_flushrecv(sc);
  
-@@ -994,8 +995,6 @@ int ath_reset(struct ath_softc *sc, bool
+@@ -994,8 +995,6 @@ int ath_reset(struct ath_softc *sc, bool retry_tx)
  		ath_print(common, ATH_DBG_FATAL,
  			  "Unable to start recv logic\n");
  
@@ -197,7 +198,7 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  	/*
  	 * We may be doing a reset in response to a request
  	 * that changes the channel so update any state that
-@@ -1020,6 +1019,7 @@ int ath_reset(struct ath_softc *sc, bool
+@@ -1020,6 +1019,7 @@ int ath_reset(struct ath_softc *sc, bool retry_tx)
  	}
  
  	ieee80211_wake_queues(hw);
@@ -205,7 +206,7 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  
  	/* Start ANI */
  	ath_start_ani(common);
-@@ -1387,25 +1387,25 @@ static void ath9k_stop(struct ieee80211_
+@@ -1387,25 +1387,25 @@ static void ath9k_stop(struct ieee80211_hw *hw)
  			ath9k_btcoex_timer_pause(sc);
  	}
  
@@ -236,4 +237,7 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
 +
  	ath9k_ps_restore(sc);
  
- 	sc->ps_idle = true;
+ 	/* Finally, put the chip in FULL SLEEP mode */
+-- 
+1.7.4.15.g7811d
+
