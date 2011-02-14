@@ -10,3 +10,4 @@ orinoco-initialise-priv-hw-before-assigning-the-inte.patch
 
 hostap_cs-fix-sleeping-function-called-from-invalid-.patch
 ath9k_hw-ASPM-interoperability-fix-for-AR9380-AR9382.patch
+ath9k-add-missing-ps-wakeup-restore-calls.patch
