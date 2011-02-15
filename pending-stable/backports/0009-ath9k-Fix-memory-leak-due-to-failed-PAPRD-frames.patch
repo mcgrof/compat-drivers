@@ -1,0 +1,35 @@
+From d8e535bd224f8768fbc22d034eb086ee727a53f6 Mon Sep 17 00:00:00 2001
+From: Mohammed Shafi Shajakhan <mshajakhan@atheros.com>
+Date: Mon, 14 Feb 2011 17:05:32 -0800
+Subject: [PATCH] ath9k: Fix memory leak due to failed PAPRD frames
+
+free the skb's when the Tx of PAPRD frames fails and also add a debug
+message indicating that.
+
+Signed-off-by: Mohammed Shafi Shajakhan <mshajakhan@atheros.com>
+Cc: stable@kernel.org
+Signed-off-by: John W. Linville <linville@tuxdriver.com>
+---
+ drivers/net/wireless/ath/ath9k/main.c |    5 ++++-
+ 1 files changed, 4 insertions(+), 1 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath9k/main.c b/drivers/net/wireless/ath/ath9k/main.c
+index 64a24bf..87e4414 100644
+--- a/drivers/net/wireless/ath/ath9k/main.c
++++ b/drivers/net/wireless/ath/ath9k/main.c
+@@ -383,8 +383,11 @@ void ath_paprd_calibrate(struct work_struct *work)
+ 		init_completion(&sc->paprd_complete);
+ 		ar9003_paprd_setup_gain_table(ah, chain);
+ 		txctl.paprd = BIT(chain);
+-		if (ath_tx_start(hw, skb, &txctl) != 0)
++		if (ath_tx_start(hw, skb, &txctl) != 0) {
++			ath_print(common, ATH_DBG_XMIT, "PAPRD TX failed\n");
++			dev_kfree_skb_any(skb);
+ 			break;
++		}
+ 
+ 		time_left = wait_for_completion_timeout(&sc->paprd_complete,
+ 				msecs_to_jiffies(ATH_PAPRD_TIMEOUT));
+-- 
+1.7.4.15.g7811d
+
