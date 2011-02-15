@@ -1,0 +1,42 @@
+From e746bd0ff84c74d018595f7e64ab5bba7d75d473 Mon Sep 17 00:00:00 2001
+From: Stanislaw Gruszka <sgruszka@redhat.com>
+Date: Mon, 14 Feb 2011 17:09:51 -0800
+Subject: [PATCH] iwl3945: remove plcp check
+
+Patch fixes:
+https://bugzilla.redhat.com/show_bug.cgi?id=654599
+
+Many users report very low speed problem on 3945 devices,
+this patch fixes problem, but only for some of them.
+
+For unknown reason, sometimes after hw scanning, device is not able
+to receive frames at high rate. Since plcp health check may request
+hw scan to "reset radio", performance problem start to be observable
+after update kernel to .35, where plcp check was introduced.
+
+Bug reporter confirmed that removing plcp check fixed problem for him.
+
+Reported-and-tested-by: SilvioTO <silviotoya@yahoo.it>
+Cc: stable@kernel.org  # 2.6.35+
+Signed-off-by: Stanislaw Gruszka <sgruszka@redhat.com>
+Acked-by: Wey-Yi Guy <wey-yi.w.guy@intel.com>
+Signed-off-by: John W. Linville <linville@tuxdriver.com>
+---
+ drivers/net/wireless/iwlwifi/iwl-3945.c |    1 -
+ 1 files changed, 0 insertions(+), 1 deletions(-)
+
+diff --git a/drivers/net/wireless/iwlwifi/iwl-3945.c b/drivers/net/wireless/iwlwifi/iwl-3945.c
+index 176e525..e7fe35c 100644
+--- a/drivers/net/wireless/iwlwifi/iwl-3945.c
++++ b/drivers/net/wireless/iwlwifi/iwl-3945.c
+@@ -2727,7 +2727,6 @@ static struct iwl_lib_ops iwl3945_lib = {
+ 	.config_ap = iwl3945_config_ap,
+ 	.manage_ibss_station = iwl3945_manage_ibss_station,
+ 	.recover_from_tx_stall = iwl_bg_monitor_recover,
+-	.check_plcp_health = iwl3945_good_plcp_health,
+ 
+ 	.debugfs_ops = {
+ 		.rx_stats_read = iwl3945_ucode_rx_stats_read,
+-- 
+1.7.4.15.g7811d
+
