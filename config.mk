@@ -211,21 +211,14 @@ endif
 # mac80211 test driver
 CONFIG_MAC80211_HWSIM=m
 
-# PCI Drivers
-ifdef CONFIG_PCI
-
 CONFIG_ATH5K=m
-CONFIG_ATH5K_PCI=y
 # CONFIG_ATH5K_DEBUG=y
 # CONFIG_ATH5K_AHB=y
 CONFIG_ATH9K_HW=m
-CONFIG_ATH9K=m
-# Note: once ath9k_htc is added we'll have to move
-# CONFIG_ATH9K_COMMON to an area that doesn't depend on PCI
-# as you could then have ath9k disabled but ath9k_htc enabled.
 CONFIG_ATH9K_COMMON=m
 # CONFIG_ATH9K_DEBUGFS=y
 # CONFIG_ATH9K_PKTLOG=y
+
 # Disable this to get minstrel as default, we leave the ath9k
 # rate control algorithm as the default for now as that is also
 # default upstream on the kernel. We will move this to minstrel
@@ -234,6 +227,11 @@ CONFIG_ATH9K_COMMON=m
 # for long range considerations.
 CONFIG_ATH9K_RATE_CONTROL=y
 
+# PCI Drivers
+ifdef CONFIG_PCI
+
+CONFIG_ATH5K_PCI=y
+CONFIG_ATH9K=m
 
 CONFIG_COMPAT_IWLWIFI=m
 # CONFIG_IWLWIFI_DEBUG=y
