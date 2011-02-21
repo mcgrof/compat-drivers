@@ -306,7 +306,7 @@ case $1 in
 # Group drivers
 	atheros)
 		select_drivers		CONFIG_ATH_COMMON \
-					CONFIG_ZD1211RW
+					CONFIG_COMPAT_ZD1211RW
 		disable_staging
 		disable_var_01
 		;;
@@ -383,7 +383,7 @@ case $1 in
 		select_driver		CONFIG_NOTHING
 		;;
 	zd1211rw)
-		select_driver		CONFIG_ZD1211RW
+		select_driver		CONFIG_COMPAT_ZD1211RW
 		disable_staging
 		disable_var_01
 		;;

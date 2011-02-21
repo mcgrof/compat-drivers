@@ -1,0 +1,132 @@
+In kernel 2.6.26 and older CONFIG_IWL4965 was build as an extra
+module, but now it is directly included in the iwlagn.
+
+CONFIG_IWL4965 has to be set to y, to build correctly.
+
+zd1211rw does not build with kernel < 2.6.28, but it is often activated 
+in the kernel config of older kernels. We rename the option to 
+deactivate it on older kernels.
+CONFIG_BT_L2CAP and CONFIG_BT_SCO are boolean now, but often set to m 
+in the kernel config.
+
+CONFIG_BT_HIDP does not build with older kernel versions.
+
+--- a/drivers/net/wireless/Makefile
++++ b/drivers/net/wireless/Makefile
+@@ -21,7 +21,7 @@ obj-$(CONFIG_PRISM54)		+= prism54/
+ obj-$(CONFIG_HOSTAP)		+= hostap/
+ obj-$(CONFIG_B43)		+= b43/
+ obj-$(CONFIG_B43LEGACY)		+= b43legacy/
+-obj-$(CONFIG_ZD1211RW)		+= zd1211rw/
++obj-$(CONFIG_COMPAT_ZD1211RW)		+= zd1211rw/
+ obj-$(CONFIG_RTL8180)		+= rtl818x/
+ obj-$(CONFIG_RTL8187)		+= rtl818x/
+ obj-$(CONFIG_RTL8192CE)		+= rtlwifi/
+@@ -41,7 +41,7 @@ obj-$(CONFIG_ADM8211)	+= adm8211.o
+ 
+ obj-$(CONFIG_MWL8K)	+= mwl8k.o
+ 
+-obj-$(CONFIG_IWLWIFI)	+= iwlwifi/
++obj-$(CONFIG_COMPAT_IWLWIFI)	+= iwlwifi/
+ obj-$(CONFIG_RT2X00)	+= rt2x00/
+ 
+ obj-$(CONFIG_P54_COMMON)	+= p54/
+--- a/drivers/net/wireless/iwlwifi/Makefile
++++ b/drivers/net/wireless/iwlwifi/Makefile
+@@ -1,9 +1,9 @@
+-obj-$(CONFIG_IWLWIFI)	+= iwlcore.o
++obj-$(CONFIG_COMPAT_IWLWIFI)	+= iwlcore.o
+ iwlcore-objs 		:= iwl-core.o iwl-eeprom.o iwl-hcmd.o iwl-power.o
+ iwlcore-objs 		+= iwl-rx.o iwl-tx.o iwl-sta.o
+ iwlcore-objs 		+= iwl-scan.o iwl-led.o
+ iwlcore-$(CONFIG_IWL3945) += iwl-legacy.o
+-iwlcore-$(CONFIG_IWL4965) += iwl-legacy.o
++iwlcore-$(CONFIG_COMPAT_IWL4965) += iwl-legacy.o
+ iwlcore-$(CONFIG_IWLWIFI_DEBUGFS) += iwl-debugfs.o
+ iwlcore-$(CONFIG_IWLWIFI_DEVICE_TRACING) += iwl-devtrace.o
+ 
+@@ -21,7 +21,7 @@ iwlagn-objs		+= iwl-agn-lib.o iwl-agn-rx
+ iwlagn-objs		+= iwl-agn-tt.o iwl-agn-sta.o iwl-agn-eeprom.o
+ iwlagn-$(CONFIG_IWLWIFI_DEBUGFS) += iwl-agn-debugfs.o
+ 
+-iwlagn-$(CONFIG_IWL4965) += iwl-4965.o
++iwlagn-$(CONFIG_COMPAT_IWL4965) += iwl-4965.o
+ iwlagn-$(CONFIG_IWL5000) += iwl-agn-rxon.o iwl-agn-hcmd.o iwl-agn-ict.o
+ iwlagn-$(CONFIG_IWL5000) += iwl-5000.o
+ iwlagn-$(CONFIG_IWL5000) += iwl-6000.o
+--- a/drivers/net/wireless/iwlwifi/iwl-agn.c
++++ b/drivers/net/wireless/iwlwifi/iwl-agn.c
+@@ -4121,7 +4121,7 @@ static int iwl_pci_probe(struct pci_dev
+ #ifdef CONFIG_IWL5000
+ 		iwlagn_hw_ops.hw_scan = NULL;
+ #endif
+-#ifdef CONFIG_IWL4965
++#ifdef CONFIG_COMPAT_IWL4965
+ 		iwl4965_hw_ops.hw_scan = NULL;
+ #endif
+ 	}
+@@ -4502,10 +4502,10 @@ static void __devexit iwl_pci_remove(str
+ 
+ /* Hardware specific file defines the PCI IDs table for that hardware module */
+ static DEFINE_PCI_DEVICE_TABLE(iwl_hw_card_ids) = {
+-#ifdef CONFIG_IWL4965
++#ifdef CONFIG_COMPAT_IWL4965
+ 	{IWL_PCI_DEVICE(0x4229, PCI_ANY_ID, iwl4965_agn_cfg)},
+ 	{IWL_PCI_DEVICE(0x4230, PCI_ANY_ID, iwl4965_agn_cfg)},
+-#endif /* CONFIG_IWL4965 */
++#endif /* CONFIG_COMPAT_IWL4965 */
+ #ifdef CONFIG_IWL5000
+ /* 5100 Series WiFi */
+ 	{IWL_PCI_DEVICE(0x4232, 0x1201, iwl5100_agn_cfg)}, /* Mini Card */
+--- a/drivers/net/wireless/zd1211rw/Makefile
++++ b/drivers/net/wireless/zd1211rw/Makefile
+@@ -1,4 +1,4 @@
+-obj-$(CONFIG_ZD1211RW) += zd1211rw.o
++obj-$(CONFIG_COMPAT_ZD1211RW) += zd1211rw.o
+ 
+ zd1211rw-objs := zd_chip.o zd_mac.o \
+ 		zd_rf_al2230.o zd_rf_rf2959.o \
+--- a/include/net/bluetooth/bluetooth.h
++++ b/include/net/bluetooth/bluetooth.h
+@@ -205,7 +205,7 @@ extern void bt_sysfs_cleanup(void);
+ 
+ extern struct dentry *bt_debugfs;
+ 
+-#ifdef CONFIG_BT_L2CAP
++#ifdef CONFIG_COMPAT_BT_L2CAP
+ int l2cap_init(void);
+ void l2cap_exit(void);
+ #else
+@@ -219,7 +219,7 @@ static inline void l2cap_exit(void)
+ }
+ #endif
+ 
+-#ifdef CONFIG_BT_SCO
++#ifdef CONFIG_COMPAT_BT_SCO
+ int sco_init(void);
+ void sco_exit(void);
+ #else
+--- a/net/bluetooth/Makefile
++++ b/net/bluetooth/Makefile
+@@ -6,8 +6,8 @@ obj-$(CONFIG_BT)	+= bluetooth.o
+ obj-$(CONFIG_BT_RFCOMM)	+= rfcomm/
+ obj-$(CONFIG_BT_BNEP)	+= bnep/
+ obj-$(CONFIG_BT_CMTP)	+= cmtp/
+-obj-$(CONFIG_BT_HIDP)	+= hidp/
++obj-$(CONFIG_COMPAT_BT_HIDP)	+= hidp/
+ 
+ bluetooth-y := af_bluetooth.o hci_core.o hci_conn.o hci_event.o mgmt.o hci_sock.o hci_sysfs.o lib.o
+-bluetooth-$(CONFIG_BT_L2CAP)	+= l2cap_core.o l2cap_sock.o
+-bluetooth-$(CONFIG_BT_SCO)	+= sco.o
++bluetooth-$(CONFIG_COMPAT_BT_L2CAP)	+= l2cap_core.o l2cap_sock.o
++bluetooth-$(CONFIG_COMPAT_BT_SCO)	+= sco.o
+--- a/net/bluetooth/hidp/Makefile
++++ b/net/bluetooth/hidp/Makefile
+@@ -2,6 +2,6 @@
+ # Makefile for the Linux Bluetooth HIDP layer
+ #
+ 
+-obj-$(CONFIG_BT_HIDP) += hidp.o
++obj-$(CONFIG_COMPAT_BT_HIDP) += hidp.o
+ 
+ hidp-objs := core.o sock.o
