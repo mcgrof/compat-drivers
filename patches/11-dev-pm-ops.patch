@@ -117,9 +117,82 @@ calls on compat code with only slight modifications.
  };
  
  int ath_pci_init(void)
+--- a/drivers/net/wireless/iwlegacy/iwl-core.c
++++ b/drivers/net/wireless/iwlegacy/iwl-core.c
+@@ -2032,15 +2032,17 @@ int iwl_legacy_pci_resume(struct device
+ }
+ EXPORT_SYMBOL(iwl_legacy_pci_resume);
+ 
+-const struct dev_pm_ops iwl_legacy_pm_ops = {
+-	.suspend = iwl_legacy_pci_suspend,
+-	.resume = iwl_legacy_pci_resume,
+-	.freeze = iwl_legacy_pci_suspend,
+-	.thaw = iwl_legacy_pci_resume,
+-	.poweroff = iwl_legacy_pci_suspend,
+-	.restore = iwl_legacy_pci_resume,
+-};
++const SIMPLE_DEV_PM_OPS(iwl_legacy_pm_ops, iwl_legacy_pci_suspend, iwl_legacy_pci_resume);
++
++compat_pci_suspend(iwl_legacy_pci_suspend)
++compat_pci_resume(iwl_legacy_pci_resume)
++
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
+ EXPORT_SYMBOL(iwl_legacy_pm_ops);
++#else
++EXPORT_SYMBOL(iwl_legacy_pci_suspend_compat);
++EXPORT_SYMBOL(iwl_legacy_pci_resume_compat);
++#endif
+ 
+ #endif /* CONFIG_PM */
+ 
+--- a/drivers/net/wireless/iwlegacy/iwl-core.h
++++ b/drivers/net/wireless/iwlegacy/iwl-core.h
+@@ -506,7 +506,12 @@ __le32 iwl_legacy_add_beacon_time(struct
+ #ifdef CONFIG_PM
+ int iwl_legacy_pci_suspend(struct device *device);
+ int iwl_legacy_pci_resume(struct device *device);
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,29))
++int iwl_legacy_pci_suspend_compat(struct pci_dev *pdev, pm_message_t state);
++int iwl_legacy_pci_resume_compat(struct pci_dev *pdev);
++#else
+ extern const struct dev_pm_ops iwl_legacy_pm_ops;
++#endif
+ 
+ #define IWL_LEGACY_PM_OPS	(&iwl_legacy_pm_ops)
+ 
+--- a/drivers/net/wireless/iwlegacy/iwl3945-base.c
++++ b/drivers/net/wireless/iwlegacy/iwl3945-base.c
+@@ -4237,7 +4237,12 @@ static struct pci_driver iwl3945_driver
+ 	.id_table = iwl3945_hw_card_ids,
+ 	.probe = iwl3945_pci_probe,
+ 	.remove = __devexit_p(iwl3945_pci_remove),
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
+ 	.driver.pm = IWL_LEGACY_PM_OPS,
++#elif defined(CONFIG_PM)
++	.suspend = iwl_legacy_pci_suspend_compat,
++	.resume = iwl_legacy_pci_resume_compat,
++#endif
+ };
+ 
+ static int __init iwl3945_init(void)
+--- a/drivers/net/wireless/iwlegacy/iwl4965-base.c
++++ b/drivers/net/wireless/iwlegacy/iwl4965-base.c
+@@ -3577,7 +3577,12 @@ static struct pci_driver iwl4965_driver
+ 	.id_table = iwl4965_hw_card_ids,
+ 	.probe = iwl4965_pci_probe,
+ 	.remove = __devexit_p(iwl4965_pci_remove),
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
+ 	.driver.pm = IWL_LEGACY_PM_OPS,
++#elif defined(CONFIG_PM)
++	.suspend = iwl_legacy_pci_suspend_compat,
++	.resume = iwl_legacy_pci_resume_compat,
++#endif
+ };
+ 
+ static int __init iwl4965_init(void)
 --- a/drivers/net/wireless/iwlwifi/iwl-agn.c
 +++ b/drivers/net/wireless/iwlwifi/iwl-agn.c
-@@ -4704,7 +4704,12 @@ static struct pci_driver iwl_driver = {
+@@ -4697,7 +4697,12 @@ static struct pci_driver iwl_driver = {
  	.id_table = iwl_hw_card_ids,
  	.probe = iwl_pci_probe,
  	.remove = __devexit_p(iwl_pci_remove),
@@ -134,9 +207,9 @@ calls on compat code with only slight modifications.
  static int __init iwl_init(void)
 --- a/drivers/net/wireless/iwlwifi/iwl-core.c
 +++ b/drivers/net/wireless/iwlwifi/iwl-core.c
-@@ -2101,14 +2101,16 @@ int iwl_pci_resume(struct device *device
+@@ -2070,13 +2070,9 @@ int iwl_pci_resume(struct device *device
+ 	return 0;
  }
- EXPORT_SYMBOL(iwl_pci_resume);
  
 -const struct dev_pm_ops iwl_pm_ops = {
 -	.suspend = iwl_pci_suspend,
@@ -150,13 +223,6 @@ calls on compat code with only slight modifications.
 +
 +compat_pci_suspend(iwl_pci_suspend)
 +compat_pci_resume(iwl_pci_resume)
-+
-+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
- EXPORT_SYMBOL(iwl_pm_ops);
-+#else
-+EXPORT_SYMBOL(iwl_pci_suspend_compat);
-+EXPORT_SYMBOL(iwl_pci_resume_compat);
-+#endif
  
  #endif /* CONFIG_PM */
 --- a/drivers/net/wireless/iwlwifi/iwl-core.h
@@ -174,18 +240,3 @@ calls on compat code with only slight modifications.
  
  #define IWL_PM_OPS	(&iwl_pm_ops)
  
---- a/drivers/net/wireless/iwlwifi/iwl3945-base.c
-+++ b/drivers/net/wireless/iwlwifi/iwl3945-base.c
-@@ -4277,7 +4277,12 @@ static struct pci_driver iwl3945_driver
- 	.id_table = iwl3945_hw_card_ids,
- 	.probe = iwl3945_pci_probe,
- 	.remove = __devexit_p(iwl3945_pci_remove),
-+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
- 	.driver.pm = IWL_PM_OPS,
-+#elif defined(CONFIG_PM)
-+	.suspend = iwl_pci_suspend_compat,
-+	.resume = iwl_pci_resume_compat,
-+#endif
- };
- 
- static int __init iwl3945_init(void)
