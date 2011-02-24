@@ -369,7 +369,6 @@ endif #CONFIG_PCMCIA
 endif #CONFIG_WIRELESS_EXT
 
 CONFIG_RTL8192CE=m
-CONFIG_RTLWIFI=m
 
 endif #CONFIG_PCI
 ## end of PCI
@@ -488,6 +487,8 @@ CONFIG_BT_HCIBPA10X=m
 CONFIG_BT_HCIBFUSB=m
 CONFIG_BT_ATH3K=m
 
+CONFIG_RTL8192CU=m
+
 endif #CONFIG_USB end of USB driver list
 
 ifdef CONFIG_SPI_MASTER
@@ -567,6 +568,9 @@ endif #CONFIG_MMC
 
 
 endif # end of SDIO driver list
+
+CONFIG_RTLWIFI=m
+CONFIG_RTL8192C_COMMON=m
 
 # Common rt2x00 requirements
 ifeq ($(NEED_RT2X00),y)
