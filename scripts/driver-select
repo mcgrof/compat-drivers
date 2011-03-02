@@ -158,6 +158,7 @@ function disable_var_03 {
 
 function disable_bt {
 	perl -i -ne 'print if ! /CONFIG_COMPAT_VAR_MODULES/' Makefile
+	perl -i -ne 'print if ! /CONFIG_COMPAT_BLUETOOTH/' Makefile
 } 
 
 function disable_80211 {
