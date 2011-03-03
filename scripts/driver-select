@@ -323,11 +323,17 @@ case $1 in
 					CONFIG_IPW
 		disable_staging
 		disable_var
+		disable_bt
+		disable_ethernet
+		disable_usbnet
 		;;
 	iwlwifi)
 		select_driver		CONFIG_IWLWIFI
 		disable_staging
 		disable_var_01
+		disable_bt
+		disable_ethernet
+		disable_usbnet
 		;;
 	rtl818x)
 		select_drivers		CONFIG_RTL8180 CONFIG_RTL8187
