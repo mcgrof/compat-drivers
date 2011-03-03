@@ -450,7 +450,7 @@ here still, but for now we keep this here.
  	struct bt_security sec;
 --- a/net/bluetooth/rfcomm/tty.c
 +++ b/net/bluetooth/rfcomm/tty.c
-@@ -733,8 +733,12 @@ static int rfcomm_tty_open(struct tty_st
+@@ -735,8 +735,12 @@ static int rfcomm_tty_open(struct tty_st
  	remove_wait_queue(&dev->wait, &wait);
  
  	if (err == 0)
@@ -463,7 +463,7 @@ here still, but for now we keep this here.
  
  	rfcomm_tty_copy_pending(dev);
  
-@@ -754,7 +758,11 @@ static void rfcomm_tty_close(struct tty_
+@@ -756,7 +760,11 @@ static void rfcomm_tty_close(struct tty_
  
  	if (atomic_dec_and_test(&dev->opened)) {
  		if (dev->tty_dev->parent)
@@ -549,7 +549,7 @@ here still, but for now we keep this here.
  
 --- a/net/bluetooth/l2cap.c
 +++ b/net/bluetooth/l2cap.c
-@@ -968,8 +968,12 @@ static struct sock *l2cap_sock_alloc(str
+@@ -969,8 +969,12 @@ static struct sock *l2cap_sock_alloc(str
  	return sk;
  }
  
@@ -562,7 +562,7 @@ here still, but for now we keep this here.
  {
  	struct sock *sk;
  
-@@ -981,7 +985,11 @@ static int l2cap_sock_create(struct net
+@@ -982,7 +986,11 @@ static int l2cap_sock_create(struct net
  			sock->type != SOCK_DGRAM && sock->type != SOCK_RAW)
  		return -ESOCKTNOSUPPORT;
  
@@ -574,7 +574,7 @@ here still, but for now we keep this here.
  		return -EPERM;
  
  	sock->ops = &l2cap_sock_ops;
-@@ -2022,7 +2030,11 @@ static int l2cap_sock_setsockopt_old(str
+@@ -2023,7 +2031,11 @@ static int l2cap_sock_setsockopt_old(str
  	return err;
  }
  
