@@ -97,7 +97,7 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  	return 0;
 --- a/drivers/net/wireless/ath/ath9k/ath9k.h
 +++ b/drivers/net/wireless/ath/ath9k/ath9k.h
-@@ -25,6 +25,7 @@
+@@ -24,6 +24,7 @@
  
  #include "debug.h"
  #include "common.h"
@@ -105,7 +105,7 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  
  /*
   * Header for the ath9k.ko driver core *only* -- hw code nor any other driver
-@@ -549,6 +550,7 @@ struct ath_ant_comb {
+@@ -547,6 +548,7 @@ struct ath_ant_comb {
  #define SC_OP_BT_SCAN		     BIT(13)
  #define SC_OP_ANI_RUN		     BIT(14)
  #define SC_OP_ENABLE_APM	     BIT(15)
@@ -113,7 +113,7 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  
  /* Powersave flags */
  #define PS_WAIT_FOR_BEACON        BIT(0)
-@@ -626,6 +628,10 @@ struct ath_softc {
+@@ -623,6 +625,10 @@ struct ath_softc {
  #ifdef CONFIG_ATH9K_DEBUGFS
  	struct ath9k_debug debug;
  #endif
@@ -161,7 +161,7 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  static inline void ath9k_hw_set11n_txdesc(struct ath_hw *ah, void *ds,
 --- a/drivers/net/wireless/ath/ath9k/hw.c
 +++ b/drivers/net/wireless/ath/ath9k/hw.c
-@@ -2151,7 +2151,7 @@ void ath9k_hw_setrxfilter(struct ath_hw
+@@ -2155,7 +2155,7 @@ void ath9k_hw_setrxfilter(struct ath_hw
  		phybits |= AR_PHY_ERR_RADAR;
  	if (bits & ATH9K_RX_FILTER_PHYERR)
  		phybits |= AR_PHY_ERR_OFDM_TIMING | AR_PHY_ERR_CCK_TIMING;
@@ -172,7 +172,7 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  		REG_WRITE(ah, AR_RXCFG,
 --- a/drivers/net/wireless/ath/ath9k/hw.h
 +++ b/drivers/net/wireless/ath/ath9k/hw.h
-@@ -616,7 +616,7 @@ struct ath_hw_ops {
+@@ -617,7 +617,7 @@ struct ath_hw_ops {
  			    const void *ds0, dma_addr_t buf_addr,
  			    unsigned int qcu);
  	int (*proc_txdesc)(struct ath_hw *ah, void *ds,
@@ -181,7 +181,7 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  	void (*set11n_txdesc)(struct ath_hw *ah, void *ds,
  			      u32 pktLen, enum ath9k_pkt_type type,
  			      u32 txPower, u32 keyIx,
-@@ -852,6 +852,8 @@ struct ath_hw {
+@@ -853,6 +853,8 @@ struct ath_hw {
  
  	/* Enterprise mode cap */
  	u32 ent_mode;
@@ -1354,7 +1354,7 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  		if (!txpending || (tid->state & AGGR_CLEANUP)) {
  			/*
  			 * complete the acked-ones/xretried ones; update
-@@ -2028,7 +2030,7 @@ static void ath_tx_processq(struct ath_s
+@@ -2033,7 +2035,7 @@ static void ath_tx_processq(struct ath_s
  		ds = lastbf->bf_desc;
  
  		memset(&ts, 0, sizeof(ts));
@@ -1363,7 +1363,7 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  		if (status == -EINPROGRESS) {
  			spin_unlock_bh(&txq->axq_lock);
  			break;
-@@ -2070,11 +2072,15 @@ static void ath_tx_processq(struct ath_s
+@@ -2075,11 +2077,15 @@ static void ath_tx_processq(struct ath_s
  
  		qnum = skb_get_queue_mapping(bf->bf_mpdu);
  
@@ -1381,7 +1381,7 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  
  		if (txq == sc->tx.txq_map[qnum])
  			ath_wake_mac80211_queue(sc, qnum);
-@@ -2148,9 +2154,11 @@ void ath_tx_edma_tasklet(struct ath_soft
+@@ -2151,9 +2157,11 @@ void ath_tx_edma_tasklet(struct ath_soft
  	int status;
  	int txok;
  	int qnum;
@@ -1394,7 +1394,7 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  		if (status == -EINPROGRESS)
  			break;
  		if (status == -EIO) {
-@@ -2195,16 +2203,20 @@ void ath_tx_edma_tasklet(struct ath_soft
+@@ -2198,16 +2206,20 @@ void ath_tx_edma_tasklet(struct ath_soft
  
  		qnum = skb_get_queue_mapping(bf->bf_mpdu);
  
