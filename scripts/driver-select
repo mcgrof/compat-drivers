@@ -57,7 +57,7 @@ function usage {
 	echo -e "\nSupported group drivers:"
 	echo -e "\t${CYAN}atheros${NORMAL} < ${PURPLE} ath5k ath9k carl9170 zd1211rw ${NORMAL}>"
 	echo -e "\t${CYAN}ath${NORMAL} < ${PURPLE} ath5k ath9k carl9170 ${NORMAL}>"
-	echo -e "\t${CYAN}intel${NORMAL} < ${PURPLE} iwl3945 iwlagn ipw2100 ipw2200 ${NORMAL}>"
+	echo -e "\t${CYAN}iwlagn${NORMAL} < ${PURPLE} iwlagn ${NORMAL}>"
 	echo -e "\t${CYAN}iwlwifi${NORMAL} < ${PURPLE} iwl3945 iwlagn ${NORMAL}>"
 	echo -e "\t${CYAN}rtl818x${NORMAL} < ${PURPLE} rtl8180 rtl8187 ${NORMAL}>"
 	echo -e "\t${CYAN}rtlwifi${NORMAL} < ${PURPLE} rtl8192ce ${NORMAL}>"
@@ -245,13 +245,6 @@ function select_ath9k_driver
 	# In the future here we'll add stuff to disable ath9k_htc
 }
 
-# iwlwifi stuff needs more work
-function select_iwl_driver 
-{
-	perl -i -ne 'print if /'$1'/ || /CONFIG_BLEH/ ' drivers/net/wireless/iwlwifi/Makefile
-	disable_var_01
-}
-
 function restore_file {
 	#ORIG=$(shell ${1%%.${BACKUP_EXT}})
 	ORIG=${1%%.bk}
@@ -327,8 +320,8 @@ case $1 in
 		disable_ethernet
 		disable_usbnet
 		;;
-	iwlwifi)
-		select_driver		CONFIG_IWLWIFI
+	iwlagn)
+		select_driver           CONFIG_IWLAGN
 		disable_staging
 		disable_var_01
 		disable_bt
