@@ -42,11 +42,21 @@ function usage()
 }
 
 UPDATE_ARGS=""
-# branch we want to use from hpa's tree, by default
-# this is origin/master as this will get us the latest
-# RC kernel.
-LOCAL_BRANCH="master"
 POSTFIX_RELEASE_TAG="-"
+
+export GIT_TREE=$HOME/$ALL_STABLE_TREE
+COMPAT_WIRELESS_DIR=$(pwd)
+COMPAT_WIRELESS_BRANCH=$(git branch | grep \* | awk '{print $2}')
+
+cd $GIT_TREE
+# --abbrev=0 on branch should work but I guess it doesn't on some releases
+EXISTING_BRANCH=$(git branch | grep \* | awk '{print $2}')
+
+# target branch we want to use from hpa's tree, by default
+# this respects the existing branch on the target kernel.
+# You can override the target branch by specifying an argument
+# to this script.
+TARGET_BRANCH="$EXISTING_BRANCH"
 
 # By default we will not do a git fetch and reset of the branch,
 # use -f if you want to force an update, this will delete all
@@ -74,17 +84,13 @@ while [ $# -ne 0 ]; do
 		POSTFIX_RELEASE_TAG="${POSTFIX_RELEASE_TAG}c"
 		shift; continue;
 	fi
-	if [[ "$1" = "-i" ]]; then
-		IGNORE_UPDATE="yes"
-		shift; continue;
-	fi
 	if [[ "$1" = "-f" ]]; then
 		FORCE_UPDATE="yes"
 		shift; continue;
 	fi
 
 	if [[ $(expr "$1" : '^linux-') -eq 6 ]]; then
-		LOCAL_BRANCH="$1"
+		TARGET_BRANCH="$1"
 		shift; continue;
 	fi
 
@@ -93,41 +99,37 @@ while [ $# -ne 0 ]; do
 	exit
 done
 
-export GIT_TREE=$HOME/$ALL_STABLE_TREE
-COMPAT_WIRELESS_DIR=$(pwd)
-COMPAT_WIRELESS_BRANCH=$(git branch | grep \* | awk '{print $2}')
-
-cd $GIT_TREE
-# --abbrev=0 on branch should work but I guess it doesn't on some releases
-EXISTING_BRANCH=$(git branch | grep \* | awk '{print $2}')
-
-case $LOCAL_BRANCH in
-"master") # Preparing a new stable compat-wireless release based on an RC kernel
-	if [[ $FORCE_UPDATE = "yes" || "$EXISTING_BRANCH" != "$LOCAL_BRANCH" ]]; then
+function check_for_updates()
+{
+	case $TARGET_BRANCH in
+	"master") # Preparing a new stable compat-wireless release based on an RC kernel
 		git checkout -f
 		git fetch
 		git reset --hard origin
-	fi
-	echo "On master branch on $ALL_STABLE_TREE"
-	;;
-*) # Based on a stable 2.6.x.y release, lets just move to the master branch,
-   # git pull, nuke the old branch and start a fresh new branch. Unless you
-   # specified to ignore the update
-	if [[ $IGNORE_UPDATE == "yes" && $FORCE_UPDATE = "yes" || "$EXISTING_BRANCH" != "$LOCAL_BRANCH" ]]; then
+		;;
+	*) # Based on a stable 2.6.x.y release, lets just move to the target branch
+	   # we'll only ask for object updates if and only if you asked us to with -f,
+	   # otherwise we eat up whatever you already have on your existing branch.
 		git checkout -f
 		git fetch
-		if [[ "$EXISTING_BRANCH" = "$LOCAL_BRANCH" ]]; then
-			git branch -m crap-foo-compat
-		fi
-		git branch -D $LOCAL_BRANCH
-		git checkout -b $LOCAL_BRANCH origin/$LOCAL_BRANCH
-		if [[ "$EXISTING_BRANCH" -eq "$LOCAL_BRANCH" ]]; then
-			git branch -D crap-foo-compat
-		fi
-	fi
-	echo "On non-master branch on $ALL_STABLE_TREE: $LOCAL_BRANCH"
-	;;
-esac
+		git branch -D $TARGET_BRANCH
+		git checkout -b $TARGET_BRANCH origin/$TARGET_BRANCH
+		;;
+	esac
+}
+
+# We will not update your linux-2.6-allstable git tree by default. You can force
+# an update by two methods:
+#
+# a) Specifying a different target branch
+# b) Specifying the -f flag to this script
+if [[ "$FORCE_UPDATE" = "yes" || "$TARGET_BRANCH" != "$EXISTING_BRANCH" ]]; then
+	check_for_updates
+else
+	echo -e "Skipping $ALL_STABLE_TREE git tree update checks for branch: $TARGET_BRANCH"
+fi
+
+echo "On $ALL_STABLE_TREE: $TARGET_BRANCH"
 
 # At this point your linux-2.6-allstable tree should be up to date
 # with the target kernel you want to use. Lets now make sure you are
