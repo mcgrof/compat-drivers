@@ -1,0 +1,26 @@
+From 5b6567ee84d6e8f7015eaa7d7c4926b4fd81746e Mon Sep 17 00:00:00 2001
+From: Dan Carpenter <error27@gmail.com>
+Date: Sun, 20 Feb 2011 15:49:53 +0300
+Subject: [PATCH] staging: ath6kl: buffer overflow in SEND_FRAME ioctl
+
+We should check that optTxFrmCmd.optIEDataLen isn't too large before we
+copy it into the data buffer.
+
+Signed-off-by: Dan Carpenter <error27@gmail.com>
+Acked-by: Vipin Mehta <vipin.mehta@atheros.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@suse.de>
+---
+ drivers/staging/ath6kl/os/linux/ioctl.c |    5 +++++
+ 1 files changed, 5 insertions(+), 0 deletions(-)
+
+--- a/drivers/staging/ath6kl/os/linux/ioctl.c
++++ b/drivers/staging/ath6kl/os/linux/ioctl.c
+@@ -3172,6 +3172,8 @@
+                                       sizeof(optTxFrmCmd)))
+             {
+                 ret = -EFAULT;
++	    } else if (optTxFrmCmd.optIEDataLen > MAX_OPT_DATA_LEN) {
++		ret = -EINVAL;
+             } else if (copy_from_user(data,
+                                       userdata+sizeof(WMI_OPT_TX_FRAME_CMD)-1,
+                                       optTxFrmCmd.optIEDataLen))

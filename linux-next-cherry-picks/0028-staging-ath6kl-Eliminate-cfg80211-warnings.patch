@@ -1,0 +1,32 @@
+From 5caf8fca2da11e368a2284f4c4f5c2cbbe1b3ec8 Mon Sep 17 00:00:00 2001
+From: Vipin Mehta <vmehta@atheros.com>
+Date: Sun, 20 Feb 2011 07:00:38 -0800
+Subject: [PATCH] staging: ath6kl: Eliminate cfg80211 warnings
+
+Cancel the pending scan operation once the interface is going down to
+avoid warnings from the cfg80211 module. Once the interface is down,
+cfg80211 checks for any pending scan requests and dumps a warning if it
+finds one. It expects the driver to abort any ongoing scan operation
+once the driver detects that the interface is going down.
+
+Signed-off-by: Vipin Mehta <vmehta@atheros.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@suse.de>
+---
+ drivers/staging/ath6kl/os/linux/ar6000_drv.c |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+diff --git a/drivers/staging/ath6kl/os/linux/ar6000_drv.c b/drivers/staging/ath6kl/os/linux/ar6000_drv.c
+index 5dc5cf0..2148381 100644
+--- a/drivers/staging/ath6kl/os/linux/ar6000_drv.c
++++ b/drivers/staging/ath6kl/os/linux/ar6000_drv.c
+@@ -2331,6 +2331,7 @@ ar6000_close(struct net_device *dev)
+         }
+         ar->arWlanState = WLAN_DISABLED;
+     }
++	ar6k_cfg80211_scanComplete_event(ar, A_ECANCELED);
+ #endif /* ATH6K_CONFIG_CFG80211 */
+ 
+     return 0;
+-- 
+1.7.4.15.g7811d
+

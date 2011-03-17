@@ -1,0 +1,29 @@
+From 9ea979d3b9e12e0f7f76153275e24c1d6cb389ab Mon Sep 17 00:00:00 2001
+From: Vipin Mehta <vmehta@atheros.com>
+Date: Fri, 18 Feb 2011 13:13:13 -0800
+Subject: [PATCH] staging: ath6kl: Fixing the cached copy of the BSS filter set by user
+
+Fixing the cached copy of the BSS filter set by user.
+
+Signed-off-by: Vipin Mehta <vmehta@atheros.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@suse.de>
+---
+ drivers/staging/ath6kl/os/linux/ioctl.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/drivers/staging/ath6kl/os/linux/ioctl.c b/drivers/staging/ath6kl/os/linux/ioctl.c
+index fe275c7..6d15d2d 100644
+--- a/drivers/staging/ath6kl/os/linux/ioctl.c
++++ b/drivers/staging/ath6kl/os/linux/ioctl.c
+@@ -2590,7 +2590,7 @@ int ar6000_ioctl(struct net_device *dev, struct ifreq *rq, int cmd)
+                         != 0) {
+                     ret = -EIO;
+                 } else {
+-                    ar->arUserBssFilter = param;
++                    ar->arUserBssFilter = filt.bssFilter;
+                 }
+             }
+             break;
+-- 
+1.7.4.15.g7811d
+

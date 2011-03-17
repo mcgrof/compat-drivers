@@ -1,0 +1,29 @@
+From 0ad7fdde6cfba9b0cf716bbd9549b05f195b8ebb Mon Sep 17 00:00:00 2001
+From: Vipin Mehta <vmehta@atheros.com>
+Date: Fri, 18 Feb 2011 13:13:12 -0800
+Subject: [PATCH] staging: ath6kl: Fixing memory leak
+
+The patch fixes a mismatch in the allocation and free of scatter HIF bus
+requests in the suspend/resume path.
+
+Signed-off-by: Vipin Mehta <vmehta@atheros.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@suse.de>
+---
+ .../staging/ath6kl/hif/sdio/linux_sdio/src/hif.c   |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+diff --git a/drivers/staging/ath6kl/hif/sdio/linux_sdio/src/hif.c b/drivers/staging/ath6kl/hif/sdio/linux_sdio/src/hif.c
+index 4d6feea..8504724 100644
+--- a/drivers/staging/ath6kl/hif/sdio/linux_sdio/src/hif.c
++++ b/drivers/staging/ath6kl/hif/sdio/linux_sdio/src/hif.c
+@@ -1092,6 +1092,7 @@ static int hifDeviceSuspend(struct device *dev)
+             device->is_suspend = false;
+         }
+     }
++    CleanupHIFScatterResources(device);
+     AR_DEBUG_PRINTF(ATH_DEBUG_TRACE, ("AR6000: -hifDeviceSuspend\n"));
+ 
+     switch (status) {
+-- 
+1.7.4.15.g7811d
+

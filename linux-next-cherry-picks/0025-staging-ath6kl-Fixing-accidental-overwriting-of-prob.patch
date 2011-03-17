@@ -1,0 +1,46 @@
+From 28f7e85a4b454e4882a91ea13dd17cdf5013168d Mon Sep 17 00:00:00 2001
+From: Vipin Mehta <vmehta@atheros.com>
+Date: Fri, 18 Feb 2011 13:13:15 -0800
+Subject: [PATCH] staging: ath6kl: Fixing accidental overwriting of probed ssid list in the hardware
+
+Fixing the code to avoid overwriting of the first index in the probed ssid
+list maintained by the hardware. This index is used to store broadcast SSID.
+
+Signed-off-by: Vipin Mehta <vmehta@atheros.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@suse.de>
+---
+ drivers/staging/ath6kl/os/linux/cfg80211.c |    8 ++++----
+ 1 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/staging/ath6kl/os/linux/cfg80211.c b/drivers/staging/ath6kl/os/linux/cfg80211.c
+index 8644d19..20b08c0 100644
+--- a/drivers/staging/ath6kl/os/linux/cfg80211.c
++++ b/drivers/staging/ath6kl/os/linux/cfg80211.c
+@@ -765,12 +765,12 @@ ar6k_cfg80211_scan(struct wiphy *wiphy, struct net_device *ndev,
+        request->ssids[0].ssid_len) {
+         u8 i;
+ 
+-        if(request->n_ssids > MAX_PROBED_SSID_INDEX) {
+-            request->n_ssids = MAX_PROBED_SSID_INDEX;
++        if(request->n_ssids > (MAX_PROBED_SSID_INDEX - 1)) {
++            request->n_ssids = MAX_PROBED_SSID_INDEX - 1;
+         }
+ 
+         for (i = 0; i < request->n_ssids; i++) {
+-            wmi_probedSsid_cmd(ar->arWmi, i, SPECIFIC_SSID_FLAG,
++            wmi_probedSsid_cmd(ar->arWmi, i+1, SPECIFIC_SSID_FLAG,
+                                request->ssids[i].ssid_len,
+                                request->ssids[i].ssid);
+         }
+@@ -810,7 +810,7 @@ ar6k_cfg80211_scanComplete_event(AR_SOFTC_T *ar, int status)
+             u8 i;
+ 
+             for (i = 0; i < ar->scan_request->n_ssids; i++) {
+-                wmi_probedSsid_cmd(ar->arWmi, i, DISABLE_SSID_FLAG,
++                wmi_probedSsid_cmd(ar->arWmi, i+1, DISABLE_SSID_FLAG,
+                                    0, NULL);
+             }
+         }
+-- 
+1.7.4.15.g7811d
+

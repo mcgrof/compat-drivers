@@ -1,0 +1,71 @@
+From d0e0086893de668db30f31b8ba407199a0f693d0 Mon Sep 17 00:00:00 2001
+From: Vipin Mehta <vmehta@atheros.com>
+Date: Fri, 18 Feb 2011 13:13:16 -0800
+Subject: [PATCH] staging: ath6kl: Fixing disappearing of scan list due to jiffies wrap over
+
+When jiffies wrap-over, all the BSS in the cache is removed. Wrap-over of
+jiffies is not handled in the correct way. This cause the scan list to go
+empty during this time for a small duration
+
+Signed-off-by: Vipin Mehta <vmehta@atheros.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@suse.de>
+---
+ .../staging/ath6kl/os/linux/include/osapi_linux.h  |    2 +-
+ drivers/staging/ath6kl/wlan/src/wlan_node.c        |    7 ++++---
+ 2 files changed, 5 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/staging/ath6kl/os/linux/include/osapi_linux.h b/drivers/staging/ath6kl/os/linux/include/osapi_linux.h
+index eb09d43..1957de0 100644
+--- a/drivers/staging/ath6kl/os/linux/include/osapi_linux.h
++++ b/drivers/staging/ath6kl/os/linux/include/osapi_linux.h
+@@ -121,7 +121,7 @@ typedef spinlock_t                      A_MUTEX_T;
+ 
+ /* Get current time in ms adding a constant offset (in ms) */
+ #define A_GET_MS(offset)    \
+-	(jiffies + ((offset) / 1000) * HZ)
++	(((jiffies / HZ) * 1000) + (offset))
+ 
+ /*
+  * Timer Functions
+diff --git a/drivers/staging/ath6kl/wlan/src/wlan_node.c b/drivers/staging/ath6kl/wlan/src/wlan_node.c
+index 996b36d..d61cb6e 100644
+--- a/drivers/staging/ath6kl/wlan/src/wlan_node.c
++++ b/drivers/staging/ath6kl/wlan/src/wlan_node.c
+@@ -122,7 +122,7 @@ wlan_setup_node(struct ieee80211_node_table *nt, bss_t *ni,
+ 
+     timeoutValue = nt->nt_nodeAge;
+ 
+-    ni->ni_tstamp = A_GET_MS (timeoutValue);
++    ni->ni_tstamp = A_GET_MS (0);
+     ni->ni_actcnt = WLAN_NODE_INACT_CNT;
+ 
+     IEEE80211_NODE_LOCK_BH(nt);
+@@ -360,7 +360,7 @@ wlan_refresh_inactive_nodes (struct ieee80211_node_table *nt)
+         if (A_MEMCMP(myBssid, bss->ni_macaddr, sizeof(myBssid)) != 0)
+         {
+ 
+-            if (bss->ni_tstamp <= now || --bss->ni_actcnt == 0)
++            if (((now - bss->ni_tstamp) > timeoutValue)  || --bss->ni_actcnt == 0)
+             {
+                /*
+                 * free up all but the current bss - if set
+@@ -381,6 +381,7 @@ wlan_node_timeout (A_ATH_TIMER arg)
+     bss_t *bss, *nextBss;
+     A_UINT8 myBssid[IEEE80211_ADDR_LEN], reArmTimer = false;
+     A_UINT32 timeoutValue = 0;
++    u32 now = A_GET_MS(0);
+ 
+     timeoutValue = nt->nt_nodeAge;
+ 
+@@ -393,7 +394,7 @@ wlan_node_timeout (A_ATH_TIMER arg)
+         if (A_MEMCMP(myBssid, bss->ni_macaddr, sizeof(myBssid)) != 0)
+         {
+ 
+-            if (bss->ni_tstamp <= A_GET_MS(0))
++            if ((now - bss->ni_tstamp) > timeoutValue)
+             {
+                /*
+                 * free up all but the current bss - if set
+-- 
+1.7.4.15.g7811d
+
