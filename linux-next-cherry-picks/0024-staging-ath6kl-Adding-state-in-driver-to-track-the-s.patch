@@ -15,11 +15,9 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@suse.de>
  .../staging/ath6kl/os/linux/include/ar6000_drv.h   |    7 +++++
  3 files changed, 28 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/staging/ath6kl/os/linux/ar6000_drv.c b/drivers/staging/ath6kl/os/linux/ar6000_drv.c
-index 93592af..5dc5cf0 100644
 --- a/drivers/staging/ath6kl/os/linux/ar6000_drv.c
 +++ b/drivers/staging/ath6kl/os/linux/ar6000_drv.c
-@@ -1670,6 +1670,7 @@ ar6000_avail_ev(void *context, void *hif_handle)
+@@ -1690,6 +1690,7 @@ ar6000_avail_ev(void *context, void *hif
      SET_NETDEV_DEV(dev, wiphy_dev(wdev->wiphy));
      wdev->netdev = dev;
      ar->arNetworkType = INFRA_NETWORK;
@@ -29,7 +27,7 @@ index 93592af..5dc5cf0 100644
      init_netdev(dev, ifname);
 --- a/drivers/staging/ath6kl/os/linux/cfg80211.c
 +++ b/drivers/staging/ath6kl/os/linux/cfg80211.c
-@@ -248,6 +248,7 @@
+@@ -248,6 +248,7 @@ ar6k_cfg80211_connect(struct wiphy *wiph
      A_STATUS status;
  
      AR_DEBUG_PRINTF(ATH_DEBUG_INFO, ("%s: \n", __func__));
@@ -37,7 +35,7 @@ index 93592af..5dc5cf0 100644
  
      if(ar->arWmiReady == FALSE) {
          AR_DEBUG_PRINTF(ATH_DEBUG_ERR, ("%s: Wmi not ready yet\n", __func__));
-@@ -562,6 +563,7 @@
+@@ -562,6 +563,7 @@ ar6k_cfg80211_connect_event(AR_SOFTC_T *
  
      if (FALSE == ar->arConnected) {
          /* inform connect result to cfg80211 */
@@ -45,7 +43,7 @@ index 93592af..5dc5cf0 100644
          cfg80211_connect_result(ar->arNetDev, bssid,
                                  assocReqIe, assocReqLen,
                                  assocRespIe, assocRespLen,
-@@ -644,18 +646,29 @@
+@@ -644,18 +646,29 @@ ar6k_cfg80211_disconnect_event(AR_SOFTC_
          }
      }
  
@@ -83,13 +81,11 @@ index 93592af..5dc5cf0 100644
      }
  }
  
-diff --git a/drivers/staging/ath6kl/os/linux/include/ar6000_drv.h b/drivers/staging/ath6kl/os/linux/include/ar6000_drv.h
-index 339925a..f3b7344 100644
 --- a/drivers/staging/ath6kl/os/linux/include/ar6000_drv.h
 +++ b/drivers/staging/ath6kl/os/linux/include/ar6000_drv.h
 @@ -393,6 +393,12 @@ struct ar_key {
-     u8 seq_len;
-     u32 cipher;
+     A_UINT8     seq_len;
+     A_UINT32    cipher;
  };
 +
 +enum {
@@ -106,8 +102,5 @@ index 339925a..f3b7344 100644
      struct ar_key   keys[WMI_MAX_KEY_INDEX + 1];
 +    u32 smeState;
  #endif /* ATH6K_CONFIG_CFG80211 */
-     u16 arWlanPowerState;
-     bool                  arWlanOff;
--- 
-1.7.4.15.g7811d
-
+     A_UINT16                arWlanPowerState;
+     A_BOOL                  arWlanOff;

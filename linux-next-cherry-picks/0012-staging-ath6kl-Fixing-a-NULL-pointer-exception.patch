@@ -14,11 +14,9 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@suse.de>
  drivers/staging/ath6kl/os/linux/ar6000_drv.c |   17 ++++++++++-------
  1 files changed, 10 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/staging/ath6kl/os/linux/ar6000_drv.c b/drivers/staging/ath6kl/os/linux/ar6000_drv.c
-index 26dafc9..4f6ddf7 100644
 --- a/drivers/staging/ath6kl/os/linux/ar6000_drv.c
 +++ b/drivers/staging/ath6kl/os/linux/ar6000_drv.c
-@@ -1604,6 +1604,14 @@ ar6000_avail_ev(void *context, void *hif_handle)
+@@ -1624,6 +1624,14 @@ ar6000_avail_ev(void *context, void *hif
      struct wireless_dev *wdev;
  #endif /* ATH6K_CONFIG_CFG80211 */
      A_STATUS init_status = A_OK;
@@ -33,7 +31,7 @@ index 26dafc9..4f6ddf7 100644
  
      AR_DEBUG_PRINTF(ATH_DEBUG_INFO,("ar6000_available\n"));
  
-@@ -1623,7 +1631,7 @@ ar6000_avail_ev(void *context, void *hif_handle)
+@@ -1643,7 +1651,7 @@ ar6000_avail_ev(void *context, void *hif
      device_index = i;
  
  #ifdef ATH6K_CONFIG_CFG80211
@@ -42,7 +40,7 @@ index 26dafc9..4f6ddf7 100644
      if (IS_ERR(wdev)) {
          AR_DEBUG_PRINTF(ATH_DEBUG_ERR, ("%s: ar6k_cfg80211_init failed\n", __func__));
          return A_ERROR;
-@@ -1688,12 +1696,7 @@
+@@ -1688,12 +1696,7 @@ ar6000_avail_ev(void *context, void *hif
  
  #ifdef SET_NETDEV_DEV
      if (ar_netif) { 
@@ -56,6 +54,3 @@ index 26dafc9..4f6ddf7 100644
      }
  #endif 
  
--- 
-1.7.4.15.g7811d
-

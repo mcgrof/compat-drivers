@@ -9,11 +9,9 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  drivers/net/wireless/ath/ath9k/hw.h |    4 ++--
  1 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/hw.h b/drivers/net/wireless/ath/ath9k/hw.h
-index ef79f4c..6650fd4 100644
 --- a/drivers/net/wireless/ath/ath9k/hw.h
 +++ b/drivers/net/wireless/ath/ath9k/hw.h
-@@ -95,9 +95,9 @@
+@@ -92,9 +92,9 @@
  #define REG_READ_FIELD(_a, _r, _f) \
  	(((REG_READ(_a, _r) & _f) >> _f##_S))
  #define REG_SET_BIT(_a, _r, _f) \
@@ -25,6 +23,3 @@ index ef79f4c..6650fd4 100644
  
  #define DO_DELAY(x) do {			\
  		if ((++(x) % 64) == 0)          \
--- 
-1.7.4.15.g7811d
-

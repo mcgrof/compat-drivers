@@ -12,11 +12,9 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@suse.de>
  drivers/staging/ath6kl/os/linux/ar6000_drv.c |  184 ++++++++++++++++----------
  1 files changed, 115 insertions(+), 69 deletions(-)
 
-diff --git a/drivers/staging/ath6kl/os/linux/ar6000_drv.c b/drivers/staging/ath6kl/os/linux/ar6000_drv.c
-index d907e93..b69280d 100644
 --- a/drivers/staging/ath6kl/os/linux/ar6000_drv.c
 +++ b/drivers/staging/ath6kl/os/linux/ar6000_drv.c
-@@ -2438,6 +2438,120 @@
+@@ -2438,6 +2438,120 @@ ar6000_endpoint_id2_ac(void * devt, HTC_
      return(arEndpoint2Ac(ar, ep ));
  }
  
@@ -137,7 +135,7 @@ index d907e93..b69280d 100644
  /* This function does one time initialization for the lifetime of the device */
  int ar6000_init(struct net_device *dev)
  {
-@@ -2446,10 +2560,6 @@
+@@ -2446,10 +2560,6 @@ int ar6000_init(struct net_device *dev)
      A_INT32     timeleft;
      A_INT16     i;
      int         ret = 0;
@@ -148,7 +146,7 @@ index d907e93..b69280d 100644
  
      if((ar = ar6k_priv(dev)) == NULL)
      {
-@@ -2718,45 +2828,7 @@
+@@ -2718,45 +2828,7 @@ int ar6000_init(struct net_device *dev)
              AR_DEBUG_PRINTF(ATH_DEBUG_ERR,("Unable to set the host app area\n"));
          }
  
@@ -195,7 +193,7 @@ index d907e93..b69280d 100644
      }
  
      ar->arNumDataEndPts = 1;
-@@ -4189,31 +4261,6 @@
+@@ -4189,31 +4261,6 @@ ar6000_ready_event(void *devt, A_UINT8 *
      /* Indicate to the waiting thread that the ready event was received */
      ar->arWmiReady = TRUE;
      wake_up(&arEvent);

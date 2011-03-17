@@ -14,11 +14,9 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@suse.de>
  drivers/staging/ath6kl/wlan/src/wlan_node.c        |    7 ++++---
  2 files changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/staging/ath6kl/os/linux/include/osapi_linux.h b/drivers/staging/ath6kl/os/linux/include/osapi_linux.h
-index eb09d43..1957de0 100644
 --- a/drivers/staging/ath6kl/os/linux/include/osapi_linux.h
 +++ b/drivers/staging/ath6kl/os/linux/include/osapi_linux.h
-@@ -121,7 +121,7 @@ typedef spinlock_t                      A_MUTEX_T;
+@@ -121,7 +121,7 @@ typedef spinlock_t
  
  /* Get current time in ms adding a constant offset (in ms) */
  #define A_GET_MS(offset)    \
@@ -27,11 +25,9 @@ index eb09d43..1957de0 100644
  
  /*
   * Timer Functions
-diff --git a/drivers/staging/ath6kl/wlan/src/wlan_node.c b/drivers/staging/ath6kl/wlan/src/wlan_node.c
-index 996b36d..d61cb6e 100644
 --- a/drivers/staging/ath6kl/wlan/src/wlan_node.c
 +++ b/drivers/staging/ath6kl/wlan/src/wlan_node.c
-@@ -122,7 +122,7 @@ wlan_setup_node(struct ieee80211_node_table *nt, bss_t *ni,
+@@ -122,7 +122,7 @@ wlan_setup_node(struct ieee80211_node_ta
  
      timeoutValue = nt->nt_nodeAge;
  
@@ -40,7 +36,7 @@ index 996b36d..d61cb6e 100644
      ni->ni_actcnt = WLAN_NODE_INACT_CNT;
  
      IEEE80211_NODE_LOCK_BH(nt);
-@@ -360,7 +360,7 @@ wlan_refresh_inactive_nodes (struct ieee80211_node_table *nt)
+@@ -360,7 +360,7 @@ wlan_refresh_inactive_nodes (struct ieee
          if (A_MEMCMP(myBssid, bss->ni_macaddr, sizeof(myBssid)) != 0)
          {
  
@@ -51,7 +47,7 @@ index 996b36d..d61cb6e 100644
                  * free up all but the current bss - if set
 @@ -381,6 +381,7 @@ wlan_node_timeout (A_ATH_TIMER arg)
      bss_t *bss, *nextBss;
-     A_UINT8 myBssid[IEEE80211_ADDR_LEN], reArmTimer = false;
+     A_UINT8 myBssid[IEEE80211_ADDR_LEN], reArmTimer = FALSE;
      A_UINT32 timeoutValue = 0;
 +    u32 now = A_GET_MS(0);
  
@@ -66,6 +62,3 @@ index 996b36d..d61cb6e 100644
              {
                 /*
                  * free up all but the current bss - if set
--- 
-1.7.4.15.g7811d
-

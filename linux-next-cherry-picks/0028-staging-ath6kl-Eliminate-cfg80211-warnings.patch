@@ -15,11 +15,9 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@suse.de>
  drivers/staging/ath6kl/os/linux/ar6000_drv.c |    1 +
  1 files changed, 1 insertions(+), 0 deletions(-)
 
-diff --git a/drivers/staging/ath6kl/os/linux/ar6000_drv.c b/drivers/staging/ath6kl/os/linux/ar6000_drv.c
-index 5dc5cf0..2148381 100644
 --- a/drivers/staging/ath6kl/os/linux/ar6000_drv.c
 +++ b/drivers/staging/ath6kl/os/linux/ar6000_drv.c
-@@ -2331,6 +2331,7 @@ ar6000_close(struct net_device *dev)
+@@ -2351,6 +2351,7 @@ ar6000_close(struct net_device *dev)
          }
          ar->arWlanState = WLAN_DISABLED;
      }
@@ -27,6 +25,3 @@ index 5dc5cf0..2148381 100644
  #endif /* ATH6K_CONFIG_CFG80211 */
  
      return 0;
--- 
-1.7.4.15.g7811d
-

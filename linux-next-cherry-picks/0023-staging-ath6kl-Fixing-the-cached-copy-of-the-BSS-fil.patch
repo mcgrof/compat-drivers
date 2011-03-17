@@ -11,12 +11,10 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@suse.de>
  drivers/staging/ath6kl/os/linux/ioctl.c |    2 +-
  1 files changed, 1 insertions(+), 1 deletions(-)
 
-diff --git a/drivers/staging/ath6kl/os/linux/ioctl.c b/drivers/staging/ath6kl/os/linux/ioctl.c
-index fe275c7..6d15d2d 100644
 --- a/drivers/staging/ath6kl/os/linux/ioctl.c
 +++ b/drivers/staging/ath6kl/os/linux/ioctl.c
-@@ -2590,7 +2590,7 @@ int ar6000_ioctl(struct net_device *dev, struct ifreq *rq, int cmd)
-                         != 0) {
+@@ -2591,7 +2591,7 @@ int ar6000_ioctl(struct net_device *dev,
+                         != A_OK) {
                      ret = -EIO;
                  } else {
 -                    ar->arUserBssFilter = param;
@@ -24,6 +22,3 @@ index fe275c7..6d15d2d 100644
                  }
              }
              break;
--- 
-1.7.4.15.g7811d
-

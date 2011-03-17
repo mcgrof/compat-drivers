@@ -15,7 +15,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@suse.de>
 
 --- a/drivers/staging/ath6kl/os/linux/ioctl.c
 +++ b/drivers/staging/ath6kl/os/linux/ioctl.c
-@@ -3172,6 +3172,8 @@
+@@ -3172,6 +3172,8 @@ int ar6000_ioctl(struct net_device *dev,
                                        sizeof(optTxFrmCmd)))
              {
                  ret = -EFAULT;

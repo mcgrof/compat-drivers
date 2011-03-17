@@ -11,11 +11,9 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@suse.de>
  drivers/staging/ath6kl/os/linux/ar6000_drv.c |    3 +++
  1 files changed, 3 insertions(+), 0 deletions(-)
 
-diff --git a/drivers/staging/ath6kl/os/linux/ar6000_drv.c b/drivers/staging/ath6kl/os/linux/ar6000_drv.c
-index f084a92..93592af 100644
 --- a/drivers/staging/ath6kl/os/linux/ar6000_drv.c
 +++ b/drivers/staging/ath6kl/os/linux/ar6000_drv.c
-@@ -2052,6 +2052,9 @@ ar6000_stop_endpoint(struct net_device *dev, bool keepprofile, bool getdbglogs)
+@@ -2072,6 +2072,9 @@ ar6000_stop_endpoint(struct net_device *
      }
         /* Done with cookies */
      ar6000_cookie_cleanup(ar);
@@ -25,6 +23,3 @@ index f084a92..93592af 100644
  }
  /*
   * We need to differentiate between the surprise and planned removal of the
--- 
-1.7.4.15.g7811d
-

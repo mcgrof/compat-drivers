@@ -12,13 +12,11 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@suse.de>
  drivers/staging/ath6kl/os/linux/cfg80211.c |    8 ++++----
  1 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/staging/ath6kl/os/linux/cfg80211.c b/drivers/staging/ath6kl/os/linux/cfg80211.c
-index 8644d19..20b08c0 100644
 --- a/drivers/staging/ath6kl/os/linux/cfg80211.c
 +++ b/drivers/staging/ath6kl/os/linux/cfg80211.c
-@@ -765,12 +765,12 @@ ar6k_cfg80211_scan(struct wiphy *wiphy, struct net_device *ndev,
+@@ -766,12 +766,12 @@ ar6k_cfg80211_scan(struct wiphy *wiphy,
         request->ssids[0].ssid_len) {
-         u8 i;
+         A_UINT8 i;
  
 -        if(request->n_ssids > MAX_PROBED_SSID_INDEX) {
 -            request->n_ssids = MAX_PROBED_SSID_INDEX;
@@ -32,8 +30,8 @@ index 8644d19..20b08c0 100644
                                 request->ssids[i].ssid_len,
                                 request->ssids[i].ssid);
          }
-@@ -810,7 +810,7 @@ ar6k_cfg80211_scanComplete_event(AR_SOFTC_T *ar, int status)
-             u8 i;
+@@ -811,7 +811,7 @@ ar6k_cfg80211_scanComplete_event(AR_SOFT
+             A_UINT8 i;
  
              for (i = 0; i < ar->scan_request->n_ssids; i++) {
 -                wmi_probedSsid_cmd(ar->arWmi, i, DISABLE_SSID_FLAG,
@@ -41,6 +39,3 @@ index 8644d19..20b08c0 100644
                                     0, NULL);
              }
          }
--- 
-1.7.4.15.g7811d
-

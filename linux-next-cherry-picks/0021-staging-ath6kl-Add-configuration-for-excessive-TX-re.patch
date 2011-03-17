@@ -19,8 +19,6 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@suse.de>
  drivers/staging/ath6kl/wmi/wmi.c                   |   21 +++++++++++
  6 files changed, 85 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/staging/ath6kl/include/common/wmi.h b/drivers/staging/ath6kl/include/common/wmi.h
-index f16ef28..a8b143a 100644
 --- a/drivers/staging/ath6kl/include/common/wmi.h
 +++ b/drivers/staging/ath6kl/include/common/wmi.h
 @@ -422,17 +422,24 @@ typedef enum {
@@ -75,7 +73,7 @@ index f16ef28..a8b143a 100644
  typedef enum {
 --- a/drivers/staging/ath6kl/include/wmi_api.h
 +++ b/drivers/staging/ath6kl/include/wmi_api.h
-@@ -422,6 +422,9 @@
+@@ -422,6 +422,9 @@ wmi_set_wlan_conn_precedence_cmd(struct
  A_STATUS
  wmi_set_pmk_cmd(struct wmi_t *wmip, A_UINT8 *pmk);
  
@@ -85,8 +83,6 @@ index f16ef28..a8b143a 100644
  A_UINT16
  wmi_ieee2freq (int chan);
  
-diff --git a/drivers/staging/ath6kl/os/linux/include/athdrv_linux.h b/drivers/staging/ath6kl/os/linux/include/athdrv_linux.h
-index 383571a..5a6c27e 100644
 --- a/drivers/staging/ath6kl/os/linux/include/athdrv_linux.h
 +++ b/drivers/staging/ath6kl/os/linux/include/athdrv_linux.h
 @@ -997,6 +997,7 @@ typedef enum {
@@ -97,11 +93,9 @@ index 383571a..5a6c27e 100644
  
  /* used by AR6000_IOCTL_WMI_GETREV */
  struct ar6000_version {
-diff --git a/drivers/staging/ath6kl/os/linux/include/wmi_filter_linux.h b/drivers/staging/ath6kl/os/linux/include/wmi_filter_linux.h
-index 0652c69..d172625 100644
 --- a/drivers/staging/ath6kl/os/linux/include/wmi_filter_linux.h
 +++ b/drivers/staging/ath6kl/os/linux/include/wmi_filter_linux.h
-@@ -288,6 +288,13 @@ u8 xioctl_filter[] = {
+@@ -288,6 +288,13 @@ A_UINT8 xioctl_filter[] = {
  (0xFF),                                         /* AR6000_XIOCTL_ADD_AP_INTERFACE                  152  */
  (0xFF),                                         /* AR6000_XIOCTL_REMOVE_AP_INTERFACE               153  */
  (0xFF),                                         /* AR6000_XIOCTL_WMI_SET_TX_SGI_PARAM              154  */
@@ -115,11 +109,9 @@ index 0652c69..d172625 100644
  };
  
  #endif /*_WMI_FILTER_LINUX_H_*/
-diff --git a/drivers/staging/ath6kl/os/linux/ioctl.c b/drivers/staging/ath6kl/os/linux/ioctl.c
-index 5be8ea3..fe275c7 100644
 --- a/drivers/staging/ath6kl/os/linux/ioctl.c
 +++ b/drivers/staging/ath6kl/os/linux/ioctl.c
-@@ -1329,6 +1329,28 @@ ar6000_xioctl_get_btcoex_stats_cmd(struct net_device * dev, char *userdata, stru
+@@ -1330,6 +1330,28 @@ ar6000_xioctl_get_btcoex_stats_cmd(struc
  	return(ret);
  }
  
@@ -148,7 +140,7 @@ index 5be8ea3..fe275c7 100644
  #ifdef CONFIG_HOST_GPIO_SUPPORT
  struct ar6000_gpio_intr_wait_cmd_s  gpio_intr_results;
  /* gpio_reg_results and gpio_data_available are protected by arSem */
-@@ -4660,6 +4682,12 @@ int ar6000_ioctl(struct net_device *dev, struct ifreq *rq, int cmd)
+@@ -4661,6 +4683,12 @@ int ar6000_ioctl(struct net_device *dev,
  #endif
              break;
  
@@ -163,7 +155,7 @@ index 5be8ea3..fe275c7 100644
      }
 --- a/drivers/staging/ath6kl/wmi/wmi.c
 +++ b/drivers/staging/ath6kl/wmi/wmi.c
-@@ -6618,6 +6618,27 @@
+@@ -6618,6 +6618,27 @@ wmi_set_pmk_cmd(struct wmi_t *wmip, A_UI
      return (wmi_cmd_send(wmip, osbuf, WMI_SET_PMK_CMDID, NO_SYNC_WMIFLAG));
  }
  
@@ -191,6 +183,3 @@ index 5be8ea3..fe275c7 100644
  A_STATUS
  wmi_SGI_cmd(struct wmi_t *wmip, A_UINT32 sgiMask, A_UINT8 sgiPERThreshold)
  {
--- 
-1.7.4.15.g7811d
-

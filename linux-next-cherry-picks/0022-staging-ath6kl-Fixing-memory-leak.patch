@@ -12,18 +12,13 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@suse.de>
  .../staging/ath6kl/hif/sdio/linux_sdio/src/hif.c   |    1 +
  1 files changed, 1 insertions(+), 0 deletions(-)
 
-diff --git a/drivers/staging/ath6kl/hif/sdio/linux_sdio/src/hif.c b/drivers/staging/ath6kl/hif/sdio/linux_sdio/src/hif.c
-index 4d6feea..8504724 100644
 --- a/drivers/staging/ath6kl/hif/sdio/linux_sdio/src/hif.c
 +++ b/drivers/staging/ath6kl/hif/sdio/linux_sdio/src/hif.c
-@@ -1092,6 +1092,7 @@ static int hifDeviceSuspend(struct device *dev)
-             device->is_suspend = false;
+@@ -1092,6 +1092,7 @@ static int hifDeviceSuspend(struct devic
+             device->is_suspend = FALSE;
          }
      }
 +    CleanupHIFScatterResources(device);
      AR_DEBUG_PRINTF(ATH_DEBUG_TRACE, ("AR6000: -hifDeviceSuspend\n"));
  
      switch (status) {
--- 
-1.7.4.15.g7811d
-

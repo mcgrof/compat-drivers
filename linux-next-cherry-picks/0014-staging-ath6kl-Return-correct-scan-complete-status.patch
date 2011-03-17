@@ -12,11 +12,9 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@suse.de>
  drivers/staging/ath6kl/os/linux/cfg80211.c |    2 +-
  1 files changed, 1 insertions(+), 1 deletions(-)
 
-diff --git a/drivers/staging/ath6kl/os/linux/cfg80211.c b/drivers/staging/ath6kl/os/linux/cfg80211.c
-index b7742d4..bc5f6a7 100644
 --- a/drivers/staging/ath6kl/os/linux/cfg80211.c
 +++ b/drivers/staging/ath6kl/os/linux/cfg80211.c
-@@ -791,7 +791,7 @@ ar6k_cfg80211_scanComplete_event(AR_SOFTC_T *ar, int status)
+@@ -791,7 +791,7 @@ ar6k_cfg80211_scanComplete_event(AR_SOFT
          wmi_iterate_nodes(ar->arWmi, ar6k_cfg80211_scan_node, ar->wdev->wiphy);
  
          cfg80211_scan_done(ar->scan_request,
@@ -25,6 +23,3 @@ index b7742d4..bc5f6a7 100644
  
          if(ar->scan_request->n_ssids &&
             ar->scan_request->ssids[0].ssid_len) {
--- 
-1.7.4.15.g7811d
-

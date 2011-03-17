@@ -12,11 +12,9 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@suse.de>
  .../staging/ath6kl/os/linux/include/wlan_config.h  |    7 +++++++
  2 files changed, 14 insertions(+), 0 deletions(-)
 
-diff --git a/drivers/staging/ath6kl/os/linux/ar6000_drv.c b/drivers/staging/ath6kl/os/linux/ar6000_drv.c
-index b69280d..f084a92 100644
 --- a/drivers/staging/ath6kl/os/linux/ar6000_drv.c
 +++ b/drivers/staging/ath6kl/os/linux/ar6000_drv.c
-@@ -2528,6 +2528,13 @@ int ar6000_target_config_wlan_params(AR_SOFTC_T *ar)
+@@ -2549,6 +2549,13 @@ int ar6000_target_config_wlan_params(AR_
          status = A_ERROR;
      }
  
@@ -30,8 +28,6 @@ index b69280d..f084a92 100644
      return status;
  }
  
-diff --git a/drivers/staging/ath6kl/os/linux/include/wlan_config.h b/drivers/staging/ath6kl/os/linux/include/wlan_config.h
-index f7d0487..2de5cef 100644
 --- a/drivers/staging/ath6kl/os/linux/include/wlan_config.h
 +++ b/drivers/staging/ath6kl/os/linux/include/wlan_config.h
 @@ -103,6 +103,13 @@
@@ -48,6 +44,3 @@ index f7d0487..2de5cef 100644
   * Platform specific function to power ON/OFF AR6000 
   * and enable/disable SDIO card detection
   */
--- 
-1.7.4.15.g7811d
-

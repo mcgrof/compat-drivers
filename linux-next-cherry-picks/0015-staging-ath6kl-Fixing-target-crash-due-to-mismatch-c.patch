@@ -21,7 +21,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@suse.de>
 
 --- a/drivers/staging/ath6kl/os/linux/ar6000_drv.c
 +++ b/drivers/staging/ath6kl/os/linux/ar6000_drv.c
-@@ -1963,15 +1963,12 @@
+@@ -1963,15 +1963,12 @@ ar6000_stop_endpoint(struct net_device *
      {
          if (!bypasswmi)
          {
@@ -43,7 +43,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@suse.de>
              }
  
              A_UNTIMEOUT(&ar->disconnect_timer);
-@@ -1993,14 +1990,12 @@
+@@ -1993,14 +1990,12 @@ ar6000_stop_endpoint(struct net_device *
               * Sometimes disconnect_event will be received when the debug logs 
               * are collected.
               */
@@ -59,7 +59,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@suse.de>
              }
  #ifdef USER_KEYS
              ar->user_savedkeys_stat = USER_SAVEDKEYS_STAT_INIT;
-@@ -2183,7 +2178,7 @@
+@@ -2183,7 +2178,7 @@ static void disconnect_timer_handler(uns
      A_UNTIMEOUT(&ar->disconnect_timer);
  
      ar6000_init_profile_info(ar);
@@ -68,7 +68,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@suse.de>
  }
  
  static void ar6000_detect_error(unsigned long ptr)
-@@ -2255,7 +2250,6 @@
+@@ -2255,7 +2250,6 @@ void ar6000_init_profile_info(AR_SOFTC_T
      A_MEMZERO(ar->arReqBssid, sizeof(ar->arReqBssid));
      A_MEMZERO(ar->arBssid, sizeof(ar->arBssid));
      ar->arBssChannel = 0;
@@ -76,7 +76,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@suse.de>
  }
  
  static void
-@@ -2342,13 +2336,7 @@
+@@ -2342,13 +2336,7 @@ ar6000_close(struct net_device *dev)
      netif_stop_queue(dev);
  
  #ifdef ATH6K_CONFIG_CFG80211
@@ -91,7 +91,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@suse.de>
  
      if(ar->arWmiReady == TRUE) {
          if (wmi_scanparams_cmd(ar->arWmi, 0xFFFF, 0,
-@@ -4629,6 +4617,8 @@
+@@ -4629,6 +4617,8 @@ ar6000_disconnect_event(AR_SOFTC_T *ar,
              A_MEMCPY(wrqu.addr.sa_data, bssid, ATH_MAC_LEN);
              wireless_send_event(ar->arNetDev, IWEVEXPIRED, &wrqu, NULL);
          }
@@ -100,7 +100,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@suse.de>
          return;
      }
  
-@@ -4673,7 +4663,6 @@
+@@ -4673,7 +4663,6 @@ ar6000_disconnect_event(AR_SOFTC_T *ar,
       */
      if( reason == DISCONNECT_CMD)
      {
@@ -108,7 +108,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@suse.de>
          if ((!ar->arUserBssFilter) && (ar->arWmiReady)) {
              wmi_bssfilter_cmd(ar->arWmi, NONE_BSS_FILTER, 0);
          }
-@@ -6110,8 +6099,6 @@
+@@ -6110,8 +6099,6 @@ ar6000_ap_mode_profile_commit(struct ar6
      p.groupCryptoLen = ar->arGroupCryptoLen;
      p.ctrl_flags = ar->arConnectCtrlFlags;
  
@@ -117,7 +117,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@suse.de>
      wmi_ap_profile_commit(ar->arWmi, &p);
      spin_lock_irqsave(&ar->arLock, flags);
      ar->arConnected  = TRUE;
-@@ -6192,6 +6179,21 @@
+@@ -6192,6 +6179,21 @@ ar6000_connect_to_ap(struct ar6_softc *a
      return A_ERROR;
  }
  
@@ -141,7 +141,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@suse.de>
  {
 --- a/drivers/staging/ath6kl/os/linux/cfg80211.c
 +++ b/drivers/staging/ath6kl/os/linux/cfg80211.c
-@@ -318,7 +318,7 @@
+@@ -318,7 +318,7 @@ ar6k_cfg80211_connect(struct wiphy *wiph
          return 0;
      } else if(ar->arSsidLen == sme->ssid_len &&
                !A_MEMCMP(ar->arSsid, sme->ssid, ar->arSsidLen)) {
@@ -150,7 +150,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@suse.de>
      }
  
      A_MEMZERO(ar->arSsid, sizeof(ar->arSsid));
-@@ -604,7 +604,7 @@
+@@ -604,7 +604,7 @@ ar6k_cfg80211_disconnect(struct wiphy *w
      }
  
      reconnect_flag = 0;
@@ -159,7 +159,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@suse.de>
      A_MEMZERO(ar->arSsid, sizeof(ar->arSsid));
      ar->arSsidLen = 0;
  
-@@ -1341,6 +1341,7 @@
+@@ -1341,6 +1341,7 @@ ar6k_cfg80211_join_ibss(struct wiphy *wi
                              ar->arSsidLen, ar->arSsid,
                              ar->arReqBssid, ar->arChannelHint,
                              ar->arConnectCtrlFlags);
@@ -167,7 +167,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@suse.de>
  
      return 0;
  }
-@@ -1362,7 +1363,7 @@
+@@ -1362,7 +1363,7 @@ ar6k_cfg80211_leave_ibss(struct wiphy *w
          return -EIO;
      }
  
@@ -178,7 +178,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@suse.de>
  
 --- a/drivers/staging/ath6kl/os/linux/include/ar6xapi_linux.h
 +++ b/drivers/staging/ath6kl/os/linux/include/ar6xapi_linux.h
-@@ -171,6 +171,7 @@
+@@ -171,6 +171,7 @@ void ap_wapi_rekey_event(struct ar6_soft
  #endif
  
  A_STATUS ar6000_connect_to_ap(struct ar6_softc *ar);
@@ -188,7 +188,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@suse.de>
  A_STATUS ar6000_set_bt_hw_state(struct ar6_softc *ar, A_UINT32 state);
 --- a/drivers/staging/ath6kl/os/linux/wireless_ext.c
 +++ b/drivers/staging/ath6kl/os/linux/wireless_ext.c
-@@ -576,9 +576,10 @@
+@@ -576,9 +576,10 @@ ar6000_ioctl_siwessid(struct net_device
      /* Update the arNetworkType */
      ar->arNetworkType = ar->arNextMode;
  
@@ -201,7 +201,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@suse.de>
      {
          if ((!data->flags) ||
              (A_MEMCMP(ar->arSsid, ssid, ar->arSsidLen) != 0) ||
-@@ -595,7 +596,7 @@
+@@ -595,7 +596,7 @@ ar6000_ioctl_siwessid(struct net_device
              if (ar->arWmiReady == TRUE) {
                  reconnect_flag = 0;
                  status = wmi_setPmkid_cmd(ar->arWmi, ar->arBssid, NULL, 0);
@@ -210,7 +210,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@suse.de>
                  A_MEMZERO(ar->arSsid, sizeof(ar->arSsid));
                  ar->arSsidLen = 0;
                  if (ar->arSkipScan == FALSE) {
-@@ -2415,7 +2416,7 @@
+@@ -2415,7 +2416,7 @@ ar6000_ioctl_siwmlme(struct net_device *
                  ar6000_init_profile_info(ar);
                  ar->arNetworkType = arNetworkType;
                  reconnect_flag = 0;
@@ -219,7 +219,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@suse.de>
                  A_MEMZERO(ar->arSsid, sizeof(ar->arSsid));
                  ar->arSsidLen = 0;
                  if (ar->arSkipScan == FALSE) {
-@@ -2615,8 +2616,6 @@
+@@ -2615,8 +2616,6 @@ ar6000_ioctl_siwcommit(struct net_device
       * update the host driver association state for the STA|IBSS mode.
       */
      if (ar->arNetworkType != AP_NETWORK && ar->arNextMode == AP_NETWORK) {

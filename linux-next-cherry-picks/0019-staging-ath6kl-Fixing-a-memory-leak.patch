@@ -14,11 +14,9 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@suse.de>
  drivers/staging/ath6kl/htc2/htc.c         |    2 ++
  3 files changed, 13 insertions(+), 0 deletions(-)
 
-diff --git a/drivers/staging/ath6kl/htc2/AR6000/ar6k.c b/drivers/staging/ath6kl/htc2/AR6000/ar6k.c
-index 6083231..ff0480b 100644
 --- a/drivers/staging/ath6kl/htc2/AR6000/ar6k.c
 +++ b/drivers/staging/ath6kl/htc2/AR6000/ar6k.c
-@@ -810,6 +810,15 @@ static int DevSetupVirtualScatterSupport(AR6K_DEVICE *pDev)
+@@ -810,6 +810,15 @@ static A_STATUS DevSetupVirtualScatterSu
      return status;
  }
  
@@ -32,13 +30,11 @@ index 6083231..ff0480b 100644
 +    return 0;
 +}
  
- int DevSetupMsgBundling(AR6K_DEVICE *pDev, int MaxMsgsPerTransfer)
+ A_STATUS DevSetupMsgBundling(AR6K_DEVICE *pDev, int MaxMsgsPerTransfer)
  {
-diff --git a/drivers/staging/ath6kl/htc2/AR6000/ar6k.h b/drivers/staging/ath6kl/htc2/AR6000/ar6k.h
-index d3b6b30..19d8e70 100644
 --- a/drivers/staging/ath6kl/htc2/AR6000/ar6k.h
 +++ b/drivers/staging/ath6kl/htc2/AR6000/ar6k.h
-@@ -297,6 +297,8 @@ static INLINE int DEV_PREPARE_SCATTER_OPERATION(HIF_SCATTER_REQ *pReq)  {
+@@ -293,6 +293,8 @@ static INLINE A_STATUS DEV_PREPARE_SCATT
          
      
  A_STATUS DevSetupMsgBundling(AR6K_DEVICE *pDev, int MaxMsgsPerTransfer);
@@ -47,8 +43,6 @@ index d3b6b30..19d8e70 100644
                                    
  #define DEV_GET_MAX_MSG_PER_BUNDLE(pDev)        (pDev)->HifScatterInfo.MaxScatterEntries
  #define DEV_GET_MAX_BUNDLE_LENGTH(pDev)         (pDev)->HifScatterInfo.MaxTransferSizePerScatterReq
-diff --git a/drivers/staging/ath6kl/htc2/htc.c b/drivers/staging/ath6kl/htc2/htc.c
-index 684eca9..e7adc45 100644
 --- a/drivers/staging/ath6kl/htc2/htc.c
 +++ b/drivers/staging/ath6kl/htc2/htc.c
 @@ -486,6 +486,8 @@ void HTCStop(HTC_HANDLE HTCHandle)
@@ -60,6 +54,3 @@ index 684eca9..e7adc45 100644
      ResetEndpointStates(target);
     
      AR_DEBUG_PRINTF(ATH_DEBUG_TRC, ("-HTCStop \n"));
--- 
-1.7.4.15.g7811d
-

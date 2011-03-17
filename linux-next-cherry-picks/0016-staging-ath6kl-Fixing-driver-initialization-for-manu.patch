@@ -12,11 +12,9 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@suse.de>
  drivers/staging/ath6kl/os/linux/ar6000_drv.c |    4 +++-
  1 files changed, 3 insertions(+), 1 deletions(-)
 
-diff --git a/drivers/staging/ath6kl/os/linux/ar6000_drv.c b/drivers/staging/ath6kl/os/linux/ar6000_drv.c
-index df9badb..d907e93 100644
 --- a/drivers/staging/ath6kl/os/linux/ar6000_drv.c
 +++ b/drivers/staging/ath6kl/os/linux/ar6000_drv.c
-@@ -1806,7 +1806,9 @@ ar6000_avail_ev(void *context, void *hif_handle)
+@@ -1826,7 +1826,9 @@ ar6000_avail_ev(void *context, void *hif
                      break;
                  }
  #ifdef HTC_RAW_INTERFACE
@@ -26,7 +24,4 @@ index df9badb..d907e93 100644
 +                }
  #endif 
                  rtnl_lock();
-                 status = (ar6000_init(dev)==0) ? 0 : A_ERROR;
--- 
-1.7.4.15.g7811d
-
+                 status = (ar6000_init(dev)==0) ? A_OK : A_ERROR;

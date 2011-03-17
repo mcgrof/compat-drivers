@@ -21,11 +21,9 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@suse.de>
  .../staging/westbridge/astoria/device/cyasdevice.c |    2 +-
  4 files changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/staging/ath6kl/os/linux/ioctl.c b/drivers/staging/ath6kl/os/linux/ioctl.c
-index d5f7ac0..0b10376 100644
 --- a/drivers/staging/ath6kl/os/linux/ioctl.c
 +++ b/drivers/staging/ath6kl/os/linux/ioctl.c
-@@ -440,7 +440,7 @@ ar6000_ioctl_set_rssi_threshold(struct net_device *dev, struct ifreq *rq)
+@@ -440,7 +440,7 @@ ar6000_ioctl_set_rssi_threshold(struct n
              if (ar->rssi_map[j+1].rssi < ar->rssi_map[j].rssi) {
                  SWAP_THOLD(ar->rssi_map[j+1], ar->rssi_map[j]);
              } else if (ar->rssi_map[j+1].rssi == ar->rssi_map[j].rssi) {
@@ -34,7 +32,7 @@ index d5f7ac0..0b10376 100644
              }
          }
      }
-@@ -449,7 +449,7 @@ ar6000_ioctl_set_rssi_threshold(struct net_device *dev, struct ifreq *rq)
+@@ -449,7 +449,7 @@ ar6000_ioctl_set_rssi_threshold(struct n
              if (ar->rssi_map[j+1].rssi < ar->rssi_map[j].rssi) {
                  SWAP_THOLD(ar->rssi_map[j+1], ar->rssi_map[j]);
              } else if (ar->rssi_map[j+1].rssi == ar->rssi_map[j].rssi) {
@@ -43,7 +41,7 @@ index d5f7ac0..0b10376 100644
              }
          }
      }
-@@ -2870,7 +2870,7 @@ int ar6000_ioctl(struct net_device *dev, struct ifreq *rq, int cmd)
+@@ -2870,7 +2870,7 @@ int ar6000_ioctl(struct net_device *dev,
                                               gpio_output_set_cmd.enable_mask,
                                               gpio_output_set_cmd.disable_mask);
                  if (ret != A_OK) {
@@ -52,7 +50,7 @@ index d5f7ac0..0b10376 100644
                  }
              }
              up(&ar->arSem);
-@@ -2950,7 +2950,7 @@ int ar6000_ioctl(struct net_device *dev, struct ifreq *rq, int cmd)
+@@ -2950,7 +2950,7 @@ int ar6000_ioctl(struct net_device *dev,
                                                 gpio_register_cmd.gpioreg_id,
                                                 gpio_register_cmd.value);
                  if (ret != A_OK) {
@@ -61,7 +59,7 @@ index d5f7ac0..0b10376 100644
                  }
  
                  /* Wait for acknowledgement from Target */
-@@ -3041,7 +3041,7 @@ int ar6000_ioctl(struct net_device *dev, struct ifreq *rq, int cmd)
+@@ -3041,7 +3041,7 @@ int ar6000_ioctl(struct net_device *dev,
              } else {
                  ret = ar6000_gpio_intr_ack(dev, gpio_intr_ack_cmd.ack_mask);
                  if (ret != A_OK) {
@@ -70,11 +68,9 @@ index d5f7ac0..0b10376 100644
                  }
              }
              up(&ar->arSem);
-diff --git a/drivers/staging/brcm80211/brcmfmac/wl_iw.c b/drivers/staging/brcm80211/brcmfmac/wl_iw.c
-index 7167d47..f4b1b4e 100644
 --- a/drivers/staging/brcm80211/brcmfmac/wl_iw.c
 +++ b/drivers/staging/brcm80211/brcmfmac/wl_iw.c
-@@ -1368,7 +1368,7 @@ wl_iw_iscan_set_scan(struct net_device *dev,
+@@ -1367,7 +1367,7 @@ wl_iw_iscan_set_scan(struct net_device *
  	if (g_scan_specified_ssid) {
  		WL_TRACE("%s Specific SCAN already running ignoring BC scan\n",
  			 __func__);
