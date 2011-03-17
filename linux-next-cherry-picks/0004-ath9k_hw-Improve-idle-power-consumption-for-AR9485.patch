@@ -1,0 +1,25 @@
+From 7ea1362c5d49c5761ce9fc3a4bbb090813134d03 Mon Sep 17 00:00:00 2001
+From: Vivek Natarajan <vnatarajan@atheros.com>
+Date: Thu, 10 Mar 2011 11:05:41 +0530
+Subject: [PATCH] ath9k_hw: Improve idle power consumption for AR9485.
+
+Set some GPIO pins to Pull-down mode to save power.
+
+Signed-off-by: Vivek Natarajan <vnatarajan@atheros.com>
+Signed-off-by: John W. Linville <linville@tuxdriver.com>
+---
+ drivers/net/wireless/ath/ath9k/ar9485_initvals.h |    2 ++
+ 1 files changed, 2 insertions(+), 0 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath9k/ar9485_initvals.h b/drivers/net/wireless/ath/ath9k/ar9485_initvals.h
+index eac4d8526..71cc0a3 100644
+--- a/drivers/net/wireless/ath/ath9k/ar9485_initvals.h
++++ b/drivers/net/wireless/ath/ath9k/ar9485_initvals.h
+@@ -667,6 +667,7 @@ static const u32 ar9485_1_0_pcie_phy_clkreq_enable_L1[][2] = {
+ 
+ static const u32 ar9485_1_0_soc_preamble[][2] = {
+ 	/*   Addr     allmodes */
++	{0x00004090, 0x00aa10aa},
+ 	{0x000040a4, 0x00a0c9c9},
+ 	{0x00007048, 0x00000004},
+ };

@@ -1,0 +1,39 @@
+From 23952ec92850bcdc91b8167fa95ec05dd59a80ea Mon Sep 17 00:00:00 2001
+From: Vivek Natarajan <vnatarajan@atheros.com>
+Date: Thu, 10 Mar 2011 11:05:43 +0530
+Subject: [PATCH] ath9k_hw: Increase the wait count for nf load.
+
+Increasing the wait count makes the nf load pass in
+most of the cases.
+
+Signed-off-by: Vivek Natarajan <vnatarajan@atheros.com>
+Signed-off-by: John W. Linville <linville@tuxdriver.com>
+---
+ drivers/net/wireless/ath/ath9k/calib.c |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath9k/calib.c b/drivers/net/wireless/ath/ath9k/calib.c
+index b4a92a4..8649581 100644
+--- a/drivers/net/wireless/ath/ath9k/calib.c
++++ b/drivers/net/wireless/ath/ath9k/calib.c
+@@ -262,7 +262,7 @@ void ath9k_hw_loadnf(struct ath_hw *ah, struct ath9k_channel *chan)
+ 	 * since 250us often results in NF load timeout and causes deaf
+ 	 * condition during stress testing 12/12/2009
+ 	 */
+-	for (j = 0; j < 1000; j++) {
++	for (j = 0; j < 10000; j++) {
+ 		if ((REG_READ(ah, AR_PHY_AGC_CONTROL) &
+ 		     AR_PHY_AGC_CONTROL_NF) == 0)
+ 			break;
+@@ -278,7 +278,7 @@ void ath9k_hw_loadnf(struct ath_hw *ah, struct ath9k_channel *chan)
+ 	 * here, the baseband nf cal will just be capped by our present
+ 	 * noisefloor until the next calibration timer.
+ 	 */
+-	if (j == 1000) {
++	if (j == 10000) {
+ 		ath_dbg(common, ATH_DBG_ANY,
+ 			"Timeout while waiting for nf to load: AR_PHY_AGC_CONTROL=0x%x\n",
+ 			REG_READ(ah, AR_PHY_AGC_CONTROL));
+-- 
+1.7.4.15.g7811d
+
