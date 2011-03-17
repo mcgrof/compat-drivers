@@ -1,0 +1,230 @@
+From 83195cc8a83df3546d72873ca2aed51f97b0c901 Mon Sep 17 00:00:00 2001
+From: Vipin Mehta <vmehta@atheros.com>
+Date: Fri, 18 Feb 2011 13:13:05 -0800
+Subject: [PATCH] staging: ath6kl: Fixing target crash due to mismatch connect/disconnect
+
+Firmware design requires a WMI_DISCONNECT_CMD for every WMI_CONNECT_CMD to
+clear the firmware previous profile state. There is one case in linux host
+driver where two WMI_CONNECT_CMD are given without a WMI_DISCONNECT_CMD.
+This causes firmware state to mismatch causing an ASSERT. Use the driver
+state variable arConnectPending to track whether a WMI_CONNECT_CMD is
+issued to firmware.
+
+Signed-off-by: Vipin Mehta <vmehta@atheros.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@suse.de>
+---
+ drivers/staging/ath6kl/os/linux/ar6000_drv.c       |   50 ++++++++++---------
+ drivers/staging/ath6kl/os/linux/cfg80211.c         |    7 ++-
+ .../ath6kl/os/linux/include/ar6xapi_linux.h        |    1 +
+ drivers/staging/ath6kl/os/linux/wireless_ext.c     |   11 ++--
+ 4 files changed, 36 insertions(+), 33 deletions(-)
+
+--- a/drivers/staging/ath6kl/os/linux/ar6000_drv.c
++++ b/drivers/staging/ath6kl/os/linux/ar6000_drv.c
+@@ -1963,15 +1963,12 @@
+     {
+         if (!bypasswmi)
+         {
+-            if (ar->arConnected == TRUE || ar->arConnectPending == TRUE)
+-            {
+-                AR_DEBUG_PRINTF(ATH_DEBUG_INFO,("%s(): Disconnect\n", __func__));
+-                if (!keepprofile) {
+-                    AR6000_SPIN_LOCK(&ar->arLock, 0);
+-                    ar6000_init_profile_info(ar);
+-                    AR6000_SPIN_UNLOCK(&ar->arLock, 0);
+-                }
+-                wmi_disconnect_cmd(ar->arWmi);
++	    bool disconnectIssued;
++ 
++	    disconnectIssued = (ar->arConnected) || (ar->arConnectPending);
++	    ar6000_disconnect(ar);
++	    if (!keepprofile) {
++		ar6000_init_profile_info(ar);
+             }
+ 
+             A_UNTIMEOUT(&ar->disconnect_timer);
+@@ -1993,14 +1990,12 @@
+              * Sometimes disconnect_event will be received when the debug logs 
+              * are collected.
+              */
+-            if (ar->arConnected == TRUE || ar->arConnectPending == TRUE) {
++	    if (disconnectIssued) {
+                 if(ar->arNetworkType & AP_NETWORK) {
+                     ar6000_disconnect_event(ar, DISCONNECT_CMD, bcast_mac, 0, NULL, 0);
+                 } else {
+                     ar6000_disconnect_event(ar, DISCONNECT_CMD, ar->arBssid, 0, NULL, 0);
+                 }
+-                ar->arConnected = FALSE;
+-                ar->arConnectPending = FALSE;
+             }
+ #ifdef USER_KEYS
+             ar->user_savedkeys_stat = USER_SAVEDKEYS_STAT_INIT;
+@@ -2183,7 +2178,7 @@
+     A_UNTIMEOUT(&ar->disconnect_timer);
+ 
+     ar6000_init_profile_info(ar);
+-    wmi_disconnect_cmd(ar->arWmi);
++    ar6000_disconnect(ar);
+ }
+ 
+ static void ar6000_detect_error(unsigned long ptr)
+@@ -2255,7 +2250,6 @@
+     A_MEMZERO(ar->arReqBssid, sizeof(ar->arReqBssid));
+     A_MEMZERO(ar->arBssid, sizeof(ar->arBssid));
+     ar->arBssChannel = 0;
+-    ar->arConnected = FALSE;
+ }
+ 
+ static void
+@@ -2342,13 +2336,7 @@
+     netif_stop_queue(dev);
+ 
+ #ifdef ATH6K_CONFIG_CFG80211
+-    AR6000_SPIN_LOCK(&ar->arLock, 0);
+-    if (ar->arConnected == TRUE || ar->arConnectPending == TRUE) {
+-        AR6000_SPIN_UNLOCK(&ar->arLock, 0);
+-        wmi_disconnect_cmd(ar->arWmi);
+-    } else {
+-        AR6000_SPIN_UNLOCK(&ar->arLock, 0);
+-    }
++    ar6000_disconnect(ar);
+ 
+     if(ar->arWmiReady == TRUE) {
+         if (wmi_scanparams_cmd(ar->arWmi, 0xFFFF, 0,
+@@ -4629,6 +4617,8 @@
+             A_MEMCPY(wrqu.addr.sa_data, bssid, ATH_MAC_LEN);
+             wireless_send_event(ar->arNetDev, IWEVEXPIRED, &wrqu, NULL);
+         }
++
++        ar->arConnected = false;
+         return;
+     }
+ 
+@@ -4673,7 +4663,6 @@
+      */
+     if( reason == DISCONNECT_CMD)
+     {
+-        ar->arConnectPending = FALSE;
+         if ((!ar->arUserBssFilter) && (ar->arWmiReady)) {
+             wmi_bssfilter_cmd(ar->arWmi, NONE_BSS_FILTER, 0);
+         }
+@@ -6110,8 +6099,6 @@
+     p.groupCryptoLen = ar->arGroupCryptoLen;
+     p.ctrl_flags = ar->arConnectCtrlFlags;
+ 
+-    ar->arConnected = FALSE;
+-
+     wmi_ap_profile_commit(ar->arWmi, &p);
+     spin_lock_irqsave(&ar->arLock, flags);
+     ar->arConnected  = TRUE;
+@@ -6192,6 +6179,21 @@
+     return A_ERROR;
+ }
+ 
++int
++ar6000_disconnect(struct ar6_softc *ar)
++{
++    if ((ar->arConnected == true) || (ar->arConnectPending == true)) {
++        wmi_disconnect_cmd(ar->arWmi);
++        /* 
++         * Disconnect cmd is issued, clear connectPending.
++         * arConnected will be cleard in disconnect_event notification.
++         */
++        ar->arConnectPending = false;
++    }
++
++    return 0;
++}
++
+ A_STATUS
+ ar6000_ap_mode_get_wpa_ie(struct ar6_softc *ar, struct ieee80211req_wpaie *wpaie)
+ {
+--- a/drivers/staging/ath6kl/os/linux/cfg80211.c
++++ b/drivers/staging/ath6kl/os/linux/cfg80211.c
+@@ -318,7 +318,7 @@
+         return 0;
+     } else if(ar->arSsidLen == sme->ssid_len &&
+               !A_MEMCMP(ar->arSsid, sme->ssid, ar->arSsidLen)) {
+-	    wmi_disconnect_cmd(ar->arWmi);
++	    ar6000_disconnect(ar);
+     }
+ 
+     A_MEMZERO(ar->arSsid, sizeof(ar->arSsid));
+@@ -604,7 +604,7 @@
+     }
+ 
+     reconnect_flag = 0;
+-    wmi_disconnect_cmd(ar->arWmi);
++    ar6000_disconnect(ar);
+     A_MEMZERO(ar->arSsid, sizeof(ar->arSsid));
+     ar->arSsidLen = 0;
+ 
+@@ -1341,6 +1341,7 @@
+                             ar->arSsidLen, ar->arSsid,
+                             ar->arReqBssid, ar->arChannelHint,
+                             ar->arConnectCtrlFlags);
++    ar->arConnectPending = true;
+ 
+     return 0;
+ }
+@@ -1362,7 +1363,7 @@
+         return -EIO;
+     }
+ 
+-    wmi_disconnect_cmd(ar->arWmi);
++    ar6000_disconnect(ar);
+     A_MEMZERO(ar->arSsid, sizeof(ar->arSsid));
+     ar->arSsidLen = 0;
+ 
+--- a/drivers/staging/ath6kl/os/linux/include/ar6xapi_linux.h
++++ b/drivers/staging/ath6kl/os/linux/include/ar6xapi_linux.h
+@@ -171,6 +171,7 @@
+ #endif
+ 
+ A_STATUS ar6000_connect_to_ap(struct ar6_softc *ar);
++int ar6000_disconnect(struct ar6_softc *ar);
+ A_STATUS ar6000_update_wlan_pwr_state(struct ar6_softc *ar, AR6000_WLAN_STATE state, A_BOOL suspending);
+ A_STATUS ar6000_set_wlan_state(struct ar6_softc *ar, AR6000_WLAN_STATE state);
+ A_STATUS ar6000_set_bt_hw_state(struct ar6_softc *ar, A_UINT32 state);
+--- a/drivers/staging/ath6kl/os/linux/wireless_ext.c
++++ b/drivers/staging/ath6kl/os/linux/wireless_ext.c
+@@ -576,9 +576,10 @@
+     /* Update the arNetworkType */
+     ar->arNetworkType = ar->arNextMode;
+ 
+-
+     if ((prevMode != AP_NETWORK) &&
+-        ((ar->arSsidLen) || ((ar->arSsidLen == 0) && ar->arConnected) || (!data->flags)))
++        ((ar->arSsidLen) || 
++        ((ar->arSsidLen == 0) && (ar->arConnected || ar->arConnectPending)) || 
++        (!data->flags)))
+     {
+         if ((!data->flags) ||
+             (A_MEMCMP(ar->arSsid, ssid, ar->arSsidLen) != 0) ||
+@@ -595,7 +596,7 @@
+             if (ar->arWmiReady == TRUE) {
+                 reconnect_flag = 0;
+                 status = wmi_setPmkid_cmd(ar->arWmi, ar->arBssid, NULL, 0);
+-                status = wmi_disconnect_cmd(ar->arWmi);
++                ar6000_disconnect(ar);
+                 A_MEMZERO(ar->arSsid, sizeof(ar->arSsid));
+                 ar->arSsidLen = 0;
+                 if (ar->arSkipScan == FALSE) {
+@@ -2415,7 +2416,7 @@
+                 ar6000_init_profile_info(ar);
+                 ar->arNetworkType = arNetworkType;
+                 reconnect_flag = 0;
+-                wmi_disconnect_cmd(ar->arWmi);
++                ar6000_disconnect(ar);
+                 A_MEMZERO(ar->arSsid, sizeof(ar->arSsid));
+                 ar->arSsidLen = 0;
+                 if (ar->arSkipScan == FALSE) {
+@@ -2615,8 +2616,6 @@
+      * update the host driver association state for the STA|IBSS mode.
+      */
+     if (ar->arNetworkType != AP_NETWORK && ar->arNextMode == AP_NETWORK) {
+-        ar->arConnectPending = FALSE;
+-        ar->arConnected = FALSE;
+         /* Stop getting pkts from upper stack */
+         netif_stop_queue(ar->arNetDev);
+         A_MEMZERO(ar->arBssid, sizeof(ar->arBssid));
