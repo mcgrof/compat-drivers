@@ -1,0 +1,30 @@
+From 3f2fd78e68cdea8805c92b72008b9eb42f6580f6 Mon Sep 17 00:00:00 2001
+From: Vipin Mehta <vmehta@atheros.com>
+Date: Fri, 18 Feb 2011 13:13:04 -0800
+Subject: [PATCH] staging: ath6kl: Return correct scan complete status
+
+Return correct scan complete status to the cfg80211 module based on
+the value returned from the hardware.
+
+Signed-off-by: Vipin Mehta <vmehta@atheros.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@suse.de>
+---
+ drivers/staging/ath6kl/os/linux/cfg80211.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/drivers/staging/ath6kl/os/linux/cfg80211.c b/drivers/staging/ath6kl/os/linux/cfg80211.c
+index b7742d4..bc5f6a7 100644
+--- a/drivers/staging/ath6kl/os/linux/cfg80211.c
++++ b/drivers/staging/ath6kl/os/linux/cfg80211.c
+@@ -791,7 +791,7 @@ ar6k_cfg80211_scanComplete_event(AR_SOFTC_T *ar, int status)
+         wmi_iterate_nodes(ar->arWmi, ar6k_cfg80211_scan_node, ar->wdev->wiphy);
+ 
+         cfg80211_scan_done(ar->scan_request,
+-                          (status & A_ECANCELED) ? true : false);
++            ((status & A_ECANCELED) || (status & A_EBUSY)) ? true : false);
+ 
+         if(ar->scan_request->n_ssids &&
+            ar->scan_request->ssids[0].ssid_len) {
+-- 
+1.7.4.15.g7811d
+

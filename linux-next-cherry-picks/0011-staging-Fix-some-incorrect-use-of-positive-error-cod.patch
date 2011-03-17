@@ -1,0 +1,85 @@
+From 3ec6080e2e5be05e6f7fbbe5ab20b0eab84e166b Mon Sep 17 00:00:00 2001
+From: Ralph Loader <suckfish@ihug.co.nz>
+Date: Fri, 21 Jan 2011 19:27:53 +1300
+Subject: [PATCH] staging: Fix some incorrect use of positive error codes.
+
+Use -E... instead of just E... in a few places where negative error
+codes are expected by a functions callers.  These were found by grepping
+with coccinelle & then inspecting by hand to determine which were bugs.
+
+The staging/cxt1e1 driver appears to intentionally use positive E...
+error codes in some places, and negative -E... error codes in others,
+making it hard to know which is intended where - very likely I missed
+some problems in that driver.
+
+Signed-off-by: Ralph Loader <suckfish@ihug.co.nz>
+Signed-off-by: Greg Kroah-Hartman <gregkh@suse.de>
+---
+ drivers/staging/ath6kl/os/linux/ioctl.c            |   10 +++++-----
+ drivers/staging/brcm80211/brcmfmac/wl_iw.c         |    2 +-
+ drivers/staging/cxt1e1/linux.c                     |    2 +-
+ .../staging/westbridge/astoria/device/cyasdevice.c |    2 +-
+ 4 files changed, 8 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/staging/ath6kl/os/linux/ioctl.c b/drivers/staging/ath6kl/os/linux/ioctl.c
+index d5f7ac0..0b10376 100644
+--- a/drivers/staging/ath6kl/os/linux/ioctl.c
++++ b/drivers/staging/ath6kl/os/linux/ioctl.c
+@@ -440,7 +440,7 @@ ar6000_ioctl_set_rssi_threshold(struct net_device *dev, struct ifreq *rq)
+             if (ar->rssi_map[j+1].rssi < ar->rssi_map[j].rssi) {
+                 SWAP_THOLD(ar->rssi_map[j+1], ar->rssi_map[j]);
+             } else if (ar->rssi_map[j+1].rssi == ar->rssi_map[j].rssi) {
+-                return EFAULT;
++                return -EFAULT;
+             }
+         }
+     }
+@@ -449,7 +449,7 @@ ar6000_ioctl_set_rssi_threshold(struct net_device *dev, struct ifreq *rq)
+             if (ar->rssi_map[j+1].rssi < ar->rssi_map[j].rssi) {
+                 SWAP_THOLD(ar->rssi_map[j+1], ar->rssi_map[j]);
+             } else if (ar->rssi_map[j+1].rssi == ar->rssi_map[j].rssi) {
+-                return EFAULT;
++                return -EFAULT;
+             }
+         }
+     }
+@@ -2870,7 +2870,7 @@ int ar6000_ioctl(struct net_device *dev, struct ifreq *rq, int cmd)
+                                              gpio_output_set_cmd.enable_mask,
+                                              gpio_output_set_cmd.disable_mask);
+                 if (ret != A_OK) {
+-                    ret = EIO;
++                    ret = -EIO;
+                 }
+             }
+             up(&ar->arSem);
+@@ -2950,7 +2950,7 @@ int ar6000_ioctl(struct net_device *dev, struct ifreq *rq, int cmd)
+                                                gpio_register_cmd.gpioreg_id,
+                                                gpio_register_cmd.value);
+                 if (ret != A_OK) {
+-                    ret = EIO;
++                    ret = -EIO;
+                 }
+ 
+                 /* Wait for acknowledgement from Target */
+@@ -3041,7 +3041,7 @@ int ar6000_ioctl(struct net_device *dev, struct ifreq *rq, int cmd)
+             } else {
+                 ret = ar6000_gpio_intr_ack(dev, gpio_intr_ack_cmd.ack_mask);
+                 if (ret != A_OK) {
+-                    ret = EIO;
++                    ret = -EIO;
+                 }
+             }
+             up(&ar->arSem);
+diff --git a/drivers/staging/brcm80211/brcmfmac/wl_iw.c b/drivers/staging/brcm80211/brcmfmac/wl_iw.c
+index 7167d47..f4b1b4e 100644
+--- a/drivers/staging/brcm80211/brcmfmac/wl_iw.c
++++ b/drivers/staging/brcm80211/brcmfmac/wl_iw.c
+@@ -1368,7 +1368,7 @@ wl_iw_iscan_set_scan(struct net_device *dev,
+ 	if (g_scan_specified_ssid) {
+ 		WL_TRACE("%s Specific SCAN already running ignoring BC scan\n",
+ 			 __func__);
+-		return EBUSY;
++		return -EBUSY;
+ 	}
+ 
+ 	memset(&ssid, 0, sizeof(ssid));

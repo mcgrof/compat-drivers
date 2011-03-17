@@ -1,0 +1,49 @@
+From e8763b5fe88a0ef8858cd614d961578d34b673a0 Mon Sep 17 00:00:00 2001
+From: Vipin Mehta <vmehta@atheros.com>
+Date: Fri, 18 Feb 2011 13:13:03 -0800
+Subject: [PATCH] staging: ath6kl: Fixing key settings for WPA/WPA2
+
+A bug was observed during the reconnection phase in the WPA/WPA2-PSK scenario
+where the EAPOL frames were going encrypted during an auto reconnection
+attempt. The initial 4-way handshake would go fine but then the driver
+was getting a command to set default keys sometime later. Setting of an
+incorrect flag (TX_USAGE) in the hadrware was causing the EAPOL frames during
+the subsequent 4-way handshake attempts to go encrypted causing the AP to
+reject the station.
+
+Signed-off-by: Vipin Mehta <vmehta@atheros.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@suse.de>
+---
+ drivers/staging/ath6kl/os/linux/cfg80211.c |    8 +++++++-
+ 1 files changed, 7 insertions(+), 1 deletions(-)
+
+diff --git a/drivers/staging/ath6kl/os/linux/cfg80211.c b/drivers/staging/ath6kl/os/linux/cfg80211.c
+index 1a4e315..b7742d4 100644
+--- a/drivers/staging/ath6kl/os/linux/cfg80211.c
++++ b/drivers/staging/ath6kl/os/linux/cfg80211.c
+@@ -983,6 +983,7 @@ ar6k_cfg80211_set_default_key(struct wiphy *wiphy, struct net_device *ndev,
+     AR_SOFTC_T *ar = (AR_SOFTC_T *)ar6k_priv(ndev);
+     struct ar_key *key = NULL;
+     A_STATUS status = A_OK;
++    u8 key_usage;
+ 
+     AR_DEBUG_PRINTF(ATH_DEBUG_INFO, ("%s: index %d\n", __func__, key_index));
+ 
+@@ -1011,8 +1012,13 @@ ar6k_cfg80211_set_default_key(struct wiphy *wiphy, struct net_device *ndev,
+ 
+     ar->arDefTxKeyIndex = key_index;
+     key = &ar->keys[ar->arDefTxKeyIndex];
++    key_usage = GROUP_USAGE;
++    if (WEP_CRYPT == ar->arPairwiseCrypto) {
++        key_usage |= TX_USAGE;
++    }
++
+     status = wmi_addKey_cmd(ar->arWmi, ar->arDefTxKeyIndex,
+-                            ar->arPairwiseCrypto, GROUP_USAGE | TX_USAGE,
++                            ar->arPairwiseCrypto, key_usage,
+                             key->key_len, key->seq, key->key, KEY_OP_INIT_VAL,
+                             NULL, SYNC_BOTH_WMIFLAG);
+     if (status) {
+-- 
+1.7.4.15.g7811d
+
