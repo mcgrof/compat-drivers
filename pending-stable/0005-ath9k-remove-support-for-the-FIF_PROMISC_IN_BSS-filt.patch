@@ -1,0 +1,44 @@
+From 2e286947f1294239527c11f9f466ddce6466455b Mon Sep 17 00:00:00 2001
+From: Felix Fietkau <nbd@openwrt.org>
+Date: Wed, 9 Mar 2011 01:48:12 +0100
+Subject: [PATCH 5/5] ath9k: remove support for the FIF_PROMISC_IN_BSS filter flag
+
+The hardware rx filter flag triggered by FIF_PROMISC_IN_BSS is overly broad
+and covers even frames with PHY errors. When this flag is enabled, this message
+shows up frequently during scanning or hardware resets:
+
+ath: Could not stop RX, we could be confusing the DMA engine when we start RX up
+
+Since promiscuous mode is usually not particularly useful, yet enabled by
+default by bridging (either used normally in 4-addr mode, or with hacks
+for various virtualization software), we should sacrifice it for better
+reliability during normal operation.
+
+This patch leaves it enabled if there are active monitor mode interfaces, since
+it's very useful for debugging.
+
+Signed-off-by: Felix Fietkau <nbd@openwrt.org>
+Cc: stable@kernel.org
+Signed-off-by: John W. Linville <linville@tuxdriver.com>
+---
+ drivers/net/wireless/ath/ath9k/recv.c |    4 +---
+ 1 files changed, 1 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath9k/recv.c b/drivers/net/wireless/ath/ath9k/recv.c
+index cb559e3..a9c3f46 100644
+--- a/drivers/net/wireless/ath/ath9k/recv.c
++++ b/drivers/net/wireless/ath/ath9k/recv.c
+@@ -413,9 +413,7 @@ u32 ath_calcrxfilter(struct ath_softc *sc)
+ 	 * mode interface or when in monitor mode. AP mode does not need this
+ 	 * since it receives all in-BSS frames anyway.
+ 	 */
+-	if (((sc->sc_ah->opmode != NL80211_IFTYPE_AP) &&
+-	     (sc->rx.rxfilter & FIF_PROMISC_IN_BSS)) ||
+-	    (sc->sc_ah->is_monitoring))
++	if (sc->sc_ah->is_monitoring)
+ 		rfilt |= ATH9K_RX_FILTER_PROM;
+ 
+ 	if (sc->rx.rxfilter & FIF_CONTROL)
+-- 
+1.7.4.15.g7811d
+

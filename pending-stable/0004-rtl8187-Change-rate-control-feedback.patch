@@ -1,0 +1,101 @@
+From 6410db593e8c1b2b79a2f18554310d6da9415584 Mon Sep 17 00:00:00 2001
+From: Larry Finger <Larry.Finger@lwfinger.net>
+Date: Mon, 28 Feb 2011 23:36:09 -0600
+Subject: [PATCH 4/5] rtl8187: Change rate-control feedback
+
+The driver for the RTL8187L chips returns IEEE80211_TX_STAT_ACK for all
+packets, even if the maximum number of retries was exhausted. In addition
+it fails to setup max_rates in the ieee80211_hw struct, This behavior
+may be responsible for the problems noted in Bug 14168. As the bug is very
+old, testers have not been found, and I do not have the case where the
+indicated signal is less than -70 dBm.
+
+Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
+Acked-by: Hin-Tak Leung <htl10@users.sourceforge.net>
+Cc: Stable <stable@kernel.org>
+Signed-off-by: John W. Linville <linville@tuxdriver.com>
+---
+ drivers/net/wireless/rtl818x/rtl8187/dev.c     |   25 +++++++++++++++++++----
+ drivers/net/wireless/rtl818x/rtl8187/rtl8187.h |    2 +
+ 2 files changed, 22 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/net/wireless/rtl818x/rtl8187/dev.c b/drivers/net/wireless/rtl818x/rtl8187/dev.c
+index c5a5e78..1e0be14 100644
+--- a/drivers/net/wireless/rtl818x/rtl8187/dev.c
++++ b/drivers/net/wireless/rtl818x/rtl8187/dev.c
+@@ -869,23 +869,35 @@ static void rtl8187_work(struct work_struct *work)
+ 	/* The RTL8187 returns the retry count through register 0xFFFA. In
+ 	 * addition, it appears to be a cumulative retry count, not the
+ 	 * value for the current TX packet. When multiple TX entries are
+-	 * queued, the retry count will be valid for the last one in the queue.
+-	 * The "error" should not matter for purposes of rate setting. */
++	 * waiting in the queue, the retry count will be the total for all.
++	 * The "error" may matter for purposes of rate setting, but there is
++	 * no other choice with this hardware.
++	 */
+ 	struct rtl8187_priv *priv = container_of(work, struct rtl8187_priv,
+ 				    work.work);
+ 	struct ieee80211_tx_info *info;
+ 	struct ieee80211_hw *dev = priv->dev;
+ 	static u16 retry;
+ 	u16 tmp;
++	u16 avg_retry;
++	int length;
+ 
+ 	mutex_lock(&priv->conf_mutex);
+ 	tmp = rtl818x_ioread16(priv, (__le16 *)0xFFFA);
++	length = skb_queue_len(&priv->b_tx_status.queue);
++	if (unlikely(!length))
++		length = 1;
++	if (unlikely(tmp < retry))
++		tmp = retry;
++	avg_retry = (tmp - retry) / length;
+ 	while (skb_queue_len(&priv->b_tx_status.queue) > 0) {
+ 		struct sk_buff *old_skb;
+ 
+ 		old_skb = skb_dequeue(&priv->b_tx_status.queue);
+ 		info = IEEE80211_SKB_CB(old_skb);
+-		info->status.rates[0].count = tmp - retry + 1;
++		info->status.rates[0].count = avg_retry + 1;
++		if (info->status.rates[0].count > RETRY_COUNT)
++			info->flags &= ~IEEE80211_TX_STAT_ACK;
+ 		ieee80211_tx_status_irqsafe(dev, old_skb);
+ 	}
+ 	retry = tmp;
+@@ -931,8 +943,8 @@ static int rtl8187_start(struct ieee80211_hw *dev)
+ 		rtl818x_iowrite32(priv, &priv->map->TX_CONF,
+ 				  RTL818X_TX_CONF_HW_SEQNUM |
+ 				  RTL818X_TX_CONF_DISREQQSIZE |
+-				  (7 << 8  /* short retry limit */) |
+-				  (7 << 0  /* long retry limit */) |
++				  (RETRY_COUNT << 8  /* short retry limit */) |
++				  (RETRY_COUNT << 0  /* long retry limit */) |
+ 				  (7 << 21 /* MAX TX DMA */));
+ 		rtl8187_init_urbs(dev);
+ 		rtl8187b_init_status_urb(dev);
+@@ -1376,6 +1388,9 @@ static int __devinit rtl8187_probe(struct usb_interface *intf,
+ 	dev->flags = IEEE80211_HW_HOST_BROADCAST_PS_BUFFERING |
+ 		     IEEE80211_HW_SIGNAL_DBM |
+ 		     IEEE80211_HW_RX_INCLUDES_FCS;
++	/* Initialize rate-control variables */
++	dev->max_rates = 1;
++	dev->max_rate_tries = RETRY_COUNT;
+ 
+ 	eeprom.data = dev;
+ 	eeprom.register_read = rtl8187_eeprom_register_read;
+diff --git a/drivers/net/wireless/rtl818x/rtl8187/rtl8187.h b/drivers/net/wireless/rtl818x/rtl8187/rtl8187.h
+index 0d7b142..f1cc907 100644
+--- a/drivers/net/wireless/rtl818x/rtl8187/rtl8187.h
++++ b/drivers/net/wireless/rtl818x/rtl8187/rtl8187.h
+@@ -35,6 +35,8 @@
+ #define RFKILL_MASK_8187_89_97	0x2
+ #define RFKILL_MASK_8198	0x4
+ 
++#define RETRY_COUNT		7
++
+ struct rtl8187_rx_info {
+ 	struct urb *urb;
+ 	struct ieee80211_hw *dev;
+-- 
+1.7.4.15.g7811d
+
