@@ -13,7 +13,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
 
 --- a/drivers/net/atl1c/atl1c_main.c
 +++ b/drivers/net/atl1c/atl1c_main.c
-@@ -409,7 +409,11 @@ static void atl1c_set_multi(struct net_d
+@@ -410,7 +410,11 @@ static void atl1c_set_multi(struct net_d
  
  	/* comoute mc addresses' hash value ,and put it into hash table */
  	netdev_for_each_mc_addr(ha, netdev) {
@@ -124,7 +124,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  	return mc_filter[0] | ((u64)(mc_filter[1]) << 32);
 --- a/drivers/net/wireless/ath/ar9170/main.c
 +++ b/drivers/net/wireless/ath/ar9170/main.c
-@@ -1607,17 +1607,35 @@ out:
+@@ -1606,17 +1606,35 @@ out:
  	return err;
  }
  
@@ -162,7 +162,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  }
 --- a/drivers/net/wireless/ath/ath5k/mac80211-ops.c
 +++ b/drivers/net/wireless/ath/ath5k/mac80211-ops.c
-@@ -340,20 +340,42 @@ ath5k_bss_info_changed(struct ieee80211_
+@@ -322,20 +322,42 @@ ath5k_bss_info_changed(struct ieee80211_
  
  static u64
  ath5k_prepare_multicast(struct ieee80211_hw *hw,
@@ -205,7 +205,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  		pos ^= (val >> 18) ^ (val >> 12) ^ (val >> 6) ^ val;
  		pos &= 0x3f;
  		mfilt[pos / 32] |= (1 << (pos % 32));
-@@ -362,6 +384,9 @@ ath5k_prepare_multicast(struct ieee80211
+@@ -344,6 +366,9 @@ ath5k_prepare_multicast(struct ieee80211
  		* neet to inform below to not reset the mcast */
  		/* ath5k_hw_set_mcast_filterindex(ah,
  		 *      ha->addr[5]); */
@@ -292,7 +292,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  	}
 --- a/drivers/net/wireless/libertas_tf/main.c
 +++ b/drivers/net/wireless/libertas_tf/main.c
-@@ -418,20 +418,36 @@ static int lbtf_op_config(struct ieee802
+@@ -417,20 +417,36 @@ static int lbtf_op_config(struct ieee802
  }
  
  static u64 lbtf_op_prepare_multicast(struct ieee80211_hw *hw,
@@ -331,7 +331,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  }
 --- a/drivers/net/wireless/mwl8k.c
 +++ b/drivers/net/wireless/mwl8k.c
-@@ -2152,15 +2152,21 @@ struct mwl8k_cmd_mac_multicast_adr {
+@@ -2165,15 +2165,21 @@ struct mwl8k_cmd_mac_multicast_adr {
  
  static struct mwl8k_cmd_pkt *
  __mwl8k_cmd_mac_multicast_adr(struct ieee80211_hw *hw, int allmulti,
@@ -353,7 +353,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  
  	if (allmulti || mc_count > priv->num_mcaddrs) {
  		allmulti = 1;
-@@ -2181,13 +2187,27 @@ __mwl8k_cmd_mac_multicast_adr(struct iee
+@@ -2194,13 +2200,27 @@ __mwl8k_cmd_mac_multicast_adr(struct iee
  	if (allmulti) {
  		cmd->action |= cpu_to_le16(MWL8K_ENABLE_RX_ALL_MULTICAST);
  	} else if (mc_count) {
@@ -381,7 +381,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  		}
  	}
  
-@@ -4116,7 +4136,11 @@ mwl8k_bss_info_changed(struct ieee80211_
+@@ -4130,7 +4150,11 @@ mwl8k_bss_info_changed(struct ieee80211_
  }
  
  static u64 mwl8k_prepare_multicast(struct ieee80211_hw *hw,
@@ -393,7 +393,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  {
  	struct mwl8k_cmd_pkt *cmd;
  
-@@ -4127,7 +4151,11 @@ static u64 mwl8k_prepare_multicast(struc
+@@ -4141,7 +4165,11 @@ static u64 mwl8k_prepare_multicast(struc
  	 * we'll end up throwing this packet away and creating a new
  	 * one in mwl8k_configure_filter().
  	 */
@@ -405,7 +405,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  
  	return (unsigned long)cmd;
  }
-@@ -4249,7 +4277,11 @@ static void mwl8k_configure_filter(struc
+@@ -4263,7 +4291,11 @@ static void mwl8k_configure_filter(struc
  	 */
  	if (*total_flags & FIF_ALLMULTI) {
  		kfree(cmd);
@@ -459,7 +459,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  
 --- a/drivers/net/wireless/rtl818x/rtl8180/dev.c
 +++ b/drivers/net/wireless/rtl818x/rtl8180/dev.c
-@@ -815,10 +815,19 @@ static void rtl8180_bss_info_changed(str
+@@ -811,10 +811,19 @@ static void rtl8180_bss_info_changed(str
  	}
  }
  
@@ -481,7 +481,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  static void rtl8180_configure_filter(struct ieee80211_hw *dev,
 --- a/drivers/net/wireless/rtl818x/rtl8187/dev.c
 +++ b/drivers/net/wireless/rtl818x/rtl8187/dev.c
-@@ -1194,9 +1194,17 @@ static void rtl8187_bss_info_changed(str
+@@ -1204,9 +1204,17 @@ static void rtl8187_bss_info_changed(str
  }
  
  static u64 rtl8187_prepare_multicast(struct ieee80211_hw *dev,
@@ -501,7 +501,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  static void rtl8187_configure_filter(struct ieee80211_hw *dev,
 --- a/drivers/net/wireless/wl12xx/main.c
 +++ b/drivers/net/wireless/wl12xx/main.c
-@@ -1573,11 +1573,20 @@ struct wl1271_filter_params {
+@@ -1673,11 +1673,20 @@ struct wl1271_filter_params {
  	u8 mc_list[ACX_MC_ADDRESS_GROUP_MAX][ETH_ALEN];
  };
  
@@ -522,7 +522,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  	struct wl1271 *wl = hw->priv;
  
  	if (unlikely(wl->state == WL1271_STATE_OFF))
-@@ -1590,16 +1599,40 @@ static u64 wl1271_op_prepare_multicast(s
+@@ -1690,16 +1699,40 @@ static u64 wl1271_op_prepare_multicast(s
  	}
  
  	/* update multicast filtering parameters */
@@ -565,8 +565,8 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  	return (u64)(unsigned long)fp;
 --- a/drivers/net/wireless/zd1211rw/zd_mac.c
 +++ b/drivers/net/wireless/zd1211rw/zd_mac.c
-@@ -949,17 +949,34 @@ static void set_rx_filter_handler(struct
- }
+@@ -1126,17 +1126,34 @@ static void zd_process_intr(struct work_
+ 
  
  static u64 zd_op_prepare_multicast(struct ieee80211_hw *hw,
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,35))
@@ -602,7 +602,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  	return hash.low | ((u64)hash.high << 32);
 --- a/drivers/staging/brcm80211/brcmfmac/dhd_linux.c
 +++ b/drivers/staging/brcm80211/brcmfmac/dhd_linux.c
-@@ -726,7 +726,11 @@ static void _dhd_set_multicast_list(dhd_
+@@ -718,7 +718,11 @@ static void _dhd_set_multicast_list(dhd_
  	netdev_for_each_mc_addr(ha, dev) {
  		if (!cnt)
  			break;
@@ -616,7 +616,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  	}
 --- a/include/net/mac80211.h
 +++ b/include/net/mac80211.h
-@@ -1802,7 +1802,11 @@ struct ieee80211_ops {
+@@ -1826,7 +1826,11 @@ struct ieee80211_ops {
  				 struct ieee80211_bss_conf *info,
  				 u32 changed);
  	u64 (*prepare_multicast)(struct ieee80211_hw *hw,
@@ -677,7 +677,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  
 --- a/net/mac80211/ieee80211_i.h
 +++ b/net/mac80211/ieee80211_i.h
-@@ -736,7 +736,12 @@ struct ieee80211_local {
+@@ -734,7 +734,12 @@ struct ieee80211_local {
  	struct work_struct recalc_smps;
  
  	/* aggregated multicast list */
@@ -692,7 +692,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  
 --- a/net/mac80211/iface.c
 +++ b/net/mac80211/iface.c
-@@ -435,8 +435,13 @@ static void ieee80211_do_stop(struct iee
+@@ -436,8 +436,13 @@ static void ieee80211_do_stop(struct iee
  
  	netif_addr_lock_bh(sdata->dev);
  	spin_lock_bh(&local->filter_lock);
@@ -706,7 +706,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  	spin_unlock_bh(&local->filter_lock);
  	netif_addr_unlock_bh(sdata->dev);
  
-@@ -595,7 +600,12 @@ static void ieee80211_set_multicast_list
+@@ -602,7 +607,12 @@ static void ieee80211_set_multicast_list
  		sdata->flags ^= IEEE80211_SDATA_PROMISC;
  	}
  	spin_lock_bh(&local->filter_lock);
@@ -733,7 +733,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  	spin_unlock_bh(&local->filter_lock);
  
  	/* be a bit nasty */
-@@ -562,9 +566,11 @@ struct ieee80211_hw *ieee80211_alloc_hw(
+@@ -619,9 +623,11 @@ struct ieee80211_hw *ieee80211_alloc_hw(
  	local->uapsd_max_sp_len = IEEE80211_DEFAULT_MAX_SP_LEN;
  
  	INIT_LIST_HEAD(&local->interfaces);
