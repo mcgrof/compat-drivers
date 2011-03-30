@@ -1,0 +1,50 @@
+From ffd8c746fbef50cf12df239f9d23c2afe1a2c3cb Mon Sep 17 00:00:00 2001
+From: Johannes Berg <johannes.berg@intel.com>
+Date: Tue, 29 Mar 2011 15:28:11 +0200
+Subject: [PATCH 3/3] iwlegacy: fix bugs in change_interface
+
+If change_interface gets invoked during a firmware
+restart, it may crash; prevent that from happening
+by checking if ctx->vif is assigned.
+
+Additionally, in my initial commit I forgot to set
+the vif->p2p variable correctly, so fix that too.
+
+Cc: stable@kernel.org [2.6.38+]
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: John W. Linville <linville@tuxdriver.com>
+---
+ drivers/net/wireless/iwlegacy/iwl-core.c |   10 ++++++++++
+ 1 files changed, 10 insertions(+), 0 deletions(-)
+
+diff --git a/drivers/net/wireless/iwlegacy/iwl-core.c b/drivers/net/wireless/iwlegacy/iwl-core.c
+index d418b64..a209a0e 100644
+--- a/drivers/net/wireless/iwlegacy/iwl-core.c
++++ b/drivers/net/wireless/iwlegacy/iwl-core.c
+@@ -1805,6 +1805,15 @@ iwl_legacy_mac_change_interface(struct ieee80211_hw *hw,
+ 
+ 	mutex_lock(&priv->mutex);
+ 
++	if (!ctx->vif || !iwl_legacy_is_ready_rf(priv)) {
++		/*
++		 * Huh? But wait ... this can maybe happen when
++		 * we're in the middle of a firmware restart!
++		 */
++		err = -EBUSY;
++		goto out;
++	}
++
+ 	interface_modes = ctx->interface_modes | ctx->exclusive_interface_modes;
+ 
+ 	if (!(interface_modes & BIT(newtype))) {
+@@ -1832,6 +1841,7 @@ iwl_legacy_mac_change_interface(struct ieee80211_hw *hw,
+ 	/* success */
+ 	iwl_legacy_teardown_interface(priv, vif, true);
+ 	vif->type = newtype;
++	vif->p2p = newp2p;
+ 	err = iwl_legacy_setup_interface(priv, ctx);
+ 	WARN_ON(err);
+ 	/*
+-- 
+1.7.4.15.g7811d
+
