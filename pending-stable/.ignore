@@ -1,1 +1,6 @@
 ath9k-Fix-memory-leak-due-to-failed-PAPRD-frames.patch
+ath9k_hw-Fix-incorrect-macversion-and-macrev-checks.patch
+ath9k_hw-read-and-backup-AR_WA-register-value-even-b.patch
+rtl8187-Change-rate-control-feedback.patch
+ath9k-remove-support-for-the-FIF_PROMISC_IN_BSS-filt.patch
+iwlegacy-fix-bugs-in-change_interface.patch
