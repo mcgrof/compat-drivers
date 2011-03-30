@@ -481,7 +481,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  static void rtl8180_configure_filter(struct ieee80211_hw *dev,
 --- a/drivers/net/wireless/rtl818x/rtl8187/dev.c
 +++ b/drivers/net/wireless/rtl818x/rtl8187/dev.c
-@@ -1194,9 +1194,17 @@ static void rtl8187_bss_info_changed(str
+@@ -1206,9 +1206,17 @@ static void rtl8187_bss_info_changed(str
  }
  
  static u64 rtl8187_prepare_multicast(struct ieee80211_hw *dev,
