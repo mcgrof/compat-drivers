@@ -1309,7 +1309,7 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  	if (conf_is_ht(&sc->hw->conf) &&
 --- a/drivers/net/wireless/ath/ath9k/recv.c
 +++ b/drivers/net/wireless/ath/ath9k/recv.c
-@@ -1627,6 +1627,7 @@ int ath_rx_tasklet(struct ath_softc *sc,
+@@ -1577,6 +1577,7 @@
  	struct ieee80211_rx_status *rxs;
  	struct ath_hw *ah = sc->sc_ah;
  	struct ath_common *common = ath9k_hw_common(ah);
@@ -1317,7 +1317,7 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  	/*
  	 * The hw can technically differ from common->hw when using ath9k
  	 * virtual wiphy so to account for that we iterate over the active
-@@ -1719,12 +1720,24 @@ int ath_rx_tasklet(struct ath_softc *sc,
+@@ -1676,13 +1677,24 @@
  				 dma_type);
  
  		skb_put(skb, rs.rs_datalen + ah->caps.rx_status_len);
@@ -1328,24 +1328,24 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
 +				BUG_ON(1);
 +			memcpy(rx_desc, skb->data, ah->caps.rx_status_len);
  			skb_pull(skb, ah->caps.rx_status_len);
-+		}
++}
  
- 		ath9k_rx_skb_postprocess(common, skb, &rs,
- 					 rxs, decrypt_error);
+ 		if (!rs.rs_more)
+ 			ath9k_rx_skb_postprocess(common, hdr_skb, &rs,
+ 						 rxs, decrypt_error);
  
 +		if (rx_desc) {
 +			ath_pktlog_rx(sc, (void *) rx_desc, skb);
 +			kfree(rx_desc);
-+		} else {
++		} else
 +			ath_pktlog_rx(sc, bf->bf_desc, skb);
-+		}
 +
  		/* We will now give hardware our shiny new allocated skb */
  		bf->bf_mpdu = requeue_skb;
  		bf->bf_buf_addr = dma_map_single(sc->dev, requeue_skb->data,
 --- a/drivers/net/wireless/ath/ath9k/xmit.c
 +++ b/drivers/net/wireless/ath/ath9k/xmit.c
-@@ -478,6 +478,8 @@ static void ath_tx_complete_aggr(struct
+@@ -475,6 +475,8 @@
  			list_move_tail(&bf->list, &bf_head);
  		}
  
@@ -1354,7 +1354,7 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  		if (!txpending || (tid->state & AGGR_CLEANUP)) {
  			/*
  			 * complete the acked-ones/xretried ones; update
-@@ -2028,7 +2030,7 @@ static void ath_tx_processq(struct ath_s
+@@ -2043,7 +2045,7 @@
  		ds = lastbf->bf_desc;
  
  		memset(&ts, 0, sizeof(ts));
@@ -1363,9 +1363,9 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  		if (status == -EINPROGRESS) {
  			spin_unlock_bh(&txq->axq_lock);
  			break;
-@@ -2070,11 +2072,15 @@ static void ath_tx_processq(struct ath_s
- 
- 		qnum = skb_get_queue_mapping(bf->bf_mpdu);
+@@ -2085,11 +2087,15 @@
+ 			ath_tx_rc_status(sc, bf, &ts, 1, txok ? 0 : 1, txok, true);
+ 		}
  
 -		if (bf_isampdu(bf))
 +		if (bf_isampdu(bf)) {
@@ -1379,12 +1379,12 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
 +
 +		ath_pktlog_txstatus(sc, lastbf->bf_desc);
  
- 		if (txq == sc->tx.txq_map[qnum])
- 			ath_wake_mac80211_queue(sc, qnum);
-@@ -2148,9 +2154,11 @@ void ath_tx_edma_tasklet(struct ath_soft
+ 		spin_lock_bh(&txq->axq_lock);
+ 
+@@ -2210,9 +2216,11 @@
+ 	struct list_head bf_head;
  	int status;
  	int txok;
- 	int qnum;
 +	u32 txs_desc[9];
  
  	for (;;) {
@@ -1394,26 +1394,18 @@ Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
  		if (status == -EINPROGRESS)
  			break;
  		if (status == -EIO) {
-@@ -2195,16 +2203,20 @@ void ath_tx_edma_tasklet(struct ath_soft
- 
- 		qnum = skb_get_queue_mapping(bf->bf_mpdu);
- 
--		if (bf_isampdu(bf))
-+		if (bf_isampdu(bf)) {
+@@ -2258,9 +2266,13 @@
+ 		if (bf_isampdu(bf))
  			ath_tx_complete_aggr(sc, txq, bf, &bf_head, &txs,
  					     txok, true);
 -		else
-+		} else {
++		else {
 +			ath9k_pktlog_txctrl(sc, &bf_head, lastbf);
  			ath_tx_complete_buf(sc, bf, txq, &bf_head,
  					    &txs, txok, 0);
 +		}
- 
- 		if (txq == sc->tx.txq_map[qnum])
- 			ath_wake_mac80211_queue(sc, qnum);
- 
-+		ath_pktlog_txstatus(sc, txs_desc);
 +
++		ath_pktlog_txstatus(sc, txs_desc);
+ 
  		spin_lock_bh(&txq->axq_lock);
- 		if (!list_empty(&txq->txq_fifo_pending)) {
- 			INIT_LIST_HEAD(&bf_head);
+ 
