@@ -329,9 +329,41 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  
  	return mc_count;
  }
+--- a/drivers/net/wireless/mwifiex/sta_ioctl.c
++++ b/drivers/net/wireless/mwifiex/sta_ioctl.c
+@@ -41,7 +41,11 @@ mwifiex_copy_mcast_addr(struct mwifiex_m
+ 	struct netdev_hw_addr *ha;
+ 
+ 	netdev_for_each_mc_addr(ha, dev)
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,35))
+ 		memcpy(&mlist->mac_list[i++], ha->addr, ETH_ALEN);
++#else
++		memcpy(&mlist->mac_list[i++], ha->dmi_addr, ETH_ALEN);
++#endif
+ 
+ 	return i;
+ }
+--- a/drivers/net/wireless/mwifiex/debugfs.c
++++ b/drivers/net/wireless/mwifiex/debugfs.c
+@@ -235,9 +235,15 @@ mwifiex_info_read(struct file *file, cha
+ 		netdev_for_each_mc_addr(ha, netdev)
+ 			p += sprintf(p, "multicast_address[%d]="
+ 				     "\"%02x:%02x:%02x:%02x:%02x:%02x\"\n", i++,
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,35))
+ 				     ha->addr[0], ha->addr[1],
+ 				     ha->addr[2], ha->addr[3],
+ 				     ha->addr[4], ha->addr[5]);
++#else
++				     ha->dmi_addr[0], ha->dmi_addr[1],
++				     ha->dmi_addr[2], ha->dmi_addr[3],
++				     ha->dmi_addr[4], ha->dmi_addr[5]);
++#endif
+ 	}
+ 
+ 	p += sprintf(p, "num_tx_bytes = %lu\n", priv->stats.tx_bytes);
 --- a/drivers/net/wireless/mwl8k.c
 +++ b/drivers/net/wireless/mwl8k.c
-@@ -2165,15 +2165,21 @@ struct mwl8k_cmd_mac_multicast_adr {
+@@ -2466,15 +2466,21 @@ struct mwl8k_cmd_mac_multicast_adr {
  
  static struct mwl8k_cmd_pkt *
  __mwl8k_cmd_mac_multicast_adr(struct ieee80211_hw *hw, int allmulti,
@@ -353,7 +385,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  
  	if (allmulti || mc_count > priv->num_mcaddrs) {
  		allmulti = 1;
-@@ -2194,13 +2200,27 @@ __mwl8k_cmd_mac_multicast_adr(struct iee
+@@ -2495,13 +2501,27 @@ __mwl8k_cmd_mac_multicast_adr(struct iee
  	if (allmulti) {
  		cmd->action |= cpu_to_le16(MWL8K_ENABLE_RX_ALL_MULTICAST);
  	} else if (mc_count) {
@@ -381,7 +413,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  		}
  	}
  
-@@ -4130,7 +4150,11 @@ mwl8k_bss_info_changed(struct ieee80211_
+@@ -4642,7 +4662,11 @@ mwl8k_bss_info_changed(struct ieee80211_
  }
  
  static u64 mwl8k_prepare_multicast(struct ieee80211_hw *hw,
@@ -393,7 +425,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  {
  	struct mwl8k_cmd_pkt *cmd;
  
-@@ -4141,7 +4165,11 @@ static u64 mwl8k_prepare_multicast(struc
+@@ -4653,7 +4677,11 @@ static u64 mwl8k_prepare_multicast(struc
  	 * we'll end up throwing this packet away and creating a new
  	 * one in mwl8k_configure_filter().
  	 */
@@ -405,7 +437,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  
  	return (unsigned long)cmd;
  }
-@@ -4263,7 +4291,11 @@ static void mwl8k_configure_filter(struc
+@@ -4775,7 +4803,11 @@ static void mwl8k_configure_filter(struc
  	 */
  	if (*total_flags & FIF_ALLMULTI) {
  		kfree(cmd);

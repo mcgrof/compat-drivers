@@ -242,6 +242,7 @@ DRIVERS="$DRIVERS drivers/net/wireless/wl12xx"
 DRIVERS="$DRIVERS drivers/net/wireless/wl1251"
 DRIVERS="$DRIVERS drivers/net/wireless/iwmc3200wifi"
 DRIVERS="$DRIVERS drivers/net/wireless/orinoco"
+DRIVERS="$DRIVERS drivers/net/wireless/mwifiex"
 
 # Staging drivers
 STAGING_DRIVERS="drivers/staging/ath6kl"
