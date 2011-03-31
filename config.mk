@@ -204,9 +204,9 @@ else #CONFIG_CFG80211_WEXT
 $(warning "WARNING: CONFIG_CFG80211_WEXT will be deactivated or not working because kernel was compiled with CONFIG_WIRELESS_EXT=n. Tools using wext interface like iwconfig will not work. To activate it build your kernel e.g. with CONFIG_LIBIPW=m.")
 endif #CONFIG_WIRELESS_EXT
 
-ifneq ($(CONFIG_STAGING),)
- CONFIG_COMPAT_STAGING=m
-endif
+ifdef CONFIG_STAGING
+CONFIG_COMPAT_STAGING=y
+endif #CONFIG_STAGING
 
 # mac80211 test driver
 CONFIG_MAC80211_HWSIM=m
@@ -546,9 +546,8 @@ CONFIG_IWM=m
 CONFIG_BT_HCIBTSDIO=m
 CONFIG_BT_MRVL_SDIO=m
 
-ifneq ($(CONFIG_COMPAT_STAGING),)
+ifdef CONFIG_COMPAT_STAGING
 
-CONFIG_BRCM80211=m
 CONFIG_BRCMSMAC=y
 # CONFIG_BRCMDBG=y
 
@@ -567,10 +566,10 @@ CONFIG_ATH6K_LEGACY=m
 CONFIG_BRCMFMAC=y
 
 endif #CONFIG_WIRELESS_EXT
+endif #CONFIG_COMPAT_STAGING
+
+
 endif #CONFIG_MMC
-
-
-endif # end of SDIO driver list
 
 CONFIG_RTLWIFI=m
 CONFIG_RTL8192C_COMMON=m
