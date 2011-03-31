@@ -117,6 +117,34 @@ calls on compat code with only slight modifications.
  };
  
  int ath_pci_init(void)
+--- a/drivers/net/wireless/libertas/if_spi.c
++++ b/drivers/net/wireless/libertas/if_spi.c
+@@ -1204,6 +1204,7 @@ static int __devexit libertas_spi_remove
+ 	return 0;
+ }
+ 
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
+ static int if_spi_suspend(struct device *dev)
+ {
+ 	struct spi_device *spi = to_spi_device(dev);
+@@ -1237,6 +1238,7 @@ static const struct dev_pm_ops if_spi_pm
+ 	.suspend	= if_spi_suspend,
+ 	.resume		= if_spi_resume,
+ };
++#endif
+ 
+ static struct spi_driver libertas_spi_driver = {
+ 	.probe	= if_spi_probe,
+@@ -1245,7 +1247,9 @@ static struct spi_driver libertas_spi_dr
+ 		.name	= "libertas_spi",
+ 		.bus	= &spi_bus_type,
+ 		.owner	= THIS_MODULE,
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
+ 		.pm	= &if_spi_pm_ops,
++#endif
+ 	},
+ };
+ 
 --- a/drivers/net/wireless/iwlegacy/iwl-core.c
 +++ b/drivers/net/wireless/iwlegacy/iwl-core.c
 @@ -2048,15 +2048,17 @@ int iwl_legacy_pci_resume(struct device
