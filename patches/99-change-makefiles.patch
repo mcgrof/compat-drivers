@@ -13,7 +13,7 @@ only the wireless stuff.
  obj-$(CONFIG_EEPROM_93CX6)	+= eeprom_93cx6.o
 --- a/drivers/net/usb/Makefile
 +++ b/drivers/net/usb/Makefile
-@@ -2,29 +2,7 @@
+@@ -2,30 +2,7 @@
  # Makefile for USB Network drivers
  #
  
@@ -42,6 +42,7 @@ only the wireless stuff.
 -obj-$(CONFIG_USB_SIERRA_NET)	+= sierra_net.o
 -obj-$(CONFIG_USB_NET_CX82310_ETH)	+= cx82310_eth.o
 -obj-$(CONFIG_USB_NET_CDC_NCM)	+= cdc_ncm.o
+-obj-$(CONFIG_USB_VL600)		+= lg-vl600.o
  
 --- a/drivers/net/wireless/Makefile
 +++ b/drivers/net/wireless/Makefile
