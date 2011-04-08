@@ -217,7 +217,6 @@ fi
 # Drivers that have their own directory
 DRIVERS="drivers/net/wireless/ath"
 DRIVERS="$DRIVERS drivers/net/wireless/ath/carl9170"
-DRIVERS="$DRIVERS drivers/net/wireless/ath/ar9170"
 DRIVERS="$DRIVERS drivers/net/wireless/ath/ath5k"
 DRIVERS="$DRIVERS drivers/net/wireless/ath/ath9k"
 DRIVERS="$DRIVERS drivers/ssb"
