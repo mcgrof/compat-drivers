@@ -9,7 +9,7 @@ calls on compat code with only slight modifications.
 
 --- a/drivers/net/atl1c/atl1c_main.c
 +++ b/drivers/net/atl1c/atl1c_main.c
-@@ -2879,6 +2879,9 @@ static struct pci_error_handlers atl1c_e
+@@ -2884,6 +2884,9 @@ static struct pci_error_handlers atl1c_e
  
  static SIMPLE_DEV_PM_OPS(atl1c_pm_ops, atl1c_suspend, atl1c_resume);
  
@@ -19,7 +19,7 @@ calls on compat code with only slight modifications.
  static struct pci_driver atl1c_driver = {
  	.name     = atl1c_driver_name,
  	.id_table = atl1c_pci_tbl,
-@@ -2886,7 +2889,12 @@ static struct pci_driver atl1c_driver =
+@@ -2891,7 +2894,12 @@ static struct pci_driver atl1c_driver =
  	.remove   = __devexit_p(atl1c_remove),
  	.shutdown = atl1c_shutdown,
  	.err_handler = &atl1c_err_handler,
@@ -44,7 +44,7 @@ calls on compat code with only slight modifications.
  static SIMPLE_DEV_PM_OPS(atl1_pm_ops, atl1_suspend, atl1_resume);
  #define ATL1_PM_OPS	(&atl1_pm_ops)
  
-@@ -3101,7 +3104,12 @@ static struct pci_driver atl1_driver = {
+@@ -3106,7 +3109,12 @@ static struct pci_driver atl1_driver = {
  	.probe = atl1_probe,
  	.remove = __devexit_p(atl1_remove),
  	.shutdown = atl1_shutdown,
@@ -147,7 +147,7 @@ calls on compat code with only slight modifications.
  
 --- a/drivers/net/wireless/iwlegacy/iwl-core.c
 +++ b/drivers/net/wireless/iwlegacy/iwl-core.c
-@@ -2048,15 +2048,17 @@ int iwl_legacy_pci_resume(struct device
+@@ -2053,15 +2053,17 @@ int iwl_legacy_pci_resume(struct device
  }
  EXPORT_SYMBOL(iwl_legacy_pci_resume);
  
@@ -190,7 +190,7 @@ calls on compat code with only slight modifications.
  
 --- a/drivers/net/wireless/iwlegacy/iwl3945-base.c
 +++ b/drivers/net/wireless/iwlegacy/iwl3945-base.c
-@@ -4236,7 +4236,12 @@ static struct pci_driver iwl3945_driver
+@@ -4232,7 +4232,12 @@ static struct pci_driver iwl3945_driver
  	.id_table = iwl3945_hw_card_ids,
  	.probe = iwl3945_pci_probe,
  	.remove = __devexit_p(iwl3945_pci_remove),
@@ -205,7 +205,7 @@ calls on compat code with only slight modifications.
  static int __init iwl3945_init(void)
 --- a/drivers/net/wireless/iwlegacy/iwl4965-base.c
 +++ b/drivers/net/wireless/iwlegacy/iwl4965-base.c
-@@ -3576,7 +3576,12 @@ static struct pci_driver iwl4965_driver
+@@ -3570,7 +3570,12 @@ static struct pci_driver iwl4965_driver
  	.id_table = iwl4965_hw_card_ids,
  	.probe = iwl4965_pci_probe,
  	.remove = __devexit_p(iwl4965_pci_remove),
@@ -220,7 +220,7 @@ calls on compat code with only slight modifications.
  static int __init iwl4965_init(void)
 --- a/drivers/net/wireless/iwlwifi/iwl-agn.c
 +++ b/drivers/net/wireless/iwlwifi/iwl-agn.c
-@@ -4546,7 +4546,12 @@ static struct pci_driver iwl_driver = {
+@@ -4299,7 +4299,12 @@ static struct pci_driver iwl_driver = {
  	.id_table = iwl_hw_card_ids,
  	.probe = iwl_pci_probe,
  	.remove = __devexit_p(iwl_pci_remove),
@@ -235,7 +235,7 @@ calls on compat code with only slight modifications.
  static int __init iwl_init(void)
 --- a/drivers/net/wireless/iwlwifi/iwl-core.c
 +++ b/drivers/net/wireless/iwlwifi/iwl-core.c
-@@ -2007,13 +2007,9 @@ int iwl_pci_resume(struct device *device
+@@ -2006,13 +2006,9 @@ int iwl_pci_resume(struct device *device
  	return 0;
  }
  
@@ -255,7 +255,7 @@ calls on compat code with only slight modifications.
  #endif /* CONFIG_PM */
 --- a/drivers/net/wireless/iwlwifi/iwl-core.h
 +++ b/drivers/net/wireless/iwlwifi/iwl-core.h
-@@ -609,7 +609,12 @@ __le32 iwl_add_beacon_time(struct iwl_pr
+@@ -565,7 +565,12 @@ __le32 iwl_add_beacon_time(struct iwl_pr
  #ifdef CONFIG_PM
  int iwl_pci_suspend(struct device *device);
  int iwl_pci_resume(struct device *device);

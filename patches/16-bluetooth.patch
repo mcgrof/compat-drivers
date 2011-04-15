@@ -17,7 +17,7 @@ here still, but for now we keep this here.
  	tty_driver_flush_buffer(tty);
  
  	return 0;
-@@ -398,7 +403,9 @@ static int hci_uart_register_dev(struct
+@@ -400,7 +405,9 @@ static int hci_uart_register_dev(struct
  	hdev->flush = hci_uart_flush;
  	hdev->send  = hci_uart_send_frame;
  	hdev->destruct = hci_uart_destruct;
@@ -27,7 +27,7 @@ here still, but for now we keep this here.
  
  	hdev->owner = THIS_MODULE;
  
-@@ -498,7 +505,11 @@ static int hci_uart_tty_ioctl(struct tty
+@@ -500,7 +507,11 @@ static int hci_uart_tty_ioctl(struct tty
  		return hu->hdev_flags;
  
  	default:
@@ -80,7 +80,7 @@ here still, but for now we keep this here.
  		err = put_user(amount, (int __user *) arg);
 --- a/net/bluetooth/cmtp/capi.c
 +++ b/net/bluetooth/cmtp/capi.c
-@@ -384,7 +384,11 @@ static void cmtp_reset_ctr(struct capi_c
+@@ -385,7 +385,11 @@ static void cmtp_reset_ctr(struct capi_c
  
  	BT_DBG("ctrl %p", ctrl);
  
@@ -90,8 +90,8 @@ here still, but for now we keep this here.
 +	capi_ctr_reseted(ctrl);
 +#endif
  
- 	atomic_inc(&session->terminate);
- 	cmtp_schedule(session);
+ 	kthread_stop(session->task);
+ }
 --- a/net/bluetooth/hci_sock.c
 +++ b/net/bluetooth/hci_sock.c
 @@ -605,7 +605,11 @@ drop:
@@ -159,7 +159,7 @@ here still, but for now we keep this here.
  };
 --- a/net/bluetooth/hidp/core.c
 +++ b/net/bluetooth/hidp/core.c
-@@ -399,6 +399,7 @@ err_eio:
+@@ -400,6 +400,7 @@ err_eio:
  	return -EIO;
  }
  
@@ -167,7 +167,7 @@ here still, but for now we keep this here.
  static int hidp_output_raw_report(struct hid_device *hid, unsigned char *data, size_t count,
  		unsigned char report_type)
  {
-@@ -458,6 +459,16 @@ err:
+@@ -459,6 +460,16 @@ err:
  	mutex_unlock(&session->report_mutex);
  	return ret;
  }
@@ -184,7 +184,7 @@ here still, but for now we keep this here.
  
  static void hidp_idle_timeout(unsigned long arg)
  {
-@@ -755,8 +766,14 @@ static int hidp_session(void *arg)
+@@ -741,8 +752,14 @@ static int hidp_session(void *arg)
  	}
  
  	if (session->hid) {
@@ -199,7 +199,7 @@ here still, but for now we keep this here.
  	}
  
  	/* Wakeup user-space polling for socket errors */
-@@ -869,6 +886,70 @@ static void hidp_close(struct hid_device
+@@ -855,6 +872,70 @@ static void hidp_close(struct hid_device
  {
  }
  
@@ -270,7 +270,7 @@ here still, but for now we keep this here.
  static int hidp_parse(struct hid_device *hid)
  {
  	struct hidp_session *session = hid->driver_data;
-@@ -953,7 +1034,9 @@ static int hidp_setup_hid(struct hidp_se
+@@ -939,7 +1020,9 @@ static int hidp_setup_hid(struct hidp_se
  	hid->dev.parent = hidp_get_device(session);
  	hid->ll_driver = &hidp_hid_driver;
  
@@ -280,7 +280,7 @@ here still, but for now we keep this here.
  	hid->hid_output_raw_report = hidp_output_raw_report;
  
  	return 0;
-@@ -964,6 +1047,7 @@ fault:
+@@ -950,6 +1033,7 @@ fault:
  
  	return err;
  }
@@ -288,7 +288,7 @@ here still, but for now we keep this here.
  
  int hidp_add_connection(struct hidp_connadd_req *req, struct socket *ctrl_sock, struct socket *intr_sock)
  {
-@@ -982,6 +1066,39 @@ int hidp_add_connection(struct hidp_conn
+@@ -969,6 +1053,39 @@ int hidp_add_connection(struct hidp_conn
  
  	BT_DBG("rd_data %p rd_size %d", req->rd_data, req->rd_size);
  
@@ -328,7 +328,7 @@ here still, but for now we keep this here.
  	down_write(&hidp_session_sem);
  
  	s = __hidp_get_session(&bt_sk(ctrl_sock->sk)->dst);
-@@ -1013,6 +1130,7 @@ int hidp_add_connection(struct hidp_conn
+@@ -1000,6 +1117,7 @@ int hidp_add_connection(struct hidp_conn
  	session->flags   = req->flags & (1 << HIDP_BLUETOOTH_VENDOR_ID);
  	session->idle_to = req->idle_to;
  
@@ -336,7 +336,7 @@ here still, but for now we keep this here.
  	if (req->rd_size > 0) {
  		err = hidp_setup_hid(session, req);
  		if (err && err != -ENODEV)
-@@ -1024,6 +1142,16 @@ int hidp_add_connection(struct hidp_conn
+@@ -1011,6 +1129,16 @@ int hidp_add_connection(struct hidp_conn
  		if (err < 0)
  			goto purge;
  	}
@@ -353,7 +353,7 @@ here still, but for now we keep this here.
  
  	__hidp_link_session(session);
  
-@@ -1069,6 +1197,7 @@ unlink:
+@@ -1070,6 +1198,7 @@ unlink:
  		session->input = NULL;
  	}
  
@@ -361,7 +361,7 @@ here still, but for now we keep this here.
  	if (session->hid) {
  		hid_destroy_device(session->hid);
  		session->hid = NULL;
-@@ -1080,10 +1209,15 @@ unlink:
+@@ -1081,10 +1210,15 @@ unlink:
  purge:
  	skb_queue_purge(&session->ctrl_transmit);
  	skb_queue_purge(&session->intr_transmit);
@@ -377,7 +377,7 @@ here still, but for now we keep this here.
  	input_free_device(session->input);
  	kfree(session);
  	return err;
-@@ -1173,6 +1307,7 @@ int hidp_get_conninfo(struct hidp_connin
+@@ -1168,6 +1302,7 @@ int hidp_get_conninfo(struct hidp_connin
  	return err;
  }
  
@@ -385,7 +385,7 @@ here still, but for now we keep this here.
  static const struct hid_device_id hidp_table[] = {
  	{ HID_BLUETOOTH_DEVICE(HID_ANY_ID, HID_ANY_ID) },
  	{ }
-@@ -1182,6 +1317,7 @@ static struct hid_driver hidp_driver = {
+@@ -1177,6 +1312,7 @@ static struct hid_driver hidp_driver = {
  	.name = "generic-bluetooth",
  	.id_table = hidp_table,
  };
@@ -393,7 +393,7 @@ here still, but for now we keep this here.
  
  static int __init hidp_init(void)
  {
-@@ -1189,11 +1325,14 @@ static int __init hidp_init(void)
+@@ -1184,11 +1320,14 @@ static int __init hidp_init(void)
  
  	BT_INFO("HIDP (Human Interface Emulation) ver %s", VERSION);
  
@@ -408,7 +408,7 @@ here still, but for now we keep this here.
  	if (ret)
  		goto err_drv;
  
-@@ -1201,13 +1340,16 @@ static int __init hidp_init(void)
+@@ -1196,13 +1335,16 @@ static int __init hidp_init(void)
  err_drv:
  	hid_unregister_driver(&hidp_driver);
  err:
@@ -605,7 +605,7 @@ here still, but for now we keep this here.
  {
  	struct sock *sk = sock->sk;
  	struct bt_security sec;
-@@ -1074,8 +1081,12 @@ struct sock *l2cap_sock_alloc(struct net
+@@ -1050,8 +1057,12 @@ struct sock *l2cap_sock_alloc(struct net
  	return sk;
  }
  
@@ -618,7 +618,7 @@ here still, but for now we keep this here.
  {
  	struct sock *sk;
  
-@@ -1087,7 +1098,11 @@ static int l2cap_sock_create(struct net
+@@ -1063,7 +1074,11 @@ static int l2cap_sock_create(struct net
  			sock->type != SOCK_DGRAM && sock->type != SOCK_RAW)
  		return -ESOCKTNOSUPPORT;
  
