@@ -30,7 +30,7 @@ This would do the policing from within mac80211.
 
 --- a/net/rfkill/Makefile
 +++ b/net/rfkill/Makefile
-@@ -2,6 +2,6 @@
+@@ -2,7 +2,7 @@
  # Makefile for the RF switch subsystem.
  #
  
@@ -40,6 +40,7 @@ This would do the policing from within mac80211.
 +rfkill_backport-y			+= core.o
 +rfkill_backport-$(CONFIG_RFKILL_BACKPORT_INPUT)	+= input.o
 +obj-$(CONFIG_RFKILL_BACKPORT)		+= rfkill_backport.o
+ obj-$(CONFIG_RFKILL_REGULATOR)	+= rfkill-regulator.o
 --- a/net/rfkill/input.c
 +++ b/net/rfkill/input.c
 @@ -232,7 +232,7 @@ static int rfkill_connect(struct input_h
