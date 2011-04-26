@@ -44,6 +44,17 @@ are used for injecting frames so they have their own respective queue
 handling, but mac80211 just always sends management frames on VO
 queue by using skb_set_queue_mapping(skb, 0) through ieee80211_tx_skb()
 
+--- a/drivers/net/wireless/wl12xx/main.c
++++ b/drivers/net/wireless/wl12xx/main.c
+@@ -1272,7 +1272,7 @@ static struct sk_buff *wl12xx_alloc_dumm
+ 	skb->priority = WL1271_TID_MGMT;
+ 
+ 	/* Initialize all fields that might be used */
+-	skb->queue_mapping = 0;
++	skb_set_queue_mapping(skb, 0);
+ 	memset(IEEE80211_SKB_CB(skb), 0, sizeof(struct ieee80211_tx_info));
+ 
+ 	return skb;
 --- a/net/mac80211/util.c
 +++ b/net/mac80211/util.c
 @@ -264,6 +264,18 @@ __le16 ieee80211_ctstoself_duration(stru
