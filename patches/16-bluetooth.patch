@@ -17,7 +17,7 @@ here still, but for now we keep this here.
  	tty_driver_flush_buffer(tty);
  
  	return 0;
-@@ -400,7 +405,9 @@ static int hci_uart_register_dev(struct
+@@ -403,7 +408,9 @@ static int hci_uart_register_dev(struct
  	hdev->flush = hci_uart_flush;
  	hdev->send  = hci_uart_send_frame;
  	hdev->destruct = hci_uart_destruct;
@@ -27,7 +27,7 @@ here still, but for now we keep this here.
  
  	hdev->owner = THIS_MODULE;
  
-@@ -500,7 +507,11 @@ static int hci_uart_tty_ioctl(struct tty
+@@ -503,7 +510,11 @@ static int hci_uart_tty_ioctl(struct tty
  		return hu->hdev_flags;
  
  	default:
@@ -518,7 +518,7 @@ here still, but for now we keep this here.
  	struct rfcomm_dlc *dlc = dev->dlc;
 --- a/net/bluetooth/sco.c
 +++ b/net/bluetooth/sco.c
-@@ -429,8 +429,12 @@ static struct sock *sco_sock_alloc(struc
+@@ -438,8 +438,12 @@ static struct sock *sco_sock_alloc(struc
  	return sk;
  }
  
@@ -531,7 +531,7 @@ here still, but for now we keep this here.
  {
  	struct sock *sk;
  
-@@ -646,7 +650,11 @@ static int sco_sock_sendmsg(struct kiocb
+@@ -655,7 +659,11 @@ static int sco_sock_sendmsg(struct kiocb
  	return err;
  }
  

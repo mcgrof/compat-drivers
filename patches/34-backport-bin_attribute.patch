@@ -1,6 +1,6 @@
 --- a/drivers/staging/ath6kl/os/linux/ar6000_drv.c
 +++ b/drivers/staging/ath6kl/os/linux/ar6000_drv.c
-@@ -313,12 +313,20 @@ static void ar6000_refill_amsdu_rxbufs(s
+@@ -317,12 +317,20 @@ static void ar6000_refill_amsdu_rxbufs(s
  static void ar6000_cleanup_amsdu_rxbufs(struct ar6_softc *ar);
  
  static ssize_t
@@ -21,7 +21,7 @@
                         struct bin_attribute *bin_attr,
                         char *buf, loff_t pos, size_t count);
  
-@@ -751,7 +759,11 @@ static struct bin_attribute bmi_attr = {
+@@ -755,7 +763,11 @@ static struct bin_attribute bmi_attr = {
  };
  
  static ssize_t
@@ -33,7 +33,7 @@
                        struct bin_attribute *bin_attr,
                        char *buf, loff_t pos, size_t count)
  {
-@@ -778,7 +790,11 @@ ar6000_sysfs_bmi_read(struct file *fp, s
+@@ -782,7 +794,11 @@ ar6000_sysfs_bmi_read(struct file *fp, s
  }
  
  static ssize_t

@@ -63,7 +63,7 @@ thread in process context as well.
  /* Data structure for the WLAN parts (802.11 cores) of the b43 chip. */
 --- a/drivers/net/wireless/wl12xx/spi.c
 +++ b/drivers/net/wireless/wl12xx/spi.c
-@@ -417,9 +417,20 @@
+@@ -417,9 +417,20 @@ static int __devinit wl1271_probe(struct
  		goto out_free;
  	}
  
@@ -84,7 +84,7 @@ thread in process context as well.
  	if (ret < 0) {
  		wl1271_error("request_irq() failed: %d", ret);
  		goto out_free;
-@@ -440,7 +451,11 @@
+@@ -440,7 +451,11 @@ static int __devinit wl1271_probe(struct
  	return 0;
  
   out_irq:
@@ -96,7 +96,7 @@ thread in process context as well.
  
   out_free:
  	wl1271_free_hw(wl);
-@@ -453,7 +468,12 @@
+@@ -453,7 +468,12 @@ static int __devexit wl1271_remove(struc
  	struct wl1271 *wl = dev_get_drvdata(&spi->dev);
  
  	wl1271_unregister_hw(wl);
@@ -109,10 +109,9 @@ thread in process context as well.
  	wl1271_free_hw(wl);
  
  	return 0;
- struct wl1271_station {
 --- a/drivers/net/wireless/wl12xx/wl12xx.h
 +++ b/drivers/net/wireless/wl12xx/wl12xx.h
-@@ -582,6 +582,10 @@
+@@ -582,6 +582,10 @@ struct wl1271 {
  
  	/* Platform limitations */
  	unsigned int platform_quirks;

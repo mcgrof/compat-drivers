@@ -73,7 +73,7 @@ suspend and resume that are not backported.
  	}
  };
  
-@@ -1741,8 +1747,10 @@ mwifiex_sdio_cleanup_module(void)
+@@ -1725,8 +1731,10 @@ mwifiex_sdio_cleanup_module(void)
  	if (!adapter || !adapter->priv_num)
  		goto exit;
  

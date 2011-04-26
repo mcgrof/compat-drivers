@@ -267,15 +267,15 @@ without creating a headache on maintenance of the pathes.
  	dev->tx_queue_len = 0;
 --- a/drivers/net/wireless/mwifiex/main.c
 +++ b/drivers/net/wireless/mwifiex/main.c
-@@ -675,7 +675,7 @@ static const struct net_device_ops mwifi
+@@ -669,7 +669,7 @@ static const struct net_device_ops mwifi
  static void
  mwifiex_init_priv_params(struct mwifiex_private *priv, struct net_device *dev)
  {
 -	dev->netdev_ops = &mwifiex_netdev_ops;
 +	netdev_attach_ops(dev, &mwifiex_netdev_ops);
  	/* Initialize private structure */
- 	init_waitqueue_head(&priv->ioctl_wait_q);
- 	init_waitqueue_head(&priv->cmd_wait_q);
+ 	priv->current_key_index = 0;
+ 	priv->media_connected = false;
 --- a/drivers/net/wireless/orinoco/main.c
 +++ b/drivers/net/wireless/orinoco/main.c
 @@ -2272,14 +2272,18 @@ int orinoco_if_add(struct orinoco_privat
@@ -325,7 +325,7 @@ without creating a headache on maintenance of the pathes.
  }
 --- a/drivers/net/atl1e/atl1e_main.c
 +++ b/drivers/net/atl1e/atl1e_main.c
-@@ -2214,7 +2214,7 @@ static int atl1e_init_netdev(struct net_
+@@ -2212,7 +2212,7 @@ static int atl1e_init_netdev(struct net_
  	pci_set_drvdata(pdev, netdev);
  
  	netdev->irq  = pdev->irq;
@@ -336,7 +336,7 @@ without creating a headache on maintenance of the pathes.
  	atl1e_set_ethtool_ops(netdev);
 --- a/drivers/net/atl1c/atl1c_main.c
 +++ b/drivers/net/atl1c/atl1c_main.c
-@@ -2604,7 +2604,7 @@ static int atl1c_init_netdev(struct net_
+@@ -2598,7 +2598,7 @@ static int atl1c_init_netdev(struct net_
  	pci_set_drvdata(pdev, netdev);
  
  	netdev->irq  = pdev->irq;
@@ -347,7 +347,7 @@ without creating a headache on maintenance of the pathes.
  
 --- a/drivers/net/atlx/atl1.c
 +++ b/drivers/net/atlx/atl1.c
-@@ -2971,7 +2971,7 @@ static int __devinit atl1_probe(struct p
+@@ -2968,7 +2968,7 @@ static int __devinit atl1_probe(struct p
  	adapter->mii.phy_id_mask = 0x1f;
  	adapter->mii.reg_num_mask = 0x1f;
  
