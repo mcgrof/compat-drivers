@@ -63,22 +63,33 @@ thread in process context as well.
  /* Data structure for the WLAN parts (802.11 cores) of the b43 chip. */
 --- a/drivers/net/wireless/wl12xx/spi.c
 +++ b/drivers/net/wireless/wl12xx/spi.c
-@@ -417,9 +417,20 @@ static int __devinit wl1271_probe(struct
+@@ -405,10 +405,14 @@ static int __devinit wl1271_probe(struct
+ 	wl->tcxo_clock = pdata->board_tcxo_clock;
+ 	wl->platform_quirks = pdata->platform_quirks;
+ 
++#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,32)
++	irqflags = IRQF_TRIGGER_RISING;
++#else
+ 	if (wl->platform_quirks & WL12XX_PLATFORM_QUIRK_EDGE_IRQ)
+ 		irqflags = IRQF_TRIGGER_RISING;
+ 	else
+ 		irqflags = IRQF_TRIGGER_HIGH | IRQF_ONESHOT;
++#endif
+ 
+ 	wl->irq = spi->irq;
+ 	if (wl->irq < 0) {
+@@ -417,9 +421,16 @@ static int __devinit wl1271_probe(struct
  		goto out_free;
  	}
  
 +#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,31)
 +	ret = compat_request_threaded_irq(&wl->irq_compat, wl->irq,
 +					  wl1271_hardirq, wl1271_irq,
-+					  IRQF_TRIGGER_RISING,
++					  irqflags,
 +					  DRIVER_NAME, wl);
 +#else
  	ret = request_threaded_irq(wl->irq, wl1271_hardirq, wl1271_irq,
-+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,32)
-+                                  IRQF_TRIGGER_RISING,
-+#else
  				   irqflags,
-+#endif
  				   DRIVER_NAME, wl);
 +#endif
  	if (ret < 0) {
