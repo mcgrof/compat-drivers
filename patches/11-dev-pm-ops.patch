@@ -9,7 +9,7 @@ calls on compat code with only slight modifications.
 
 --- a/drivers/net/atl1c/atl1c_main.c
 +++ b/drivers/net/atl1c/atl1c_main.c
-@@ -2879,6 +2879,9 @@ static struct pci_error_handlers atl1c_e
+@@ -2875,6 +2875,9 @@ static struct pci_error_handlers atl1c_e
  
  static SIMPLE_DEV_PM_OPS(atl1c_pm_ops, atl1c_suspend, atl1c_resume);
  
@@ -19,7 +19,7 @@ calls on compat code with only slight modifications.
  static struct pci_driver atl1c_driver = {
  	.name     = atl1c_driver_name,
  	.id_table = atl1c_pci_tbl,
-@@ -2886,7 +2889,12 @@ static struct pci_driver atl1c_driver =
+@@ -2882,7 +2885,12 @@ static struct pci_driver atl1c_driver =
  	.remove   = __devexit_p(atl1c_remove),
  	.shutdown = atl1c_shutdown,
  	.err_handler = &atl1c_err_handler,
@@ -119,7 +119,7 @@ calls on compat code with only slight modifications.
  int ath_pci_init(void)
 --- a/drivers/net/wireless/iwlegacy/iwl-core.c
 +++ b/drivers/net/wireless/iwlegacy/iwl-core.c
-@@ -2038,15 +2038,17 @@ int iwl_legacy_pci_resume(struct device
+@@ -2053,15 +2053,17 @@ int iwl_legacy_pci_resume(struct device
  }
  EXPORT_SYMBOL(iwl_legacy_pci_resume);
  
@@ -162,7 +162,7 @@ calls on compat code with only slight modifications.
  
 --- a/drivers/net/wireless/iwlegacy/iwl3945-base.c
 +++ b/drivers/net/wireless/iwlegacy/iwl3945-base.c
-@@ -4236,7 +4236,12 @@ static struct pci_driver iwl3945_driver
+@@ -4232,7 +4232,12 @@ static struct pci_driver iwl3945_driver
  	.id_table = iwl3945_hw_card_ids,
  	.probe = iwl3945_pci_probe,
  	.remove = __devexit_p(iwl3945_pci_remove),
@@ -177,7 +177,7 @@ calls on compat code with only slight modifications.
  static int __init iwl3945_init(void)
 --- a/drivers/net/wireless/iwlegacy/iwl4965-base.c
 +++ b/drivers/net/wireless/iwlegacy/iwl4965-base.c
-@@ -3576,7 +3576,12 @@ static struct pci_driver iwl4965_driver
+@@ -3570,7 +3570,12 @@ static struct pci_driver iwl4965_driver
  	.id_table = iwl4965_hw_card_ids,
  	.probe = iwl4965_pci_probe,
  	.remove = __devexit_p(iwl4965_pci_remove),

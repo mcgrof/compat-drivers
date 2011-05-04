@@ -1,6 +1,6 @@
 --- a/drivers/net/wireless/iwlegacy/iwl-led.c
 +++ b/drivers/net/wireless/iwlegacy/iwl-led.c
-@@ -128,6 +128,7 @@ static void iwl_legacy_led_brightness_se
+@@ -146,6 +146,7 @@ static void iwl_legacy_led_brightness_se
  	iwl_legacy_led_cmd(priv, on, 0);
  }
  
@@ -8,7 +8,7 @@
  static int iwl_legacy_led_blink_set(struct led_classdev *led_cdev,
  			     unsigned long *delay_on,
  			     unsigned long *delay_off)
-@@ -136,6 +137,7 @@ static int iwl_legacy_led_blink_set(stru
+@@ -154,6 +155,7 @@ static int iwl_legacy_led_blink_set(stru
  
  	return iwl_legacy_led_cmd(priv, *delay_on, *delay_off);
  }
@@ -16,7 +16,7 @@
  
  void iwl_legacy_leds_init(struct iwl_priv *priv)
  {
-@@ -148,7 +150,9 @@ void iwl_legacy_leds_init(struct iwl_pri
+@@ -166,7 +168,9 @@ void iwl_legacy_leds_init(struct iwl_pri
  	priv->led.name = kasprintf(GFP_KERNEL, "%s-led",
  				   wiphy_name(priv->hw->wiphy));
  	priv->led.brightness_set = iwl_legacy_led_brightness_set;
