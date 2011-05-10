@@ -16,7 +16,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
 
 --- a/drivers/net/atl1c/atl1c_ethtool.c
 +++ b/drivers/net/atl1c/atl1c_ethtool.c
-@@ -113,6 +113,13 @@ static int atl1c_set_settings(struct net
+@@ -114,6 +114,13 @@ static int atl1c_set_settings(struct net
  	return 0;
  }
  
@@ -30,7 +30,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  static u32 atl1c_get_msglevel(struct net_device *netdev)
  {
  	struct atl1c_adapter *adapter = netdev_priv(netdev);
-@@ -302,6 +309,11 @@ static const struct ethtool_ops atl1c_et
+@@ -303,6 +310,11 @@ static const struct ethtool_ops atl1c_et
  	.get_link               = ethtool_op_get_link,
  	.get_eeprom_len         = atl1c_get_eeprom_len,
  	.get_eeprom             = atl1c_get_eeprom,
@@ -161,7 +161,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  }
 --- a/drivers/net/atlx/atl1.c
 +++ b/drivers/net/atlx/atl1.c
-@@ -2986,10 +2986,12 @@ static int __devinit atl1_probe(struct p
+@@ -2987,10 +2987,12 @@ static int __devinit atl1_probe(struct p
  	netdev->features |= NETIF_F_SG;
  	netdev->features |= (NETIF_F_HW_VLAN_TX | NETIF_F_HW_VLAN_RX);
  
@@ -174,7 +174,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  
  	/*
  	 * patch for some L1 of old version,
-@@ -3605,6 +3607,14 @@ static int atl1_set_pauseparam(struct ne
+@@ -3607,6 +3609,14 @@ static int atl1_set_pauseparam(struct ne
  	return 0;
  }
  
@@ -189,7 +189,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  static void atl1_get_strings(struct net_device *netdev, u32 stringset,
  	u8 *data)
  {
-@@ -3677,4 +3687,10 @@ static const struct ethtool_ops atl1_eth
+@@ -3679,4 +3689,10 @@ static const struct ethtool_ops atl1_eth
  	.nway_reset		= atl1_nway_reset,
  	.get_ethtool_stats	= atl1_get_ethtool_stats,
  	.get_sset_count		= atl1_get_sset_count,

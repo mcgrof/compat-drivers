@@ -23,7 +23,7 @@ without creating a headache on maintenance of the pathes.
  	if (unlikely(retval < 0)) {
 --- a/drivers/net/usb/usbnet.c
 +++ b/drivers/net/usb/usbnet.c
-@@ -1365,7 +1365,7 @@ usbnet_probe (struct usb_interface *udev
+@@ -1370,7 +1370,7 @@ usbnet_probe (struct usb_interface *udev
  		net->features |= NETIF_F_HIGHDMA;
  #endif
  
@@ -92,11 +92,11 @@ without creating a headache on maintenance of the pathes.
  	ndev->needed_tailroom = IEEE80211_ENCRYPT_TAILROOM;
 +#endif
  
- 	ret = dev_alloc_name(ndev, ndev->name);
- 	if (ret < 0)
+ 	ieee80211_assign_perm_addr(local, ndev, type);
+ 	memcpy(ndev->dev_addr, ndev->perm_addr, ETH_ALEN);
 --- a/drivers/net/b44.c
 +++ b/drivers/net/b44.c
-@@ -2163,7 +2163,7 @@ static int __devinit b44_init_one(struct
+@@ -2164,7 +2164,7 @@ static int __devinit b44_init_one(struct
  	bp->rx_pending = B44_DEF_RX_RING_PENDING;
  	bp->tx_pending = B44_DEF_TX_RING_PENDING;
  
@@ -217,7 +217,7 @@ without creating a headache on maintenance of the pathes.
  	wdev->netdev = ndev;
 --- a/drivers/net/wireless/libertas/main.c
 +++ b/drivers/net/wireless/libertas/main.c
-@@ -834,7 +834,7 @@ struct lbs_private *lbs_add_card(void *c
+@@ -818,7 +818,7 @@ struct lbs_private *lbs_add_card(void *c
  	wdev->netdev = dev;
  	priv->dev = dev;
  
@@ -228,7 +228,7 @@ without creating a headache on maintenance of the pathes.
  	dev->flags |= IFF_BROADCAST | IFF_MULTICAST;
 --- a/drivers/net/wireless/libertas/mesh.c
 +++ b/drivers/net/wireless/libertas/mesh.c
-@@ -364,7 +364,7 @@ int lbs_add_mesh(struct lbs_private *pri
+@@ -385,7 +385,7 @@ int lbs_add_mesh(struct lbs_private *pri
  	mesh_dev->ml_priv = priv;
  	priv->mesh_dev = mesh_dev;
  
@@ -267,7 +267,7 @@ without creating a headache on maintenance of the pathes.
  	dev->tx_queue_len = 0;
 --- a/drivers/net/wireless/mwifiex/main.c
 +++ b/drivers/net/wireless/mwifiex/main.c
-@@ -669,7 +669,7 @@ static const struct net_device_ops mwifi
+@@ -668,7 +668,7 @@ static const struct net_device_ops mwifi
  static void
  mwifiex_init_priv_params(struct mwifiex_private *priv, struct net_device *dev)
  {
@@ -347,7 +347,7 @@ without creating a headache on maintenance of the pathes.
  
 --- a/drivers/net/atlx/atl1.c
 +++ b/drivers/net/atlx/atl1.c
-@@ -2968,7 +2968,7 @@ static int __devinit atl1_probe(struct p
+@@ -2969,7 +2969,7 @@ static int __devinit atl1_probe(struct p
  	adapter->mii.phy_id_mask = 0x1f;
  	adapter->mii.reg_num_mask = 0x1f;
  
