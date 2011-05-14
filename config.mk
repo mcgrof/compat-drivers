@@ -200,7 +200,7 @@ $(warning "WARNING: CONFIG_CFG80211_WEXT will be deactivated or not working beca
 endif #CONFIG_WIRELESS_EXT
 
 ifdef CONFIG_STAGING
-CONFIG_COMPAT_STAGING=y
+CONFIG_COMPAT_STAGING=m
 endif #CONFIG_STAGING
 
 # mac80211 test driver
