@@ -217,7 +217,7 @@ without creating a headache on maintenance of the pathes.
  	wdev->netdev = ndev;
 --- a/drivers/net/wireless/libertas/main.c
 +++ b/drivers/net/wireless/libertas/main.c
-@@ -818,7 +818,7 @@ struct lbs_private *lbs_add_card(void *c
+@@ -826,7 +826,7 @@ struct lbs_private *lbs_add_card(void *c
  	wdev->netdev = dev;
  	priv->dev = dev;
  
@@ -228,7 +228,7 @@ without creating a headache on maintenance of the pathes.
  	dev->flags |= IFF_BROADCAST | IFF_MULTICAST;
 --- a/drivers/net/wireless/libertas/mesh.c
 +++ b/drivers/net/wireless/libertas/mesh.c
-@@ -385,7 +385,7 @@ int lbs_add_mesh(struct lbs_private *pri
+@@ -387,7 +387,7 @@ int lbs_add_mesh(struct lbs_private *pri
  	mesh_dev->ml_priv = priv;
  	priv->mesh_dev = mesh_dev;
  

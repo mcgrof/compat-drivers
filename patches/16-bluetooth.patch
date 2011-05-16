@@ -518,7 +518,7 @@ here still, but for now we keep this here.
  	struct rfcomm_dlc *dlc = dev->dlc;
 --- a/net/bluetooth/sco.c
 +++ b/net/bluetooth/sco.c
-@@ -438,8 +438,12 @@ static struct sock *sco_sock_alloc(struc
+@@ -429,8 +429,12 @@ static struct sock *sco_sock_alloc(struc
  	return sk;
  }
  
@@ -531,7 +531,7 @@ here still, but for now we keep this here.
  {
  	struct sock *sk;
  
-@@ -655,7 +659,11 @@ static int sco_sock_sendmsg(struct kiocb
+@@ -646,7 +650,11 @@ static int sco_sock_sendmsg(struct kiocb
  	return err;
  }
  

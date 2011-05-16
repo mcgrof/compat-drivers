@@ -29,7 +29,7 @@ CONFIG_WIRELESS_EXT in compat-wireless.
  	device_initialize(&rdev->wiphy.dev);
  	rdev->wiphy.dev.class = &ieee80211_class;
  	rdev->wiphy.dev.platform_data = rdev;
-@@ -738,6 +734,15 @@ static int cfg80211_netdev_notifier_call
+@@ -743,6 +739,15 @@ static int cfg80211_netdev_notifier_call
  		wdev->sme_state = CFG80211_SME_IDLE;
  		mutex_unlock(&rdev->devlist_mtx);
  #ifdef CONFIG_CFG80211_WEXT
