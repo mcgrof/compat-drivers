@@ -220,7 +220,7 @@ calls on compat code with only slight modifications.
  static int __init iwl4965_init(void)
 --- a/drivers/net/wireless/iwlwifi/iwl-agn.c
 +++ b/drivers/net/wireless/iwlwifi/iwl-agn.c
-@@ -4071,7 +4071,12 @@ static struct pci_driver iwl_driver = {
+@@ -3919,7 +3919,12 @@ static struct pci_driver iwl_driver = {
  	.id_table = iwl_hw_card_ids,
  	.probe = iwl_pci_probe,
  	.remove = __devexit_p(iwl_pci_remove),
@@ -255,7 +255,7 @@ calls on compat code with only slight modifications.
  #endif /* CONFIG_PM */
 --- a/drivers/net/wireless/iwlwifi/iwl-core.h
 +++ b/drivers/net/wireless/iwlwifi/iwl-core.h
-@@ -514,7 +514,12 @@ __le32 iwl_add_beacon_time(struct iwl_pr
+@@ -504,7 +504,12 @@ __le32 iwl_add_beacon_time(struct iwl_pr
  #ifdef CONFIG_PM
  int iwl_pci_suspend(struct device *device);
  int iwl_pci_resume(struct device *device);

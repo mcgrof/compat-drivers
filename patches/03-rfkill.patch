@@ -42,7 +42,7 @@ This would do the policing from within mac80211.
  obj-$(CONFIG_RFKILL_GPIO)	+= rfkill-gpio.o
 --- a/net/rfkill/core.c
 +++ b/net/rfkill/core.c
-@@ -805,7 +805,7 @@ static int rfkill_resume(struct device *
+@@ -658,7 +658,7 @@ static int rfkill_resume(struct device *
  }
  
  static struct class rfkill_class = {

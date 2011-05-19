@@ -6,7 +6,7 @@ thread in process context as well.
 
 --- a/drivers/net/wireless/b43/main.c
 +++ b/drivers/net/wireless/b43/main.c
-@@ -3970,8 +3970,13 @@
+@@ -3970,8 +3970,13 @@ redo:
  	if (dev->sdev->bus->bustype == SSB_BUSTYPE_SDIO) {
  		b43_sdio_free_irq(dev);
  	} else {
@@ -20,7 +20,7 @@ thread in process context as well.
  	}
  	mutex_lock(&wl->mutex);
  	dev = wl->current_dev;
-@@ -4011,9 +4016,17 @@
+@@ -4011,9 +4016,17 @@ static int b43_wireless_core_start(struc
  			goto out;
  		}
  	} else {
@@ -38,7 +38,7 @@ thread in process context as well.
  		if (err) {
  			b43err(dev->wl, "Cannot request IRQ-%d\n",
  			       dev->sdev->irq);
-@@ -4728,6 +4741,10 @@
+@@ -4728,6 +4741,10 @@ static int b43_setup_bands(struct b43_wl
  
  static void b43_wireless_core_detach(struct b43_wldev *dev)
  {
@@ -51,7 +51,7 @@ thread in process context as well.
  	b43_release_firmware(dev);
 --- a/drivers/net/wireless/b43/b43.h
 +++ b/drivers/net/wireless/b43/b43.h
-@@ -770,6 +770,9 @@ struct b43_wldev {
+@@ -772,6 +772,9 @@ struct b43_wldev {
  	unsigned int tx_count;
  	unsigned int rx_count;
  #endif
@@ -122,7 +122,7 @@ thread in process context as well.
  	return 0;
 --- a/drivers/net/wireless/wl12xx/wl12xx.h
 +++ b/drivers/net/wireless/wl12xx/wl12xx.h
-@@ -583,6 +583,10 @@ struct wl1271 {
+@@ -593,6 +593,10 @@ struct wl1271 {
  
  	/* Platform limitations */
  	unsigned int platform_quirks;

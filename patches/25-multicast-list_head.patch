@@ -540,7 +540,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  static void rtl8187_configure_filter(struct ieee80211_hw *dev,
 --- a/drivers/net/wireless/wl12xx/main.c
 +++ b/drivers/net/wireless/wl12xx/main.c
-@@ -1913,11 +1913,20 @@ struct wl1271_filter_params {
+@@ -2085,11 +2085,20 @@ struct wl1271_filter_params {
  	u8 mc_list[ACX_MC_ADDRESS_GROUP_MAX][ETH_ALEN];
  };
  
@@ -561,7 +561,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  	struct wl1271 *wl = hw->priv;
  
  	if (unlikely(wl->state == WL1271_STATE_OFF))
-@@ -1930,16 +1939,40 @@ static u64 wl1271_op_prepare_multicast(s
+@@ -2102,16 +2111,40 @@ static u64 wl1271_op_prepare_multicast(s
  	}
  
  	/* update multicast filtering parameters */
@@ -641,7 +641,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  	return hash.low | ((u64)hash.high << 32);
 --- a/drivers/staging/brcm80211/brcmfmac/dhd_linux.c
 +++ b/drivers/staging/brcm80211/brcmfmac/dhd_linux.c
-@@ -718,7 +718,11 @@ static void _dhd_set_multicast_list(dhd_
+@@ -714,7 +714,11 @@ static void _dhd_set_multicast_list(dhd_
  	netdev_for_each_mc_addr(ha, dev) {
  		if (!cnt)
  			break;
@@ -716,7 +716,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  
 --- a/net/mac80211/ieee80211_i.h
 +++ b/net/mac80211/ieee80211_i.h
-@@ -739,7 +739,12 @@ struct ieee80211_local {
+@@ -741,7 +741,12 @@ struct ieee80211_local {
  	struct work_struct recalc_smps;
  
  	/* aggregated multicast list */
@@ -745,7 +745,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  	spin_unlock_bh(&local->filter_lock);
  	netif_addr_unlock_bh(sdata->dev);
  
-@@ -602,7 +607,12 @@ static void ieee80211_set_multicast_list
+@@ -603,7 +608,12 @@ static void ieee80211_set_multicast_list
  		sdata->flags ^= IEEE80211_SDATA_PROMISC;
  	}
  	spin_lock_bh(&local->filter_lock);
