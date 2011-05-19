@@ -881,7 +881,7 @@
 +
 +	/* IO window settings */
 +	if (cfg->io.nwin != 1) {
-+		lbs_pr_err("wrong CIS (check number of IO windows)\n");
++		pr_err("wrong CIS (check number of IO windows)\n");
 +		return -ENODEV;
 +	}
 +#endif
@@ -923,7 +923,7 @@
 +	if (p_dev->conf.Attributes & CONF_ENABLE_IRQ) {
 +		ret = pcmcia_request_irq(p_dev, &p_dev->irq);
 +		if (ret) {
-+			lbs_pr_err("error in pcmcia_request_irq\n");
++			pr_err("error in pcmcia_request_irq\n");
 +			goto out1;
 +		}
 +	}
