@@ -35,23 +35,11 @@ This would do the policing from within mac80211.
  #
  
 -rfkill-y			+= core.o
--rfkill-$(CONFIG_RFKILL_INPUT)	+= input.o
 -obj-$(CONFIG_RFKILL)		+= rfkill.o
-+rfkill_backport-y			+= core.o
-+rfkill_backport-$(CONFIG_RFKILL_BACKPORT_INPUT)	+= input.o
-+obj-$(CONFIG_RFKILL_BACKPORT)		+= rfkill_backport.o
++rfkill_backport-y 		+= core.o
++obj-$(CONFIG_RFKILL_BACKPORT)	+= rfkill_backport.o
  obj-$(CONFIG_RFKILL_REGULATOR)	+= rfkill-regulator.o
---- a/net/rfkill/input.c
-+++ b/net/rfkill/input.c
-@@ -232,7 +232,7 @@ static int rfkill_connect(struct input_h
- 
- 	handle->dev = dev;
- 	handle->handler = handler;
--	handle->name = "rfkill";
-+	handle->name = "rfkill_backport";
- 
- 	/* causes rfkill_start() to be called */
- 	error = input_register_handle(handle);
+ obj-$(CONFIG_RFKILL_GPIO)	+= rfkill-gpio.o
 --- a/net/rfkill/core.c
 +++ b/net/rfkill/core.c
 @@ -805,7 +805,7 @@ static int rfkill_resume(struct device *
