@@ -1,3 +1,7 @@
+We add this as its a fix but not critical fix but we should
+want this propagated to end users as its a good idea / fix for
+those using the debugfs read file.
+
 From c6e38c06cb51bee42ff80a36a0f7c67b485c4541 Mon Sep 17 00:00:00 2001
 From: Mohammed Shafi Shajakhan <mshajakhan@atheros.com>
 Date: Wed, 18 May 2011 17:56:00 +0530
