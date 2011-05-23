@@ -1,0 +1,36 @@
+From c6e38c06cb51bee42ff80a36a0f7c67b485c4541 Mon Sep 17 00:00:00 2001
+From: Mohammed Shafi Shajakhan <mshajakhan@atheros.com>
+Date: Wed, 18 May 2011 17:56:00 +0530
+Subject: [PATCH] ath9k: use PS wakeup before REG_READ
+
+otherwise we will get deadbeef when the station is in idle state
+
+Signed-off-by: Mohammed Shafi Shajakhan <mshajakhan@atheros.com>
+Signed-off-by: John W. Linville <linville@tuxdriver.com>
+---
+ drivers/net/wireless/ath/ath9k/debug.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath9k/debug.c b/drivers/net/wireless/ath/ath9k/debug.c
+index c21269c..d55ffd7 100644
+--- a/drivers/net/wireless/ath/ath9k/debug.c
++++ b/drivers/net/wireless/ath/ath9k/debug.c
+@@ -435,6 +435,7 @@ static ssize_t read_file_wiphy(struct file *file, char __user *user_buf,
+ 			conf->channel_type,
+ 			channel_type_str(conf->channel_type));
+ 
++	ath9k_ps_wakeup(sc);
+ 	put_unaligned_le32(REG_READ_D(sc->sc_ah, AR_STA_ID0), addr);
+ 	put_unaligned_le16(REG_READ_D(sc->sc_ah, AR_STA_ID1) & 0xffff, addr + 4);
+ 	len += snprintf(buf + len, sizeof(buf) - len,
+@@ -443,7 +444,6 @@ static ssize_t read_file_wiphy(struct file *file, char __user *user_buf,
+ 	put_unaligned_le16(REG_READ_D(sc->sc_ah, AR_BSSMSKU) & 0xffff, addr + 4);
+ 	len += snprintf(buf + len, sizeof(buf) - len,
+ 			"addrmask: %pM\n", addr);
+-	ath9k_ps_wakeup(sc);
+ 	tmp = ath9k_hw_getrxfilter(sc->sc_ah);
+ 	ath9k_ps_restore(sc);
+ 	len += snprintf(buf + len, sizeof(buf) - len,
+-- 
+1.7.4.15.g7811d
+
