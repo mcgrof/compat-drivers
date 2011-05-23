@@ -1,0 +1,43 @@
+From 2f6fc351e6e8c1b6a95140e733607e32bc3a4322 Mon Sep 17 00:00:00 2001
+From: Rajkumar Manoharan <rmanoharan@atheros.com>
+Date: Thu, 28 Apr 2011 15:31:57 +0530
+Subject: [PATCH 02/13] ath9k: Fix drain txq failure in flush
+
+While draining the txq in flush, the buffers can be
+added into the tx queue by tx_tasklet which leads to
+unneccesary chip reset.
+
+This issue was originially found with AR9382 and
+running heavy uplink udp traffic with higher bandwidth
+and doing frequent bgscan.
+
+Cc: stable@kernel.org
+Signed-off-by: Vasanthakumar Thiagarajan <vasanth@atheros.com>
+Signed-off-by: Rajkumar Manoharan <rmanoharan@atheros.com>
+Signed-off-by: John W. Linville <linville@tuxdriver.com>
+---
+ drivers/net/wireless/ath/ath9k/main.c |    6 +++++-
+ 1 files changed, 5 insertions(+), 1 deletions(-)
+
+--- a/drivers/net/wireless/ath/ath9k/main.c
++++ b/drivers/net/wireless/ath/ath9k/main.c
+@@ -2145,6 +2145,7 @@
+ 	struct ath_common *common = ath9k_hw_common(ah);
+ 	int timeout = 200; /* ms */
+ 	int i, j;
++	bool drain_txq;
+ 
+ 	ath9k_ps_wakeup(sc);
+ 	mutex_lock(&sc->mutex);
+@@ -2177,7 +2178,10 @@
+ 		    goto out;
+ 	}
+ 
+-	if (!ath_drain_all_txq(sc, false))
++	spin_lock_bh(&sc->sc_pcu_lock);
++	drain_txq = ath_drain_all_txq(sc, false);
++	spin_unlock_bh(&sc->sc_pcu_lock);
++	if (!drain_txq)
+ 		ath_reset(sc, false);
+ 
+ 	ieee80211_wake_queues(hw);
