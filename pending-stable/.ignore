@@ -1,2 +1,3 @@
 ath9k-lock-reset-and-PCU-start-stopping.patch
 ath9k-Fix-drain-txq-failure-in-flush.patch
+ath9k-avoid-enabling-interrupts-while-processing-rx.patch
