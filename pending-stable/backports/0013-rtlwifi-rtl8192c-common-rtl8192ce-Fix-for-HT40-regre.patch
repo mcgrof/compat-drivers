@@ -1,0 +1,46 @@
+From 099fb8ab1e57e5d609ac686cc0ab6d1835a79155 Mon Sep 17 00:00:00 2001
+From: Larry Finger <Larry.Finger@lwfinger.net>
+Date: Sat, 14 May 2011 10:15:17 -0500
+Subject: [PATCH 13/13] rtlwifi: rtl8192c-common: rtl8192ce: Fix for HT40 regression
+
+The changes that were made to rtl8192ce when rtl8192cu was added broke
+HT40. The errors included a typo in rtlwifi, a missing routine in
+rtl8192ce and a missing callback of that routine in rtl8192c-common.
+
+This patch fixes the regression reported in Bug #35082.
+
+Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
+Cc: stable@kernel.org
+Signed-off-by: John W. Linville <linville@tuxdriver.com>
+---
+ drivers/net/wireless/rtlwifi/ps.c                  |    2 +-
+ drivers/net/wireless/rtlwifi/rtl8192c/phy_common.c |    2 +-
+ drivers/net/wireless/rtlwifi/rtl8192ce/phy.c       |   69 ++++++++++++++++++++
+ drivers/net/wireless/rtlwifi/rtl8192ce/phy.h       |    1 +
+ drivers/net/wireless/rtlwifi/rtl8192ce/sw.c        |    1 +
+ 5 files changed, 73 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/wireless/rtlwifi/ps.c b/drivers/net/wireless/rtlwifi/ps.c
+index 2bb7119..39b0297 100644
+--- a/drivers/net/wireless/rtlwifi/ps.c
++++ b/drivers/net/wireless/rtlwifi/ps.c
+@@ -190,7 +190,7 @@ static void _rtl_ps_inactive_ps(struct ieee80211_hw *hw)
+ 
+ 	ppsc->swrf_processing = true;
+ 
+-	if (ppsc->inactive_pwrstate == ERFOFF &&
++	if (ppsc->inactive_pwrstate == ERFON &&
+ 	    rtlhal->interface == INTF_PCI) {
+ 		if ((ppsc->reg_rfps_level & RT_RF_OFF_LEVL_ASPM) &&
+ 		    RT_IN_PS_LEVEL(ppsc, RT_PS_LEVEL_ASPM) &&
+--- a/drivers/net/wireless/rtlwifi/rtl8192c/phy_common.c
++++ b/drivers/net/wireless/rtlwifi/rtl8192c/phy_common.c
+@@ -746,7 +746,7 @@
+ 	else {
+ 		RT_TRACE(rtlpriv, COMP_ERR, DBG_WARNING,
+ 			 ("FALSE driver sleep or unload\n"));
+-		rtlphy->set_bwmode_inprogress = false;
++		rtlpriv->cfg->ops->phy_set_bw_mode_callback(hw);
+ 		rtlphy->current_chan_bw = tmp_bw;
+ 	}
+ }
