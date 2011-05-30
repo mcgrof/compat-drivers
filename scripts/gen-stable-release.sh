@@ -136,7 +136,7 @@ echo "On $ALL_STABLE_TREE: $TARGET_BRANCH"
 # on matching compat-wireless branch.
 
 # This is a super hack, but let me know if you figure out a cleaner way
-TARGET_KERNEL_RELEASE=$(make VERSION="linux-2" EXTRAVERSION=".y" kernelversion)
+TARGET_KERNEL_RELEASE=$(make VERSION="linux-3" EXTRAVERSION=".y" kernelversion)
 
 if [[ $COMPAT_WIRELESS_BRANCH != $TARGET_KERNEL_RELEASE ]]; then
 	echo -e "You are on the compat-wireless ${GREEN}${COMPAT_WIRELESS_BRANCH}${NORMAL} but are "
