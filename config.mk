@@ -14,11 +14,6 @@ else
 include $(KLIB_BUILD)/.config
 endif
 
-# We will warn when you don't have MQ support or NET_SCHED enabled.
-#
-# We could consider just quiting if MQ and NET_SCHED is disabled
-# as I suspect all users of this package want 802.11e (WME) and
-# 802.11n (HT) support.
 ifneq ($(wildcard $(KLIB_BUILD)/Makefile),)
 COMPAT_LATEST_VERSION = 39
 KERNEL_SUBLEVEL := $(shell $(MAKE) -C $(KLIB_BUILD) kernelversion | sed -n 's/^2\.6\.\([0-9]\+\).*/\1/p')
@@ -62,6 +57,11 @@ endif
 
 ifneq ($(KERNELRELEASE),) # This prevents a warning
 
+# We will warn when you don't have MQ support or NET_SCHED enabled.
+#
+# We could consider just quiting if MQ and NET_SCHED is disabled
+# as I suspect all users of this package want 802.11e (WME) and
+# 802.11n (HT) support.
 ifeq ($(CONFIG_NET_SCHED),)
  QOS_REQS_MISSING+=CONFIG_NET_SCHED
 endif
