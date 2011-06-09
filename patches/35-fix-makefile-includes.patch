@@ -45,17 +45,17 @@ path the make process will search in the kernel tree for the headers.
 +	-I$(obj)/../include
  
  BRCMSMAC_OFILES := \
- 	wl_mac80211.o \
---- a/drivers/staging/brcm80211/util/Makefile
-+++ b/drivers/staging/brcm80211/util/Makefile
+ 	mac80211_if.o \
+--- a/drivers/staging/brcm80211/brcmutil/Makefile
++++ b/drivers/staging/brcm80211/brcmutil/Makefile
 @@ -16,8 +16,8 @@
  # CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  
  ccflags-y :=				\
--	-Idrivers/staging/brcm80211/util \
+-	-Idrivers/staging/brcm80211/brcmutil \
 -	-Idrivers/staging/brcm80211/include
 +	-I$(obj)			\
 +	-I$(obj)/../include
  
  BRCMUTIL_OFILES := \
- 	bcmutils.o \
+ 	utils.o \

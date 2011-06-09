@@ -35,7 +35,7 @@ CONFIG_BT_HIDP does not build with older kernel versions.
  iwl4965-objs		+= iwl-4965-lib.o iwl-4965-rx.o iwl-4965-calib.o
 --- a/drivers/net/wireless/iwlegacy/iwl-dev.h
 +++ b/drivers/net/wireless/iwlegacy/iwl-dev.h
-@@ -1221,7 +1221,7 @@ struct iwl_priv {
+@@ -1211,7 +1211,7 @@ struct iwl_priv {
  
  		} _3945;
  #endif
@@ -69,7 +69,7 @@ CONFIG_BT_HIDP does not build with older kernel versions.
  		zd_rf_al2230.o zd_rf_rf2959.o \
 --- a/include/net/bluetooth/bluetooth.h
 +++ b/include/net/bluetooth/bluetooth.h
-@@ -205,7 +205,7 @@ extern void bt_sysfs_cleanup(void);
+@@ -213,7 +213,7 @@ extern void bt_sysfs_cleanup(void);
  
  extern struct dentry *bt_debugfs;
  
@@ -78,7 +78,7 @@ CONFIG_BT_HIDP does not build with older kernel versions.
  int l2cap_init(void);
  void l2cap_exit(void);
  #else
-@@ -219,7 +219,7 @@ static inline void l2cap_exit(void)
+@@ -227,7 +227,7 @@ static inline void l2cap_exit(void)
  }
  #endif
  
@@ -97,9 +97,9 @@ CONFIG_BT_HIDP does not build with older kernel versions.
 +obj-$(CONFIG_COMPAT_BT_HIDP)	+= hidp/
  
  bluetooth-y := af_bluetooth.o hci_core.o hci_conn.o hci_event.o mgmt.o hci_sock.o hci_sysfs.o lib.o
--bluetooth-$(CONFIG_BT_L2CAP)	+= l2cap_core.o l2cap_sock.o
+-bluetooth-$(CONFIG_BT_L2CAP)	+= l2cap_core.o l2cap_sock.o smp.o
 -bluetooth-$(CONFIG_BT_SCO)	+= sco.o
-+bluetooth-$(CONFIG_COMPAT_BT_L2CAP)	+= l2cap_core.o l2cap_sock.o
++bluetooth-$(CONFIG_COMPAT_BT_L2CAP)	+= l2cap_core.o l2cap_sock.o smp.o
 +bluetooth-$(CONFIG_COMPAT_BT_SCO)	+= sco.o
 --- a/net/bluetooth/hidp/Makefile
 +++ b/net/bluetooth/hidp/Makefile

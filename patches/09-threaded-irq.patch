@@ -6,39 +6,39 @@ thread in process context as well.
 
 --- a/drivers/net/wireless/b43/main.c
 +++ b/drivers/net/wireless/b43/main.c
-@@ -3970,8 +3970,13 @@ redo:
- 	if (dev->sdev->bus->bustype == SSB_BUSTYPE_SDIO) {
+@@ -3984,8 +3984,13 @@ redo:
+ 	if (b43_bus_host_is_sdio(dev->dev)) {
  		b43_sdio_free_irq(dev);
  	} else {
 +#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,31)
 +		compat_synchronize_threaded_irq(&dev->irq_compat);
 +		compat_free_threaded_irq(&dev->irq_compat);
 +#else
- 		synchronize_irq(dev->sdev->irq);
- 		free_irq(dev->sdev->irq, dev);
+ 		synchronize_irq(dev->dev->irq);
+ 		free_irq(dev->dev->irq, dev);
 +#endif
  	}
  	mutex_lock(&wl->mutex);
  	dev = wl->current_dev;
-@@ -4011,9 +4016,17 @@ static int b43_wireless_core_start(struc
+@@ -4025,9 +4030,17 @@ static int b43_wireless_core_start(struc
  			goto out;
  		}
  	} else {
 +#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,31)
 +		err = compat_request_threaded_irq(&dev->irq_compat,
-+						  dev->sdev->irq,
++						  dev->dev->irq,
 +						  b43_interrupt_handler,
 +						  b43_interrupt_thread_handler,
 +						  IRQF_SHARED, KBUILD_MODNAME, dev);
 +#else
- 		err = request_threaded_irq(dev->sdev->irq, b43_interrupt_handler,
+ 		err = request_threaded_irq(dev->dev->irq, b43_interrupt_handler,
  					   b43_interrupt_thread_handler,
  					   IRQF_SHARED, KBUILD_MODNAME, dev);
 +#endif
  		if (err) {
  			b43err(dev->wl, "Cannot request IRQ-%d\n",
- 			       dev->sdev->irq);
-@@ -4728,6 +4741,10 @@ static int b43_setup_bands(struct b43_wl
+ 			       dev->dev->irq);
+@@ -4744,6 +4757,10 @@ static int b43_setup_bands(struct b43_wl
  
  static void b43_wireless_core_detach(struct b43_wldev *dev)
  {
@@ -51,7 +51,7 @@ thread in process context as well.
  	b43_release_firmware(dev);
 --- a/drivers/net/wireless/b43/b43.h
 +++ b/drivers/net/wireless/b43/b43.h
-@@ -772,6 +772,9 @@ struct b43_wldev {
+@@ -786,6 +786,9 @@ struct b43_wldev {
  	unsigned int tx_count;
  	unsigned int rx_count;
  #endif
@@ -63,7 +63,7 @@ thread in process context as well.
  /* Data structure for the WLAN parts (802.11 cores) of the b43 chip. */
 --- a/drivers/net/wireless/wl12xx/spi.c
 +++ b/drivers/net/wireless/wl12xx/spi.c
-@@ -405,10 +405,14 @@ static int __devinit wl1271_probe(struct
+@@ -406,10 +406,14 @@ static int __devinit wl1271_probe(struct
  	wl->tcxo_clock = pdata->board_tcxo_clock;
  	wl->platform_quirks = pdata->platform_quirks;
  
@@ -78,7 +78,7 @@ thread in process context as well.
  
  	wl->irq = spi->irq;
  	if (wl->irq < 0) {
-@@ -417,9 +421,16 @@ static int __devinit wl1271_probe(struct
+@@ -418,9 +422,16 @@ static int __devinit wl1271_probe(struct
  		goto out_free;
  	}
  
@@ -95,7 +95,7 @@ thread in process context as well.
  	if (ret < 0) {
  		wl1271_error("request_irq() failed: %d", ret);
  		goto out_free;
-@@ -440,7 +451,11 @@ static int __devinit wl1271_probe(struct
+@@ -441,7 +452,11 @@ static int __devinit wl1271_probe(struct
  	return 0;
  
   out_irq:
@@ -107,7 +107,7 @@ thread in process context as well.
  
   out_free:
  	wl1271_free_hw(wl);
-@@ -453,7 +468,12 @@ static int __devexit wl1271_remove(struc
+@@ -454,7 +469,12 @@ static int __devexit wl1271_remove(struc
  	struct wl1271 *wl = dev_get_drvdata(&spi->dev);
  
  	wl1271_unregister_hw(wl);
@@ -122,7 +122,7 @@ thread in process context as well.
  	return 0;
 --- a/drivers/net/wireless/wl12xx/wl12xx.h
 +++ b/drivers/net/wireless/wl12xx/wl12xx.h
-@@ -593,6 +593,10 @@ struct wl1271 {
+@@ -594,6 +594,10 @@ struct wl1271 {
  
  	/* Platform limitations */
  	unsigned int platform_quirks;
