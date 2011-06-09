@@ -220,6 +220,7 @@ DRIVERS="$DRIVERS drivers/net/wireless/ath/carl9170"
 DRIVERS="$DRIVERS drivers/net/wireless/ath/ath5k"
 DRIVERS="$DRIVERS drivers/net/wireless/ath/ath9k"
 DRIVERS="$DRIVERS drivers/ssb"
+DRIVERS="$DRIVERS drivers/bcma"
 DRIVERS="$DRIVERS drivers/net/wireless/b43"
 DRIVERS="$DRIVERS drivers/net/wireless/b43legacy"
 DRIVERS="$DRIVERS drivers/net/wireless/iwlegacy"
@@ -273,6 +274,7 @@ mkdir -p include/linux/ include/net/ include/linux/usb \
 	net/mac80211/ net/wireless/ \
 	net/rfkill/ \
 	drivers/ssb/ \
+	drivers/bcma/ \
 	drivers/net/usb/ \
 	drivers/net/wireless/
 mkdir -p include/net/bluetooth/
@@ -285,6 +287,7 @@ for i in $INCLUDE_LINUX; do
 done
 
 cp -a $GIT_TREE/include/linux/ssb include/linux/
+cp -a $GIT_TREE/include/linux/bcma include/linux/
 cp -a $GIT_TREE/include/linux/rfkill.h include/linux/rfkill_backport.h
 
 # include/net
