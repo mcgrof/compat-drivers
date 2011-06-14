@@ -147,7 +147,7 @@ calls on compat code with only slight modifications.
  
 --- a/drivers/net/wireless/iwlegacy/iwl-core.c
 +++ b/drivers/net/wireless/iwlegacy/iwl-core.c
-@@ -2050,15 +2050,17 @@ int iwl_legacy_pci_resume(struct device
+@@ -2046,15 +2046,17 @@ int iwl_legacy_pci_resume(struct device
  }
  EXPORT_SYMBOL(iwl_legacy_pci_resume);
  
@@ -220,7 +220,7 @@ calls on compat code with only slight modifications.
  static int __init iwl4965_init(void)
 --- a/drivers/net/wireless/iwlwifi/iwl-agn.c
 +++ b/drivers/net/wireless/iwlwifi/iwl-agn.c
-@@ -3919,7 +3919,12 @@ static struct pci_driver iwl_driver = {
+@@ -3920,7 +3920,12 @@ static struct pci_driver iwl_driver = {
  	.id_table = iwl_hw_card_ids,
  	.probe = iwl_pci_probe,
  	.remove = __devexit_p(iwl_pci_remove),
@@ -235,7 +235,7 @@ calls on compat code with only slight modifications.
  static int __init iwl_init(void)
 --- a/drivers/net/wireless/iwlwifi/iwl-core.c
 +++ b/drivers/net/wireless/iwlwifi/iwl-core.c
-@@ -2021,13 +2021,9 @@ int iwl_pci_resume(struct device *device
+@@ -2017,13 +2017,9 @@ int iwl_pci_resume(struct device *device
  	return 0;
  }
  

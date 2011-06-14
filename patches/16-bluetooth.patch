@@ -17,7 +17,7 @@ here still, but for now we keep this here.
  	tty_driver_flush_buffer(tty);
  
  	return 0;
-@@ -403,7 +408,9 @@ static int hci_uart_register_dev(struct
+@@ -398,7 +403,9 @@ static int hci_uart_register_dev(struct
  	hdev->flush = hci_uart_flush;
  	hdev->send  = hci_uart_send_frame;
  	hdev->destruct = hci_uart_destruct;
@@ -27,7 +27,7 @@ here still, but for now we keep this here.
  
  	hdev->owner = THIS_MODULE;
  
-@@ -503,7 +510,11 @@ static int hci_uart_tty_ioctl(struct tty
+@@ -498,7 +505,11 @@ static int hci_uart_tty_ioctl(struct tty
  		return hu->hdev_flags;
  
  	default:

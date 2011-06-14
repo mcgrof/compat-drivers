@@ -92,8 +92,8 @@ without creating a headache on maintenance of the pathes.
  	ndev->needed_tailroom = IEEE80211_ENCRYPT_TAILROOM;
 +#endif
  
- 	ieee80211_assign_perm_addr(local, ndev, type);
- 	memcpy(ndev->dev_addr, ndev->perm_addr, ETH_ALEN);
+ 	ret = dev_alloc_name(ndev, ndev->name);
+ 	if (ret < 0)
 --- a/drivers/net/b44.c
 +++ b/drivers/net/b44.c
 @@ -2164,7 +2164,7 @@ static int __devinit b44_init_one(struct

@@ -96,7 +96,7 @@ queue by using skb_set_queue_mapping(skb, 0) through ieee80211_tx_skb()
  
 --- a/net/mac80211/tx.c
 +++ b/net/mac80211/tx.c
-@@ -1591,6 +1591,10 @@ static void ieee80211_xmit(struct ieee80
+@@ -1596,6 +1596,10 @@ static void ieee80211_xmit(struct ieee80
  				return;
  			}
  
@@ -107,7 +107,7 @@ queue by using skb_set_queue_mapping(skb, 0) through ieee80211_tx_skb()
  	ieee80211_set_qos_hdr(local, skb);
  	ieee80211_tx(sdata, skb, false);
  	rcu_read_unlock();
-@@ -2084,7 +2088,14 @@ void ieee80211_tx_pending(unsigned long
+@@ -2089,7 +2093,14 @@ void ieee80211_tx_pending(unsigned long
  
  		if (skb_queue_empty(&local->pending[i]))
  			list_for_each_entry_rcu(sdata, &local->interfaces, list)
