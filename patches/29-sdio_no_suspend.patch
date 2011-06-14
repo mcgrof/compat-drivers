@@ -34,15 +34,26 @@ suspend and resume that are not backported.
  /*******************************************************************/
 --- a/drivers/net/wireless/mwifiex/sdio.c
 +++ b/drivers/net/wireless/mwifiex/sdio.c
-@@ -108,6 +108,7 @@ mwifiex_sdio_remove(struct sdio_func *fu
- 	}
+@@ -126,8 +126,10 @@ mwifiex_sdio_remove(struct sdio_func *fu
+ 		return;
+ 
+ 	if (user_rmmod) {
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,34))
+ 		if (adapter->is_suspended)
+ 			mwifiex_sdio_resume(adapter->dev);
++#endif /* (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,34)) */
+ 
+ 		for (i = 0; i < adapter->priv_num; i++)
+ 			if ((GET_BSS_ROLE(adapter->priv[i]) ==
+@@ -144,6 +146,7 @@ mwifiex_sdio_remove(struct sdio_func *fu
+ 	kfree(card);
  }
  
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,34))
  /*
   * SDIO suspend.
   *
-@@ -215,6 +216,7 @@ static int mwifiex_sdio_resume(struct de
+@@ -251,6 +254,7 @@ static int mwifiex_sdio_resume(struct de
  
  	return 0;
  }
@@ -50,7 +61,7 @@ suspend and resume that are not backported.
  
  /* Device ID for SD8787 */
  #define SDIO_DEVICE_ID_MARVELL_8787   (0x9119)
-@@ -227,10 +229,12 @@ static const struct sdio_device_id mwifi
+@@ -263,10 +267,12 @@ static const struct sdio_device_id mwifi
  
  MODULE_DEVICE_TABLE(sdio, mwifiex_ids);
  
@@ -63,7 +74,7 @@ suspend and resume that are not backported.
  
  static struct sdio_driver mwifiex_sdio = {
  	.name = "mwifiex_sdio",
-@@ -239,7 +243,9 @@ static struct sdio_driver mwifiex_sdio =
+@@ -275,7 +281,9 @@ static struct sdio_driver mwifiex_sdio =
  	.remove = mwifiex_sdio_remove,
  	.drv = {
  		.owner = THIS_MODULE,
@@ -73,14 +84,3 @@ suspend and resume that are not backported.
  	}
  };
  
-@@ -1726,8 +1732,10 @@ mwifiex_sdio_cleanup_module(void)
- 	if (!adapter || !adapter->priv_num)
- 		goto exit;
- 
-+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,34))
- 	if (adapter->is_suspended)
- 		mwifiex_sdio_resume(adapter->dev);
-+#endif /* (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,34)) */
- 
- 	for (i = 0; i < adapter->priv_num; i++)
- 		if ((GET_BSS_ROLE(adapter->priv[i]) == MWIFIEX_BSS_ROLE_STA) &&
