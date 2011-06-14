@@ -92,11 +92,11 @@ without creating a headache on maintenance of the pathes.
  	ndev->needed_tailroom = IEEE80211_ENCRYPT_TAILROOM;
 +#endif
  
- 	ieee80211_assign_perm_addr(local, ndev, type);
- 	memcpy(ndev->dev_addr, ndev->perm_addr, ETH_ALEN);
+ 	ret = dev_alloc_name(ndev, ndev->name);
+ 	if (ret < 0)
 --- a/drivers/net/b44.c
 +++ b/drivers/net/b44.c
-@@ -2164,7 +2164,7 @@ static int __devinit b44_init_one(struct
+@@ -2165,7 +2165,7 @@ static int __devinit b44_init_one(struct
  	bp->rx_pending = B44_DEF_RX_RING_PENDING;
  	bp->tx_pending = B44_DEF_TX_RING_PENDING;
  
@@ -217,7 +217,7 @@ without creating a headache on maintenance of the pathes.
  	wdev->netdev = ndev;
 --- a/drivers/net/wireless/libertas/main.c
 +++ b/drivers/net/wireless/libertas/main.c
-@@ -826,7 +826,7 @@ struct lbs_private *lbs_add_card(void *c
+@@ -827,7 +827,7 @@ struct lbs_private *lbs_add_card(void *c
  	wdev->netdev = dev;
  	priv->dev = dev;
  
@@ -228,7 +228,7 @@ without creating a headache on maintenance of the pathes.
  	dev->flags |= IFF_BROADCAST | IFF_MULTICAST;
 --- a/drivers/net/wireless/libertas/mesh.c
 +++ b/drivers/net/wireless/libertas/mesh.c
-@@ -387,7 +387,7 @@ int lbs_add_mesh(struct lbs_private *pri
+@@ -388,7 +388,7 @@ int lbs_add_mesh(struct lbs_private *pri
  	mesh_dev->ml_priv = priv;
  	priv->mesh_dev = mesh_dev;
  
@@ -256,7 +256,7 @@ without creating a headache on maintenance of the pathes.
  #define LBS_DEB_LEAVE	0x00000002
 --- a/drivers/net/wireless/mac80211_hwsim.c
 +++ b/drivers/net/wireless/mac80211_hwsim.c
-@@ -1200,7 +1200,7 @@ static const struct net_device_ops hwsim
+@@ -1228,7 +1228,7 @@ static const struct net_device_ops hwsim
  
  static void hwsim_mon_setup(struct net_device *dev)
  {
@@ -267,7 +267,7 @@ without creating a headache on maintenance of the pathes.
  	dev->tx_queue_len = 0;
 --- a/drivers/net/wireless/mwifiex/main.c
 +++ b/drivers/net/wireless/mwifiex/main.c
-@@ -668,7 +668,7 @@ static const struct net_device_ops mwifi
+@@ -652,7 +652,7 @@ static const struct net_device_ops mwifi
  static void
  mwifiex_init_priv_params(struct mwifiex_private *priv, struct net_device *dev)
  {
@@ -336,7 +336,7 @@ without creating a headache on maintenance of the pathes.
  	atl1e_set_ethtool_ops(netdev);
 --- a/drivers/net/atl1c/atl1c_main.c
 +++ b/drivers/net/atl1c/atl1c_main.c
-@@ -2598,7 +2598,7 @@ static int atl1c_init_netdev(struct net_
+@@ -2600,7 +2600,7 @@ static int atl1c_init_netdev(struct net_
  	pci_set_drvdata(pdev, netdev);
  
  	netdev->irq  = pdev->irq;

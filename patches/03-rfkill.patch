@@ -30,7 +30,7 @@ This would do the policing from within mac80211.
 
 --- a/net/rfkill/Makefile
 +++ b/net/rfkill/Makefile
-@@ -2,7 +2,7 @@
+@@ -2,8 +2,8 @@
  # Makefile for the RF switch subsystem.
  #
  
@@ -41,6 +41,7 @@ This would do the policing from within mac80211.
 +rfkill_backport-$(CONFIG_RFKILL_BACKPORT_INPUT)	+= input.o
 +obj-$(CONFIG_RFKILL_BACKPORT)		+= rfkill_backport.o
  obj-$(CONFIG_RFKILL_REGULATOR)	+= rfkill-regulator.o
+ obj-$(CONFIG_RFKILL_GPIO)	+= rfkill-gpio.o
 --- a/net/rfkill/input.c
 +++ b/net/rfkill/input.c
 @@ -232,7 +232,7 @@ static int rfkill_connect(struct input_h
@@ -54,7 +55,7 @@ This would do the policing from within mac80211.
  	error = input_register_handle(handle);
 --- a/net/rfkill/core.c
 +++ b/net/rfkill/core.c
-@@ -658,7 +658,7 @@ static int rfkill_resume(struct device *
+@@ -805,7 +805,7 @@ static int rfkill_resume(struct device *
  }
  
  static struct class rfkill_class = {
