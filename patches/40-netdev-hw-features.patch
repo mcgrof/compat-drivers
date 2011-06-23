@@ -129,7 +129,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  void atl1e_set_ethtool_ops(struct net_device *netdev)
 --- a/drivers/net/atl1e/atl1e_main.c
 +++ b/drivers/net/atl1e/atl1e_main.c
-@@ -1929,7 +1929,11 @@ void atl1e_down(struct atl1e_adapter *ad
+@@ -1928,7 +1928,11 @@ void atl1e_down(struct atl1e_adapter *ad
  	 * reschedule our watchdog timer */
  	set_bit(__AT_DOWN, &adapter->flags);
  
@@ -141,7 +141,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  
  	/* reset MAC to disable all RX/TX */
  	atl1e_reset_hw(&adapter->hw);
-@@ -2221,10 +2225,17 @@ static int atl1e_init_netdev(struct net_
+@@ -2220,10 +2224,17 @@ static int atl1e_init_netdev(struct net_
  	netdev->watchdog_timeo = AT_TX_WATCHDOG;
  	atl1e_set_ethtool_ops(netdev);
  
@@ -202,7 +202,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  };
 --- a/drivers/net/atlx/atl2.c
 +++ b/drivers/net/atlx/atl2.c
-@@ -1415,8 +1415,12 @@ static int __devinit atl2_probe(struct p
+@@ -1414,8 +1414,12 @@ static int __devinit atl2_probe(struct p
  
  	err = -EIO;
  
@@ -215,7 +215,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  
  	/* Init PHY as early as possible due to power saving issue  */
  	atl2_phy_init(&adapter->hw);
-@@ -1843,6 +1847,13 @@ static int atl2_set_settings(struct net_
+@@ -1842,6 +1846,13 @@ static int atl2_set_settings(struct net_
  	return 0;
  }
  
@@ -229,7 +229,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  static u32 atl2_get_msglevel(struct net_device *netdev)
  {
  	return 0;
-@@ -2110,6 +2121,14 @@ static const struct ethtool_ops atl2_eth
+@@ -2109,6 +2120,14 @@ static const struct ethtool_ops atl2_eth
  	.get_eeprom_len		= atl2_get_eeprom_len,
  	.get_eeprom		= atl2_get_eeprom,
  	.set_eeprom		= atl2_set_eeprom,
