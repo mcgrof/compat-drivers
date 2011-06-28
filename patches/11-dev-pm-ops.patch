@@ -219,26 +219,17 @@ calls on compat code with only slight modifications.
  static int __init iwl4965_init(void)
 --- a/drivers/net/wireless/iwlwifi/iwl-pci.c
 +++ b/drivers/net/wireless/iwlwifi/iwl-pci.c
-@@ -530,14 +530,10 @@ static int iwl_pci_resume(struct device
- 	return iwl_resume(priv);
- }
+@@ -527,6 +527,9 @@ static int iwl_pci_resume(struct device
  
--static const struct dev_pm_ops iwl_dev_pm_ops = {
--	.suspend = iwl_pci_suspend,
--	.resume = iwl_pci_resume,
--	.freeze = iwl_pci_suspend,
--	.thaw = iwl_pci_resume,
--	.poweroff = iwl_pci_suspend,
--	.restore = iwl_pci_resume,
--};
-+const SIMPLE_DEV_PM_OPS(iwl_dev_pm_ops, iwl_pci_suspend, iwl_pci_resume);
-+
+ static SIMPLE_DEV_PM_OPS(iwl_dev_pm_ops, iwl_pci_suspend, iwl_pci_resume);
+ 
 +compat_pci_suspend(iwl_pci_suspend)
 +compat_pci_resume(iwl_pci_resume)
- 
++
  #define IWL_PM_OPS	(&iwl_dev_pm_ops)
  
-@@ -552,7 +548,12 @@ static struct pci_driver iwl_pci_driver
+ #else
+@@ -540,7 +543,12 @@ static struct pci_driver iwl_pci_driver
  	.id_table = iwl_hw_card_ids,
  	.probe = iwl_pci_probe,
  	.remove = __devexit_p(iwl_pci_remove),
