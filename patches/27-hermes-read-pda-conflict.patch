@@ -23,7 +23,7 @@ define for something else in arch/um/include/asm/pda.h on older kernels.
  	}
 --- a/drivers/net/wireless/orinoco/hermes.c
 +++ b/drivers/net/wireless/orinoco/hermes.c
-@@ -765,7 +765,7 @@ static const struct hermes_ops hermes_op
+@@ -767,7 +767,7 @@ static const struct hermes_ops hermes_op
  	.write_ltv = hermes_write_ltv,
  	.bap_pread = hermes_bap_pread,
  	.bap_pwrite = hermes_bap_pwrite,

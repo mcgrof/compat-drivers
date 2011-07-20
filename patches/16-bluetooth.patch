@@ -184,7 +184,7 @@ here still, but for now we keep this here.
  
  static void hidp_idle_timeout(unsigned long arg)
  {
-@@ -741,8 +752,14 @@ static int hidp_session(void *arg)
+@@ -743,8 +754,14 @@ static int hidp_session(void *arg)
  	}
  
  	if (session->hid) {
@@ -199,7 +199,7 @@ here still, but for now we keep this here.
  	}
  
  	/* Wakeup user-space polling for socket errors */
-@@ -855,6 +872,70 @@ static void hidp_close(struct hid_device
+@@ -857,6 +874,70 @@ static void hidp_close(struct hid_device
  {
  }
  
@@ -270,7 +270,7 @@ here still, but for now we keep this here.
  static int hidp_parse(struct hid_device *hid)
  {
  	struct hidp_session *session = hid->driver_data;
-@@ -939,7 +1020,9 @@ static int hidp_setup_hid(struct hidp_se
+@@ -941,7 +1022,9 @@ static int hidp_setup_hid(struct hidp_se
  	hid->dev.parent = hidp_get_device(session);
  	hid->ll_driver = &hidp_hid_driver;
  
@@ -280,7 +280,7 @@ here still, but for now we keep this here.
  	hid->hid_output_raw_report = hidp_output_raw_report;
  
  	return 0;
-@@ -950,6 +1033,7 @@ fault:
+@@ -952,6 +1035,7 @@ fault:
  
  	return err;
  }
@@ -288,7 +288,7 @@ here still, but for now we keep this here.
  
  int hidp_add_connection(struct hidp_connadd_req *req, struct socket *ctrl_sock, struct socket *intr_sock)
  {
-@@ -969,6 +1053,39 @@ int hidp_add_connection(struct hidp_conn
+@@ -971,6 +1055,39 @@ int hidp_add_connection(struct hidp_conn
  
  	BT_DBG("rd_data %p rd_size %d", req->rd_data, req->rd_size);
  
@@ -328,7 +328,7 @@ here still, but for now we keep this here.
  	down_write(&hidp_session_sem);
  
  	s = __hidp_get_session(&bt_sk(ctrl_sock->sk)->dst);
-@@ -1002,6 +1119,7 @@ int hidp_add_connection(struct hidp_conn
+@@ -1004,6 +1121,7 @@ int hidp_add_connection(struct hidp_conn
  	session->flags   = req->flags & (1 << HIDP_BLUETOOTH_VENDOR_ID);
  	session->idle_to = req->idle_to;
  
@@ -336,7 +336,7 @@ here still, but for now we keep this here.
  	if (req->rd_size > 0) {
  		err = hidp_setup_hid(session, req);
  		if (err && err != -ENODEV)
-@@ -1013,6 +1131,16 @@ int hidp_add_connection(struct hidp_conn
+@@ -1015,6 +1133,16 @@ int hidp_add_connection(struct hidp_conn
  		if (err < 0)
  			goto purge;
  	}
@@ -353,7 +353,7 @@ here still, but for now we keep this here.
  
  	__hidp_link_session(session);
  
-@@ -1072,6 +1200,7 @@ unlink:
+@@ -1075,6 +1203,7 @@ unlink:
  		session->input = NULL;
  	}
  
@@ -361,7 +361,7 @@ here still, but for now we keep this here.
  	if (session->hid) {
  		hid_destroy_device(session->hid);
  		session->hid = NULL;
-@@ -1083,10 +1212,15 @@ unlink:
+@@ -1086,10 +1215,15 @@ unlink:
  purge:
  	skb_queue_purge(&session->ctrl_transmit);
  	skb_queue_purge(&session->intr_transmit);
@@ -377,7 +377,7 @@ here still, but for now we keep this here.
  	input_free_device(session->input);
  	kfree(session);
  	return err;
-@@ -1170,6 +1304,7 @@ int hidp_get_conninfo(struct hidp_connin
+@@ -1174,6 +1308,7 @@ int hidp_get_conninfo(struct hidp_connin
  	return err;
  }
  
@@ -385,7 +385,7 @@ here still, but for now we keep this here.
  static const struct hid_device_id hidp_table[] = {
  	{ HID_BLUETOOTH_DEVICE(HID_ANY_ID, HID_ANY_ID) },
  	{ }
-@@ -1179,6 +1314,7 @@ static struct hid_driver hidp_driver = {
+@@ -1183,6 +1318,7 @@ static struct hid_driver hidp_driver = {
  	.name = "generic-bluetooth",
  	.id_table = hidp_table,
  };
@@ -393,7 +393,7 @@ here still, but for now we keep this here.
  
  static int __init hidp_init(void)
  {
-@@ -1186,11 +1322,14 @@ static int __init hidp_init(void)
+@@ -1190,11 +1326,14 @@ static int __init hidp_init(void)
  
  	BT_INFO("HIDP (Human Interface Emulation) ver %s", VERSION);
  
@@ -408,7 +408,7 @@ here still, but for now we keep this here.
  	if (ret)
  		goto err_drv;
  
-@@ -1198,13 +1337,16 @@ static int __init hidp_init(void)
+@@ -1202,13 +1341,16 @@ static int __init hidp_init(void)
  err_drv:
  	hid_unregister_driver(&hidp_driver);
  err:
@@ -590,7 +590,7 @@ here still, but for now we keep this here.
  
 --- a/net/bluetooth/l2cap_sock.c
 +++ b/net/bluetooth/l2cap_sock.c
-@@ -557,7 +557,14 @@ static int l2cap_sock_setsockopt_old(str
+@@ -561,7 +561,14 @@ static int l2cap_sock_setsockopt_old(str
  	return err;
  }
  
@@ -605,7 +605,7 @@ here still, but for now we keep this here.
  {
  	struct sock *sk = sock->sk;
  	struct l2cap_chan *chan = l2cap_pi(sk)->chan;
-@@ -950,8 +957,12 @@ static struct sock *l2cap_sock_alloc(str
+@@ -1011,8 +1018,12 @@ static struct sock *l2cap_sock_alloc(str
  	return sk;
  }
  
@@ -618,7 +618,7 @@ here still, but for now we keep this here.
  {
  	struct sock *sk;
  
-@@ -963,7 +974,11 @@ static int l2cap_sock_create(struct net
+@@ -1024,7 +1035,11 @@ static int l2cap_sock_create(struct net
  			sock->type != SOCK_DGRAM && sock->type != SOCK_RAW)
  		return -ESOCKTNOSUPPORT;
  
