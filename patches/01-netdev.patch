@@ -228,15 +228,15 @@ without creating a headache on maintenance of the pathes.
  	dev->flags |= IFF_BROADCAST | IFF_MULTICAST;
 --- a/drivers/net/wireless/libertas/mesh.c
 +++ b/drivers/net/wireless/libertas/mesh.c
-@@ -388,7 +388,7 @@ int lbs_add_mesh(struct lbs_private *pri
- 	mesh_dev->ml_priv = priv;
+@@ -1040,7 +1040,7 @@ static int lbs_add_mesh(struct lbs_priva
  	priv->mesh_dev = mesh_dev;
+ 	priv->mesh_channel = 1;
  
 -	mesh_dev->netdev_ops = &mesh_netdev_ops;
 +	netdev_attach_ops(mesh_dev, &mesh_netdev_ops);
+ 	mesh_dev->wireless_handlers = &mesh_iw_handler_def;
  	mesh_dev->ethtool_ops = &lbs_ethtool_ops;
  	memcpy(mesh_dev->dev_addr, priv->dev->dev_addr, ETH_ALEN);
- 
 --- a/drivers/net/wireless/libertas/defs.h
 +++ b/drivers/net/wireless/libertas/defs.h
 @@ -16,6 +16,14 @@
@@ -325,7 +325,7 @@ without creating a headache on maintenance of the pathes.
  }
 --- a/drivers/net/atl1e/atl1e_main.c
 +++ b/drivers/net/atl1e/atl1e_main.c
-@@ -2211,7 +2211,7 @@ static int atl1e_init_netdev(struct net_
+@@ -2232,7 +2232,7 @@ static int atl1e_init_netdev(struct net_
  	pci_set_drvdata(pdev, netdev);
  
  	netdev->irq  = pdev->irq;
@@ -336,7 +336,7 @@ without creating a headache on maintenance of the pathes.
  	atl1e_set_ethtool_ops(netdev);
 --- a/drivers/net/atl1c/atl1c_main.c
 +++ b/drivers/net/atl1c/atl1c_main.c
-@@ -2600,7 +2600,7 @@ static int atl1c_init_netdev(struct net_
+@@ -2618,7 +2618,7 @@ static int atl1c_init_netdev(struct net_
  	pci_set_drvdata(pdev, netdev);
  
  	netdev->irq  = pdev->irq;
@@ -358,7 +358,7 @@ without creating a headache on maintenance of the pathes.
  	netdev->ethtool_ops = &atl1_ethtool_ops;
 --- a/drivers/net/atlx/atl2.c
 +++ b/drivers/net/atlx/atl2.c
-@@ -1393,7 +1393,7 @@ static int __devinit atl2_probe(struct p
+@@ -1411,7 +1411,7 @@ static int __devinit atl2_probe(struct p
  
  	atl2_setup_pcicmd(pdev);
  

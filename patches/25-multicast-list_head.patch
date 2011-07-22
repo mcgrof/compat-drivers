@@ -124,7 +124,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  	return mc_filter[0] | ((u64)(mc_filter[1]) << 32);
 --- a/drivers/net/wireless/ath/ath5k/mac80211-ops.c
 +++ b/drivers/net/wireless/ath/ath5k/mac80211-ops.c
-@@ -329,20 +329,42 @@ ath5k_bss_info_changed(struct ieee80211_
+@@ -313,20 +313,42 @@ ath5k_bss_info_changed(struct ieee80211_
  
  static u64
  ath5k_prepare_multicast(struct ieee80211_hw *hw,
@@ -167,7 +167,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  		pos ^= (val >> 18) ^ (val >> 12) ^ (val >> 6) ^ val;
  		pos &= 0x3f;
  		mfilt[pos / 32] |= (1 << (pos % 32));
-@@ -351,6 +373,9 @@ ath5k_prepare_multicast(struct ieee80211
+@@ -335,6 +357,9 @@ ath5k_prepare_multicast(struct ieee80211
  		* need to inform below not to reset the mcast */
  		/* ath5k_hw_set_mcast_filterindex(ah,
  		 *      ha->addr[5]); */
@@ -307,18 +307,14 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  }
 --- a/drivers/net/wireless/mwifiex/debugfs.c
 +++ b/drivers/net/wireless/mwifiex/debugfs.c
-@@ -235,9 +235,15 @@ mwifiex_info_read(struct file *file, cha
+@@ -228,7 +228,11 @@ mwifiex_info_read(struct file *file, cha
+ 
  		netdev_for_each_mc_addr(ha, netdev)
- 			p += sprintf(p, "multicast_address[%d]="
- 				     "\"%02x:%02x:%02x:%02x:%02x:%02x\"\n", i++,
+ 			p += sprintf(p, "multicast_address[%d]=\"%pM\"\n",
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,35))
- 				     ha->addr[0], ha->addr[1],
- 				     ha->addr[2], ha->addr[3],
- 				     ha->addr[4], ha->addr[5]);
+ 					i++, ha->addr);
 +#else
-+				     ha->dmi_addr[0], ha->dmi_addr[1],
-+				     ha->dmi_addr[2], ha->dmi_addr[3],
-+				     ha->dmi_addr[4], ha->dmi_addr[5]);
++					i++, ha->dmi_addr);
 +#endif
  	}
  
@@ -655,9 +651,9 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  	}
 --- a/include/net/mac80211.h
 +++ b/include/net/mac80211.h
-@@ -1902,7 +1902,11 @@ struct ieee80211_ops {
- 				 struct ieee80211_bss_conf *info,
- 				 u32 changed);
+@@ -1944,7 +1944,11 @@ struct ieee80211_ops {
+ 			       enum ieee80211_tx_sync_type type);
+ 
  	u64 (*prepare_multicast)(struct ieee80211_hw *hw,
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,35))
  				 struct netdev_hw_addr_list *mc_list);
@@ -685,7 +681,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  		}
 --- a/net/mac80211/driver-ops.h
 +++ b/net/mac80211/driver-ops.h
-@@ -131,14 +131,28 @@ static inline void drv_bss_info_changed(
+@@ -162,14 +162,28 @@ static inline void drv_finish_tx_sync(st
  }
  
  static inline u64 drv_prepare_multicast(struct ieee80211_local *local,
@@ -716,7 +712,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  
 --- a/net/mac80211/ieee80211_i.h
 +++ b/net/mac80211/ieee80211_i.h
-@@ -769,7 +769,12 @@ struct ieee80211_local {
+@@ -772,7 +772,12 @@ struct ieee80211_local {
  	struct work_struct recalc_smps;
  
  	/* aggregated multicast list */
