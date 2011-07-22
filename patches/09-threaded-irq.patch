@@ -6,7 +6,7 @@ thread in process context as well.
 
 --- a/drivers/net/wireless/b43/main.c
 +++ b/drivers/net/wireless/b43/main.c
-@@ -4124,8 +4124,13 @@ redo:
+@@ -4144,8 +4144,13 @@ redo:
  	if (b43_bus_host_is_sdio(dev->dev)) {
  		b43_sdio_free_irq(dev);
  	} else {
@@ -20,7 +20,7 @@ thread in process context as well.
  	}
  	mutex_lock(&wl->mutex);
  	dev = wl->current_dev;
-@@ -4165,9 +4170,17 @@ static int b43_wireless_core_start(struc
+@@ -4185,9 +4190,17 @@ static int b43_wireless_core_start(struc
  			goto out;
  		}
  	} else {
@@ -38,12 +38,12 @@ thread in process context as well.
  		if (err) {
  			b43err(dev->wl, "Cannot request IRQ-%d\n",
  			       dev->dev->irq);
-@@ -4937,6 +4950,10 @@ static int b43_setup_bands(struct b43_wl
+@@ -4957,6 +4970,10 @@ static int b43_setup_bands(struct b43_wl
  
  static void b43_wireless_core_detach(struct b43_wldev *dev)
  {
 +#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,31)
-+	if (dev->sdev->bus->bustype != SSB_BUSTYPE_SDIO)
++	if (dev->dev->sdev->bus->bustype != SSB_BUSTYPE_SDIO)
 +		compat_destroy_threaded_irq(&dev->irq_compat);
 +#endif
  	/* We release firmware that late to not be required to re-request
@@ -51,7 +51,7 @@ thread in process context as well.
  	b43_release_firmware(dev);
 --- a/drivers/net/wireless/b43/b43.h
 +++ b/drivers/net/wireless/b43/b43.h
-@@ -791,6 +791,9 @@ struct b43_wldev {
+@@ -798,6 +798,9 @@ struct b43_wldev {
  	unsigned int tx_count;
  	unsigned int rx_count;
  #endif
