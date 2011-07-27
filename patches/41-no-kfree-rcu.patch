@@ -55,7 +55,7 @@
  	spin_unlock_bh(&sta->lock);
 --- a/net/mac80211/work.c
 +++ b/net/mac80211/work.c
-@@ -65,10 +65,25 @@ static void run_again(struct ieee80211_l
+@@ -66,10 +66,25 @@ static void run_again(struct ieee80211_l
  		mod_timer(&local->work_timer, timeout);
  }
  

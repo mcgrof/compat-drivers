@@ -228,7 +228,7 @@ without creating a headache on maintenance of the pathes.
  	dev->flags |= IFF_BROADCAST | IFF_MULTICAST;
 --- a/drivers/net/wireless/libertas/mesh.c
 +++ b/drivers/net/wireless/libertas/mesh.c
-@@ -985,7 +985,7 @@
+@@ -985,7 +985,7 @@ static int lbs_add_mesh(struct lbs_priva
  	mesh_dev->ml_priv = priv;
  	priv->mesh_dev = mesh_dev;
  
