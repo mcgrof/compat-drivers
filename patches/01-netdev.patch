@@ -228,15 +228,15 @@ without creating a headache on maintenance of the pathes.
  	dev->flags |= IFF_BROADCAST | IFF_MULTICAST;
 --- a/drivers/net/wireless/libertas/mesh.c
 +++ b/drivers/net/wireless/libertas/mesh.c
-@@ -1040,7 +1040,7 @@ static int lbs_add_mesh(struct lbs_priva
+@@ -985,7 +985,7 @@
+ 	mesh_dev->ml_priv = priv;
  	priv->mesh_dev = mesh_dev;
- 	priv->mesh_channel = 1;
  
 -	mesh_dev->netdev_ops = &mesh_netdev_ops;
 +	netdev_attach_ops(mesh_dev, &mesh_netdev_ops);
- 	mesh_dev->wireless_handlers = &mesh_iw_handler_def;
  	mesh_dev->ethtool_ops = &lbs_ethtool_ops;
  	memcpy(mesh_dev->dev_addr, priv->dev->dev_addr, ETH_ALEN);
+ 
 --- a/drivers/net/wireless/libertas/defs.h
 +++ b/drivers/net/wireless/libertas/defs.h
 @@ -16,6 +16,14 @@
