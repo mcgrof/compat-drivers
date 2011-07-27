@@ -59,7 +59,7 @@ calls on compat code with only slight modifications.
  /*
 --- a/drivers/net/wireless/ath/ath5k/pci.c
 +++ b/drivers/net/wireless/ath/ath5k/pci.c
-@@ -319,6 +319,9 @@ static int ath5k_pci_resume(struct devic
+@@ -322,6 +322,9 @@ static int ath5k_pci_resume(struct devic
  	return 0;
  }
  
@@ -69,7 +69,7 @@ calls on compat code with only slight modifications.
  static SIMPLE_DEV_PM_OPS(ath5k_pm_ops, ath5k_pci_suspend, ath5k_pci_resume);
  #define ATH5K_PM_OPS	(&ath5k_pm_ops)
  #else
-@@ -330,7 +333,12 @@ static struct pci_driver ath5k_pci_drive
+@@ -333,7 +336,12 @@ static struct pci_driver ath5k_pci_drive
  	.id_table	= ath5k_pci_id_table,
  	.probe		= ath5k_pci_probe,
  	.remove		= __devexit_p(ath5k_pci_remove),
@@ -84,7 +84,7 @@ calls on compat code with only slight modifications.
  /*
 --- a/drivers/net/wireless/ath/ath9k/pci.c
 +++ b/drivers/net/wireless/ath/ath9k/pci.c
-@@ -316,14 +316,11 @@ static int ath_pci_resume(struct device
+@@ -322,14 +322,11 @@ static int ath_pci_resume(struct device
  	return 0;
  }
  
@@ -104,7 +104,7 @@ calls on compat code with only slight modifications.
  
  #define ATH9K_PM_OPS	(&ath9k_pm_ops)
  
-@@ -341,7 +338,12 @@ static struct pci_driver ath_pci_driver
+@@ -347,7 +344,12 @@ static struct pci_driver ath_pci_driver
  	.id_table   = ath_pci_id_table,
  	.probe      = ath_pci_probe,
  	.remove     = ath_pci_remove,
@@ -235,7 +235,7 @@ calls on compat code with only slight modifications.
  static int __init iwl_init(void)
 --- a/drivers/net/wireless/iwlwifi/iwl-core.c
 +++ b/drivers/net/wireless/iwlwifi/iwl-core.c
-@@ -2017,13 +2017,9 @@ int iwl_pci_resume(struct device *device
+@@ -2018,13 +2018,9 @@ int iwl_pci_resume(struct device *device
  	return 0;
  }
  
