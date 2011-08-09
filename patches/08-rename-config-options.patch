@@ -46,7 +46,7 @@ CONFIG_BT_HIDP does not build with older kernel versions.
  			bool last_phy_res_valid;
 --- a/drivers/net/wireless/iwlegacy/iwl4965-base.c
 +++ b/drivers/net/wireless/iwlegacy/iwl4965-base.c
-@@ -3212,10 +3212,10 @@ void iwl4965_txq_set_sched(struct iwl_pr
+@@ -3211,10 +3211,10 @@ void iwl4965_txq_set_sched(struct iwl_pr
  
  /* Hardware specific file defines the PCI IDs table for that hardware module */
  static DEFINE_PCI_DEVICE_TABLE(iwl4965_hw_card_ids) = {

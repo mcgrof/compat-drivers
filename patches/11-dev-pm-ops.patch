@@ -84,7 +84,7 @@ calls on compat code with only slight modifications.
  /*
 --- a/drivers/net/wireless/ath/ath9k/pci.c
 +++ b/drivers/net/wireless/ath/ath9k/pci.c
-@@ -322,14 +322,10 @@ static int ath_pci_resume(struct device
+@@ -347,14 +347,10 @@ static int ath_pci_resume(struct device
  	return 0;
  }
  
@@ -103,7 +103,7 @@ calls on compat code with only slight modifications.
  
  #define ATH9K_PM_OPS	(&ath9k_pm_ops)
  
-@@ -347,7 +343,12 @@ static struct pci_driver ath_pci_driver
+@@ -372,7 +368,12 @@ static struct pci_driver ath_pci_driver
  	.id_table   = ath_pci_id_table,
  	.probe      = ath_pci_probe,
  	.remove     = ath_pci_remove,
@@ -189,7 +189,7 @@ calls on compat code with only slight modifications.
  
 --- a/drivers/net/wireless/iwlegacy/iwl3945-base.c
 +++ b/drivers/net/wireless/iwlegacy/iwl3945-base.c
-@@ -3961,7 +3961,12 @@ static struct pci_driver iwl3945_driver
+@@ -3960,7 +3960,12 @@ static struct pci_driver iwl3945_driver
  	.id_table = iwl3945_hw_card_ids,
  	.probe = iwl3945_pci_probe,
  	.remove = __devexit_p(iwl3945_pci_remove),
@@ -204,7 +204,7 @@ calls on compat code with only slight modifications.
  static int __init iwl3945_init(void)
 --- a/drivers/net/wireless/iwlegacy/iwl4965-base.c
 +++ b/drivers/net/wireless/iwlegacy/iwl4965-base.c
-@@ -3226,7 +3226,12 @@ static struct pci_driver iwl4965_driver
+@@ -3225,7 +3225,12 @@ static struct pci_driver iwl4965_driver
  	.id_table = iwl4965_hw_card_ids,
  	.probe = iwl4965_pci_probe,
  	.remove = __devexit_p(iwl4965_pci_remove),
