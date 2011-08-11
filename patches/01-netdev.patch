@@ -32,6 +32,17 @@ without creating a headache on maintenance of the pathes.
  	net->watchdog_timeo = TX_TIMEOUT_JIFFIES;
  	net->ethtool_ops = &usbnet_ethtool_ops;
  
+--- a/drivers/net/wireless/ath/ath6kl/main.c
++++ b/drivers/net/wireless/ath/ath6kl/main.c
+@@ -1325,7 +1325,7 @@ static struct net_device_ops ath6kl_netd
+ 
+ void init_netdev(struct net_device *dev)
+ {
+-	dev->netdev_ops = &ath6kl_netdev_ops;
++	netdev_attach_ops(dev, &ath6kl_netdev_ops);
+ 	dev->watchdog_timeo = ATH6KL_TX_TIMEOUT;
+ 
+ 	dev->needed_headroom = ETH_HLEN;
 --- a/drivers/net/wireless/rndis_wlan.c
 +++ b/drivers/net/wireless/rndis_wlan.c
 @@ -3439,7 +3439,7 @@ static int rndis_wlan_bind(struct usbnet
@@ -217,7 +228,7 @@ without creating a headache on maintenance of the pathes.
  	wdev->netdev = ndev;
 --- a/drivers/net/wireless/libertas/main.c
 +++ b/drivers/net/wireless/libertas/main.c
-@@ -836,7 +836,7 @@ struct lbs_private *lbs_add_card(void *c
+@@ -916,7 +916,7 @@ struct lbs_private *lbs_add_card(void *c
  	wdev->netdev = dev;
  	priv->dev = dev;
  
@@ -228,7 +239,7 @@ without creating a headache on maintenance of the pathes.
  	dev->flags |= IFF_BROADCAST | IFF_MULTICAST;
 --- a/drivers/net/wireless/libertas/mesh.c
 +++ b/drivers/net/wireless/libertas/mesh.c
-@@ -1011,7 +1011,7 @@ static int lbs_add_mesh(struct lbs_priva
+@@ -1018,7 +1018,7 @@ static int lbs_add_mesh(struct lbs_priva
  	mesh_dev->ieee80211_ptr = mesh_wdev;
  	priv->mesh_dev = mesh_dev;
  
@@ -256,7 +267,7 @@ without creating a headache on maintenance of the pathes.
  #define LBS_DEB_LEAVE	0x00000002
 --- a/drivers/net/wireless/mac80211_hwsim.c
 +++ b/drivers/net/wireless/mac80211_hwsim.c
-@@ -1230,7 +1230,7 @@ static const struct net_device_ops hwsim
+@@ -1236,7 +1236,7 @@ static const struct net_device_ops hwsim
  
  static void hwsim_mon_setup(struct net_device *dev)
  {

@@ -218,6 +218,7 @@ fi
 DRIVERS="drivers/net/wireless/ath"
 DRIVERS="$DRIVERS drivers/net/wireless/ath/carl9170"
 DRIVERS="$DRIVERS drivers/net/wireless/ath/ath5k"
+DRIVERS="$DRIVERS drivers/net/wireless/ath/ath6kl"
 DRIVERS="$DRIVERS drivers/net/wireless/ath/ath9k"
 DRIVERS="$DRIVERS drivers/ssb"
 DRIVERS="$DRIVERS drivers/bcma"
@@ -247,8 +248,7 @@ DRIVERS="$DRIVERS drivers/net/wireless/orinoco"
 DRIVERS="$DRIVERS drivers/net/wireless/mwifiex"
 
 # Staging drivers
-STAGING_DRIVERS="drivers/staging/ath6kl"
-STAGING_DRIVERS="$STAGING_DRIVERS drivers/staging/brcm80211"
+STAGING_DRIVERS="drivers/staging/brcm80211"
 
 # Ethernet drivers
 DRIVERS="$DRIVERS drivers/net/atl1c"
