@@ -105,8 +105,8 @@ without creating a headache on maintenance of the pathes.
  
  	ret = dev_alloc_name(ndev, ndev->name);
  	if (ret < 0)
---- a/drivers/net/b44.c
-+++ b/drivers/net/b44.c
+--- a/drivers/net/ethernet/broadcom/b44.c
++++ b/drivers/net/ethernet/broadcom/b44.c
 @@ -2160,7 +2160,7 @@ static int __devinit b44_init_one(struct
  	bp->rx_pending = B44_DEF_RX_RING_PENDING;
  	bp->tx_pending = B44_DEF_TX_RING_PENDING;
@@ -334,8 +334,8 @@ without creating a headache on maintenance of the pathes.
  
  	dev->watchdog_timeo  = HZ * 2;
  }
---- a/drivers/net/atl1e/atl1e_main.c
-+++ b/drivers/net/atl1e/atl1e_main.c
+--- a/drivers/net/ethernet/atheros/atl1e/atl1e_main.c
++++ b/drivers/net/ethernet/atheros/atl1e/atl1e_main.c
 @@ -2232,7 +2232,7 @@ static int atl1e_init_netdev(struct net_
  	pci_set_drvdata(pdev, netdev);
  
@@ -345,8 +345,8 @@ without creating a headache on maintenance of the pathes.
  
  	netdev->watchdog_timeo = AT_TX_WATCHDOG;
  	atl1e_set_ethtool_ops(netdev);
---- a/drivers/net/atl1c/atl1c_main.c
-+++ b/drivers/net/atl1c/atl1c_main.c
+--- a/drivers/net/ethernet/atheros/atl1c/atl1c_main.c
++++ b/drivers/net/ethernet/atheros/atl1c/atl1c_main.c
 @@ -2618,7 +2618,7 @@ static int atl1c_init_netdev(struct net_
  	pci_set_drvdata(pdev, netdev);
  
@@ -356,8 +356,8 @@ without creating a headache on maintenance of the pathes.
  	netdev->watchdog_timeo = AT_TX_WATCHDOG;
  	atl1c_set_ethtool_ops(netdev);
  
---- a/drivers/net/atlx/atl1.c
-+++ b/drivers/net/atlx/atl1.c
+--- a/drivers/net/ethernet/atheros/atlx/atl1.c
++++ b/drivers/net/ethernet/atheros/atlx/atl1.c
 @@ -2969,7 +2969,7 @@ static int __devinit atl1_probe(struct p
  	adapter->mii.phy_id_mask = 0x1f;
  	adapter->mii.reg_num_mask = 0x1f;
@@ -367,8 +367,8 @@ without creating a headache on maintenance of the pathes.
  	netdev->watchdog_timeo = 5 * HZ;
  
  	netdev->ethtool_ops = &atl1_ethtool_ops;
---- a/drivers/net/atlx/atl2.c
-+++ b/drivers/net/atlx/atl2.c
+--- a/drivers/net/ethernet/atheros/atlx/atl2.c
++++ b/drivers/net/ethernet/atheros/atlx/atl2.c
 @@ -1411,7 +1411,7 @@ static int __devinit atl2_probe(struct p
  
  	atl2_setup_pcicmd(pdev);

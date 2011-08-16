@@ -10,7 +10,8 @@ ATH9K_MAKEFILE="drivers/net/wireless/ath/ath9k/Makefile"
 RT2X00_MAKEFILE="drivers/net/wireless/rt2x00/Makefile"
 NET_WIRELESS_MAKEFILE="net/wireless/Makefile"
 EEPROM_MAKEFILE="drivers/misc/eeprom/Makefile"
-DRIVERS_NET="drivers/net/Makefile"
+DRIVERS_NET_ATHEROS="drivers/net/ethernet/atheros/Makefile"
+DRIVERS_NET_BROADCOM="drivers/net/ethernet/broadcom/Makefile"
 DRIVERS_NET_USB_MAKEFILE="drivers/net/usb/Makefile"
 SSB_MAKEFILE="drivers/ssb/Makefile"
 
@@ -114,8 +115,8 @@ function disable_lib80211
 }
 
 function disable_b44 {
-	backup_file $DRIVERS_NET
-	perl -i -ne 'print if ! /CONFIG_B44/ ' $DRIVERS_NET
+	backup_file $DRIVERS_NET_BROADCOM
+	perl -i -ne 'print if ! /CONFIG_B44/ ' $DRIVERS_NET_BROADCOM
 }
 
 function disable_ssb
@@ -175,7 +176,8 @@ function disable_bt_usb_ethernet_var {
 
 function enable_only_ethernet {
 	backup_file Makefile
-	backup_file $DRIVERS_NET
+	backup_file $DRIVERS_NET_BROADCOM
+	backup_file $DRIVERS_NET_ATHEROS
 	disable_staging
 	disable_usbnet
 	disable_var_03
@@ -405,19 +407,19 @@ case $1 in
 # Ethernet and Bluetooth drivers
 	atl1)
 		enable_only_ethernet
-		echo -e "obj-\$(CONFIG_ATL1) += atlx/" > $DRIVERS_NET
+		echo -e "obj-\$(CONFIG_ATL1) += atlx/" > $DRIVERS_NET_ATHEROS
 		;;
 	atl2)
 		enable_only_ethernet
-		echo -e "obj-\$(CONFIG_ATL2) += atlx/" > $DRIVERS_NET
+		echo -e "obj-\$(CONFIG_ATL2) += atlx/" > $DRIVERS_NET_ATHEROS
 		;;
 	atl1e)
 		enable_only_ethernet
-		echo -e "obj-\$(CONFIG_ATL1E) += atl1e/" > $DRIVERS_NET
+		echo -e "obj-\$(CONFIG_ATL1E) += atl1e/" > $DRIVERS_NET_ATHEROS
 		;;
 	atl1c)
 		enable_only_ethernet
-		echo -e "obj-\$(CONFIG_ATL1C) += atl1c/" > $DRIVERS_NET
+		echo -e "obj-\$(CONFIG_ATL1C) += atl1c/" > $DRIVERS_NET_ATHEROS
 		;;
 	atlxx)
 		select_drivers		CONFIG_ATL1 CONFIG_ATL2 CONFIG_ATL1E CONFIG_ATL1C

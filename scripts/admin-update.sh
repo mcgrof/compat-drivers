@@ -251,9 +251,10 @@ DRIVERS="$DRIVERS drivers/net/wireless/mwifiex"
 STAGING_DRIVERS="drivers/staging/brcm80211"
 
 # Ethernet drivers
-DRIVERS="$DRIVERS drivers/net/atl1c"
-DRIVERS="$DRIVERS drivers/net/atl1e"
-DRIVERS="$DRIVERS drivers/net/atlx"
+DRIVERS="$DRIVERS drivers/net/ethernet/atheros"
+DRIVERS="$DRIVERS drivers/net/ethernet/atheros/atl1c"
+DRIVERS="$DRIVERS drivers/net/ethernet/atheros/atl1e"
+DRIVERS="$DRIVERS drivers/net/ethernet/atheros/atlx"
 
 # Bluetooth drivers
 DRIVERS_BT="drivers/bluetooth"
@@ -278,7 +279,9 @@ mkdir -p include/linux/ include/net/ include/linux/usb \
 	drivers/ssb/ \
 	drivers/bcma/ \
 	drivers/net/usb/ \
-	drivers/net/wireless/
+	drivers/net/wireless/ \
+	drivers/net/ethernet/atheros \
+	drivers/net/ethernet/broadcom
 mkdir -p include/net/bluetooth/
 
 # include/linux
@@ -376,15 +379,11 @@ for i in $RNDIS_REQS; do
 	cp $GIT_TREE/$DIR/$i $DIR/
 done
 
-DIR="drivers/net"
+DIR="drivers/net/ethernet/broadcom"
 echo > $DIR/Makefile
 cp $GIT_TREE/$DIR/b44.[ch] $DIR
 # Not yet
 echo "obj-\$(CONFIG_B44) += b44.o" >> $DIR/Makefile
-echo "obj-\$(CONFIG_ATL1) += atlx/" >> $DIR/Makefile
-echo "obj-\$(CONFIG_ATL2) += atlx/" >> $DIR/Makefile
-echo "obj-\$(CONFIG_ATL1E) += atl1e/" >> $DIR/Makefile
-echo "obj-\$(CONFIG_ATL1C) += atl1c/" >> $DIR/Makefile
 
 # Misc
 mkdir -p drivers/misc/eeprom/

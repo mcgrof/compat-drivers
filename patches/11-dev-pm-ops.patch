@@ -7,8 +7,8 @@ calls on compat code with only slight modifications.
 
 [1] http://lxr.linux.no/#linux+v2.6.29/include/linux/pm.h#L170
 
---- a/drivers/net/atl1c/atl1c_main.c
-+++ b/drivers/net/atl1c/atl1c_main.c
+--- a/drivers/net/ethernet/atheros/atl1c/atl1c_main.c
++++ b/drivers/net/ethernet/atheros/atl1c/atl1c_main.c
 @@ -2898,6 +2898,9 @@ static struct pci_error_handlers atl1c_e
  
  static SIMPLE_DEV_PM_OPS(atl1c_pm_ops, atl1c_suspend, atl1c_resume);
@@ -32,8 +32,8 @@ calls on compat code with only slight modifications.
  };
  
  /*
---- a/drivers/net/atlx/atl1.c
-+++ b/drivers/net/atlx/atl1.c
+--- a/drivers/net/ethernet/atheros/atlx/atl1.c
++++ b/drivers/net/ethernet/atheros/atlx/atl1.c
 @@ -2836,6 +2836,9 @@ static int atl1_resume(struct device *de
  	return 0;
  }
@@ -118,7 +118,7 @@ calls on compat code with only slight modifications.
  int ath_pci_init(void)
 --- a/drivers/net/wireless/libertas/if_spi.c
 +++ b/drivers/net/wireless/libertas/if_spi.c
-@@ -1255,6 +1255,7 @@ static int __devexit libertas_spi_remove
+@@ -1251,6 +1251,7 @@ static int __devexit libertas_spi_remove
  	return 0;
  }
  
@@ -126,7 +126,7 @@ calls on compat code with only slight modifications.
  static int if_spi_suspend(struct device *dev)
  {
  	struct spi_device *spi = to_spi_device(dev);
-@@ -1288,6 +1289,7 @@ static const struct dev_pm_ops if_spi_pm
+@@ -1284,6 +1285,7 @@ static const struct dev_pm_ops if_spi_pm
  	.suspend	= if_spi_suspend,
  	.resume		= if_spi_resume,
  };
@@ -134,7 +134,7 @@ calls on compat code with only slight modifications.
  
  static struct spi_driver libertas_spi_driver = {
  	.probe	= if_spi_probe,
-@@ -1296,7 +1298,9 @@ static struct spi_driver libertas_spi_dr
+@@ -1292,7 +1294,9 @@ static struct spi_driver libertas_spi_dr
  		.name	= "libertas_spi",
  		.bus	= &spi_bus_type,
  		.owner	= THIS_MODULE,
@@ -219,7 +219,7 @@ calls on compat code with only slight modifications.
  static int __init iwl4965_init(void)
 --- a/drivers/net/wireless/iwlwifi/iwl-pci.c
 +++ b/drivers/net/wireless/iwlwifi/iwl-pci.c
-@@ -537,6 +537,9 @@ static int iwl_pci_resume(struct device
+@@ -532,6 +532,9 @@ static int iwl_pci_resume(struct device
  
  static SIMPLE_DEV_PM_OPS(iwl_dev_pm_ops, iwl_pci_suspend, iwl_pci_resume);
  
@@ -229,7 +229,7 @@ calls on compat code with only slight modifications.
  #define IWL_PM_OPS	(&iwl_dev_pm_ops)
  
  #else
-@@ -550,7 +553,12 @@ static struct pci_driver iwl_pci_driver
+@@ -545,7 +548,12 @@ static struct pci_driver iwl_pci_driver
  	.id_table = iwl_hw_card_ids,
  	.probe = iwl_pci_probe,
  	.remove = __devexit_p(iwl_pci_remove),
