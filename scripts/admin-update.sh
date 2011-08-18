@@ -328,6 +328,10 @@ for i in $NET_DIRS; do
 	rm -f net/$i/*.mod.c
 done
 
+# Copy files needed for statically compiled regulatory rules database
+cp $GIT_TREE/net/wireless/db.txt net/wireless/
+cp $GIT_TREE/net/wireless/genregdb.awk net/wireless/
+
 # net/bluetooth
 for i in $NET_BT_DIRS; do
 	mkdir -p net/$i

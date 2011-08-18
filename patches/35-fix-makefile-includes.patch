@@ -59,3 +59,13 @@ path the make process will search in the kernel tree for the headers.
  
  BRCMUTIL_OFILES := \
  	utils.o \
+--- a/net/wireless/Makefile
++++ b/net/wireless/Makefile
+@@ -18,6 +18,6 @@ cfg80211-$(CONFIG_CFG80211_INTERNAL_REGD
+ ccflags-y += -D__CHECK_ENDIAN__
+ 
+ $(obj)/regdb.c: $(src)/db.txt $(src)/genregdb.awk
+-	@$(AWK) -f $(srctree)/$(src)/genregdb.awk < $< > $@
++	@$(AWK) -f $(src)/genregdb.awk < $< > $@
+ 
+ clean-files := regdb.c
