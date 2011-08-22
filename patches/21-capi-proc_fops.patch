@@ -14,7 +14,7 @@ proc_fops: convert drivers/isdn/ to seq_file
  #include <linux/types.h>
  #include <linux/errno.h>
  #include <linux/kernel.h>
-@@ -521,6 +523,7 @@ static char *cmtp_procinfo(struct capi_c
+@@ -522,6 +524,7 @@ static char *cmtp_procinfo(struct capi_c
  	return "CAPI Message Transport Protocol";
  }
  
@@ -22,7 +22,7 @@ proc_fops: convert drivers/isdn/ to seq_file
  static int cmtp_proc_show(struct seq_file *m, void *v)
  {
  	struct capi_ctr *ctrl = m->private;
-@@ -553,6 +556,36 @@ static const struct file_operations cmtp
+@@ -554,6 +557,36 @@ static const struct file_operations cmtp
  	.release	= single_release,
  };
  
@@ -59,7 +59,7 @@ proc_fops: convert drivers/isdn/ to seq_file
  int cmtp_attach_device(struct cmtp_session *session)
  {
  	unsigned char buf[4];
-@@ -591,7 +624,11 @@ int cmtp_attach_device(struct cmtp_sessi
+@@ -592,7 +625,11 @@ int cmtp_attach_device(struct cmtp_sessi
  	session->ctrl.send_message  = cmtp_send_message;
  
  	session->ctrl.procinfo      = cmtp_procinfo;

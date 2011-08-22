@@ -2,7 +2,7 @@ The quirks attribute is not available on older kernels.
 
 --- a/drivers/net/wireless/libertas/if_sdio.c
 +++ b/drivers/net/wireless/libertas/if_sdio.c
-@@ -1039,6 +1039,7 @@ static int if_sdio_probe(struct sdio_fun
+@@ -777,6 +777,7 @@ static int if_sdio_power_on(struct if_sd
  	if (ret)
  		goto release;
  
@@ -10,9 +10,9 @@ The quirks attribute is not available on older kernels.
  	/* For 1-bit transfers to the 8686 model, we need to enable the
  	 * interrupt flag in the CCCR register. Set the MMC_QUIRK_LENIENT_FN0
  	 * bit to allow access to non-vendor registers. */
-@@ -1057,6 +1058,7 @@ static int if_sdio_probe(struct sdio_fun
+@@ -795,6 +796,7 @@ static int if_sdio_power_on(struct if_sd
  		if (ret)
- 			goto release_int;
+ 			goto disable;
  	}
 +#endif
  

@@ -46,7 +46,7 @@ queue by using skb_set_queue_mapping(skb, 0) through ieee80211_tx_skb()
 
 --- a/net/mac80211/util.c
 +++ b/net/mac80211/util.c
-@@ -264,6 +264,18 @@ __le16 ieee80211_ctstoself_duration(stru
+@@ -263,6 +263,18 @@ __le16 ieee80211_ctstoself_duration(stru
  }
  EXPORT_SYMBOL(ieee80211_ctstoself_duration);
  
@@ -65,7 +65,7 @@ queue by using skb_set_queue_mapping(skb, 0) through ieee80211_tx_skb()
  static void __ieee80211_wake_queue(struct ieee80211_hw *hw, int queue,
  				   enum queue_stop_reason reason)
  {
-@@ -286,7 +298,14 @@ static void __ieee80211_wake_queue(struc
+@@ -285,7 +297,14 @@ static void __ieee80211_wake_queue(struc
  		list_for_each_entry_rcu(sdata, &local->interfaces, list) {
  			if (test_bit(SDATA_STATE_OFFCHANNEL, &sdata->state))
  				continue;
@@ -80,7 +80,7 @@ queue by using skb_set_queue_mapping(skb, 0) through ieee80211_tx_skb()
  		}
  		rcu_read_unlock();
  	} else
-@@ -326,7 +345,13 @@ static void __ieee80211_stop_queue(struc
+@@ -325,7 +344,13 @@ static void __ieee80211_stop_queue(struc
  
  	rcu_read_lock();
  	list_for_each_entry_rcu(sdata, &local->interfaces, list)
@@ -107,7 +107,7 @@ queue by using skb_set_queue_mapping(skb, 0) through ieee80211_tx_skb()
  	ieee80211_set_qos_hdr(local, skb);
  	ieee80211_tx(sdata, skb, false);
  	rcu_read_unlock();
-@@ -2088,7 +2092,14 @@ void ieee80211_tx_pending(unsigned long
+@@ -2108,7 +2112,14 @@ void ieee80211_tx_pending(unsigned long
  
  		if (skb_queue_empty(&local->pending[i]))
  			list_for_each_entry_rcu(sdata, &local->interfaces, list)
