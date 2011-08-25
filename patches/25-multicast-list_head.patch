@@ -179,7 +179,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  	return ((u64)(mfilt[1]) << 32) | mfilt[0];
 --- a/drivers/net/wireless/ath/carl9170/main.c
 +++ b/drivers/net/wireless/ath/carl9170/main.c
-@@ -847,17 +847,35 @@ out:
+@@ -896,17 +896,35 @@ out:
  	return err;
  }
  
@@ -371,7 +371,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  		}
  	}
  
-@@ -4726,7 +4746,11 @@ mwl8k_bss_info_changed(struct ieee80211_
+@@ -4723,7 +4743,11 @@ mwl8k_bss_info_changed(struct ieee80211_
  }
  
  static u64 mwl8k_prepare_multicast(struct ieee80211_hw *hw,
@@ -383,7 +383,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  {
  	struct mwl8k_cmd_pkt *cmd;
  
-@@ -4737,7 +4761,11 @@ static u64 mwl8k_prepare_multicast(struc
+@@ -4734,7 +4758,11 @@ static u64 mwl8k_prepare_multicast(struc
  	 * we'll end up throwing this packet away and creating a new
  	 * one in mwl8k_configure_filter().
  	 */
@@ -395,7 +395,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  
  	return (unsigned long)cmd;
  }
-@@ -4859,7 +4887,11 @@ static void mwl8k_configure_filter(struc
+@@ -4856,7 +4884,11 @@ static void mwl8k_configure_filter(struc
  	 */
  	if (*total_flags & FIF_ALLMULTI) {
  		kfree(cmd);
@@ -435,7 +435,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  			      size_t fw_name_len, u32 *hw_ver);
 --- a/drivers/net/wireless/p54/main.c
 +++ b/drivers/net/wireless/p54/main.c
-@@ -308,11 +308,18 @@ out:
+@@ -359,11 +359,18 @@ out:
  	return ret;
  }
  
@@ -454,7 +454,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  	int i;
  
  	BUILD_BUG_ON(ARRAY_SIZE(priv->mc_maclist) !=
-@@ -322,12 +329,23 @@ static u64 p54_prepare_multicast(struct
+@@ -373,12 +380,23 @@ static u64 p54_prepare_multicast(struct
  	 * Otherwise the firmware will drop it and ARP will no longer work.
  	 */
  	i = 1;
@@ -637,7 +637,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  	return hash.low | ((u64)hash.high << 32);
 --- a/drivers/staging/brcm80211/brcmfmac/dhd_linux.c
 +++ b/drivers/staging/brcm80211/brcmfmac/dhd_linux.c
-@@ -313,7 +313,11 @@ static void _brcmf_set_multicast_list(st
+@@ -225,7 +225,11 @@ static void _brcmf_set_multicast_list(st
  	netdev_for_each_mc_addr(ha, dev) {
  		if (!cnt)
  			break;
@@ -712,7 +712,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  
 --- a/net/mac80211/ieee80211_i.h
 +++ b/net/mac80211/ieee80211_i.h
-@@ -772,7 +772,12 @@ struct ieee80211_local {
+@@ -773,7 +773,12 @@ struct ieee80211_local {
  	struct work_struct recalc_smps;
  
  	/* aggregated multicast list */
