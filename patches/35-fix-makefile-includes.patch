@@ -20,7 +20,7 @@ path the make process will search in the kernel tree for the headers.
 +ccflags-y += -I$(obj)/..
 --- a/drivers/staging/brcm80211/brcmfmac/Makefile
 +++ b/drivers/staging/brcm80211/brcmfmac/Makefile
-@@ -23,8 +23,8 @@ ccflags-y :=			\
+@@ -18,8 +18,8 @@
  ccflags-$(CONFIG_BRCMDBG)	+= -DSHOW_EVENTS
  
  ccflags-y += \
@@ -33,10 +33,10 @@ path the make process will search in the kernel tree for the headers.
  	wl_cfg80211.o \
 --- a/drivers/staging/brcm80211/brcmsmac/Makefile
 +++ b/drivers/staging/brcm80211/brcmsmac/Makefile
-@@ -23,9 +23,9 @@ ccflags-y :=				\
- 	-DWL11N					\
- 	-DDBAND					\
- 	-DBCMNVRAMR				\
+@@ -16,9 +16,9 @@
+ # CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ 
+ ccflags-y :=				\
 -	-Idrivers/staging/brcm80211/brcmsmac \
 -	-Idrivers/staging/brcm80211/brcmsmac/phy \
 -	-Idrivers/staging/brcm80211/include
