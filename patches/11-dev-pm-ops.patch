@@ -9,7 +9,7 @@ calls on compat code with only slight modifications.
 
 --- a/drivers/net/ethernet/atheros/atl1c/atl1c_main.c
 +++ b/drivers/net/ethernet/atheros/atl1c/atl1c_main.c
-@@ -2898,6 +2898,9 @@ static struct pci_error_handlers atl1c_e
+@@ -2897,6 +2897,9 @@ static struct pci_error_handlers atl1c_e
  
  static SIMPLE_DEV_PM_OPS(atl1c_pm_ops, atl1c_suspend, atl1c_resume);
  
@@ -19,7 +19,7 @@ calls on compat code with only slight modifications.
  static struct pci_driver atl1c_driver = {
  	.name     = atl1c_driver_name,
  	.id_table = atl1c_pci_tbl,
-@@ -2905,7 +2908,12 @@ static struct pci_driver atl1c_driver =
+@@ -2904,7 +2907,12 @@ static struct pci_driver atl1c_driver =
  	.remove   = __devexit_p(atl1c_remove),
  	.shutdown = atl1c_shutdown,
  	.err_handler = &atl1c_err_handler,
@@ -34,7 +34,7 @@ calls on compat code with only slight modifications.
  /*
 --- a/drivers/net/ethernet/atheros/atlx/atl1.c
 +++ b/drivers/net/ethernet/atheros/atlx/atl1.c
-@@ -2836,6 +2836,9 @@ static int atl1_resume(struct device *de
+@@ -2835,6 +2835,9 @@ static int atl1_resume(struct device *de
  	return 0;
  }
  
@@ -44,7 +44,7 @@ calls on compat code with only slight modifications.
  static SIMPLE_DEV_PM_OPS(atl1_pm_ops, atl1_suspend, atl1_resume);
  #define ATL1_PM_OPS	(&atl1_pm_ops)
  
-@@ -3105,7 +3108,12 @@ static struct pci_driver atl1_driver = {
+@@ -3104,7 +3107,12 @@ static struct pci_driver atl1_driver = {
  	.probe = atl1_probe,
  	.remove = __devexit_p(atl1_remove),
  	.shutdown = atl1_shutdown,
@@ -84,7 +84,7 @@ calls on compat code with only slight modifications.
  /*
 --- a/drivers/net/wireless/ath/ath9k/pci.c
 +++ b/drivers/net/wireless/ath/ath9k/pci.c
-@@ -354,14 +354,10 @@ static int ath_pci_resume(struct device
+@@ -352,14 +352,10 @@ static int ath_pci_resume(struct device
  	return 0;
  }
  
@@ -103,7 +103,7 @@ calls on compat code with only slight modifications.
  
  #define ATH9K_PM_OPS	(&ath9k_pm_ops)
  
-@@ -379,7 +375,12 @@ static struct pci_driver ath_pci_driver
+@@ -377,7 +373,12 @@ static struct pci_driver ath_pci_driver
  	.id_table   = ath_pci_id_table,
  	.probe      = ath_pci_probe,
  	.remove     = ath_pci_remove,
@@ -219,7 +219,7 @@ calls on compat code with only slight modifications.
  static int __init iwl4965_init(void)
 --- a/drivers/net/wireless/iwlwifi/iwl-pci.c
 +++ b/drivers/net/wireless/iwlwifi/iwl-pci.c
-@@ -532,6 +532,9 @@ static int iwl_pci_resume(struct device
+@@ -537,6 +537,9 @@ static int iwl_pci_resume(struct device
  
  static SIMPLE_DEV_PM_OPS(iwl_dev_pm_ops, iwl_pci_suspend, iwl_pci_resume);
  
@@ -229,7 +229,7 @@ calls on compat code with only slight modifications.
  #define IWL_PM_OPS	(&iwl_dev_pm_ops)
  
  #else
-@@ -545,7 +548,12 @@ static struct pci_driver iwl_pci_driver
+@@ -550,7 +553,12 @@ static struct pci_driver iwl_pci_driver
  	.id_table = iwl_hw_card_ids,
  	.probe = iwl_pci_probe,
  	.remove = __devexit_p(iwl_pci_remove),

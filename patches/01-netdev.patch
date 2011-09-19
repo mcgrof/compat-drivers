@@ -186,7 +186,7 @@ without creating a headache on maintenance of the pathes.
  
 --- a/drivers/net/wireless/ipw2x00/ipw2100.c
 +++ b/drivers/net/wireless/ipw2x00/ipw2100.c
-@@ -6112,7 +6112,7 @@ static struct net_device *ipw2100_alloc_
+@@ -6114,7 +6114,7 @@ static struct net_device *ipw2100_alloc_
  	priv->ieee->perfect_rssi = -20;
  	priv->ieee->worst_rssi = -85;
  
@@ -197,7 +197,7 @@ without creating a headache on maintenance of the pathes.
  	priv->wireless_data.libipw = priv->ieee;
 --- a/drivers/net/wireless/ipw2x00/ipw2200.c
 +++ b/drivers/net/wireless/ipw2x00/ipw2200.c
-@@ -11670,7 +11670,7 @@ static int ipw_prom_alloc(struct ipw_pri
+@@ -11673,7 +11673,7 @@ static int ipw_prom_alloc(struct ipw_pri
  	memcpy(priv->prom_net_dev->dev_addr, priv->mac_addr, ETH_ALEN);
  
  	priv->prom_net_dev->type = ARPHRD_IEEE80211_RADIOTAP;
@@ -206,7 +206,7 @@ without creating a headache on maintenance of the pathes.
  
  	priv->prom_priv->ieee->iw_mode = IW_MODE_MONITOR;
  	SET_NETDEV_DEV(priv->prom_net_dev, &priv->pci_dev->dev);
-@@ -11809,7 +11809,7 @@ static int __devinit ipw_pci_probe(struc
+@@ -11812,7 +11812,7 @@ static int __devinit ipw_pci_probe(struc
  	priv->ieee->perfect_rssi = -20;
  	priv->ieee->worst_rssi = -85;
  
@@ -336,7 +336,7 @@ without creating a headache on maintenance of the pathes.
  }
 --- a/drivers/net/ethernet/atheros/atl1e/atl1e_main.c
 +++ b/drivers/net/ethernet/atheros/atl1e/atl1e_main.c
-@@ -2232,7 +2232,7 @@ static int atl1e_init_netdev(struct net_
+@@ -2231,7 +2231,7 @@ static int atl1e_init_netdev(struct net_
  	pci_set_drvdata(pdev, netdev);
  
  	netdev->irq  = pdev->irq;
@@ -347,7 +347,7 @@ without creating a headache on maintenance of the pathes.
  	atl1e_set_ethtool_ops(netdev);
 --- a/drivers/net/ethernet/atheros/atl1c/atl1c_main.c
 +++ b/drivers/net/ethernet/atheros/atl1c/atl1c_main.c
-@@ -2618,7 +2618,7 @@ static int atl1c_init_netdev(struct net_
+@@ -2617,7 +2617,7 @@ static int atl1c_init_netdev(struct net_
  	pci_set_drvdata(pdev, netdev);
  
  	netdev->irq  = pdev->irq;
@@ -358,7 +358,7 @@ without creating a headache on maintenance of the pathes.
  
 --- a/drivers/net/ethernet/atheros/atlx/atl1.c
 +++ b/drivers/net/ethernet/atheros/atlx/atl1.c
-@@ -2969,7 +2969,7 @@ static int __devinit atl1_probe(struct p
+@@ -2968,7 +2968,7 @@ static int __devinit atl1_probe(struct p
  	adapter->mii.phy_id_mask = 0x1f;
  	adapter->mii.reg_num_mask = 0x1f;
  
