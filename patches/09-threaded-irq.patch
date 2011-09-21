@@ -6,7 +6,7 @@ thread in process context as well.
 
 --- a/drivers/net/wireless/b43/main.c
 +++ b/drivers/net/wireless/b43/main.c
-@@ -4174,8 +4174,13 @@ redo:
+@@ -4175,8 +4175,13 @@ redo:
  	if (b43_bus_host_is_sdio(dev->dev)) {
  		b43_sdio_free_irq(dev);
  	} else {
@@ -20,7 +20,7 @@ thread in process context as well.
  	}
  	mutex_lock(&wl->mutex);
  	dev = wl->current_dev;
-@@ -4215,9 +4220,17 @@ static int b43_wireless_core_start(struc
+@@ -4216,9 +4221,17 @@ static int b43_wireless_core_start(struc
  			goto out;
  		}
  	} else {
@@ -38,7 +38,7 @@ thread in process context as well.
  		if (err) {
  			b43err(dev->wl, "Cannot request IRQ-%d\n",
  			       dev->dev->irq);
-@@ -5006,6 +5019,10 @@ static int b43_setup_bands(struct b43_wl
+@@ -5007,6 +5020,10 @@ static int b43_setup_bands(struct b43_wl
  
  static void b43_wireless_core_detach(struct b43_wldev *dev)
  {
@@ -122,10 +122,10 @@ thread in process context as well.
  	return 0;
 --- a/drivers/net/wireless/wl12xx/wl12xx.h
 +++ b/drivers/net/wireless/wl12xx/wl12xx.h
-@@ -626,6 +626,10 @@ struct wl1271 {
+@@ -630,6 +630,10 @@ struct wl1271 {
  
- 	/* number of currently active RX BA sessions */
- 	int ba_rx_session_count;
+ 	/* AP-mode - number of currently connected stations */
+ 	int active_sta_count;
 +
 +#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,31)
 +	struct compat_threaded_irq irq_compat;
