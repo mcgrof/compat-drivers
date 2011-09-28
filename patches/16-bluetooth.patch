@@ -121,7 +121,7 @@ here still, but for now we keep this here.
  
 --- a/net/bluetooth/hci_sysfs.c
 +++ b/net/bluetooth/hci_sysfs.c
-@@ -69,7 +69,11 @@ static struct attribute_group bt_link_gr
+@@ -71,7 +71,11 @@ static struct attribute_group bt_link_gr
  	.attrs = bt_link_attrs,
  };
  
@@ -133,7 +133,7 @@ here still, but for now we keep this here.
  	&bt_link_group,
  	NULL
  };
-@@ -127,7 +131,11 @@ static void del_conn(struct work_struct
+@@ -129,7 +133,11 @@ static void del_conn(struct work_struct
  		dev = device_find_child(&conn->dev, NULL, __match_tty);
  		if (!dev)
  			break;
@@ -145,7 +145,7 @@ here still, but for now we keep this here.
  		put_device(dev);
  	}
  
-@@ -377,7 +385,11 @@ static struct attribute_group bt_host_gr
+@@ -379,7 +387,11 @@ static struct attribute_group bt_host_gr
  	.attrs = bt_host_attrs,
  };
  
@@ -270,7 +270,7 @@ here still, but for now we keep this here.
  static int hidp_parse(struct hid_device *hid)
  {
  	struct hidp_session *session = hid->driver_data;
-@@ -949,7 +1030,9 @@ static int hidp_setup_hid(struct hidp_se
+@@ -952,7 +1033,9 @@ static int hidp_setup_hid(struct hidp_se
  	hid->dev.parent = hidp_get_device(session);
  	hid->ll_driver = &hidp_hid_driver;
  
@@ -280,7 +280,7 @@ here still, but for now we keep this here.
  	hid->hid_output_raw_report = hidp_output_raw_report;
  
  	return 0;
-@@ -960,6 +1043,7 @@ fault:
+@@ -963,6 +1046,7 @@ fault:
  
  	return err;
  }
@@ -288,7 +288,7 @@ here still, but for now we keep this here.
  
  int hidp_add_connection(struct hidp_connadd_req *req, struct socket *ctrl_sock, struct socket *intr_sock)
  {
-@@ -979,6 +1063,39 @@ int hidp_add_connection(struct hidp_conn
+@@ -982,6 +1066,39 @@ int hidp_add_connection(struct hidp_conn
  
  	BT_DBG("rd_data %p rd_size %d", req->rd_data, req->rd_size);
  
@@ -328,7 +328,7 @@ here still, but for now we keep this here.
  	down_write(&hidp_session_sem);
  
  	s = __hidp_get_session(&bt_sk(ctrl_sock->sk)->dst);
-@@ -1012,6 +1129,7 @@ int hidp_add_connection(struct hidp_conn
+@@ -1015,6 +1132,7 @@ int hidp_add_connection(struct hidp_conn
  	session->flags   = req->flags & (1 << HIDP_BLUETOOTH_VENDOR_ID);
  	session->idle_to = req->idle_to;
  
@@ -336,7 +336,7 @@ here still, but for now we keep this here.
  	if (req->rd_size > 0) {
  		err = hidp_setup_hid(session, req);
  		if (err && err != -ENODEV)
-@@ -1023,6 +1141,16 @@ int hidp_add_connection(struct hidp_conn
+@@ -1026,6 +1144,16 @@ int hidp_add_connection(struct hidp_conn
  		if (err < 0)
  			goto purge;
  	}
@@ -353,7 +353,7 @@ here still, but for now we keep this here.
  
  	__hidp_link_session(session);
  
-@@ -1081,6 +1209,7 @@ unlink:
+@@ -1084,6 +1212,7 @@ unlink:
  		session->input = NULL;
  	}
  
@@ -361,7 +361,7 @@ here still, but for now we keep this here.
  	if (session->hid) {
  		hid_destroy_device(session->hid);
  		session->hid = NULL;
-@@ -1092,10 +1221,15 @@ unlink:
+@@ -1095,10 +1224,15 @@ unlink:
  purge:
  	skb_queue_purge(&session->ctrl_transmit);
  	skb_queue_purge(&session->intr_transmit);
@@ -377,7 +377,7 @@ here still, but for now we keep this here.
  	kfree(session);
  	return err;
  }
-@@ -1179,6 +1313,7 @@ int hidp_get_conninfo(struct hidp_connin
+@@ -1182,6 +1316,7 @@ int hidp_get_conninfo(struct hidp_connin
  	return err;
  }
  
@@ -385,7 +385,7 @@ here still, but for now we keep this here.
  static const struct hid_device_id hidp_table[] = {
  	{ HID_BLUETOOTH_DEVICE(HID_ANY_ID, HID_ANY_ID) },
  	{ }
-@@ -1188,6 +1323,7 @@ static struct hid_driver hidp_driver = {
+@@ -1191,6 +1326,7 @@ static struct hid_driver hidp_driver = {
  	.name = "generic-bluetooth",
  	.id_table = hidp_table,
  };
@@ -393,7 +393,7 @@ here still, but for now we keep this here.
  
  static int __init hidp_init(void)
  {
-@@ -1195,11 +1331,14 @@ static int __init hidp_init(void)
+@@ -1198,11 +1334,14 @@ static int __init hidp_init(void)
  
  	BT_INFO("HIDP (Human Interface Emulation) ver %s", VERSION);
  
@@ -408,7 +408,7 @@ here still, but for now we keep this here.
  	if (ret)
  		goto err_drv;
  
-@@ -1207,13 +1346,16 @@ static int __init hidp_init(void)
+@@ -1210,13 +1349,16 @@ static int __init hidp_init(void)
  err_drv:
  	hid_unregister_driver(&hidp_driver);
  err:

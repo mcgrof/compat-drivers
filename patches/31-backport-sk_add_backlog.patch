@@ -9,7 +9,7 @@ backlog.
 
 --- a/net/bluetooth/l2cap_core.c
 +++ b/net/bluetooth/l2cap_core.c
-@@ -3742,8 +3742,12 @@ static inline int l2cap_data_channel(str
+@@ -3744,8 +3744,12 @@ static inline int l2cap_data_channel(str
  		if (!sock_owned_by_user(sk)) {
  			l2cap_ertm_data_rcv(sk, skb);
  		} else {

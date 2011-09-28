@@ -83,7 +83,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  }
 --- a/drivers/net/wireless/adm8211.c
 +++ b/drivers/net/wireless/adm8211.c
-@@ -1318,19 +1318,37 @@ static void adm8211_bss_info_changed(str
+@@ -1319,19 +1319,37 @@ static void adm8211_bss_info_changed(str
  }
  
  static u64 adm8211_prepare_multicast(struct ieee80211_hw *hw,
@@ -494,7 +494,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  
 --- a/drivers/net/wireless/rtl818x/rtl8180/dev.c
 +++ b/drivers/net/wireless/rtl818x/rtl8180/dev.c
-@@ -812,10 +812,19 @@ static void rtl8180_bss_info_changed(str
+@@ -813,10 +813,19 @@ static void rtl8180_bss_info_changed(str
  	}
  }
  
@@ -536,7 +536,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  static void rtl8187_configure_filter(struct ieee80211_hw *dev,
 --- a/drivers/net/wireless/wl12xx/main.c
 +++ b/drivers/net/wireless/wl12xx/main.c
-@@ -2431,11 +2431,20 @@ struct wl1271_filter_params {
+@@ -2467,11 +2467,20 @@ struct wl1271_filter_params {
  	u8 mc_list[ACX_MC_ADDRESS_GROUP_MAX][ETH_ALEN];
  };
  
@@ -557,7 +557,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  	struct wl1271 *wl = hw->priv;
  
  	if (unlikely(wl->state == WL1271_STATE_OFF))
-@@ -2448,16 +2457,40 @@ static u64 wl1271_op_prepare_multicast(s
+@@ -2484,16 +2493,40 @@ static u64 wl1271_op_prepare_multicast(s
  	}
  
  	/* update multicast filtering parameters */
@@ -651,7 +651,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  	}
 --- a/include/net/mac80211.h
 +++ b/include/net/mac80211.h
-@@ -1956,7 +1956,11 @@ struct ieee80211_ops {
+@@ -1960,7 +1960,11 @@ struct ieee80211_ops {
  			       enum ieee80211_tx_sync_type type);
  
  	u64 (*prepare_multicast)(struct ieee80211_hw *hw,
@@ -712,7 +712,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  
 --- a/net/mac80211/ieee80211_i.h
 +++ b/net/mac80211/ieee80211_i.h
-@@ -775,7 +775,12 @@ struct ieee80211_local {
+@@ -776,7 +776,12 @@ struct ieee80211_local {
  	struct work_struct recalc_smps;
  
  	/* aggregated multicast list */
@@ -741,7 +741,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  	spin_unlock_bh(&local->filter_lock);
  	netif_addr_unlock_bh(sdata->dev);
  
-@@ -602,7 +607,12 @@ static void ieee80211_set_multicast_list
+@@ -600,7 +605,12 @@ static void ieee80211_set_multicast_list
  		sdata->flags ^= IEEE80211_SDATA_PROMISC;
  	}
  	spin_lock_bh(&local->filter_lock);
