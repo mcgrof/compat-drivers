@@ -199,7 +199,7 @@ here still, but for now we keep this here.
  	}
  
  	/* Wakeup user-space polling for socket errors */
-@@ -857,6 +874,70 @@ static void hidp_close(struct hid_device
+@@ -859,6 +876,70 @@ static void hidp_close(struct hid_device
  {
  }
  
@@ -270,7 +270,7 @@ here still, but for now we keep this here.
  static int hidp_parse(struct hid_device *hid)
  {
  	struct hidp_session *session = hid->driver_data;
-@@ -941,7 +1022,9 @@ static int hidp_setup_hid(struct hidp_se
+@@ -943,7 +1024,9 @@ static int hidp_setup_hid(struct hidp_se
  	hid->dev.parent = hidp_get_device(session);
  	hid->ll_driver = &hidp_hid_driver;
  
@@ -280,7 +280,7 @@ here still, but for now we keep this here.
  	hid->hid_output_raw_report = hidp_output_raw_report;
  
  	return 0;
-@@ -952,6 +1035,7 @@ fault:
+@@ -954,6 +1037,7 @@ fault:
  
  	return err;
  }
@@ -288,7 +288,7 @@ here still, but for now we keep this here.
  
  int hidp_add_connection(struct hidp_connadd_req *req, struct socket *ctrl_sock, struct socket *intr_sock)
  {
-@@ -971,6 +1055,39 @@ int hidp_add_connection(struct hidp_conn
+@@ -973,6 +1057,39 @@ int hidp_add_connection(struct hidp_conn
  
  	BT_DBG("rd_data %p rd_size %d", req->rd_data, req->rd_size);
  
@@ -328,7 +328,7 @@ here still, but for now we keep this here.
  	down_write(&hidp_session_sem);
  
  	s = __hidp_get_session(&bt_sk(ctrl_sock->sk)->dst);
-@@ -1004,6 +1121,7 @@ int hidp_add_connection(struct hidp_conn
+@@ -1006,6 +1123,7 @@ int hidp_add_connection(struct hidp_conn
  	session->flags   = req->flags & (1 << HIDP_BLUETOOTH_VENDOR_ID);
  	session->idle_to = req->idle_to;
  
@@ -336,7 +336,7 @@ here still, but for now we keep this here.
  	if (req->rd_size > 0) {
  		err = hidp_setup_hid(session, req);
  		if (err && err != -ENODEV)
-@@ -1015,6 +1133,16 @@ int hidp_add_connection(struct hidp_conn
+@@ -1017,6 +1135,16 @@ int hidp_add_connection(struct hidp_conn
  		if (err < 0)
  			goto purge;
  	}
@@ -374,10 +374,10 @@ here still, but for now we keep this here.
 +	if (session->hid)
 +		hid_free_device(session->hid);
 +#endif
- 	input_free_device(session->input);
  	kfree(session);
  	return err;
-@@ -1174,6 +1308,7 @@ int hidp_get_conninfo(struct hidp_connin
+ }
+@@ -1173,6 +1307,7 @@ int hidp_get_conninfo(struct hidp_connin
  	return err;
  }
  
@@ -385,7 +385,7 @@ here still, but for now we keep this here.
  static const struct hid_device_id hidp_table[] = {
  	{ HID_BLUETOOTH_DEVICE(HID_ANY_ID, HID_ANY_ID) },
  	{ }
-@@ -1183,6 +1318,7 @@ static struct hid_driver hidp_driver = {
+@@ -1182,6 +1317,7 @@ static struct hid_driver hidp_driver = {
  	.name = "generic-bluetooth",
  	.id_table = hidp_table,
  };
@@ -393,7 +393,7 @@ here still, but for now we keep this here.
  
  static int __init hidp_init(void)
  {
-@@ -1190,11 +1326,14 @@ static int __init hidp_init(void)
+@@ -1189,11 +1325,14 @@ static int __init hidp_init(void)
  
  	BT_INFO("HIDP (Human Interface Emulation) ver %s", VERSION);
  
@@ -408,7 +408,7 @@ here still, but for now we keep this here.
  	if (ret)
  		goto err_drv;
  
-@@ -1202,13 +1341,16 @@ static int __init hidp_init(void)
+@@ -1201,13 +1340,16 @@ static int __init hidp_init(void)
  err_drv:
  	hid_unregister_driver(&hidp_driver);
  err:
