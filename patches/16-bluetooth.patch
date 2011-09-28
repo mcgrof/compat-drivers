@@ -90,8 +90,8 @@ here still, but for now we keep this here.
 +	capi_ctr_reseted(ctrl);
 +#endif
  
- 	kthread_stop(session->task);
- }
+ 	atomic_inc(&session->terminate);
+ 	wake_up_process(session->task);
 --- a/net/bluetooth/hci_sock.c
 +++ b/net/bluetooth/hci_sock.c
 @@ -547,7 +547,11 @@ drop:

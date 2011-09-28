@@ -8,7 +8,7 @@ compile warning.
 
 --- a/net/wireless/core.c
 +++ b/net/wireless/core.c
-@@ -762,9 +762,11 @@ static void wdev_cleanup_work(struct wor
+@@ -769,9 +769,11 @@ static void wdev_cleanup_work(struct wor
  	dev_put(wdev->netdev);
  }
  
@@ -22,7 +22,7 @@ compile warning.
  					 unsigned long state,
 --- a/net/bluetooth/bnep/core.c
 +++ b/net/bluetooth/bnep/core.c
-@@ -546,9 +546,11 @@ static struct device *bnep_get_device(st
+@@ -548,9 +548,11 @@ static struct device *bnep_get_device(st
  	return conn ? &conn->dev : NULL;
  }
  
