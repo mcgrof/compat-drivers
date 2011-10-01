@@ -23,9 +23,9 @@ cases.
  
  #include <linux/ip.h>
 +#include <linux/in.h>
+ #include <linux/module.h>
  #include "wifi.h"
  #include "rc.h"
- #include "base.h"
 --- a/drivers/net/wireless/wl1251/main.c
 +++ b/drivers/net/wireless/wl1251/main.c
 @@ -24,6 +24,9 @@
@@ -52,7 +52,7 @@ cases.
  
 --- a/net/mac80211/key.c
 +++ b/net/mac80211/key.c
-@@ -22,6 +22,9 @@
+@@ -23,6 +23,9 @@
  #include "aes_ccm.h"
  #include "aes_cmac.h"
  
