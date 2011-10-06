@@ -86,7 +86,7 @@ function disable_makefile
 function select_driver 
 {
 	backup_file $DRIVERS_MAKEFILE
-	perl -i -ne 'print if /'$1'/ ' $DRIVERS_MAKEFILE
+	perl -i -ne 'print if /'$1'\)/ ' $DRIVERS_MAKEFILE
 }
 
 function select_drivers
