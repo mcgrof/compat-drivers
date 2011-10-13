@@ -18,42 +18,42 @@ path the make process will search in the kernel tree for the headers.
  
 -ccflags-y += -Idrivers/net/wireless/rtl818x
 +ccflags-y += -I$(obj)/..
---- a/drivers/staging/brcm80211/brcmfmac/Makefile
-+++ b/drivers/staging/brcm80211/brcmfmac/Makefile
+--- a/drivers/net/wireless/brcm80211/brcmfmac/Makefile
++++ b/drivers/net/wireless/brcm80211/brcmfmac/Makefile
 @@ -16,8 +16,8 @@
  # CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  
  ccflags-y += \
--	-Idrivers/staging/brcm80211/brcmfmac	\
--	-Idrivers/staging/brcm80211/include
+-	-Idrivers/net/wireless/brcm80211/brcmfmac	\
+-	-Idrivers/net/wireless/brcm80211/include
 +	-I$(obj)		\
 +	-I$(obj)/../include
  
  DHDOFILES = \
  	wl_cfg80211.o \
---- a/drivers/staging/brcm80211/brcmsmac/Makefile
-+++ b/drivers/staging/brcm80211/brcmsmac/Makefile
+--- a/drivers/net/wireless/brcm80211/brcmsmac/Makefile
++++ b/drivers/net/wireless/brcm80211/brcmsmac/Makefile
 @@ -17,9 +17,9 @@
  
  ccflags-y := \
  	-D__CHECK_ENDIAN__ \
--	-Idrivers/staging/brcm80211/brcmsmac \
--	-Idrivers/staging/brcm80211/brcmsmac/phy \
--	-Idrivers/staging/brcm80211/include
+-	-Idrivers/net/wireless/brcm80211/brcmsmac \
+-	-Idrivers/net/wireless/brcm80211/brcmsmac/phy \
+-	-Idrivers/net/wireless/brcm80211/include
 +	-I$(obj)				\
 +	-I$(obj)/phy				\
 +	-I$(obj)/../include
  
  BRCMSMAC_OFILES := \
  	mac80211_if.o \
---- a/drivers/staging/brcm80211/brcmutil/Makefile
-+++ b/drivers/staging/brcm80211/brcmutil/Makefile
+--- a/drivers/net/wireless/brcm80211/brcmutil/Makefile
++++ b/drivers/net/wireless/brcm80211/brcmutil/Makefile
 @@ -16,8 +16,8 @@
  # CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  
  ccflags-y :=				\
--	-Idrivers/staging/brcm80211/brcmutil \
--	-Idrivers/staging/brcm80211/include
+-	-Idrivers/net/wireless/brcm80211/brcmutil \
+-	-Idrivers/net/wireless/brcm80211/include
 +	-I$(obj)			\
 +	-I$(obj)/../include
  

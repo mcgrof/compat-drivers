@@ -7,6 +7,7 @@
 DRIVERS_MAKEFILE="drivers/net/wireless/Makefile"
 ATH_MAKEFILE="drivers/net/wireless/ath/Makefile"
 ATH9K_MAKEFILE="drivers/net/wireless/ath/ath9k/Makefile"
+BRCM80211_MAKEFILE="drivers/net/wireless/brcm80211/Makefile"
 RT2X00_MAKEFILE="drivers/net/wireless/rt2x00/Makefile"
 NET_WIRELESS_MAKEFILE="net/wireless/Makefile"
 EEPROM_MAKEFILE="drivers/misc/eeprom/Makefile"
@@ -32,11 +33,7 @@ PURPLE="\033[35m"
 CYAN="\033[36m"
 UNDERLINE="\033[02m"
 
-SUPPORTED_80211_DRIVERS="ath5k ath9k ath9k_htc carl9170 ath6kl b43 zd1211rw rt2x00 wl1251 wl12xx"
-
-if [ -d drivers/staging/brcm80211 ]; then
-	SUPPORTED_80211_DRIVERS="$SUPPORTED_80211_DRIVERS brcm80211"
-fi
+SUPPORTED_80211_DRIVERS="ath5k ath9k ath9k_htc carl9170 ath6kl b43 zd1211rw rt2x00 wl1251 wl12xx brcmsmac brcmfmac"
 
 # b43 needs some more work for driver-select, the SSB stuff, plus
 # what if you update b44 but not b43? It will bust.
@@ -55,6 +52,7 @@ function usage {
 	echo -e "\nSupported group drivers:"
 	echo -e "\t${CYAN}atheros${NORMAL} < ${PURPLE} ath5k ath9k carl9170 zd1211rw ath6kl ${NORMAL}>"
 	echo -e "\t${CYAN}ath${NORMAL} < ${PURPLE} ath5k ath9k carl9170 ath6kl ${NORMAL}>"
+	echo -e "\t${CYAN}brcm80211${NORMAL} < ${PURPLE} brcmsmac brcmfmac ${NORMAL}>"
 	echo -e "\t${CYAN}iwlagn${NORMAL} < ${PURPLE} iwlagn ${NORMAL}>"
 	echo -e "\t${CYAN}rtl818x${NORMAL} < ${PURPLE} rtl8180 rtl8187 ${NORMAL}>"
 	echo -e "\t${CYAN}rtlwifi${NORMAL} < ${PURPLE} rtl8192ce ${NORMAL}>"
@@ -220,11 +218,6 @@ function disable_staging {
 	perl -i -ne 'print if ! /CONFIG_COMPAT_STAGING/ ' Makefile
 }
 
-function disable_brcm80211 {
-	backup_file Makefile
-	perl -i -ne 'print if ! /brcm80211/ ' Makefile
-}
-
 function disable_update-initramfs
 {
 	backup_file Makefile
@@ -242,6 +235,12 @@ function select_ath9k_driver
 {
 	select_ath_driver CONFIG_ATH9K_HW
 	# In the future here we'll add stuff to disable ath9k_htc
+}
+
+function select_brcm80211_driver 
+{
+	backup_file $BRCM80211_MAKEFILE
+	perl -i -ne 'print if /'$1'/ || /CONFIG_BRCMUTIL/ ' $BRCM80211_MAKEFILE
 }
 
 function restore_file {
@@ -306,7 +305,6 @@ case $1 in
 		;;
 	ath)
 		disable_bt_usb_ethernet_var
-		disable_brcm80211
 		select_drivers		CONFIG_ATH_COMMON
 		disable_var_01
 		;;
@@ -347,6 +345,13 @@ case $1 in
 		disable_staging
 		disable_var_01
 		;;
+	brcm80211)
+		disable_staging
+		disable_bt_usb_ethernet_var
+		select_drivers		CONFIG_BRCMUTIL \
+					CONFIG_BRCMFMAC \
+					CONFIG_BRCMSMAC
+		;;
 # Singular modules
 	ath5k)
 		disable_staging
@@ -379,9 +384,17 @@ case $1 in
 		select_driver		CONFIG_ATH_COMMON
 		select_ath_driver	CONFIG_ATH6KL
 		;;
-	brcm80211)
+	brcmsmac)
+		disable_staging
 		disable_bt_usb_ethernet_var
-		select_driver		CONFIG_NOTHING
+		select_drivers		CONFIG_BRCMUTIL CONFIG_BRCMFMAC
+		select_brcm80211_driver	CONFIG_BRCMSMAC
+		;;
+	brcmfmac)
+		disable_staging
+		disable_bt_usb_ethernet_var
+		select_drivers		CONFIG_BRCMUTIL CONFIG_BRCMFMAC
+		select_brcm80211_driver	CONFIG_BRCMFMAC
 		;;
 	zd1211rw)
 		select_driver		CONFIG_COMPAT_ZD1211RW

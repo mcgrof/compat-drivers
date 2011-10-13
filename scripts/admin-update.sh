@@ -224,6 +224,12 @@ DRIVERS="$DRIVERS drivers/ssb"
 DRIVERS="$DRIVERS drivers/bcma"
 DRIVERS="$DRIVERS drivers/net/wireless/b43"
 DRIVERS="$DRIVERS drivers/net/wireless/b43legacy"
+DRIVERS="$DRIVERS drivers/net/wireless/brcm80211"
+DRIVERS="$DRIVERS drivers/net/wireless/brcm80211/brcmfmac"
+DRIVERS="$DRIVERS drivers/net/wireless/brcm80211/brcmsmac"
+DRIVERS="$DRIVERS drivers/net/wireless/brcm80211/brcmsmac/phy"
+DRIVERS="$DRIVERS drivers/net/wireless/brcm80211/brcmutil"
+DRIVERS="$DRIVERS drivers/net/wireless/brcm80211/include"
 DRIVERS="$DRIVERS drivers/net/wireless/iwlegacy"
 DRIVERS="$DRIVERS drivers/net/wireless/iwlwifi"
 DRIVERS="$DRIVERS drivers/net/wireless/rt2x00"
@@ -248,7 +254,7 @@ DRIVERS="$DRIVERS drivers/net/wireless/orinoco"
 DRIVERS="$DRIVERS drivers/net/wireless/mwifiex"
 
 # Staging drivers
-STAGING_DRIVERS="drivers/staging/brcm80211"
+STAGING_DRIVERS=""
 
 # Ethernet drivers
 DRIVERS="$DRIVERS drivers/net/ethernet/atheros"

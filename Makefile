@@ -37,7 +37,6 @@ obj-$(CONFIG_COMPAT_VAR_MODULES) += drivers/bcma/
 obj-$(CONFIG_COMPAT_VAR_MODULES) += drivers/misc/eeprom/
 
 ifeq ($(CONFIG_STAGING_EXCLUDE_BUILD),)
-obj-$(CONFIG_COMPAT_STAGING) += drivers/staging/brcm80211/
 endif
 
 endif
