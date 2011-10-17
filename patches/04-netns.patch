@@ -6,7 +6,7 @@ files...
 
 --- a/net/wireless/nl80211.c
 +++ b/net/wireless/nl80211.c
-@@ -4904,7 +4904,9 @@ static int nl80211_wiphy_netns(struct sk
+@@ -4936,7 +4936,9 @@ static int nl80211_wiphy_netns(struct sk
  	if (!net_eq(wiphy_net(&rdev->wiphy), net))
  		err = cfg80211_switch_netns(rdev, net);
  
@@ -104,7 +104,7 @@ files...
  module_exit(cfg80211_exit);
 --- a/net/wireless/wext-core.c
 +++ b/net/wireless/wext-core.c
-@@ -400,7 +400,11 @@ static void wireless_nlevent_process(uns
+@@ -401,7 +401,11 @@ static void wireless_nlevent_process(uns
  {
  	struct sk_buff *skb;
  	while ((skb = skb_dequeue(&wireless_nlevent_queue)))

@@ -23,7 +23,7 @@ without creating a headache on maintenance of the pathes.
  	if (unlikely(retval < 0)) {
 --- a/drivers/net/usb/usbnet.c
 +++ b/drivers/net/usb/usbnet.c
-@@ -1370,7 +1370,7 @@ usbnet_probe (struct usb_interface *udev
+@@ -1376,7 +1376,7 @@ usbnet_probe (struct usb_interface *udev
  		net->features |= NETIF_F_HIGHDMA;
  #endif
  
@@ -34,7 +34,7 @@ without creating a headache on maintenance of the pathes.
  
 --- a/drivers/net/wireless/ath/ath6kl/main.c
 +++ b/drivers/net/wireless/ath/ath6kl/main.c
-@@ -1325,7 +1325,7 @@ static struct net_device_ops ath6kl_netd
+@@ -1465,7 +1465,7 @@ static struct net_device_ops ath6kl_netd
  
  void init_netdev(struct net_device *dev)
  {
@@ -118,7 +118,7 @@ without creating a headache on maintenance of the pathes.
  	dev->irq = sdev->irq;
 --- a/net/wireless/wext-core.c
 +++ b/net/wireless/wext-core.c
-@@ -341,6 +341,7 @@ static const int compat_event_type_size[
+@@ -342,6 +342,7 @@ static const int compat_event_type_size[
  
  /* IW event code */
  
@@ -126,7 +126,7 @@ without creating a headache on maintenance of the pathes.
  static int __net_init wext_pernet_init(struct net *net)
  {
  	skb_queue_head_init(&net->wext_nlevents);
-@@ -383,6 +384,29 @@ static void wireless_nlevent_process(str
+@@ -384,6 +385,29 @@ static void wireless_nlevent_process(str
  
  static DECLARE_WORK(wireless_nlevent_work, wireless_nlevent_process);
  
@@ -156,7 +156,7 @@ without creating a headache on maintenance of the pathes.
  static struct nlmsghdr *rtnetlink_ifinfo_prep(struct net_device *dev,
  					      struct sk_buff *skb)
  {
-@@ -595,8 +619,13 @@ void wireless_send_event(struct net_devi
+@@ -596,8 +620,13 @@ void wireless_send_event(struct net_devi
  
  	skb_shinfo(skb)->frag_list = compskb;
  #endif
@@ -170,7 +170,7 @@ without creating a headache on maintenance of the pathes.
  }
  EXPORT_SYMBOL(wireless_send_event);
  
-@@ -921,8 +950,13 @@ static int wireless_process_ioctl(struct
+@@ -922,8 +951,13 @@ static int wireless_process_ioctl(struct
  			return private(dev, iwr, cmd, info, handler);
  	}
  	/* Old driver API : call driver ioctl handler */
@@ -228,7 +228,7 @@ without creating a headache on maintenance of the pathes.
  	wdev->netdev = ndev;
 --- a/drivers/net/wireless/libertas/main.c
 +++ b/drivers/net/wireless/libertas/main.c
-@@ -916,7 +916,7 @@ struct lbs_private *lbs_add_card(void *c
+@@ -951,7 +951,7 @@ struct lbs_private *lbs_add_card(void *c
  	wdev->netdev = dev;
  	priv->dev = dev;
  
@@ -267,7 +267,7 @@ without creating a headache on maintenance of the pathes.
  #define LBS_DEB_LEAVE	0x00000002
 --- a/drivers/net/wireless/mac80211_hwsim.c
 +++ b/drivers/net/wireless/mac80211_hwsim.c
-@@ -1236,7 +1236,7 @@ static const struct net_device_ops hwsim
+@@ -1238,7 +1238,7 @@ static const struct net_device_ops hwsim
  
  static void hwsim_mon_setup(struct net_device *dev)
  {
@@ -278,9 +278,9 @@ without creating a headache on maintenance of the pathes.
  	dev->tx_queue_len = 0;
 --- a/drivers/net/wireless/mwifiex/main.c
 +++ b/drivers/net/wireless/mwifiex/main.c
-@@ -652,7 +652,7 @@ static const struct net_device_ops mwifi
- static void
- mwifiex_init_priv_params(struct mwifiex_private *priv, struct net_device *dev)
+@@ -580,7 +580,7 @@ static const struct net_device_ops mwifi
+ void mwifiex_init_priv_params(struct mwifiex_private *priv,
+ 						struct net_device *dev)
  {
 -	dev->netdev_ops = &mwifiex_netdev_ops;
 +	netdev_attach_ops(dev, &mwifiex_netdev_ops);

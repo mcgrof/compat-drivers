@@ -3,7 +3,7 @@ define for something else in arch/um/include/asm/pda.h on older kernels.
 
 --- a/drivers/net/wireless/orinoco/fw.c
 +++ b/drivers/net/wireless/orinoco/fw.c
-@@ -122,7 +122,7 @@ orinoco_dl_firmware(struct orinoco_priva
+@@ -123,7 +123,7 @@ orinoco_dl_firmware(struct orinoco_priva
  	dev_dbg(dev, "Attempting to download firmware %s\n", firmware);
  
  	/* Read current plug data */
@@ -12,7 +12,7 @@ define for something else in arch/um/include/asm/pda.h on older kernels.
  	dev_dbg(dev, "Read PDA returned %d\n", err);
  	if (err)
  		goto free;
-@@ -224,7 +224,7 @@ symbol_dl_image(struct orinoco_private *
+@@ -225,7 +225,7 @@ symbol_dl_image(struct orinoco_private *
  		if (!pda)
  			return -ENOMEM;
  

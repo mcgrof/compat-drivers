@@ -28,8 +28,8 @@ don't ever run into this again because the wext pointer
 moved due to struct enlargements.
 
 
---- a/include/net/cfg80211.h	2011-10-04 10:49:07.000000000 +0200
-+++ b/include/net/cfg80211.h	2011-10-06 21:50:47.000000000 +0200
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
 @@ -1904,6 +1904,9 @@ struct wiphy_wowlan_support {
  struct wiphy {
  	/* assign these fields before you register the wiphy */
@@ -40,9 +40,9 @@ moved due to struct enlargements.
  	/* permanent MAC address(es) */
  	u8 perm_addr[ETH_ALEN];
  	u8 addr_mask[ETH_ALEN];
---- a/net/wireless/core.c	2011-09-23 10:34:28.000000000 +0200
-+++ b/net/wireless/core.c	2011-10-06 21:52:02.000000000 +0200
-@@ -330,6 +330,17 @@ struct wiphy *wiphy_new(const struct cfg
+--- a/net/wireless/core.c
++++ b/net/wireless/core.c
+@@ -332,6 +332,17 @@ struct wiphy *wiphy_new(const struct cfg
  	struct cfg80211_registered_device *rdev;
  	int alloc_size;
  
