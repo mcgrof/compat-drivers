@@ -34,7 +34,7 @@ calls on compat code with only slight modifications.
  /*
 --- a/drivers/net/ethernet/atheros/atlx/atl1.c
 +++ b/drivers/net/ethernet/atheros/atlx/atl1.c
-@@ -2835,6 +2835,9 @@ static int atl1_resume(struct device *de
+@@ -2833,6 +2833,9 @@ static int atl1_resume(struct device *de
  	return 0;
  }
  
@@ -44,7 +44,7 @@ calls on compat code with only slight modifications.
  static SIMPLE_DEV_PM_OPS(atl1_pm_ops, atl1_suspend, atl1_resume);
  #define ATL1_PM_OPS	(&atl1_pm_ops)
  
-@@ -3104,7 +3107,12 @@ static struct pci_driver atl1_driver = {
+@@ -3102,7 +3105,12 @@ static struct pci_driver atl1_driver = {
  	.probe = atl1_probe,
  	.remove = __devexit_p(atl1_remove),
  	.shutdown = atl1_shutdown,
@@ -242,3 +242,102 @@ calls on compat code with only slight modifications.
  };
  
  int __must_check iwl_pci_register_driver(void)
+--- a/drivers/net/wireless/rtlwifi/rtl8192ce/sw.c
++++ b/drivers/net/wireless/rtlwifi/rtl8192ce/sw.c
+@@ -381,21 +381,22 @@ MODULE_PARM_DESC(swlps, "Set to 1 to use
+ MODULE_PARM_DESC(fwlps, "Set to 1 to use FW control power save (default 1)\n");
+ MODULE_PARM_DESC(debug, "Set debug level (0-5) (default 0)");
+ 
+-static const struct dev_pm_ops rtlwifi_pm_ops = {
+-	.suspend = rtl_pci_suspend,
+-	.resume = rtl_pci_resume,
+-	.freeze = rtl_pci_suspend,
+-	.thaw = rtl_pci_resume,
+-	.poweroff = rtl_pci_suspend,
+-	.restore = rtl_pci_resume,
+-};
++static const SIMPLE_DEV_PM_OPS(rtlwifi_pm_ops, rtl_pci_suspend, rtl_pci_resume);
++
++compat_pci_suspend(rtl_pci_suspend)
++compat_pci_resume(rtl_pci_resume)
+ 
+ static struct pci_driver rtl92ce_driver = {
+ 	.name = KBUILD_MODNAME,
+ 	.id_table = rtl92ce_pci_ids,
+ 	.probe = rtl_pci_probe,
+ 	.remove = rtl_pci_disconnect,
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
+ 	.driver.pm = &rtlwifi_pm_ops,
++#elif defined(CONFIG_PM)
++	.suspend    = rtl_pci_suspend_compat,
++	.resume     = rtl_pci_resume_compat,
++#endif
+ };
+ 
+ static int __init rtl92ce_module_init(void)
+--- a/drivers/net/wireless/rtlwifi/rtl8192de/sw.c
++++ b/drivers/net/wireless/rtlwifi/rtl8192de/sw.c
+@@ -391,21 +391,22 @@ MODULE_PARM_DESC(swlps, "Set to 1 to use
+ MODULE_PARM_DESC(fwlps, "Set to 1 to use FW control power save (default 1)\n");
+ MODULE_PARM_DESC(debug, "Set debug level (0-5) (default 0)");
+ 
+-static const struct dev_pm_ops rtlwifi_pm_ops = {
+-	.suspend = rtl_pci_suspend,
+-	.resume = rtl_pci_resume,
+-	.freeze = rtl_pci_suspend,
+-	.thaw = rtl_pci_resume,
+-	.poweroff = rtl_pci_suspend,
+-	.restore = rtl_pci_resume,
+-};
++static const SIMPLE_DEV_PM_OPS(rtlwifi_pm_ops, rtl_pci_suspend, rtl_pci_resume);
++
++compat_pci_suspend(rtl_pci_suspend)
++compat_pci_resume(rtl_pci_resume)
+ 
+ static struct pci_driver rtl92de_driver = {
+ 	.name = KBUILD_MODNAME,
+ 	.id_table = rtl92de_pci_ids,
+ 	.probe = rtl_pci_probe,
+ 	.remove = rtl_pci_disconnect,
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
+ 	.driver.pm = &rtlwifi_pm_ops,
++#elif defined(CONFIG_PM)
++	.suspend    = rtl_pci_suspend_compat,
++	.resume     = rtl_pci_resume_compat,
++#endif
+ };
+ 
+ /* add global spin lock to solve the problem that
+--- a/drivers/net/wireless/rtlwifi/rtl8192se/sw.c
++++ b/drivers/net/wireless/rtlwifi/rtl8192se/sw.c
+@@ -403,21 +403,22 @@ MODULE_PARM_DESC(swlps, "Set to 1 to use
+ MODULE_PARM_DESC(fwlps, "Set to 1 to use FW control power save (default 1)\n");
+ MODULE_PARM_DESC(debug, "Set debug level (0-5) (default 0)");
+ 
+-static const struct dev_pm_ops rtlwifi_pm_ops = {
+-	.suspend = rtl_pci_suspend,
+-	.resume = rtl_pci_resume,
+-	.freeze = rtl_pci_suspend,
+-	.thaw = rtl_pci_resume,
+-	.poweroff = rtl_pci_suspend,
+-	.restore = rtl_pci_resume,
+-};
++static const SIMPLE_DEV_PM_OPS(rtlwifi_pm_ops, rtl_pci_suspend, rtl_pci_resume);
++
++compat_pci_suspend(rtl_pci_suspend)
++compat_pci_resume(rtl_pci_resume)
+ 
+ static struct pci_driver rtl92se_driver = {
+ 	.name = KBUILD_MODNAME,
+ 	.id_table = rtl92se_pci_ids,
+ 	.probe = rtl_pci_probe,
+ 	.remove = rtl_pci_disconnect,
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
+ 	.driver.pm = &rtlwifi_pm_ops,
++#elif defined(CONFIG_PM)
++	.suspend    = rtl_pci_suspend_compat,
++	.resume     = rtl_pci_resume_compat,
++#endif
+ };
+ 
+ static int __init rtl92se_module_init(void)
