@@ -23,7 +23,7 @@ without creating a headache on maintenance of the pathes.
  	if (unlikely(retval < 0)) {
 --- a/drivers/net/usb/usbnet.c
 +++ b/drivers/net/usb/usbnet.c
-@@ -1376,7 +1376,7 @@ usbnet_probe (struct usb_interface *udev
+@@ -1377,7 +1377,7 @@ usbnet_probe (struct usb_interface *udev
  		net->features |= NETIF_F_HIGHDMA;
  #endif
  
@@ -228,7 +228,7 @@ without creating a headache on maintenance of the pathes.
  	wdev->netdev = ndev;
 --- a/drivers/net/wireless/libertas/main.c
 +++ b/drivers/net/wireless/libertas/main.c
-@@ -951,7 +951,7 @@ struct lbs_private *lbs_add_card(void *c
+@@ -981,7 +981,7 @@ struct lbs_private *lbs_add_card(void *c
  	wdev->netdev = dev;
  	priv->dev = dev;
  
@@ -358,7 +358,7 @@ without creating a headache on maintenance of the pathes.
  
 --- a/drivers/net/ethernet/atheros/atlx/atl1.c
 +++ b/drivers/net/ethernet/atheros/atlx/atl1.c
-@@ -2968,7 +2968,7 @@ static int __devinit atl1_probe(struct p
+@@ -2966,7 +2966,7 @@ static int __devinit atl1_probe(struct p
  	adapter->mii.phy_id_mask = 0x1f;
  	adapter->mii.reg_num_mask = 0x1f;
  

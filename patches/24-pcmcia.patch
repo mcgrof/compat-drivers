@@ -109,7 +109,7 @@
  	struct hci_dev *hdev = info->hdev;
  
  	if (!hdev)
-@@ -864,7 +901,18 @@ static int bluecard_probe(struct pcmcia_
+@@ -862,7 +899,18 @@ static int bluecard_probe(struct pcmcia_
  	info->p_dev = link;
  	link->priv = info;
  
@@ -128,7 +128,7 @@
  
  	return bluecard_config(link);
  }
-@@ -884,15 +932,30 @@ static int bluecard_config(struct pcmcia
+@@ -882,15 +930,30 @@ static int bluecard_config(struct pcmcia
  	bluecard_info_t *info = link->priv;
  	int i, n;
  
@@ -159,7 +159,7 @@
  		if (i == 0)
  			break;
  	}
-@@ -900,9 +963,15 @@ static int bluecard_config(struct pcmcia
+@@ -898,9 +961,15 @@ static int bluecard_config(struct pcmcia
  	if (i != 0)
  		goto failed;
  
@@ -175,7 +175,7 @@
  
  	i = pcmcia_enable_device(link);
  	if (i != 0)
-@@ -940,7 +1009,13 @@ MODULE_DEVICE_TABLE(pcmcia, bluecard_ids
+@@ -938,7 +1007,13 @@ MODULE_DEVICE_TABLE(pcmcia, bluecard_ids
  
  static struct pcmcia_driver bluecard_driver = {
  	.owner		= THIS_MODULE,
@@ -239,7 +239,7 @@
  
  	/* Reset */
  	bt3c_io_write(iobase, 0x8040, 0x0404);
-@@ -656,8 +672,27 @@ static int bt3c_probe(struct pcmcia_devi
+@@ -654,8 +670,27 @@ static int bt3c_probe(struct pcmcia_devi
  	info->p_dev = link;
  	link->priv = info;
  
@@ -267,7 +267,7 @@
  
  	return bt3c_config(link);
  }
-@@ -671,6 +706,7 @@ static void bt3c_detach(struct pcmcia_de
+@@ -669,6 +704,7 @@ static void bt3c_detach(struct pcmcia_de
  	kfree(info);
  }
  
@@ -275,7 +275,7 @@
  static int bt3c_check_config(struct pcmcia_device *p_dev, void *priv_data)
  {
  	int *try = priv_data;
-@@ -709,6 +745,63 @@ static int bt3c_check_config_notpicky(st
+@@ -707,6 +743,63 @@ static int bt3c_check_config_notpicky(st
  	}
  	return -ENODEV;
  }
@@ -339,7 +339,7 @@
  
  static int bt3c_config(struct pcmcia_device *link)
  {
-@@ -732,9 +825,15 @@ static int bt3c_config(struct pcmcia_dev
+@@ -730,9 +823,15 @@ static int bt3c_config(struct pcmcia_dev
  	goto failed;
  
  found_port:
@@ -355,7 +355,7 @@
  
  	i = pcmcia_enable_device(link);
  	if (i != 0)
-@@ -769,7 +868,13 @@ MODULE_DEVICE_TABLE(pcmcia, bt3c_ids);
+@@ -767,7 +866,13 @@ MODULE_DEVICE_TABLE(pcmcia, bt3c_ids);
  
  static struct pcmcia_driver bt3c_driver = {
  	.owner		= THIS_MODULE,
@@ -443,7 +443,7 @@
  	struct hci_dev *hdev = info->hdev;
  
  	if (!hdev)
-@@ -585,8 +609,27 @@ static int btuart_probe(struct pcmcia_de
+@@ -583,8 +607,27 @@ static int btuart_probe(struct pcmcia_de
  	info->p_dev = link;
  	link->priv = info;
  
@@ -471,7 +471,7 @@
  
  	return btuart_config(link);
  }
-@@ -600,6 +643,7 @@ static void btuart_detach(struct pcmcia_
+@@ -598,6 +641,7 @@ static void btuart_detach(struct pcmcia_
  	kfree(info);
  }
  
@@ -479,7 +479,7 @@
  static int btuart_check_config(struct pcmcia_device *p_dev, void *priv_data)
  {
  	int *try = priv_data;
-@@ -638,6 +682,63 @@ static int btuart_check_config_notpicky(
+@@ -636,6 +680,63 @@ static int btuart_check_config_notpicky(
  	}
  	return -ENODEV;
  }
@@ -543,7 +543,7 @@
  
  static int btuart_config(struct pcmcia_device *link)
  {
-@@ -661,9 +762,15 @@ static int btuart_config(struct pcmcia_d
+@@ -659,9 +760,15 @@ static int btuart_config(struct pcmcia_d
  	goto failed;
  
  found_port:
@@ -559,7 +559,7 @@
  
  	i = pcmcia_enable_device(link);
  	if (i != 0)
-@@ -697,7 +804,13 @@ MODULE_DEVICE_TABLE(pcmcia, btuart_ids);
+@@ -695,7 +802,13 @@ MODULE_DEVICE_TABLE(pcmcia, btuart_ids);
  
  static struct pcmcia_driver btuart_driver = {
  	.owner		= THIS_MODULE,
@@ -649,7 +649,7 @@
  	struct hci_dev *hdev = info->hdev;
  
  	if (!hdev)
-@@ -571,7 +596,24 @@ static int dtl1_probe(struct pcmcia_devi
+@@ -569,7 +594,24 @@ static int dtl1_probe(struct pcmcia_devi
  	info->p_dev = link;
  	link->priv = info;
  
@@ -674,7 +674,7 @@
  
  	return dtl1_config(link);
  }
-@@ -586,6 +628,7 @@ static void dtl1_detach(struct pcmcia_de
+@@ -584,6 +626,7 @@ static void dtl1_detach(struct pcmcia_de
  	kfree(info);
  }
  
@@ -682,7 +682,7 @@
  static int dtl1_confcheck(struct pcmcia_device *p_dev, void *priv_data)
  {
  	if ((p_dev->resource[1]->end) || (p_dev->resource[1]->end < 8))
-@@ -596,6 +639,29 @@ static int dtl1_confcheck(struct pcmcia_
+@@ -594,6 +637,29 @@ static int dtl1_confcheck(struct pcmcia_
  
  	return pcmcia_request_io(p_dev);
  }
@@ -712,7 +712,7 @@
  
  static int dtl1_config(struct pcmcia_device *link)
  {
-@@ -603,13 +669,23 @@ static int dtl1_config(struct pcmcia_dev
+@@ -601,13 +667,23 @@ static int dtl1_config(struct pcmcia_dev
  	int i;
  
  	/* Look for a generic full-sized window */
@@ -736,7 +736,7 @@
  
  	i = pcmcia_enable_device(link);
  	if (i != 0)
-@@ -647,7 +723,13 @@ MODULE_DEVICE_TABLE(pcmcia, dtl1_ids);
+@@ -645,7 +721,13 @@ MODULE_DEVICE_TABLE(pcmcia, dtl1_ids);
  
  static struct pcmcia_driver dtl1_driver = {
  	.owner		= THIS_MODULE,

@@ -187,7 +187,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  }
 --- a/drivers/net/ethernet/atheros/atlx/atl1.c
 +++ b/drivers/net/ethernet/atheros/atlx/atl1.c
-@@ -2875,8 +2875,10 @@ static const struct net_device_ops atl1_
+@@ -2873,8 +2873,10 @@ static const struct net_device_ops atl1_
  	.ndo_validate_addr	= eth_validate_addr,
  	.ndo_set_mac_address	= atl1_set_mac,
  	.ndo_change_mtu		= atl1_change_mtu,
@@ -198,7 +198,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  	.ndo_do_ioctl		= atlx_ioctl,
  	.ndo_tx_timeout		= atlx_tx_timeout,
  #ifdef CONFIG_NET_POLL_CONTROLLER
-@@ -2986,11 +2988,13 @@ static int __devinit atl1_probe(struct p
+@@ -2984,11 +2986,13 @@ static int __devinit atl1_probe(struct p
  	netdev->features |= NETIF_F_SG;
  	netdev->features |= (NETIF_F_HW_VLAN_TX | NETIF_F_HW_VLAN_RX);
  
@@ -212,7 +212,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  
  	/*
  	 * patch for some L1 of old version,
-@@ -3603,6 +3607,14 @@ static int atl1_set_pauseparam(struct ne
+@@ -3601,6 +3605,14 @@ static int atl1_set_pauseparam(struct ne
  	return 0;
  }
  
@@ -227,7 +227,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  static void atl1_get_strings(struct net_device *netdev, u32 stringset,
  	u8 *data)
  {
-@@ -3675,4 +3687,10 @@ static const struct ethtool_ops atl1_eth
+@@ -3673,4 +3685,10 @@ static const struct ethtool_ops atl1_eth
  	.nway_reset		= atl1_nway_reset,
  	.get_ethtool_stats	= atl1_get_ethtool_stats,
  	.get_sset_count		= atl1_get_sset_count,

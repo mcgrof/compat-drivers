@@ -22,7 +22,7 @@ compile warning.
  					 unsigned long state,
 --- a/net/bluetooth/bnep/core.c
 +++ b/net/bluetooth/bnep/core.c
-@@ -551,9 +551,11 @@ static struct device *bnep_get_device(st
+@@ -549,9 +549,11 @@ static struct device *bnep_get_device(st
  	return conn ? &conn->dev : NULL;
  }
  
@@ -36,7 +36,7 @@ compile warning.
  {
 --- a/drivers/net/usb/usbnet.c
 +++ b/drivers/net/usb/usbnet.c
-@@ -1289,13 +1289,17 @@ static const struct net_device_ops usbne
+@@ -1290,13 +1290,17 @@ static const struct net_device_ops usbne
  
  // precondition: never called in_interrupt
  
