@@ -301,7 +301,7 @@ without creating a headache on maintenance of the pathes.
  
 --- a/net/bluetooth/bnep/netdev.c
 +++ b/net/bluetooth/bnep/netdev.c
-@@ -170,8 +170,12 @@ static inline int bnep_net_proto_filter(
+@@ -170,8 +170,12 @@
  }
  #endif
  
@@ -314,10 +314,10 @@ without creating a headache on maintenance of the pathes.
  {
  	struct bnep_session *s = netdev_priv(dev);
  	struct sock *sk = s->sock->sk;
-@@ -231,7 +235,7 @@ void bnep_net_setup(struct net_device *d
- 	dev->addr_len = ETH_ALEN;
+@@ -232,7 +236,7 @@
  
  	ether_setup(dev);
+ 	dev->priv_flags &= ~IFF_TX_SKB_SHARING;
 -	dev->netdev_ops = &bnep_netdev_ops;
 +	netdev_attach_ops(dev, &bnep_netdev_ops);
  
