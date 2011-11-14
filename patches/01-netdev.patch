@@ -45,7 +45,7 @@ without creating a headache on maintenance of the pathes.
  	retval = rndis_set_oid(usbdev, OID_GEN_CURRENT_PACKET_FILTER, &tmp,
 --- a/net/mac80211/iface.c
 +++ b/net/mac80211/iface.c
-@@ -700,7 +700,12 @@
+@@ -700,7 +700,12 @@ static void ieee80211_if_setup(struct ne
  {
  	ether_setup(dev);
  	dev->priv_flags &= ~IFF_TX_SKB_SHARING;
@@ -59,7 +59,7 @@ without creating a headache on maintenance of the pathes.
  	dev->destructor = free_netdev;
  }
  
-@@ -847,7 +852,7 @@
+@@ -847,7 +852,7 @@ static void ieee80211_setup_sdata(struct
  	/* and set some type-dependent values */
  	sdata->vif.type = type;
  	sdata->vif.p2p = false;
@@ -68,7 +68,7 @@ without creating a headache on maintenance of the pathes.
  	sdata->wdev.iftype = type;
  
  	sdata->control_port_protocol = cpu_to_be16(ETH_P_PAE);
-@@ -886,7 +891,7 @@
+@@ -886,7 +891,7 @@ static void ieee80211_setup_sdata(struct
  		break;
  	case NL80211_IFTYPE_MONITOR:
  		sdata->dev->type = ARPHRD_IEEE80211_RADIOTAP;
@@ -77,7 +77,7 @@ without creating a headache on maintenance of the pathes.
  		sdata->u.mntr_flags = MONITOR_FLAG_CONTROL |
  				      MONITOR_FLAG_OTHER_BSS;
  		break;
-@@ -1137,6 +1142,8 @@
+@@ -1137,6 +1142,8 @@ int ieee80211_if_add(struct ieee80211_lo
  		return -ENOMEM;
  	dev_net_set(ndev, wiphy_net(local->hw.wiphy));
  
@@ -86,7 +86,7 @@ without creating a headache on maintenance of the pathes.
  	ndev->needed_headroom = local->tx_headroom +
  				4*6 /* four MAC addresses */
  				+ 2 + 2 + 2 + 2 /* ctl, dur, seq, qos */
-@@ -1145,6 +1152,7 @@
+@@ -1145,6 +1152,7 @@ int ieee80211_if_add(struct ieee80211_lo
  				- ETH_HLEN /* ethernet hard_header_len */
  				+ IEEE80211_ENCRYPT_HEADROOM;
  	ndev->needed_tailroom = IEEE80211_ENCRYPT_TAILROOM;
@@ -301,7 +301,7 @@ without creating a headache on maintenance of the pathes.
  
 --- a/net/bluetooth/bnep/netdev.c
 +++ b/net/bluetooth/bnep/netdev.c
-@@ -170,8 +170,12 @@
+@@ -170,8 +170,12 @@ static inline int bnep_net_proto_filter(
  }
  #endif
  
@@ -314,7 +314,7 @@ without creating a headache on maintenance of the pathes.
  {
  	struct bnep_session *s = netdev_priv(dev);
  	struct sock *sk = s->sock->sk;
-@@ -232,7 +236,7 @@
+@@ -232,7 +236,7 @@ void bnep_net_setup(struct net_device *d
  
  	ether_setup(dev);
  	dev->priv_flags &= ~IFF_TX_SKB_SHARING;

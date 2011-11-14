@@ -6,7 +6,7 @@ thread in process context as well.
 
 --- a/drivers/net/wireless/b43/main.c
 +++ b/drivers/net/wireless/b43/main.c
-@@ -3970,8 +3970,13 @@ redo:
+@@ -3971,8 +3971,13 @@ redo:
  	if (dev->sdev->bus->bustype == SSB_BUSTYPE_SDIO) {
  		b43_sdio_free_irq(dev);
  	} else {
@@ -20,7 +20,7 @@ thread in process context as well.
  	}
  	mutex_lock(&wl->mutex);
  	dev = wl->current_dev;
-@@ -4011,9 +4016,17 @@ static int b43_wireless_core_start(struc
+@@ -4012,9 +4017,17 @@ static int b43_wireless_core_start(struc
  			goto out;
  		}
  	} else {
@@ -38,7 +38,7 @@ thread in process context as well.
  		if (err) {
  			b43err(dev->wl, "Cannot request IRQ-%d\n",
  			       dev->sdev->irq);
-@@ -4728,6 +4741,10 @@ static int b43_setup_bands(struct b43_wl
+@@ -4729,6 +4742,10 @@ static int b43_setup_bands(struct b43_wl
  
  static void b43_wireless_core_detach(struct b43_wldev *dev)
  {

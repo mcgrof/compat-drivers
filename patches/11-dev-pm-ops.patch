@@ -84,7 +84,7 @@ calls on compat code with only slight modifications.
  /*
 --- a/drivers/net/wireless/ath/ath9k/pci.c
 +++ b/drivers/net/wireless/ath/ath9k/pci.c
-@@ -322,14 +322,11 @@ static int ath_pci_resume(struct device
+@@ -349,14 +349,11 @@ static int ath_pci_resume(struct device
  	return 0;
  }
  
@@ -104,7 +104,7 @@ calls on compat code with only slight modifications.
  
  #define ATH9K_PM_OPS	(&ath9k_pm_ops)
  
-@@ -347,7 +344,12 @@ static struct pci_driver ath_pci_driver
+@@ -374,7 +371,12 @@ static struct pci_driver ath_pci_driver
  	.id_table   = ath_pci_id_table,
  	.probe      = ath_pci_probe,
  	.remove     = ath_pci_remove,
@@ -220,7 +220,7 @@ calls on compat code with only slight modifications.
  static int __init iwl4965_init(void)
 --- a/drivers/net/wireless/iwlwifi/iwl-agn.c
 +++ b/drivers/net/wireless/iwlwifi/iwl-agn.c
-@@ -3920,7 +3920,12 @@ static struct pci_driver iwl_driver = {
+@@ -3925,7 +3925,12 @@ static struct pci_driver iwl_driver = {
  	.id_table = iwl_hw_card_ids,
  	.probe = iwl_pci_probe,
  	.remove = __devexit_p(iwl_pci_remove),
@@ -255,7 +255,7 @@ calls on compat code with only slight modifications.
  #endif /* CONFIG_PM */
 --- a/drivers/net/wireless/iwlwifi/iwl-core.h
 +++ b/drivers/net/wireless/iwlwifi/iwl-core.h
-@@ -504,7 +504,12 @@ __le32 iwl_add_beacon_time(struct iwl_pr
+@@ -506,7 +506,12 @@ __le32 iwl_add_beacon_time(struct iwl_pr
  #ifdef CONFIG_PM
  int iwl_pci_suspend(struct device *device);
  int iwl_pci_resume(struct device *device);
