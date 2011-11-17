@@ -33,6 +33,14 @@ endif
 COMPAT_VERSIONS := $(shell I=$(COMPAT_LATEST_VERSION); while [ "$$I" -gt $(KERNEL_SUBLEVEL) ]; do echo $$I; I=$$(($$I - 1)); done)
 $(foreach ver,$(COMPAT_VERSIONS),$(eval CONFIG_COMPAT_KERNEL_3_$(ver)=y))
 
+RHEL_MAJOR := $(shell grep ^RHEL_MAJOR $(KLIB_BUILD)/Makefile | sed -n 's/.*= *\(.*\)/\1/p')
+
+ifneq ($(RHEL_MAJOR),)
+RHEL_MINOR := $(shell grep ^RHEL_MINOR $(KLIB_BUILD)/Makefile | sed -n 's/.*= *\(.*\)/\1/p')
+COMPAT_RHEL_VERSIONS := $(shell I=$(RHEL_MINOR); while [ "$$I" -ge 0 ]; do echo $$I; I=$$(($$I - 1)); done)
+$(foreach ver,$(COMPAT_RHEL_VERSIONS),$(eval CONFIG_COMPAT_RHEL_$(RHEL_MAJOR)_$(ver)=y))
+endif
+
 ifdef CONFIG_COMPAT_KERNEL_2_6_24
 $(error "ERROR: compat-wireless by default supports kernels >= 2.6.24, try enabling only one driver though")
 endif #CONFIG_COMPAT_KERNEL_2_6_24
@@ -119,22 +127,37 @@ endif #CONFIG_COMPAT_KERNEL_2_6_27
 # because it gets passed-on through compat_autoconf.h.
 #
 ifdef CONFIG_COMPAT_KERNEL_2_6_33
+ifndef CONFIG_COMPAT_RHEL_6_1
 ifdef CONFIG_FW_LOADER
 CONFIG_COMPAT_FIRMWARE_CLASS=m
 endif #CONFIG_FW_LOADER
+endif #CONFIG_COMPAT_RHEL_6_1
 endif #CONFIG_COMPAT_KERNEL_2_6_33
 
 ifdef CONFIG_COMPAT_KERNEL_2_6_36
+ifndef CONFIG_COMPAT_RHEL_6_1
  CONFIG_COMPAT_KFIFO=y
+endif #CONFIG_COMPAT_RHEL_6_1
 endif #CONFIG_COMPAT_KERNEL_2_6_36
 
 #
-# CONFIG_COMPAT_BT_SOCK_CREATE_NEEDS_KERN definition has no leading
-# whitespace, because it gets passed-on through compat_autoconf.h.
+# CONFIG_COMPAT_BT_SOCK_CREATE_NEEDS_KERN definitions have no leading
+# whitespace, because they get passed-on through compat_autoconf.h.
 #
 ifndef CONFIG_COMPAT_KERNEL_2_6_33
 CONFIG_COMPAT_BT_SOCK_CREATE_NEEDS_KERN=y
 endif #CONFIG_COMPAT_KERNEL_2_6_33
+ifdef CONFIG_COMPAT_RHEL_6_0
+CONFIG_COMPAT_BT_SOCK_CREATE_NEEDS_KERN=y
+endif #CONFIG_COMPAT_RHEL_6_0
+
+#
+# CONFIG_COMPAT_FIRMWARE_DATA_RW_NEEDS_FILP definition has no leading
+# whitespace, because it gets passed-on through compat_autoconf.h.
+#
+ifdef CONFIG_COMPAT_RHEL_6_0
+CONFIG_COMPAT_FIRMWARE_DATA_RW_NEEDS_FILP=y
+endif #CONFIG_COMPAT_RHEL_6_0
 
 # Wireless subsystem stuff
 CONFIG_MAC80211=m
