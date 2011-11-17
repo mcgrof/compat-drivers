@@ -114,9 +114,13 @@ else
 endif
 endif #CONFIG_COMPAT_KERNEL_2_6_27
 
+#
+# CONFIG_COMPAT_FIRMWARE_CLASS definition has no leading whitespace,
+# because it gets passed-on through compat_autoconf.h.
+#
 ifdef CONFIG_COMPAT_KERNEL_2_6_33
 ifdef CONFIG_FW_LOADER
- CONFIG_COMPAT_FIRMWARE_CLASS=m
+CONFIG_COMPAT_FIRMWARE_CLASS=m
 endif #CONFIG_FW_LOADER
 endif #CONFIG_COMPAT_KERNEL_2_6_33
 
