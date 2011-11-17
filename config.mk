@@ -16,7 +16,7 @@ endif
 
 ifneq ($(wildcard $(KLIB_BUILD)/Makefile),)
 
-COMPAT_LATEST_VERSION = 1
+COMPAT_LATEST_VERSION = 3
 
 KERNEL_VERSION := $(shell $(MAKE) -C $(KLIB_BUILD) kernelversion | sed -n 's/^\([0-9]\)\..*/\1/p')
 
