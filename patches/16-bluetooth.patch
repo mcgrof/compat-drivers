@@ -45,7 +45,7 @@ here still, but for now we keep this here.
  }
  EXPORT_SYMBOL(bt_sock_unregister);
  
-+#if (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,32))
++#if defined(CONFIG_COMPAT_BT_SOCK_CREATE_NEEDS_KERN)
  static int bt_sock_create(struct net *net, struct socket *sock, int proto,
  			  int kern)
 +#else
@@ -58,7 +58,7 @@ here still, but for now we keep this here.
  	read_lock(&bt_proto_lock);
  
  	if (bt_proto[proto] && try_module_get(bt_proto[proto]->owner)) {
-+#if (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,32))
++#if defined(CONFIG_COMPAT_BT_SOCK_CREATE_NEEDS_KERN)
  		err = bt_proto[proto]->create(net, sock, proto, kern);
 +#else
 +		err = bt_proto[proto]->create(net, sock, proto);
@@ -110,7 +110,7 @@ here still, but for now we keep this here.
  	.obj_size	= sizeof(struct hci_pinfo)
  };
  
-+#if (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,32))
++#if defined(CONFIG_COMPAT_BT_SOCK_CREATE_NEEDS_KERN)
  static int hci_sock_create(struct net *net, struct socket *sock, int protocol,
  			   int kern)
 +#else
@@ -163,7 +163,7 @@ here still, but for now we keep this here.
  	return ret;
  }
  
-+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,34))
++#if defined(CONFIG_COMPAT_BT_SOCK_CREATE_NEEDS_KERN)
  static int hidp_output_raw_report(struct hid_device *hid, unsigned char *data, size_t count,
  		unsigned char report_type)
  {
@@ -431,7 +431,7 @@ here still, but for now we keep this here.
  	return sk;
  }
  
-+#if (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,32))
++#if defined(CONFIG_COMPAT_BT_SOCK_CREATE_NEEDS_KERN)
  static int rfcomm_sock_create(struct net *net, struct socket *sock,
  			      int protocol, int kern)
 +#else
@@ -522,7 +522,7 @@ here still, but for now we keep this here.
  	return sk;
  }
  
-+#if (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,32))
++#if defined(CONFIG_COMPAT_BT_SOCK_CREATE_NEEDS_KERN)
  static int sco_sock_create(struct net *net, struct socket *sock, int protocol,
  			   int kern)
 +#else
@@ -549,7 +549,7 @@ here still, but for now we keep this here.
  	.obj_size	= sizeof(struct bt_sock)
  };
  
-+#if (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,32))
++#if defined(CONFIG_COMPAT_BT_SOCK_CREATE_NEEDS_KERN)
  static int bnep_sock_create(struct net *net, struct socket *sock, int protocol,
  			    int kern)
 +#else
@@ -564,7 +564,7 @@ here still, but for now we keep this here.
  	.obj_size	= sizeof(struct bt_sock)
  };
  
-+#if (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,32))
++#if defined(CONFIG_COMPAT_BT_SOCK_CREATE_NEEDS_KERN)
  static int cmtp_sock_create(struct net *net, struct socket *sock, int protocol,
  			    int kern)
 +#else
@@ -579,7 +579,7 @@ here still, but for now we keep this here.
  	.obj_size	= sizeof(struct bt_sock)
  };
  
-+#if (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,32))
++#if defined(CONFIG_COMPAT_BT_SOCK_CREATE_NEEDS_KERN)
  static int hidp_sock_create(struct net *net, struct socket *sock, int protocol,
  			    int kern)
 +#else
@@ -609,7 +609,7 @@ here still, but for now we keep this here.
  	return sk;
  }
  
-+#if (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,32))
++#if defined(CONFIG_COMPAT_BT_SOCK_CREATE_NEEDS_KERN)
  static int l2cap_sock_create(struct net *net, struct socket *sock, int protocol,
  			     int kern)
 +#else

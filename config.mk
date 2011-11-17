@@ -128,6 +128,14 @@ ifdef CONFIG_COMPAT_KERNEL_2_6_36
  CONFIG_COMPAT_KFIFO=y
 endif #CONFIG_COMPAT_KERNEL_2_6_36
 
+#
+# CONFIG_COMPAT_BT_SOCK_CREATE_NEEDS_KERN definition has no leading
+# whitespace, because it gets passed-on through compat_autoconf.h.
+#
+ifndef CONFIG_COMPAT_KERNEL_2_6_33
+CONFIG_COMPAT_BT_SOCK_CREATE_NEEDS_KERN=y
+endif #CONFIG_COMPAT_KERNEL_2_6_33
+
 # Wireless subsystem stuff
 CONFIG_MAC80211=m
 
