@@ -34,18 +34,18 @@ without creating a headache on maintenance of the pathes.
  
 --- a/drivers/net/wireless/ath/ath6kl/main.c
 +++ b/drivers/net/wireless/ath/ath6kl/main.c
-@@ -1465,7 +1465,7 @@ static struct net_device_ops ath6kl_netd
+@@ -1114,7 +1114,7 @@ static struct net_device_ops ath6kl_netd
  
  void init_netdev(struct net_device *dev)
  {
 -	dev->netdev_ops = &ath6kl_netdev_ops;
 +	netdev_attach_ops(dev, &ath6kl_netdev_ops);
+ 	dev->destructor = free_netdev;
  	dev->watchdog_timeo = ATH6KL_TX_TIMEOUT;
  
- 	dev->needed_headroom = ETH_HLEN;
 --- a/drivers/net/wireless/rndis_wlan.c
 +++ b/drivers/net/wireless/rndis_wlan.c
-@@ -3439,7 +3439,7 @@ static int rndis_wlan_bind(struct usbnet
+@@ -3452,7 +3452,7 @@ static int rndis_wlan_bind(struct usbnet
  	 * rndis_host wants to avoid all OID as much as possible
  	 * so do promisc/multicast handling in rndis_wlan.
  	 */
@@ -56,7 +56,7 @@ without creating a headache on maintenance of the pathes.
  	retval = rndis_set_oid(usbdev, OID_GEN_CURRENT_PACKET_FILTER, &tmp,
 --- a/net/mac80211/iface.c
 +++ b/net/mac80211/iface.c
-@@ -697,7 +697,12 @@ static void ieee80211_if_setup(struct ne
+@@ -713,7 +713,12 @@ static void ieee80211_if_setup(struct ne
  {
  	ether_setup(dev);
  	dev->priv_flags &= ~IFF_TX_SKB_SHARING;
@@ -70,7 +70,7 @@ without creating a headache on maintenance of the pathes.
  	dev->destructor = free_netdev;
  }
  
-@@ -844,7 +849,7 @@ static void ieee80211_setup_sdata(struct
+@@ -860,7 +865,7 @@ static void ieee80211_setup_sdata(struct
  	/* and set some type-dependent values */
  	sdata->vif.type = type;
  	sdata->vif.p2p = false;
@@ -79,7 +79,7 @@ without creating a headache on maintenance of the pathes.
  	sdata->wdev.iftype = type;
  
  	sdata->control_port_protocol = cpu_to_be16(ETH_P_PAE);
-@@ -883,7 +888,7 @@ static void ieee80211_setup_sdata(struct
+@@ -899,7 +904,7 @@ static void ieee80211_setup_sdata(struct
  		break;
  	case NL80211_IFTYPE_MONITOR:
  		sdata->dev->type = ARPHRD_IEEE80211_RADIOTAP;
@@ -88,7 +88,7 @@ without creating a headache on maintenance of the pathes.
  		sdata->u.mntr_flags = MONITOR_FLAG_CONTROL |
  				      MONITOR_FLAG_OTHER_BSS;
  		break;
-@@ -1134,6 +1139,8 @@ int ieee80211_if_add(struct ieee80211_lo
+@@ -1150,6 +1155,8 @@ int ieee80211_if_add(struct ieee80211_lo
  		return -ENOMEM;
  	dev_net_set(ndev, wiphy_net(local->hw.wiphy));
  
@@ -97,7 +97,7 @@ without creating a headache on maintenance of the pathes.
  	ndev->needed_headroom = local->tx_headroom +
  				4*6 /* four MAC addresses */
  				+ 2 + 2 + 2 + 2 /* ctl, dur, seq, qos */
-@@ -1142,6 +1149,7 @@ int ieee80211_if_add(struct ieee80211_lo
+@@ -1158,6 +1165,7 @@ int ieee80211_if_add(struct ieee80211_lo
  				- ETH_HLEN /* ethernet hard_header_len */
  				+ IEEE80211_ENCRYPT_HEADROOM;
  	ndev->needed_tailroom = IEEE80211_ENCRYPT_TAILROOM;
@@ -186,7 +186,7 @@ without creating a headache on maintenance of the pathes.
  
 --- a/drivers/net/wireless/ipw2x00/ipw2100.c
 +++ b/drivers/net/wireless/ipw2x00/ipw2100.c
-@@ -6114,7 +6114,7 @@ static struct net_device *ipw2100_alloc_
+@@ -6115,7 +6115,7 @@ static struct net_device *ipw2100_alloc_
  	priv->ieee->perfect_rssi = -20;
  	priv->ieee->worst_rssi = -85;
  
@@ -197,7 +197,7 @@ without creating a headache on maintenance of the pathes.
  	priv->wireless_data.libipw = priv->ieee;
 --- a/drivers/net/wireless/ipw2x00/ipw2200.c
 +++ b/drivers/net/wireless/ipw2x00/ipw2200.c
-@@ -11673,7 +11673,7 @@ static int ipw_prom_alloc(struct ipw_pri
+@@ -11682,7 +11682,7 @@ static int ipw_prom_alloc(struct ipw_pri
  	memcpy(priv->prom_net_dev->dev_addr, priv->mac_addr, ETH_ALEN);
  
  	priv->prom_net_dev->type = ARPHRD_IEEE80211_RADIOTAP;
@@ -206,7 +206,7 @@ without creating a headache on maintenance of the pathes.
  
  	priv->prom_priv->ieee->iw_mode = IW_MODE_MONITOR;
  	SET_NETDEV_DEV(priv->prom_net_dev, &priv->pci_dev->dev);
-@@ -11812,7 +11812,7 @@ static int __devinit ipw_pci_probe(struc
+@@ -11821,7 +11821,7 @@ static int __devinit ipw_pci_probe(struc
  	priv->ieee->perfect_rssi = -20;
  	priv->ieee->worst_rssi = -85;
  
@@ -336,7 +336,7 @@ without creating a headache on maintenance of the pathes.
  }
 --- a/drivers/net/ethernet/atheros/atl1e/atl1e_main.c
 +++ b/drivers/net/ethernet/atheros/atl1e/atl1e_main.c
-@@ -2231,7 +2231,7 @@ static int atl1e_init_netdev(struct net_
+@@ -2234,7 +2234,7 @@ static int atl1e_init_netdev(struct net_
  	pci_set_drvdata(pdev, netdev);
  
  	netdev->irq  = pdev->irq;
@@ -347,7 +347,7 @@ without creating a headache on maintenance of the pathes.
  	atl1e_set_ethtool_ops(netdev);
 --- a/drivers/net/ethernet/atheros/atl1c/atl1c_main.c
 +++ b/drivers/net/ethernet/atheros/atl1c/atl1c_main.c
-@@ -2617,7 +2617,7 @@ static int atl1c_init_netdev(struct net_
+@@ -2620,7 +2620,7 @@ static int atl1c_init_netdev(struct net_
  	pci_set_drvdata(pdev, netdev);
  
  	netdev->irq  = pdev->irq;
@@ -369,7 +369,7 @@ without creating a headache on maintenance of the pathes.
  	netdev->ethtool_ops = &atl1_ethtool_ops;
 --- a/drivers/net/ethernet/atheros/atlx/atl2.c
 +++ b/drivers/net/ethernet/atheros/atlx/atl2.c
-@@ -1411,7 +1411,7 @@ static int __devinit atl2_probe(struct p
+@@ -1414,7 +1414,7 @@ static int __devinit atl2_probe(struct p
  
  	atl2_setup_pcicmd(pdev);
  

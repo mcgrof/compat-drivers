@@ -5,66 +5,88 @@ suspend and resume that are not backported.
 
 --- a/drivers/net/wireless/ath/ath6kl/cfg80211.c
 +++ b/drivers/net/wireless/ath/ath6kl/cfg80211.c
-@@ -1411,7 +1411,7 @@ static int ath6kl_flush_pmksa(struct wip
+@@ -1871,7 +1871,7 @@ int ath6kl_cfg80211_resume(struct ath6kl
  	return 0;
  }
  
 -#ifdef CONFIG_PM
 +#if defined(CONFIG_PM) && (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,34))
- static int ar6k_cfg80211_suspend(struct wiphy *wiphy,
- 				 struct cfg80211_wowlan *wow)
- {
-@@ -1827,7 +1827,7 @@ static struct cfg80211_ops ath6kl_cfg802
+ 
+ /* hif layer decides what suspend mode to use */
+ static int __ath6kl_cfg80211_suspend(struct wiphy *wiphy,
+@@ -2346,7 +2346,7 @@ static struct cfg80211_ops ath6kl_cfg802
  	.del_pmksa = ath6kl_del_pmksa,
  	.flush_pmksa = ath6kl_flush_pmksa,
  	CFG80211_TESTMODE_CMD(ath6kl_tm_cmd)
 -#ifdef CONFIG_PM
 +#if defined(CONFIG_PM) && (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,34))
- 	.suspend = ar6k_cfg80211_suspend,
+ 	.suspend = __ath6kl_cfg80211_suspend,
+ 	.resume = __ath6kl_cfg80211_resume,
  #endif
- 	.set_channel = ath6kl_set_channel,
 --- a/drivers/net/wireless/ath/ath6kl/hif-ops.h
 +++ b/drivers/net/wireless/ath/ath6kl/hif-ops.h
-@@ -69,9 +69,11 @@ static inline void ath6kl_hif_cleanup_sc
+@@ -83,6 +83,7 @@ static inline void ath6kl_hif_cleanup_sc
  	return ar->hif_ops->cleanup_scatter(ar);
  }
  
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,34))
- static inline int ath6kl_hif_suspend(struct ath6kl *ar)
+ static inline int ath6kl_hif_suspend(struct ath6kl *ar,
+ 				     struct cfg80211_wowlan *wow)
  {
- 	return ar->hif_ops->suspend(ar);
+@@ -97,6 +98,7 @@ static inline int ath6kl_hif_resume(stru
+ 
+ 	return ar->hif_ops->resume(ar);
  }
 +#endif
  
- #endif
+ static inline int ath6kl_hif_power_on(struct ath6kl *ar)
+ {
 --- a/drivers/net/wireless/ath/ath6kl/sdio.c
 +++ b/drivers/net/wireless/ath/ath6kl/sdio.c
-@@ -724,6 +724,7 @@ static int ath6kl_sdio_enable_scatter(st
- 	return 0;
+@@ -774,6 +774,7 @@ out:
+ 	return ret;
  }
  
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,34))
- static int ath6kl_sdio_suspend(struct ath6kl *ar)
+ static int ath6kl_sdio_suspend(struct ath6kl *ar, struct cfg80211_wowlan *wow)
  {
  	struct ath6kl_sdio *ar_sdio = ath6kl_sdio_priv(ar);
-@@ -751,6 +752,7 @@ static int ath6kl_sdio_suspend(struct at
+@@ -845,6 +846,7 @@ static int ath6kl_sdio_resume(struct ath
  
  	return 0;
  }
 +#endif /* (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,34)) */
  
- static const struct ath6kl_hif_ops ath6kl_sdio_ops = {
- 	.read_write_sync = ath6kl_sdio_read_write_sync,
-@@ -762,7 +764,9 @@ static const struct ath6kl_hif_ops ath6k
+ static void ath6kl_sdio_stop(struct ath6kl *ar)
+ {
+@@ -888,14 +890,16 @@ static const struct ath6kl_hif_ops ath6k
  	.enable_scatter = ath6kl_sdio_enable_scatter,
  	.scat_req_rw = ath6kl_sdio_async_rw_scatter,
  	.cleanup_scatter = ath6kl_sdio_cleanup_scatter,
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,34))
  	.suspend = ath6kl_sdio_suspend,
+ 	.resume = ath6kl_sdio_resume,
++#endif
+ 	.power_on = ath6kl_sdio_power_on,
+ 	.power_off = ath6kl_sdio_power_off,
+ 	.stop = ath6kl_sdio_stop,
+ };
+ 
+-#ifdef CONFIG_PM_SLEEP
++#if defined(CONFIG_PM_SLEEP) && (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,34))
+ 
+ /*
+  * Empty handlers so that mmc subsystem doesn't remove us entirely during
+@@ -1037,7 +1041,9 @@ static struct sdio_driver ath6kl_sdio_dr
+ 	.id_table = ath6kl_sdio_devices,
+ 	.probe = ath6kl_sdio_probe,
+ 	.remove = ath6kl_sdio_remove,
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,34))
+ 	.drv.pm = ATH6KL_SDIO_PM_OPS,
 +#endif
  };
  
- static int ath6kl_sdio_probe(struct sdio_func *func,
+ static int __init ath6kl_sdio_init(void)
 --- a/drivers/net/wireless/libertas/if_sdio.c
 +++ b/drivers/net/wireless/libertas/if_sdio.c
 @@ -1306,6 +1306,7 @@ static void if_sdio_remove(struct sdio_f
@@ -123,7 +145,7 @@ suspend and resume that are not backported.
  
  /* Device ID for SD8787 */
  #define SDIO_DEVICE_ID_MARVELL_8787   (0x9119)
-@@ -267,10 +271,12 @@ static const struct sdio_device_id mwifi
+@@ -270,10 +274,12 @@ static const struct sdio_device_id mwifi
  
  MODULE_DEVICE_TABLE(sdio, mwifiex_ids);
  
@@ -136,7 +158,7 @@ suspend and resume that are not backported.
  
  static struct sdio_driver mwifiex_sdio = {
  	.name = "mwifiex_sdio",
-@@ -279,7 +285,9 @@ static struct sdio_driver mwifiex_sdio =
+@@ -282,7 +288,9 @@ static struct sdio_driver mwifiex_sdio =
  	.remove = mwifiex_sdio_remove,
  	.drv = {
  		.owner = THIS_MODULE,
