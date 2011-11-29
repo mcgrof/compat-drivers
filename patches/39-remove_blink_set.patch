@@ -1,34 +1,34 @@
---- a/drivers/net/wireless/iwlegacy/iwl-led.c
-+++ b/drivers/net/wireless/iwlegacy/iwl-led.c
-@@ -145,6 +145,7 @@ static void iwl_legacy_led_brightness_se
- 	iwl_legacy_led_cmd(priv, on, 0);
+--- a/drivers/net/wireless/iwlegacy/common.c
++++ b/drivers/net/wireless/iwlegacy/common.c
+@@ -380,6 +380,7 @@ il_led_brightness_set(struct led_classdev *led_cdev,
+ 	il_led_cmd(il, on, 0);
  }
  
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,25))
- static int iwl_legacy_led_blink_set(struct led_classdev *led_cdev,
- 			     unsigned long *delay_on,
- 			     unsigned long *delay_off)
-@@ -153,6 +154,7 @@ static int iwl_legacy_led_blink_set(stru
+ static int
+ il_led_blink_set(struct led_classdev *led_cdev, unsigned long *delay_on,
+ 		 unsigned long *delay_off)
+@@ -388,6 +389,7 @@ il_led_blink_set(struct led_classdev *led_cdev, unsigned long *delay_on,
  
- 	return iwl_legacy_led_cmd(priv, *delay_on, *delay_off);
+ 	return il_led_cmd(il, *delay_on, *delay_off);
  }
 +#endif
  
- void iwl_legacy_leds_init(struct iwl_priv *priv)
- {
-@@ -165,7 +167,9 @@ void iwl_legacy_leds_init(struct iwl_pri
- 	priv->led.name = kasprintf(GFP_KERNEL, "%s-led",
- 				   wiphy_name(priv->hw->wiphy));
- 	priv->led.brightness_set = iwl_legacy_led_brightness_set;
+ void
+ il_leds_init(struct il_priv *il)
+@@ -401,7 +403,9 @@ il_leds_init(struct il_priv *il)
+ 	il->led.name =
+ 	    kasprintf(GFP_KERNEL, "%s-led", wiphy_name(il->hw->wiphy));
+ 	il->led.brightness_set = il_led_brightness_set;
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,25))
- 	priv->led.blink_set = iwl_legacy_led_blink_set;
+ 	il->led.blink_set = il_led_blink_set;
 +#endif
  #if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,30)
- 	priv->led.max_brightness = 1;
+ 	il->led.max_brightness = 1;
  #endif
 --- a/drivers/net/wireless/iwlwifi/iwl-led.c
 +++ b/drivers/net/wireless/iwlwifi/iwl-led.c
-@@ -163,6 +163,7 @@ static void iwl_led_brightness_set(struc
+@@ -163,6 +163,7 @@ static void iwl_led_brightness_set(struct led_classdev *led_cdev,
  	iwl_led_cmd(priv, on, 0);
  }
  
@@ -36,7 +36,7 @@
  static int iwl_led_blink_set(struct led_classdev *led_cdev,
  			     unsigned long *delay_on,
  			     unsigned long *delay_off)
-@@ -171,6 +172,7 @@ static int iwl_led_blink_set(struct led_
+@@ -171,6 +172,7 @@ static int iwl_led_blink_set(struct led_classdev *led_cdev,
  
  	return iwl_led_cmd(priv, *delay_on, *delay_off);
  }
@@ -44,7 +44,7 @@
  
  void iwl_leds_init(struct iwl_priv *priv)
  {
-@@ -183,7 +185,9 @@ void iwl_leds_init(struct iwl_priv *priv
+@@ -183,7 +185,9 @@ void iwl_leds_init(struct iwl_priv *priv)
  	priv->led.name = kasprintf(GFP_KERNEL, "%s-led",
  				   wiphy_name(priv->hw->wiphy));
  	priv->led.brightness_set = iwl_led_brightness_set;
