@@ -24,41 +24,26 @@ CONFIG_BT_HIDP does not build with older kernel versions.
  obj-$(CONFIG_RTLWIFI)		+= rtlwifi/
 --- a/drivers/net/wireless/iwlegacy/Makefile
 +++ b/drivers/net/wireless/iwlegacy/Makefile
-@@ -10,7 +10,7 @@ iwl-legacy-objs += $(iwl-legacy-m)
- CFLAGS_iwl-devtrace.o := -I$(src)
+@@ -5,7 +5,7 @@
+ iwlegacy-objs += $(iwlegacy-m)
  
  # 4965
 -obj-$(CONFIG_IWL4965)	+= iwl4965.o
 +obj-$(CONFIG_COMPAT_IWL4965)	+= iwl4965.o
- iwl4965-objs		:= iwl-4965.o iwl4965-base.o iwl-4965-rs.o iwl-4965-led.o
- iwl4965-objs		+= iwl-4965-ucode.o iwl-4965-tx.o
- iwl4965-objs		+= iwl-4965-lib.o iwl-4965-rx.o iwl-4965-calib.o
---- a/drivers/net/wireless/iwlegacy/iwl-dev.h
-+++ b/drivers/net/wireless/iwlegacy/iwl-dev.h
-@@ -1163,7 +1163,7 @@ struct iwl_priv {
+ iwl4965-objs		:= 4965.o 4965-mac.o 4965-rs.o 4965-calib.o
+ iwl4965-$(CONFIG_IWLEGACY_DEBUGFS) += 4965-debug.o
+ 
+--- a/drivers/net/wireless/iwlegacy/common.h
++++ b/drivers/net/wireless/iwlegacy/common.h
+@@ -1411,7 +1411,7 @@
  
  		} _3945;
  #endif
 -#if defined(CONFIG_IWL4965) || defined(CONFIG_IWL4965_MODULE)
 +#if defined(CONFIG_COMPAT_IWL4965) || defined(CONFIG_COMPAT_IWL4965_MODULE)
  		struct {
- 			struct iwl_rx_phy_res last_phy_res;
+ 			struct il_rx_phy_res last_phy_res;
  			bool last_phy_res_valid;
---- a/drivers/net/wireless/iwlegacy/iwl4965-base.c
-+++ b/drivers/net/wireless/iwlegacy/iwl4965-base.c
-@@ -3211,10 +3211,10 @@ void iwl4965_txq_set_sched(struct iwl_pr
- 
- /* Hardware specific file defines the PCI IDs table for that hardware module */
- static DEFINE_PCI_DEVICE_TABLE(iwl4965_hw_card_ids) = {
--#if defined(CONFIG_IWL4965_MODULE) || defined(CONFIG_IWL4965)
-+#if defined(CONFIG_COMPAT_IWL4965_MODULE) || defined(CONFIG_COMPAT_IWL4965)
- 	{IWL_PCI_DEVICE(0x4229, PCI_ANY_ID, iwl4965_cfg)},
- 	{IWL_PCI_DEVICE(0x4230, PCI_ANY_ID, iwl4965_cfg)},
--#endif /* CONFIG_IWL4965 */
-+#endif /* CONFIG_COMPAT_IWL4965 */
- 
- 	{0}
- };
 --- a/drivers/net/wireless/libertas/Makefile
 +++ b/drivers/net/wireless/libertas/Makefile
 @@ -16,5 +16,5 @@ libertas_spi-objs += if_spi.o
