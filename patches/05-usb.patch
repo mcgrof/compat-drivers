@@ -11,7 +11,7 @@ USB opt soft_unbid was added as of 2.6.27.
 +#endif
  };
  
- static int __init p54u_init(void)
+ module_usb_driver(p54u_driver);
 --- a/drivers/net/wireless/ath/ath9k/hif_usb.c
 +++ b/drivers/net/wireless/ath/ath9k/hif_usb.c
 @@ -1311,7 +1311,9 @@ static struct usb_driver ath9k_hif_usb_d

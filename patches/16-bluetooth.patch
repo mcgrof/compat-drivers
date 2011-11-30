@@ -605,7 +605,7 @@ here still, but for now we keep this here.
  {
  	struct sock *sk = sock->sk;
  	struct l2cap_chan *chan = l2cap_pi(sk)->chan;
-@@ -1062,8 +1069,12 @@ static struct sock *l2cap_sock_alloc(str
+@@ -1072,8 +1079,12 @@ static struct sock *l2cap_sock_alloc(str
  	return sk;
  }
  
@@ -618,7 +618,7 @@ here still, but for now we keep this here.
  {
  	struct sock *sk;
  
-@@ -1075,7 +1086,11 @@ static int l2cap_sock_create(struct net
+@@ -1085,7 +1096,11 @@ static int l2cap_sock_create(struct net
  			sock->type != SOCK_DGRAM && sock->type != SOCK_RAW)
  		return -ESOCKTNOSUPPORT;
  

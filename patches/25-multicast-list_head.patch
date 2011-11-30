@@ -480,7 +480,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  	return 1; /* update */
 --- a/drivers/net/wireless/rndis_wlan.c
 +++ b/drivers/net/wireless/rndis_wlan.c
-@@ -1627,7 +1627,11 @@ static void set_multicast_list(struct us
+@@ -1659,7 +1659,11 @@ static void set_multicast_list(struct us
  
  		netdev_for_each_mc_addr(ha, usbdev->net)
  			memcpy(mc_addrs + i++ * ETH_ALEN,
@@ -637,7 +637,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  	return hash.low | ((u64)hash.high << 32);
 --- a/drivers/net/wireless/brcm80211/brcmfmac/dhd_linux.c
 +++ b/drivers/net/wireless/brcm80211/brcmfmac/dhd_linux.c
-@@ -172,7 +172,11 @@ static void _brcmf_set_multicast_list(st
+@@ -157,7 +157,11 @@ static void _brcmf_set_multicast_list(st
  	netdev_for_each_mc_addr(ha, ndev) {
  		if (!cnt)
  			break;
@@ -651,7 +651,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  	}
 --- a/include/net/mac80211.h
 +++ b/include/net/mac80211.h
-@@ -2112,7 +2112,11 @@ struct ieee80211_ops {
+@@ -2140,7 +2140,11 @@ struct ieee80211_ops {
  			       enum ieee80211_tx_sync_type type);
  
  	u64 (*prepare_multicast)(struct ieee80211_hw *hw,
@@ -681,7 +681,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  		}
 --- a/net/mac80211/driver-ops.h
 +++ b/net/mac80211/driver-ops.h
-@@ -162,14 +162,28 @@ static inline void drv_finish_tx_sync(st
+@@ -204,14 +204,28 @@ static inline void drv_finish_tx_sync(st
  }
  
  static inline u64 drv_prepare_multicast(struct ieee80211_local *local,
@@ -712,7 +712,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  
 --- a/net/mac80211/ieee80211_i.h
 +++ b/net/mac80211/ieee80211_i.h
-@@ -781,7 +781,12 @@ struct ieee80211_local {
+@@ -796,7 +796,12 @@ struct ieee80211_local {
  	struct work_struct recalc_smps;
  
  	/* aggregated multicast list */
@@ -727,7 +727,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  
 --- a/net/mac80211/iface.c
 +++ b/net/mac80211/iface.c
-@@ -435,8 +435,13 @@ static void ieee80211_do_stop(struct iee
+@@ -447,8 +447,13 @@ static void ieee80211_do_stop(struct iee
  
  	netif_addr_lock_bh(sdata->dev);
  	spin_lock_bh(&local->filter_lock);
@@ -741,7 +741,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  	spin_unlock_bh(&local->filter_lock);
  	netif_addr_unlock_bh(sdata->dev);
  
-@@ -600,7 +605,12 @@ static void ieee80211_set_multicast_list
+@@ -616,7 +621,12 @@ static void ieee80211_set_multicast_list
  		sdata->flags ^= IEEE80211_SDATA_PROMISC;
  	}
  	spin_lock_bh(&local->filter_lock);
@@ -768,8 +768,8 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  	spin_unlock_bh(&local->filter_lock);
  
  	/* be a bit nasty */
-@@ -630,9 +634,11 @@ struct ieee80211_hw *ieee80211_alloc_hw(
- 	local->uapsd_max_sp_len = IEEE80211_DEFAULT_MAX_SP_LEN;
+@@ -647,9 +651,11 @@ struct ieee80211_hw *ieee80211_alloc_hw(
+ 	wiphy->ht_capa_mod_mask = &mac80211_ht_capa_mod_mask;
  
  	INIT_LIST_HEAD(&local->interfaces);
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,35))
