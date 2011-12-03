@@ -396,14 +396,14 @@ case $1 in
 	brcmsmac)
 		disable_staging
 		disable_bt_usb_ethernet_var
-		select_drivers		CONFIG_BRCMUTIL CONFIG_BRCMFMAC
-		select_brcm80211_driver	CONFIG_BRCMSMAC
+		select_drivers		CONFIG_BRCMSMAC
+		select_brcm80211_driver	CONFIG_BRCMSMAC CONFIG_BRCMUTIL
 		;;
 	brcmfmac)
 		disable_staging
 		disable_bt_usb_ethernet_var
-		select_drivers		CONFIG_BRCMUTIL CONFIG_BRCMFMAC
-		select_brcm80211_driver	CONFIG_BRCMFMAC
+		select_drivers		CONFIG_BRCMFMAC
+		select_brcm80211_driver	CONFIG_BRCMFMAC CONFIG_BRCMUTIL
 		;;
 	zd1211rw)
 		select_driver		CONFIG_COMPAT_ZD1211RW
