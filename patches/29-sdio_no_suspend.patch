@@ -188,7 +188,7 @@ suspend and resume that are not backported.
  	int retry = 0;
  	while (atomic_read(&sdiodev->suspend) && retry++ != 30)
  		wait_event_timeout(*wq, false, HZ/100);
-@@ -528,7 +528,7 @@ static void brcmf_ops_sdio_remove(struct
+@@ -530,7 +530,7 @@ static void brcmf_ops_sdio_remove(struct
  	}
  }
  
@@ -197,7 +197,7 @@ suspend and resume that are not backported.
  static int brcmf_sdio_suspend(struct device *dev)
  {
  	mmc_pm_flag_t sdio_flags;
-@@ -583,7 +583,7 @@ static struct sdio_driver brcmf_sdmmc_dr
+@@ -585,7 +585,7 @@ static struct sdio_driver brcmf_sdmmc_dr
  	.remove = brcmf_ops_sdio_remove,
  	.name = "brcmfmac",
  	.id_table = brcmf_sdmmc_ids,
