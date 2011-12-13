@@ -350,9 +350,18 @@ done
 # Drivers in their own directory
 for i in $DRIVERS; do
 	mkdir -p $i
-	echo "Copying $GIT_TREE/$i/*.[ch]"
-	cp $GIT_TREE/$i/*.[ch] $i/
-	cp $GIT_TREE/$i/Makefile $i/
+
+	# -print -quit will just print once, so we don't burden
+	# this script with searching for further files if one is
+	# found
+	FILES_FOUND=$(find $GIT_TREE/$i/ -maxdepth 1 -type f -name \*.[ch] -print -quit | wc -l)
+	if [ $FILES_FOUND -eq 1 ]; then
+		echo "Copying $GIT_TREE/$i/*.[ch]"
+		cp $GIT_TREE/$i/*.[ch] $i/
+	fi
+	if [ -f $GIT_TREE/$i/Makefile ]; then
+		cp $GIT_TREE/$i/Makefile $i/
+	fi
 	if [ -f $GIT_TREE/$i/Kconfig ]; then
 		cp $GIT_TREE/$i/Kconfig $i/
 	fi
