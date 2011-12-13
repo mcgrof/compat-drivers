@@ -61,55 +61,49 @@ thread in process context as well.
  };
  
  /* Data structure for the WLAN parts (802.11 cores) of the b43 chip. */
---- a/drivers/net/wireless/wl12xx/spi.c
-+++ b/drivers/net/wireless/wl12xx/spi.c
-@@ -406,10 +406,14 @@ static int __devinit wl1271_probe(struct
- 	wl->tcxo_clock = pdata->board_tcxo_clock;
- 	wl->platform_quirks = pdata->platform_quirks;
+--- a/drivers/net/wireless/wl12xx/main.c
++++ b/drivers/net/wireless/wl12xx/main.c
+@@ -5183,14 +5183,25 @@ static int __devinit wl12xx_probe(struct
+ 
+ 	platform_set_drvdata(pdev, wl);
  
 +#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,32)
-+	irqflags = IRQF_TRIGGER_RISING;
++	irqflags = IRQF_TRIGGER_RISING
 +#else
  	if (wl->platform_quirks & WL12XX_PLATFORM_QUIRK_EDGE_IRQ)
  		irqflags = IRQF_TRIGGER_RISING;
  	else
  		irqflags = IRQF_TRIGGER_HIGH | IRQF_ONESHOT;
+ 
 +#endif
- 
- 	wl->irq = spi->irq;
- 	if (wl->irq < 0) {
-@@ -418,9 +422,16 @@ static int __devinit wl1271_probe(struct
- 		goto out_free;
- 	}
- 
 +#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,31)
 +	ret = compat_request_threaded_irq(&wl->irq_compat, wl->irq,
 +					  wl1271_hardirq, wl1271_irq,
 +					  irqflags,
-+					  DRIVER_NAME, wl);
++					  pdev->name, wl);
 +#else
- 	ret = request_threaded_irq(wl->irq, wl1271_hardirq, wl1271_irq,
+ 	ret = request_threaded_irq(wl->irq, wl12xx_hardirq, wl1271_irq,
  				   irqflags,
- 				   DRIVER_NAME, wl);
+ 				   pdev->name, wl);
 +#endif
  	if (ret < 0) {
  		wl1271_error("request_irq() failed: %d", ret);
- 		goto out_free;
-@@ -439,7 +450,11 @@ static int __devinit wl1271_probe(struct
- 	return 0;
+ 		goto out_free_hw;
+@@ -5244,7 +5255,11 @@ out_bt_coex_state:
+ 	device_remove_file(wl->dev, &dev_attr_bt_coex_state);
  
-  out_irq:
+ out_irq:
 +#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,31)
 +	compat_free_threaded_irq(&wl->irq_compat);
 +#else
  	free_irq(wl->irq, wl);
 +#endif
  
-  out_free:
+ out_free_hw:
  	wl1271_free_hw(wl);
-@@ -452,7 +467,12 @@ static int __devexit wl1271_remove(struc
- 	struct wl1271 *wl = dev_get_drvdata(&spi->dev);
- 
+@@ -5262,7 +5277,12 @@ static int __devexit wl12xx_remove(struc
+ 		disable_irq_wake(wl->irq);
+ 	}
  	wl1271_unregister_hw(wl);
 +#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,31)
 +	compat_free_threaded_irq(&wl->irq_compat);
@@ -122,10 +116,10 @@ thread in process context as well.
  	return 0;
 --- a/drivers/net/wireless/wl12xx/wl12xx.h
 +++ b/drivers/net/wireless/wl12xx/wl12xx.h
-@@ -632,6 +632,10 @@ struct wl1271 {
+@@ -484,6 +484,10 @@ struct wl1271 {
  
- 	/* AP-mode - number of currently connected stations */
- 	int active_sta_count;
+ 	/* last wlvif we transmitted from */
+ 	struct wl12xx_vif *last_wlvif;
 +
 +#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,31)
 +	struct compat_threaded_irq irq_compat;
