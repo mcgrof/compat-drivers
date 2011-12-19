@@ -118,7 +118,7 @@ calls on compat code with only slight modifications.
  int ath_pci_init(void)
 --- a/drivers/net/wireless/libertas/if_spi.c
 +++ b/drivers/net/wireless/libertas/if_spi.c
-@@ -1251,6 +1251,7 @@ static int __devexit libertas_spi_remove
+@@ -1252,6 +1252,7 @@ static int __devexit libertas_spi_remove
  	return 0;
  }
  
@@ -126,7 +126,7 @@ calls on compat code with only slight modifications.
  static int if_spi_suspend(struct device *dev)
  {
  	struct spi_device *spi = to_spi_device(dev);
-@@ -1284,6 +1285,7 @@ static const struct dev_pm_ops if_spi_pm
+@@ -1285,6 +1286,7 @@ static const struct dev_pm_ops if_spi_pm
  	.suspend	= if_spi_suspend,
  	.resume		= if_spi_resume,
  };
@@ -134,7 +134,7 @@ calls on compat code with only slight modifications.
  
  static struct spi_driver libertas_spi_driver = {
  	.probe	= if_spi_probe,
-@@ -1292,7 +1294,9 @@ static struct spi_driver libertas_spi_dr
+@@ -1293,7 +1295,9 @@ static struct spi_driver libertas_spi_dr
  		.name	= "libertas_spi",
  		.bus	= &spi_bus_type,
  		.owner	= THIS_MODULE,
