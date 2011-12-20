@@ -22,7 +22,10 @@ PURPLE="\033[35m"
 CYAN="\033[36m"
 UNDERLINE="\033[02m"
 
-ALL_STABLE_TREE="linux-2.6-allstable"
+# Note that this tree may not have the latest RC stuff, so you should also add
+# Linus' tree as a remote and fetch those objects if you want to make an RC
+# release instead.
+ALL_STABLE_TREE="linux-stable"
 STAGING=/tmp/staging/compat-wireless/
 
 function usage()
