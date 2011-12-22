@@ -61,40 +61,17 @@ CONFIG_BT_HIDP does not build with older kernel versions.
  
  zd1211rw-objs := zd_chip.o zd_mac.o \
  		zd_rf_al2230.o zd_rf_rf2959.o \
---- a/include/net/bluetooth/bluetooth.h
-+++ b/include/net/bluetooth/bluetooth.h
-@@ -250,7 +250,7 @@ extern void bt_sysfs_cleanup(void);
- 
- extern struct dentry *bt_debugfs;
- 
--#ifdef CONFIG_BT_L2CAP
-+#ifdef CONFIG_COMPAT_BT_L2CAP
- int l2cap_init(void);
- void l2cap_exit(void);
- #else
-@@ -264,7 +264,7 @@ static inline void l2cap_exit(void)
- }
- #endif
- 
--#ifdef CONFIG_BT_SCO
-+#ifdef CONFIG_COMPAT_BT_SCO
- int sco_init(void);
- void sco_exit(void);
- #else
 --- a/net/bluetooth/Makefile
 +++ b/net/bluetooth/Makefile
-@@ -6,8 +6,8 @@ obj-$(CONFIG_BT)	+= bluetooth.o
+@@ -6,7 +6,7 @@ obj-$(CONFIG_BT)	+= bluetooth.o
  obj-$(CONFIG_BT_RFCOMM)	+= rfcomm/
  obj-$(CONFIG_BT_BNEP)	+= bnep/
  obj-$(CONFIG_BT_CMTP)	+= cmtp/
 -obj-$(CONFIG_BT_HIDP)	+= hidp/
 +obj-$(CONFIG_COMPAT_BT_HIDP)	+= hidp/
  
- bluetooth-y := af_bluetooth.o hci_core.o hci_conn.o hci_event.o mgmt.o hci_sock.o hci_sysfs.o lib.o
--bluetooth-$(CONFIG_BT_L2CAP)	+= l2cap_core.o l2cap_sock.o smp.o
--bluetooth-$(CONFIG_BT_SCO)	+= sco.o
-+bluetooth-$(CONFIG_COMPAT_BT_L2CAP)	+= l2cap_core.o l2cap_sock.o smp.o
-+bluetooth-$(CONFIG_COMPAT_BT_SCO)	+= sco.o
+ bluetooth-y := af_bluetooth.o hci_core.o hci_conn.o hci_event.o mgmt.o \
+ 	hci_sock.o hci_sysfs.o l2cap_core.o l2cap_sock.o smp.o sco.o lib.o
 --- a/net/bluetooth/hidp/Makefile
 +++ b/net/bluetooth/hidp/Makefile
 @@ -2,6 +2,6 @@
