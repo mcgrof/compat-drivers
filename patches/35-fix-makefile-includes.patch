@@ -29,8 +29,8 @@ path the make process will search in the kernel tree for the headers.
 +	-I$(obj)		\
 +	-I$(obj)/../include
  
- DHDOFILES = \
- 	wl_cfg80211.o \
+ obj-$(CONFIG_BRCMFMAC) += brcmfmac.o
+ brcmfmac-objs += \
 --- a/drivers/net/wireless/brcm80211/brcmsmac/Makefile
 +++ b/drivers/net/wireless/brcm80211/brcmsmac/Makefile
 @@ -17,9 +17,9 @@
