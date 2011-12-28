@@ -66,7 +66,7 @@ here still, but for now we keep this here.
  		bt_sock_reclassify_lock(sock, proto);
  		module_put(bt_proto[proto]->owner);
  	}
-@@ -478,7 +486,11 @@ int bt_sock_ioctl(struct socket *sock, u
+@@ -475,7 +483,11 @@ int bt_sock_ioctl(struct socket *sock, u
  		if (sk->sk_state == BT_LISTEN)
  			return -EINVAL;
  
@@ -94,7 +94,7 @@ here still, but for now we keep this here.
  	wake_up_process(session->task);
 --- a/net/bluetooth/hci_sock.c
 +++ b/net/bluetooth/hci_sock.c
-@@ -561,7 +561,11 @@ drop:
+@@ -564,7 +564,11 @@ drop:
  	goto done;
  }
  
@@ -106,7 +106,7 @@ here still, but for now we keep this here.
  {
  	struct hci_ufilter uf = { .opcode = 0 };
  	struct sock *sk = sock->sk;
-@@ -716,8 +720,12 @@ static struct proto hci_sk_proto = {
+@@ -719,8 +723,12 @@ static struct proto hci_sk_proto = {
  	.obj_size	= sizeof(struct hci_pinfo)
  };
  
@@ -133,7 +133,7 @@ here still, but for now we keep this here.
  	&bt_link_group,
  	NULL
  };
-@@ -130,7 +134,11 @@ static void del_conn(struct work_struct
+@@ -143,7 +147,11 @@ void hci_conn_del_sysfs(struct hci_conn
  		dev = device_find_child(&conn->dev, NULL, __match_tty);
  		if (!dev)
  			break;
@@ -145,7 +145,7 @@ here still, but for now we keep this here.
  		put_device(dev);
  	}
  
-@@ -380,7 +388,11 @@ static struct attribute_group bt_host_gr
+@@ -363,7 +371,11 @@ static struct attribute_group bt_host_gr
  	.attrs = bt_host_attrs,
  };
  
@@ -590,7 +590,7 @@ here still, but for now we keep this here.
  
 --- a/net/bluetooth/l2cap_sock.c
 +++ b/net/bluetooth/l2cap_sock.c
-@@ -582,7 +582,14 @@ static int l2cap_sock_setsockopt_old(str
+@@ -528,7 +528,14 @@ static int l2cap_sock_setsockopt_old(str
  	return err;
  }
  
@@ -605,7 +605,7 @@ here still, but for now we keep this here.
  {
  	struct sock *sk = sock->sk;
  	struct l2cap_chan *chan = l2cap_pi(sk)->chan;
-@@ -1072,8 +1079,12 @@ static struct sock *l2cap_sock_alloc(str
+@@ -1018,8 +1025,12 @@ static struct sock *l2cap_sock_alloc(str
  	return sk;
  }
  
@@ -618,7 +618,7 @@ here still, but for now we keep this here.
  {
  	struct sock *sk;
  
-@@ -1085,7 +1096,11 @@ static int l2cap_sock_create(struct net
+@@ -1031,7 +1042,11 @@ static int l2cap_sock_create(struct net
  			sock->type != SOCK_DGRAM && sock->type != SOCK_RAW)
  		return -ESOCKTNOSUPPORT;
  
