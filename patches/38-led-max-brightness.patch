@@ -1,6 +1,6 @@
 --- a/drivers/net/wireless/iwlegacy/common.c
 +++ b/drivers/net/wireless/iwlegacy/common.c
-@@ -402,7 +402,9 @@ il_leds_init(struct il_priv *il)
+@@ -563,7 +563,9 @@ il_leds_init(struct il_priv *il)
  	    kasprintf(GFP_KERNEL, "%s-led", wiphy_name(il->hw->wiphy));
  	il->led.brightness_set = il_led_brightness_set;
  	il->led.blink_set = il_led_blink_set;
