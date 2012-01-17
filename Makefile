@@ -47,6 +47,13 @@ obj-$(CONFIG_COMPAT_BLUETOOTH_MODULES) += drivers/bluetooth/
 else
 
 export PWD :=	$(shell pwd)
+
+# The build will fail if there is any space in PWD.
+ifneq (,$(findstring  $() ,$(PWD)))
+$(error "The path to this compat-wireless directory has spaces in it." \
+	"Please put it somewhere where there is no space")
+endif
+
 CFLAGS += \
         -DCOMPAT_BASE_TREE="\"$(shell cat compat_base_tree)\"" \
         -DCOMPAT_BASE_TREE_VERSION="\"$(shell cat compat_base_tree_version)\"" \
