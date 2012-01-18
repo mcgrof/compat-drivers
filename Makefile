@@ -8,8 +8,11 @@ endif
 export KLIB_BUILD ?=	$(KLIB)/build
 # Sometimes not available in the path
 MODPROBE := /sbin/modprobe
+
+ifneq ($(wildcard $(MODPROBE)),)
 MADWIFI=$(shell $(MODPROBE) -l ath_pci)
 OLD_IWL=$(shell $(MODPROBE) -l iwl4965)
+endif
 
 DESTDIR?=
 
@@ -88,7 +91,7 @@ $(CREL_CHECK):
 
 btinstall: btuninstall bt-install-modules
 
-bt-install-modules: bt
+bt-install-modules: bt $(MODPROBE)
 	$(MAKE) -C $(KLIB_BUILD) M=$(PWD) $(KMODDIR_ARG) $(KMODPATH_ARG) BT=TRUE \
 		modules_install
 	@/sbin/depmod -ae
@@ -123,7 +126,7 @@ bt-install-modules: bt
 	@echo And then load the needed bluetooth modules. If unsure reboot.
 	@echo
 
-btuninstall:
+btuninstall: $(MODPROBE)
 	@# New location, matches upstream
 	@rm -rf $(KLIB)/$(KMODDIR)/net/bluetooth/
 	@rm -rf $(KLIB)/$(KMODDIR)/drivers/bluetooth/
@@ -166,7 +169,7 @@ install-modules: modules
 		modules_install
 	@./scripts/update-initramfs
 
-install-scripts:
+install-scripts: $(MODPROBE)
 	@# All the scripts we can use
 	@mkdir -p $(DESTDIR)/usr/lib/compat-wireless/
 	@install scripts/modlib.sh	$(DESTDIR)/usr/lib/compat-wireless/
@@ -323,7 +326,7 @@ install-scripts:
 	@echo If unsure reboot.
 	@echo
 
-uninstall:
+uninstall: $(MODPROBE)
 	@# New location, matches upstream
 	@rm -rf $(KLIB)/$(KMODDIR)/compat/
 	@rm -rf $(KLIB)/$(KMODDIR)/net/mac80211/
