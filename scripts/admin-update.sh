@@ -616,18 +616,18 @@ if [ -d ./.git ]; then
 		# what is more useful is just the wireless-testing master tag
 		MASTER_TAG=$(git tag -l| grep master | tail -1)
 		echo $MASTER_TAG > $DIR/compat_base_tree_version
-		echo -e "This is a ${RED}bleeding edge${NORMAL} compat-wireless release"
+		echo -e "This is a ${RED}wireless-testing.git${NORMAL} compat-wireless release"
 		;;
 	"linux-next.git") # The linux-next integration testing tree
 		MASTER_TAG=$(git tag -l| grep next | tail -1)
 		echo $MASTER_TAG > $DIR/master-tag
-		echo -e "This is a ${RED}bleeding edge${NORMAL} compat-wireless release"
+		echo -e "This is a ${RED}linux-next.git${NORMAL} compat-wireless release"
 		;;
-	"linux-2.6-allstable.git") # HPA's all stable tree
-		echo -e "This is a ${GREEN}stable${NORMAL} compat-wireless release"
+	"linux-stable.git") # Greg's all stable tree
+		echo -e "This is a ${GREEN}linux-stable.git${NORMAL} compat-wireless release"
 		;;
 	"linux-2.6.git") # Linus' 2.6 tree
-		echo -e "This is a ${GREEN}stable${NORMAL} compat-wireless release"
+		echo -e "This is a ${GREEN}linux-2.6.git${NORMAL} compat-wireless release"
 		;;
 	*)
 		;;
