@@ -12,6 +12,7 @@ MODPROBE := /sbin/modprobe
 ifneq ($(wildcard $(MODPROBE)),)
 MADWIFI=$(shell $(MODPROBE) -l ath_pci)
 OLD_IWL=$(shell $(MODPROBE) -l iwl4965)
+OLD_ALX=$(shell $(MODPROBE) -l atl1c)
 endif
 
 DESTDIR?=
@@ -185,6 +186,7 @@ install-scripts: $(MODPROBE)
 	@install scripts/athenable	$(DESTDIR)/usr/sbin/
 	@install scripts/b43enable	$(DESTDIR)/usr/sbin/
 	@install scripts/iwl-enable	$(DESTDIR)/usr/sbin/
+	@install scripts/alx-enable	$(DESTDIR)/usr/sbin/
 	@install scripts/athload	$(DESTDIR)/usr/sbin/
 	@install scripts/b43load	$(DESTDIR)/usr/sbin/
 	@install scripts/iwl-load	$(DESTDIR)/usr/sbin/
@@ -205,6 +207,15 @@ install-scripts: $(MODPROBE)
 		echo ;\
 		echo Running iwl-enable iwlagn...;\
 		/usr/sbin/iwl-enable iwlagn ;\
+	fi
+	@if [ ! -z "$(OLD_ALX)" ] && [ -z "$(DESTDIR)" ]; then \
+		echo ;\
+		echo -n "Note: atl1c detected, we're going to disable it. "  ;\
+		echo "If you would like to enable it later you can run:"  ;\
+		echo "    sudo alx-load atl1c"  ;\
+		echo ;\
+		echo Running alx-enable alx...;\
+		/usr/sbin/alx-enable alx;\
 	fi
 	@# If on distributions like Mandriva which like to
 	@# compress their modules this will find out and do
@@ -299,6 +310,7 @@ install-scripts: $(MODPROBE)
 	@$(MODPROBE) -l atl2
 	@$(MODPROBE) -l atl1e
 	@$(MODPROBE) -l atl1c
+	@$(MODPROBE) -l alx
 	@echo
 	@echo "Currently detected bluetooth subsystem modules:"
 	@echo
@@ -430,6 +442,7 @@ uninstall: $(MODPROBE)
 	@$(MODPROBE) -l atl2
 	@$(MODPROBE) -l atl1e
 	@$(MODPROBE) -l atl1c
+	@$(MODPROBE) -l alx
 	@echo
 	@echo "Your old bluetooth subsystem modules were left intact:"
 	@echo

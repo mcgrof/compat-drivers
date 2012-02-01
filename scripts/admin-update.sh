@@ -261,6 +261,7 @@ DRIVERS="$DRIVERS drivers/net/ethernet/atheros"
 DRIVERS="$DRIVERS drivers/net/ethernet/atheros/atl1c"
 DRIVERS="$DRIVERS drivers/net/ethernet/atheros/atl1e"
 DRIVERS="$DRIVERS drivers/net/ethernet/atheros/atlx"
+DRIVERS="$DRIVERS drivers/net/ethernet/atheros/alx"
 
 # Bluetooth drivers
 DRIVERS_BT="drivers/bluetooth"
