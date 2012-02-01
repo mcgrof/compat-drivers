@@ -44,7 +44,7 @@
  
  void iwl_leds_init(struct iwl_priv *priv)
  {
-@@ -183,7 +185,9 @@ void iwl_leds_init(struct iwl_priv *priv
+@@ -187,7 +189,9 @@ void iwl_leds_init(struct iwl_priv *priv
  	priv->led.name = kasprintf(GFP_KERNEL, "%s-led",
  				   wiphy_name(priv->hw->wiphy));
  	priv->led.brightness_set = iwl_led_brightness_set;

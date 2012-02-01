@@ -34,7 +34,7 @@ compat-wireless.
  	     ntype == NL80211_IFTYPE_P2P_CLIENT))
 --- a/net/wireless/nl80211.c
 +++ b/net/wireless/nl80211.c
-@@ -1598,7 +1598,7 @@ static int nl80211_valid_4addr(struct cf
+@@ -1597,7 +1597,7 @@ static int nl80211_valid_4addr(struct cf
  			       enum nl80211_iftype iftype)
  {
  	if (!use_4addr) {

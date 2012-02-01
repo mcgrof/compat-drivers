@@ -270,7 +270,7 @@ calls on compat code with only slight modifications.
  
 --- a/drivers/net/wireless/rtlwifi/rtl8192ce/sw.c
 +++ b/drivers/net/wireless/rtlwifi/rtl8192ce/sw.c
-@@ -381,21 +381,22 @@ MODULE_PARM_DESC(swlps, "Set to 1 to use
+@@ -372,21 +372,22 @@ MODULE_PARM_DESC(swlps, "Set to 1 to use
  MODULE_PARM_DESC(fwlps, "Set to 1 to use FW control power save (default 1)\n");
  MODULE_PARM_DESC(debug, "Set debug level (0-5) (default 0)");
  
@@ -303,7 +303,7 @@ calls on compat code with only slight modifications.
  static int __init rtl92ce_module_init(void)
 --- a/drivers/net/wireless/rtlwifi/rtl8192de/sw.c
 +++ b/drivers/net/wireless/rtlwifi/rtl8192de/sw.c
-@@ -391,21 +391,22 @@ MODULE_PARM_DESC(swlps, "Set to 1 to use
+@@ -384,21 +384,22 @@ MODULE_PARM_DESC(swlps, "Set to 1 to use
  MODULE_PARM_DESC(fwlps, "Set to 1 to use FW control power save (default 1)\n");
  MODULE_PARM_DESC(debug, "Set debug level (0-5) (default 0)");
  
@@ -336,7 +336,7 @@ calls on compat code with only slight modifications.
  /* add global spin lock to solve the problem that
 --- a/drivers/net/wireless/rtlwifi/rtl8192se/sw.c
 +++ b/drivers/net/wireless/rtlwifi/rtl8192se/sw.c
-@@ -403,21 +403,22 @@ MODULE_PARM_DESC(swlps, "Set to 1 to use
+@@ -435,21 +435,22 @@ MODULE_PARM_DESC(swlps, "Set to 1 to use
  MODULE_PARM_DESC(fwlps, "Set to 1 to use FW control power save (default 1)\n");
  MODULE_PARM_DESC(debug, "Set debug level (0-5) (default 0)");
  

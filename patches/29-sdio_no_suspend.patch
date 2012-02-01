@@ -187,7 +187,7 @@ suspend and resume that are not backported.
  
 --- a/drivers/net/wireless/brcm80211/brcmfmac/bcmsdh_sdmmc.c
 +++ b/drivers/net/wireless/brcm80211/brcmfmac/bcmsdh_sdmmc.c
-@@ -56,7 +56,7 @@ static bool
+@@ -59,7 +59,7 @@ static bool
  brcmf_pm_resume_error(struct brcmf_sdio_dev *sdiodev)
  {
  	bool is_err = false;
@@ -196,7 +196,7 @@ suspend and resume that are not backported.
  	is_err = atomic_read(&sdiodev->suspend);
  #endif
  	return is_err;
-@@ -65,7 +65,7 @@ brcmf_pm_resume_error(struct brcmf_sdio_
+@@ -68,7 +68,7 @@ brcmf_pm_resume_error(struct brcmf_sdio_
  static void
  brcmf_pm_resume_wait(struct brcmf_sdio_dev *sdiodev, wait_queue_head_t *wq)
  {
@@ -205,7 +205,7 @@ suspend and resume that are not backported.
  	int retry = 0;
  	while (atomic_read(&sdiodev->suspend) && retry++ != 30)
  		wait_event_timeout(*wq, false, HZ/100);
-@@ -536,7 +536,7 @@ static void brcmf_ops_sdio_remove(struct
+@@ -539,7 +539,7 @@ static void brcmf_ops_sdio_remove(struct
  	}
  }
  
@@ -214,7 +214,7 @@ suspend and resume that are not backported.
  static int brcmf_sdio_suspend(struct device *dev)
  {
  	mmc_pm_flag_t sdio_flags;
-@@ -586,7 +586,7 @@ static struct sdio_driver brcmf_sdmmc_dr
+@@ -589,7 +589,7 @@ static struct sdio_driver brcmf_sdmmc_dr
  	.remove = brcmf_ops_sdio_remove,
  	.name = "brcmfmac",
  	.id_table = brcmf_sdmmc_ids,

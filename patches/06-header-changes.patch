@@ -18,14 +18,14 @@ cases.
  
 --- a/drivers/net/wireless/rtlwifi/base.c
 +++ b/drivers/net/wireless/rtlwifi/base.c
-@@ -30,6 +30,7 @@
- #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+@@ -36,6 +36,7 @@
+ #include "regd.h"
  
  #include <linux/ip.h>
 +#include <linux/in.h>
  #include <linux/module.h>
- #include "wifi.h"
- #include "rc.h"
+ 
+ /*
 --- a/drivers/net/wireless/wl1251/main.c
 +++ b/drivers/net/wireless/wl1251/main.c
 @@ -24,6 +24,9 @@
