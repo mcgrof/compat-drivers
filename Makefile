@@ -166,7 +166,7 @@ btuninstall: $(MODPROBE)
 	@echo
 
 btclean:
-	make -C /lib/modules/$(shell uname -r)/build M=$(PWD) BT=TRUE clean
+	$(MAKE) -C /lib/modules/$(shell uname -r)/build M=$(PWD) BT=TRUE clean
 	@rm -f $(CREL_PRE)*
 
 install: uninstall install-modules install-scripts
