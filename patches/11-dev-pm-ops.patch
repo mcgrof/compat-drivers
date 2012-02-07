@@ -189,7 +189,7 @@ calls on compat code with only slight modifications.
  
 --- a/drivers/net/wireless/iwlegacy/iwl3945-base.c
 +++ b/drivers/net/wireless/iwlegacy/iwl3945-base.c
-@@ -3960,7 +3960,12 @@ static struct pci_driver iwl3945_driver
+@@ -3959,7 +3959,12 @@ static struct pci_driver iwl3945_driver
  	.id_table = iwl3945_hw_card_ids,
  	.probe = iwl3945_pci_probe,
  	.remove = __devexit_p(iwl3945_pci_remove),
