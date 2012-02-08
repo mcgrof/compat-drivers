@@ -1,0 +1,39 @@
+These are functions which are defined in the compiled
+subsystems that conflict with functions on older kernels.
+The one below, mpath_lookup(), clashes with include/linux/namei.h
+on 2.6.24:
+
+include/asm/irq_regs_32.h: In function ‘set_irq_regs’:
+include/asm/irq_regs_32.h:24:59: warning: variable ‘tmp__’ set but not used [-Wunused-but-set-variable]
+/home/mcgrof/tmp/compat-wireless-3.2.5-1/net/mac80211/mesh_pathtbl.c: At top level:
+/home/mcgrof/tmp/compat-wireless-3.2.5-1/net/mac80211/mesh_pathtbl.c:342:26: error: conflicting types for ‘path_lookup’
+include/linux/namei.h:71:12: note: previous declaration of ‘path_lookup’ was here
+
+This patch will be sent upstream.
+
+--- a/net/mac80211/mesh_pathtbl.c
++++ b/net/mac80211/mesh_pathtbl.c
+@@ -339,7 +339,7 @@ static void mesh_path_move_to_queue(stru
+ }
+ 
+ 
+-static struct mesh_path *path_lookup(struct mesh_table *tbl, u8 *dst,
++static struct mesh_path *mpath_lookup(struct mesh_table *tbl, u8 *dst,
+ 					  struct ieee80211_sub_if_data *sdata)
+ {
+ 	struct mesh_path *mpath;
+@@ -374,12 +374,12 @@ static struct mesh_path *path_lookup(str
+  */
+ struct mesh_path *mesh_path_lookup(u8 *dst, struct ieee80211_sub_if_data *sdata)
+ {
+-	return path_lookup(rcu_dereference(mesh_paths), dst, sdata);
++	return mpath_lookup(rcu_dereference(mesh_paths), dst, sdata);
+ }
+ 
+ struct mesh_path *mpp_path_lookup(u8 *dst, struct ieee80211_sub_if_data *sdata)
+ {
+-	return path_lookup(rcu_dereference(mpp_paths), dst, sdata);
++	return mpath_lookup(rcu_dereference(mpp_paths), dst, sdata);
+ }
+ 
+ 
