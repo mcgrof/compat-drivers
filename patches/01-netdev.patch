@@ -23,7 +23,7 @@ without creating a headache on maintenance of the pathes.
  	if (unlikely(retval < 0)) {
 --- a/drivers/net/usb/usbnet.c
 +++ b/drivers/net/usb/usbnet.c
-@@ -1377,7 +1377,7 @@ usbnet_probe (struct usb_interface *udev
+@@ -1375,7 +1375,7 @@ usbnet_probe (struct usb_interface *udev
  		net->features |= NETIF_F_HIGHDMA;
  #endif
  
@@ -34,7 +34,7 @@ without creating a headache on maintenance of the pathes.
  
 --- a/drivers/net/wireless/ath/ath6kl/main.c
 +++ b/drivers/net/wireless/ath/ath6kl/main.c
-@@ -1029,7 +1029,7 @@ static struct net_device_ops ath6kl_netd
+@@ -1175,7 +1175,7 @@ static const struct net_device_ops ath6k
  
  void init_netdev(struct net_device *dev)
  {
@@ -107,7 +107,7 @@ without creating a headache on maintenance of the pathes.
  	if (ret < 0)
 --- a/drivers/net/ethernet/broadcom/b44.c
 +++ b/drivers/net/ethernet/broadcom/b44.c
-@@ -2160,7 +2160,7 @@ static int __devinit b44_init_one(struct
+@@ -2159,7 +2159,7 @@ static int __devinit b44_init_one(struct
  	bp->rx_pending = B44_DEF_RX_RING_PENDING;
  	bp->tx_pending = B44_DEF_TX_RING_PENDING;
  
@@ -186,7 +186,7 @@ without creating a headache on maintenance of the pathes.
  
 --- a/drivers/net/wireless/ipw2x00/ipw2100.c
 +++ b/drivers/net/wireless/ipw2x00/ipw2100.c
-@@ -6115,7 +6115,7 @@ static struct net_device *ipw2100_alloc_
+@@ -6112,7 +6112,7 @@ static struct net_device *ipw2100_alloc_
  	priv->ieee->perfect_rssi = -20;
  	priv->ieee->worst_rssi = -85;
  
@@ -289,7 +289,7 @@ without creating a headache on maintenance of the pathes.
  	priv->media_connected = false;
 --- a/drivers/net/wireless/orinoco/main.c
 +++ b/drivers/net/wireless/orinoco/main.c
-@@ -2272,14 +2272,18 @@ int orinoco_if_add(struct orinoco_privat
+@@ -2270,14 +2270,18 @@ int orinoco_if_add(struct orinoco_privat
  #endif
  	/* Default to standard ops if not set */
  	if (ops)

@@ -895,7 +895,7 @@
  }
  
  static int if_cs_probe(struct pcmcia_device *p_dev)
-@@ -822,7 +856,16 @@ static int if_cs_probe(struct pcmcia_dev
+@@ -821,7 +855,16 @@ static int if_cs_probe(struct pcmcia_dev
  	card->p_dev = p_dev;
  	p_dev->priv = card;
  
@@ -912,7 +912,7 @@
  
  	if (pcmcia_loop_config(p_dev, if_cs_ioprobe, NULL)) {
  		pr_err("error in pcmcia_loop_config\n");
-@@ -834,12 +877,26 @@ static int if_cs_probe(struct pcmcia_dev
+@@ -833,12 +876,26 @@ static int if_cs_probe(struct pcmcia_dev
  	 * a handler to the interrupt, unless the 'Handler' member of
  	 * the irq structure is initialized.
  	 */
@@ -939,7 +939,7 @@
  	if (!card->iobase) {
  		pr_err("error in ioport_map\n");
  		ret = -EIO;
-@@ -853,7 +910,17 @@ static int if_cs_probe(struct pcmcia_dev
+@@ -852,7 +909,17 @@ static int if_cs_probe(struct pcmcia_dev
  	}
  
  	/* Finally, report what we've done */
@@ -957,7 +957,7 @@
  
  	/*
  	 * Most of the libertas cards can do unaligned register access, but some
-@@ -922,7 +989,11 @@ static int if_cs_probe(struct pcmcia_dev
+@@ -921,7 +988,11 @@ static int if_cs_probe(struct pcmcia_dev
  	priv->fw_ready = 1;
  
  	/* Now actually get the IRQ */
@@ -969,7 +969,7 @@
  		IRQF_SHARED, DRV_NAME, card);
  	if (ret) {
  		pr_err("error in request_irq\n");
-@@ -995,7 +1066,13 @@ MODULE_DEVICE_TABLE(pcmcia, if_cs_ids);
+@@ -994,7 +1065,13 @@ MODULE_DEVICE_TABLE(pcmcia, if_cs_ids);
  
  static struct pcmcia_driver lbs_driver = {
  	.owner		= THIS_MODULE,

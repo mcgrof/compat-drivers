@@ -35,7 +35,7 @@ calls on compat code with only slight modifications.
  int __init bcma_host_pci_init(void)
 --- a/drivers/net/ethernet/atheros/atl1c/atl1c_main.c
 +++ b/drivers/net/ethernet/atheros/atl1c/atl1c_main.c
-@@ -2900,6 +2900,9 @@ static struct pci_error_handlers atl1c_e
+@@ -2899,6 +2899,9 @@ static struct pci_error_handlers atl1c_e
  
  static SIMPLE_DEV_PM_OPS(atl1c_pm_ops, atl1c_suspend, atl1c_resume);
  
@@ -45,7 +45,7 @@ calls on compat code with only slight modifications.
  static struct pci_driver atl1c_driver = {
  	.name     = atl1c_driver_name,
  	.id_table = atl1c_pci_tbl,
-@@ -2907,7 +2910,12 @@ static struct pci_driver atl1c_driver =
+@@ -2906,7 +2909,12 @@ static struct pci_driver atl1c_driver =
  	.remove   = __devexit_p(atl1c_remove),
  	.shutdown = atl1c_shutdown,
  	.err_handler = &atl1c_err_handler,
@@ -144,7 +144,7 @@ calls on compat code with only slight modifications.
  int ath_pci_init(void)
 --- a/drivers/net/wireless/iwlegacy/3945-mac.c
 +++ b/drivers/net/wireless/iwlegacy/3945-mac.c
-@@ -3919,7 +3919,12 @@ static struct pci_driver il3945_driver =
+@@ -3885,7 +3885,12 @@ static struct pci_driver il3945_driver =
  	.id_table = il3945_hw_card_ids,
  	.probe = il3945_pci_probe,
  	.remove = __devexit_p(il3945_pci_remove),
@@ -159,7 +159,7 @@ calls on compat code with only slight modifications.
  static int __init
 --- a/drivers/net/wireless/iwlegacy/4965-mac.c
 +++ b/drivers/net/wireless/iwlegacy/4965-mac.c
-@@ -6457,7 +6457,12 @@ static struct pci_driver il4965_driver =
+@@ -6479,7 +6479,12 @@ static struct pci_driver il4965_driver =
  	.id_table = il4965_hw_card_ids,
  	.probe = il4965_pci_probe,
  	.remove = __devexit_p(il4965_pci_remove),
@@ -174,7 +174,7 @@ calls on compat code with only slight modifications.
  static int __init
 --- a/drivers/net/wireless/iwlegacy/common.c
 +++ b/drivers/net/wireless/iwlegacy/common.c
-@@ -5239,15 +5239,17 @@ il_pci_resume(struct device *device)
+@@ -5123,15 +5123,17 @@ il_pci_resume(struct device *device)
  }
  EXPORT_SYMBOL(il_pci_resume);
  
@@ -202,7 +202,7 @@ calls on compat code with only slight modifications.
  
 --- a/drivers/net/wireless/iwlegacy/common.h
 +++ b/drivers/net/wireless/iwlegacy/common.h
-@@ -2028,7 +2028,12 @@ __le32 il_add_beacon_time(struct il_priv
+@@ -1964,7 +1964,12 @@ __le32 il_add_beacon_time(struct il_priv
  #ifdef CONFIG_PM
  int il_pci_suspend(struct device *device);
  int il_pci_resume(struct device *device);
@@ -217,7 +217,7 @@ calls on compat code with only slight modifications.
  
 --- a/drivers/net/wireless/iwlwifi/iwl-pci.c
 +++ b/drivers/net/wireless/iwlwifi/iwl-pci.c
-@@ -528,6 +528,9 @@ static int iwl_pci_resume(struct device
+@@ -367,6 +367,9 @@ static int iwl_pci_resume(struct device
  
  static SIMPLE_DEV_PM_OPS(iwl_dev_pm_ops, iwl_pci_suspend, iwl_pci_resume);
  
@@ -227,7 +227,7 @@ calls on compat code with only slight modifications.
  #define IWL_PM_OPS	(&iwl_dev_pm_ops)
  
  #else
-@@ -541,7 +544,12 @@ static struct pci_driver iwl_pci_driver
+@@ -380,7 +383,12 @@ static struct pci_driver iwl_pci_driver
  	.id_table = iwl_hw_card_ids,
  	.probe = iwl_pci_probe,
  	.remove = __devexit_p(iwl_pci_remove),
@@ -336,7 +336,7 @@ calls on compat code with only slight modifications.
  /* add global spin lock to solve the problem that
 --- a/drivers/net/wireless/rtlwifi/rtl8192se/sw.c
 +++ b/drivers/net/wireless/rtlwifi/rtl8192se/sw.c
-@@ -435,21 +435,22 @@ MODULE_PARM_DESC(swlps, "Set to 1 to use
+@@ -432,21 +432,22 @@ MODULE_PARM_DESC(swlps, "Set to 1 to use
  MODULE_PARM_DESC(fwlps, "Set to 1 to use FW control power save (default 1)\n");
  MODULE_PARM_DESC(debug, "Set debug level (0-5) (default 0)");
  

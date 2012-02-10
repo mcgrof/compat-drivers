@@ -5,16 +5,16 @@ suspend and resume that are not backported.
 
 --- a/drivers/net/wireless/ath/ath6kl/cfg80211.c
 +++ b/drivers/net/wireless/ath/ath6kl/cfg80211.c
-@@ -1963,7 +1963,7 @@ int ath6kl_cfg80211_resume(struct ath6kl
- 	return 0;
+@@ -2152,7 +2152,7 @@ int ath6kl_cfg80211_resume(struct ath6kl
  }
+ EXPORT_SYMBOL(ath6kl_cfg80211_resume);
  
 -#ifdef CONFIG_PM
 +#if defined(CONFIG_PM) && (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,34))
  
  /* hif layer decides what suspend mode to use */
  static int __ath6kl_cfg80211_suspend(struct wiphy *wiphy,
-@@ -2554,7 +2554,7 @@ static struct cfg80211_ops ath6kl_cfg802
+@@ -2778,7 +2778,7 @@ static struct cfg80211_ops ath6kl_cfg802
  	.del_pmksa = ath6kl_del_pmksa,
  	.flush_pmksa = ath6kl_flush_pmksa,
  	CFG80211_TESTMODE_CMD(ath6kl_tm_cmd)
@@ -58,7 +58,7 @@ suspend and resume that are not backported.
  {
 --- a/drivers/net/wireless/ath/ath6kl/sdio.c
 +++ b/drivers/net/wireless/ath/ath6kl/sdio.c
-@@ -782,6 +782,7 @@ out:
+@@ -808,6 +808,7 @@ static int ath6kl_set_sdio_pm_caps(struc
  	return ret;
  }
  
@@ -66,7 +66,7 @@ suspend and resume that are not backported.
  static int ath6kl_sdio_suspend(struct ath6kl *ar, struct cfg80211_wowlan *wow)
  {
  	struct ath6kl_sdio *ar_sdio = ath6kl_sdio_priv(ar);
-@@ -877,6 +878,7 @@ static int ath6kl_sdio_resume(struct ath
+@@ -909,6 +910,7 @@ static int ath6kl_sdio_resume(struct ath
  
  	return 0;
  }
@@ -74,7 +74,7 @@ suspend and resume that are not backported.
  
  /* set the window address register (using 4-byte register access ). */
  static int ath6kl_set_addrwin_reg(struct ath6kl *ar, u32 reg_addr, u32 addr)
-@@ -1178,8 +1180,10 @@ static const struct ath6kl_hif_ops ath6k
+@@ -1210,8 +1212,10 @@ static const struct ath6kl_hif_ops ath6k
  	.enable_scatter = ath6kl_sdio_enable_scatter,
  	.scat_req_rw = ath6kl_sdio_async_rw_scatter,
  	.cleanup_scatter = ath6kl_sdio_cleanup_scatter,
@@ -85,7 +85,7 @@ suspend and resume that are not backported.
  	.diag_read32 = ath6kl_sdio_diag_read32,
  	.diag_write32 = ath6kl_sdio_diag_write32,
  	.bmi_read = ath6kl_sdio_bmi_read,
-@@ -1189,7 +1193,7 @@ static const struct ath6kl_hif_ops ath6k
+@@ -1221,7 +1225,7 @@ static const struct ath6kl_hif_ops ath6k
  	.stop = ath6kl_sdio_stop,
  };
  
@@ -94,7 +94,7 @@ suspend and resume that are not backported.
  
  /*
   * Empty handlers so that mmc subsystem doesn't remove us entirely during
-@@ -1336,7 +1340,9 @@ static struct sdio_driver ath6kl_sdio_dr
+@@ -1370,7 +1374,9 @@ static struct sdio_driver ath6kl_sdio_dr
  	.id_table = ath6kl_sdio_devices,
  	.probe = ath6kl_sdio_probe,
  	.remove = ath6kl_sdio_remove,
@@ -135,7 +135,7 @@ suspend and resume that are not backported.
  /*******************************************************************/
 --- a/drivers/net/wireless/mwifiex/sdio.c
 +++ b/drivers/net/wireless/mwifiex/sdio.c
-@@ -127,8 +127,10 @@ mwifiex_sdio_remove(struct sdio_func *fu
+@@ -125,8 +125,10 @@ mwifiex_sdio_remove(struct sdio_func *fu
  		return;
  
  	if (user_rmmod) {
@@ -146,7 +146,7 @@ suspend and resume that are not backported.
  
  		for (i = 0; i < adapter->priv_num; i++)
  			if ((GET_BSS_ROLE(adapter->priv[i]) ==
-@@ -148,6 +150,7 @@ mwifiex_sdio_remove(struct sdio_func *fu
+@@ -146,6 +148,7 @@ mwifiex_sdio_remove(struct sdio_func *fu
  	kfree(card);
  }
  
@@ -154,7 +154,7 @@ suspend and resume that are not backported.
  /*
   * SDIO suspend.
   *
-@@ -255,6 +258,7 @@ static int mwifiex_sdio_resume(struct de
+@@ -253,6 +256,7 @@ static int mwifiex_sdio_resume(struct de
  
  	return 0;
  }
@@ -162,7 +162,7 @@ suspend and resume that are not backported.
  
  /* Device ID for SD8787 */
  #define SDIO_DEVICE_ID_MARVELL_8787   (0x9119)
-@@ -270,10 +274,12 @@ static const struct sdio_device_id mwifi
+@@ -268,10 +272,12 @@ static const struct sdio_device_id mwifi
  
  MODULE_DEVICE_TABLE(sdio, mwifiex_ids);
  
@@ -175,7 +175,7 @@ suspend and resume that are not backported.
  
  static struct sdio_driver mwifiex_sdio = {
  	.name = "mwifiex_sdio",
-@@ -282,7 +288,9 @@ static struct sdio_driver mwifiex_sdio =
+@@ -280,7 +286,9 @@ static struct sdio_driver mwifiex_sdio =
  	.remove = mwifiex_sdio_remove,
  	.drv = {
  		.owner = THIS_MODULE,
