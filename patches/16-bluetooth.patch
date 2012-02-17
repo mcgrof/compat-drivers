@@ -63,9 +63,9 @@ here still, but for now we keep this here.
 +#else
 +		err = bt_proto[proto]->create(net, sock, proto);
 +#endif
- 		bt_sock_reclassify_lock(sock, proto);
+		if (!err)
+			bt_sock_reclassify_lock(sock->sk, proto);
  		module_put(bt_proto[proto]->owner);
- 	}
 @@ -475,7 +483,11 @@ int bt_sock_ioctl(struct socket *sock, u
  		if (sk->sk_state == BT_LISTEN)
  			return -EINVAL;
