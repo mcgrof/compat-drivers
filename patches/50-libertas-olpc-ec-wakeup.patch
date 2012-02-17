@@ -3,11 +3,9 @@ exist before the release of 3.1.  This code in question was an addition,
 not a change from any existing code.  It is safe to simply remove it for
 older kernels.
 
-diff --git a/drivers/net/wireless/libertas/if_usb.c b/drivers/net/wireless/libertas/if_usb.c
-index b5fbbc7..513ae29 100644
 --- a/drivers/net/wireless/libertas/if_usb.c
 +++ b/drivers/net/wireless/libertas/if_usb.c
-@@ -1133,6 +1133,7 @@ static int if_usb_suspend(struct usb_interface *intf, pm_message_t message)
+@@ -1131,6 +1131,7 @@ static int if_usb_suspend(struct usb_int
  	if (priv->psstate != PS_STATE_FULL_POWER)
  		return -1;
  
@@ -15,7 +13,7 @@ index b5fbbc7..513ae29 100644
  #ifdef CONFIG_OLPC
  	if (machine_is_olpc()) {
  		if (priv->wol_criteria == EHS_REMOVE_WAKEUP)
-@@ -1141,6 +1142,7 @@ static int if_usb_suspend(struct usb_interface *intf, pm_message_t message)
+@@ -1139,6 +1140,7 @@ static int if_usb_suspend(struct usb_int
  			olpc_ec_wakeup_set(EC_SCI_SRC_WLAN);
  	}
  #endif
