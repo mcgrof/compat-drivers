@@ -227,7 +227,7 @@
  
  	spin_lock(&(info->lock));
  
-@@ -479,7 +491,11 @@ static int bt3c_load_firmware(bt3c_info_
+@@ -474,7 +486,11 @@ static int bt3c_load_firmware(bt3c_info_
  	unsigned int iobase, size, addr, fcs, tmp;
  	int i, err = 0;
  
@@ -239,7 +239,7 @@
  
  	/* Reset */
  	bt3c_io_write(iobase, 0x8040, 0x0404);
-@@ -654,8 +670,27 @@ static int bt3c_probe(struct pcmcia_devi
+@@ -646,8 +662,27 @@ static int bt3c_probe(struct pcmcia_devi
  	info->p_dev = link;
  	link->priv = info;
  
@@ -267,7 +267,7 @@
  
  	return bt3c_config(link);
  }
-@@ -669,6 +704,7 @@ static void bt3c_detach(struct pcmcia_de
+@@ -661,6 +696,7 @@ static void bt3c_detach(struct pcmcia_de
  	kfree(info);
  }
  
@@ -275,7 +275,7 @@
  static int bt3c_check_config(struct pcmcia_device *p_dev, void *priv_data)
  {
  	int *try = priv_data;
-@@ -707,6 +743,63 @@ static int bt3c_check_config_notpicky(st
+@@ -699,6 +735,63 @@ static int bt3c_check_config_notpicky(st
  	}
  	return -ENODEV;
  }
@@ -339,7 +339,7 @@
  
  static int bt3c_config(struct pcmcia_device *link)
  {
-@@ -730,9 +823,15 @@ static int bt3c_config(struct pcmcia_dev
+@@ -722,9 +815,15 @@ static int bt3c_config(struct pcmcia_dev
  	goto failed;
  
  found_port:
@@ -355,7 +355,7 @@
  
  	i = pcmcia_enable_device(link);
  	if (i != 0)
-@@ -767,7 +866,13 @@ MODULE_DEVICE_TABLE(pcmcia, bt3c_ids);
+@@ -759,7 +858,13 @@ MODULE_DEVICE_TABLE(pcmcia, bt3c_ids);
  
  static struct pcmcia_driver bt3c_driver = {
  	.owner		= THIS_MODULE,
@@ -419,7 +419,7 @@
  
  	spin_lock_irqsave(&(info->lock), flags);
  
-@@ -477,7 +493,11 @@ static int btuart_hci_ioctl(struct hci_d
+@@ -472,7 +488,11 @@ static int btuart_hci_ioctl(struct hci_d
  static int btuart_open(btuart_info_t *info)
  {
  	unsigned long flags;
@@ -431,7 +431,7 @@
  	struct hci_dev *hdev;
  
  	spin_lock_init(&(info->lock));
-@@ -547,7 +567,11 @@ static int btuart_open(btuart_info_t *in
+@@ -539,7 +559,11 @@ static int btuart_open(btuart_info_t *in
  static int btuart_close(btuart_info_t *info)
  {
  	unsigned long flags;
@@ -443,7 +443,7 @@
  	struct hci_dev *hdev = info->hdev;
  
  	if (!hdev)
-@@ -583,8 +607,27 @@ static int btuart_probe(struct pcmcia_de
+@@ -575,8 +599,27 @@ static int btuart_probe(struct pcmcia_de
  	info->p_dev = link;
  	link->priv = info;
  
@@ -471,7 +471,7 @@
  
  	return btuart_config(link);
  }
-@@ -598,6 +641,7 @@ static void btuart_detach(struct pcmcia_
+@@ -590,6 +633,7 @@ static void btuart_detach(struct pcmcia_
  	kfree(info);
  }
  
@@ -479,7 +479,7 @@
  static int btuart_check_config(struct pcmcia_device *p_dev, void *priv_data)
  {
  	int *try = priv_data;
-@@ -636,6 +680,63 @@ static int btuart_check_config_notpicky(
+@@ -628,6 +672,63 @@ static int btuart_check_config_notpicky(
  	}
  	return -ENODEV;
  }
@@ -543,7 +543,7 @@
  
  static int btuart_config(struct pcmcia_device *link)
  {
-@@ -659,9 +760,15 @@ static int btuart_config(struct pcmcia_d
+@@ -651,9 +752,15 @@ static int btuart_config(struct pcmcia_d
  	goto failed;
  
  found_port:
@@ -559,7 +559,7 @@
  
  	i = pcmcia_enable_device(link);
  	if (i != 0)
-@@ -695,7 +802,13 @@ MODULE_DEVICE_TABLE(pcmcia, btuart_ids);
+@@ -687,7 +794,13 @@ MODULE_DEVICE_TABLE(pcmcia, btuart_ids);
  
  static struct pcmcia_driver btuart_driver = {
  	.owner		= THIS_MODULE,
@@ -575,7 +575,7 @@
  	.id_table	= btuart_ids,
 --- a/drivers/bluetooth/dtl1_cs.c
 +++ b/drivers/bluetooth/dtl1_cs.c
-@@ -148,7 +148,11 @@ static void dtl1_write_wakeup(dtl1_info_
+@@ -145,7 +145,11 @@ static void dtl1_write_wakeup(dtl1_info_
  	}
  
  	do {
@@ -587,7 +587,7 @@
  		register struct sk_buff *skb;
  		register int len;
  
-@@ -213,7 +217,11 @@ static void dtl1_receive(dtl1_info_t *in
+@@ -210,7 +214,11 @@ static void dtl1_receive(dtl1_info_t *in
  		return;
  	}
  
@@ -599,7 +599,7 @@
  
  	do {
  		info->hdev->stat.byte_rx++;
-@@ -300,7 +308,11 @@ static irqreturn_t dtl1_interrupt(int ir
+@@ -297,7 +305,11 @@ static irqreturn_t dtl1_interrupt(int ir
  		/* our irq handler is shared */
  		return IRQ_NONE;
  
@@ -611,7 +611,7 @@
  
  	spin_lock(&(info->lock));
  
-@@ -460,7 +472,11 @@ static int dtl1_hci_ioctl(struct hci_dev
+@@ -452,7 +464,11 @@ static int dtl1_hci_ioctl(struct hci_dev
  static int dtl1_open(dtl1_info_t *info)
  {
  	unsigned long flags;
@@ -623,7 +623,7 @@
  	struct hci_dev *hdev;
  
  	spin_lock_init(&(info->lock));
-@@ -507,8 +523,13 @@ static int dtl1_open(dtl1_info_t *info)
+@@ -496,8 +512,13 @@ static int dtl1_open(dtl1_info_t *info)
  	outb(UART_LCR_WLEN8, iobase + UART_LCR);	/* Reset DLAB */
  	outb((UART_MCR_DTR | UART_MCR_RTS | UART_MCR_OUT2), iobase + UART_MCR);
  
@@ -637,7 +637,7 @@
  
  	/* Turn on interrupts */
  	outb(UART_IER_RLSI | UART_IER_RDI | UART_IER_THRI, iobase + UART_IER);
-@@ -533,7 +554,11 @@ static int dtl1_open(dtl1_info_t *info)
+@@ -522,7 +543,11 @@ static int dtl1_open(dtl1_info_t *info)
  static int dtl1_close(dtl1_info_t *info)
  {
  	unsigned long flags;
@@ -649,7 +649,7 @@
  	struct hci_dev *hdev = info->hdev;
  
  	if (!hdev)
-@@ -569,7 +594,24 @@ static int dtl1_probe(struct pcmcia_devi
+@@ -558,7 +583,24 @@ static int dtl1_probe(struct pcmcia_devi
  	info->p_dev = link;
  	link->priv = info;
  
@@ -674,7 +674,7 @@
  
  	return dtl1_config(link);
  }
-@@ -584,6 +626,7 @@ static void dtl1_detach(struct pcmcia_de
+@@ -573,6 +615,7 @@ static void dtl1_detach(struct pcmcia_de
  	kfree(info);
  }
  
@@ -682,7 +682,7 @@
  static int dtl1_confcheck(struct pcmcia_device *p_dev, void *priv_data)
  {
  	if ((p_dev->resource[1]->end) || (p_dev->resource[1]->end < 8))
-@@ -594,6 +637,29 @@ static int dtl1_confcheck(struct pcmcia_
+@@ -583,6 +626,29 @@ static int dtl1_confcheck(struct pcmcia_
  
  	return pcmcia_request_io(p_dev);
  }
@@ -712,7 +712,7 @@
  
  static int dtl1_config(struct pcmcia_device *link)
  {
-@@ -601,13 +667,23 @@ static int dtl1_config(struct pcmcia_dev
+@@ -590,13 +656,23 @@ static int dtl1_config(struct pcmcia_dev
  	int i;
  
  	/* Look for a generic full-sized window */
@@ -736,7 +736,7 @@
  
  	i = pcmcia_enable_device(link);
  	if (i != 0)
-@@ -645,7 +721,13 @@ MODULE_DEVICE_TABLE(pcmcia, dtl1_ids);
+@@ -623,7 +699,13 @@ MODULE_DEVICE_TABLE(pcmcia, dtl1_ids);
  
  static struct pcmcia_driver dtl1_driver = {
  	.owner		= THIS_MODULE,

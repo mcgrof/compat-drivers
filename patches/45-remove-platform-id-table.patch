@@ -1,6 +1,6 @@
 --- a/drivers/net/wireless/wl12xx/main.c
 +++ b/drivers/net/wireless/wl12xx/main.c
-@@ -5319,16 +5319,20 @@ static int __devexit wl12xx_remove(struc
+@@ -5577,16 +5577,20 @@ static int __devexit wl12xx_remove(struc
  	return 0;
  }
  
