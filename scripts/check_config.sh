@@ -3,14 +3,15 @@
 # regenerates the compat_autoconf header.
 
 # These variables are expected to be exported:
-#COMPAT_CONFIG="config"
+#COMPAT_CONFIG=".config"
+#COMPAT_CONFIG_CW="config"
 #CONFIG_CHECK=".${COMPAT_CONFIG}.md5"
 #COMPAT_AUTOCONF="include/linux/compat_autoconf.h"
 
 function gen_compat_autoconf {
-	echo "./scripts/gen-compat-autoconf.sh $COMPAT_CONFIG > $COMPAT_AUTOCONF"
-	./scripts/gen-compat-autoconf.sh $COMPAT_CONFIG > $COMPAT_AUTOCONF
-	md5sum $COMPAT_CONFIG > $CONFIG_CHECK
+	echo "./scripts/gen-compat-autoconf.sh $COMPAT_CONFIG $COMPAT_CONFIG_CW > $COMPAT_AUTOCONF"
+	./scripts/gen-compat-autoconf.sh $COMPAT_CONFIG $COMPAT_CONFIG_CW > $COMPAT_AUTOCONF
+	md5sum $COMPAT_CONFIG $COMPAT_CONFIG_CW > $CONFIG_CHECK
 }
 
 which md5sum 2>&1 > /dev/null

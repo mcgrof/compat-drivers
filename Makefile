@@ -8,6 +8,7 @@ endif
 export KLIB_BUILD ?=	$(KLIB)/build
 # Sometimes not available in the path
 MODPROBE := /sbin/modprobe
+export MAKE
 
 ifneq ($(wildcard $(MODPROBE)),)
 MADWIFI=$(shell $(MODPROBE) -l ath_pci)
@@ -66,14 +67,16 @@ CFLAGS += \
 
 # These exported as they are used by the scripts
 # to check config and compat autoconf
-export COMPAT_CONFIG=config.mk
-export CONFIG_CHECK=.$(COMPAT_CONFIG)_md5sum.txt
+export COMPAT_CONFIG_CW=config.mk
+export COMPAT_CONFIG=.config
+export CONFIG_CHECK=.$(COMPAT_CONFIG_CW)_md5sum.txt
 export COMPAT_AUTOCONF=include/linux/compat_autoconf.h
 export CREL=$(shell cat $(PWD)/compat_version)
 export CREL_PRE:=.compat_autoconf_
 export CREL_CHECK:=$(CREL_PRE)$(CREL)
 
-include $(PWD)/$(COMPAT_CONFIG)
+include $(PWD)/$(COMPAT_CONFIG_CW)
+-include $(PWD)/$(COMPAT_CONFIG)
 
 all: modules
 
@@ -92,10 +95,11 @@ bt: $(CREL_CHECK)
 # $(COMPAT_CONFIG) file
 $(CREL_CHECK):
 	@# Force to regenerate compat autoconf
+	@./compat/scripts/gen-compat-config.sh > $(PWD)/$(COMPAT_CONFIG)
 	@rm -f $(CONFIG_CHECK)
 	@./scripts/check_config.sh
 	@touch $@
-	@md5sum $(COMPAT_CONFIG) > $(CONFIG_CHECK)
+	@md5sum $(COMPAT_CONFIG_CW) > $(CONFIG_CHECK)
 
 btinstall: btuninstall bt-install-modules
 
@@ -234,4 +238,4 @@ wlunload:
 endif
 
 clean-files += Module.symvers Module.markers modules modules.order
-clean-files += $(CREL_CHECK) $(CONFIG_CHECK)
+clean-files += $(CREL_CHECK) $(CONFIG_CHECK) $(COMPAT_CONFIG)
