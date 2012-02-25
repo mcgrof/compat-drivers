@@ -36,9 +36,11 @@ endif
 # you have it enabled, otherwise you will very likely run into
 # a kernel panic.
 # XXX: move this to compat_autoconf.h script generation
+ifeq ($(KERNEL_VERSION),2)
 ifeq ($(shell test $(KERNEL_VERSION) -eq 2 -a $(KERNEL_26SUBLEVEL) -eq 27 && echo yes),yes)
 ifeq ($(CONFIG_DYNAMIC_FTRACE),y)
 $(error "ERROR: Your 2.6.27 kernel has CONFIG_DYNAMIC_FTRACE, please upgrade your distribution kernel as newer ones should not have this enabled (and if so report a bug) or remove this warning if you know what you are doing")
+endif
 endif
 endif
 
@@ -54,9 +56,11 @@ endif
 # In kernel 2.6.32 both attributes were removed.
 #
 # XXX: move this to compat_autoconf.h script generation
+ifeq ($(KERNEL_VERSION),2)
 ifeq ($(shell test $(KERNEL_VERSION) -eq 2 -a $(KERNEL_26SUBLEVEL) -ge 27 -a $(KERNEL_26SUBLEVEL) -le 31 && echo yes),yes)
 ifeq ($(CONFIG_MAC80211),)
 $(error "ERROR: Your >=2.6.27 and <= 2.6.31 kernel has CONFIG_MAC80211 disabled, you should have it CONFIG_MAC80211=m if you want to use this thing.")
+endif
 endif
 endif
 
