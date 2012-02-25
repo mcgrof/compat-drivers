@@ -6,15 +6,6 @@ else
 export KLIB:=          /lib/modules/$(shell uname -r)
 endif
 export KLIB_BUILD ?=	$(KLIB)/build
-# Sometimes not available in the path
-MODPROBE := /sbin/modprobe
-export MAKE
-
-ifneq ($(wildcard $(MODPROBE)),)
-MADWIFI=$(shell $(MODPROBE) -l ath_pci)
-OLD_IWL=$(shell $(MODPROBE) -l iwl4965)
-OLD_ALX=$(shell $(MODPROBE) -l atl1c)
-endif
 
 DESTDIR?=
 
@@ -109,7 +100,7 @@ $(CREL_CHECK):
 
 btinstall: btuninstall bt-install-modules
 
-bt-install-modules: bt $(MODPROBE)
+bt-install-modules: bt
 	$(MAKE) -C $(KLIB_BUILD) M=$(PWD) $(KMODDIR_ARG) $(KMODPATH_ARG) BT=TRUE \
 		modules_install
 	@/sbin/depmod -ae
@@ -121,7 +112,7 @@ bt-install-modules: bt $(MODPROBE)
 	@echo And then load the needed bluetooth modules. If unsure reboot.
 	@echo
 
-btuninstall: $(MODPROBE)
+btuninstall:
 	@# New location, matches upstream
 	@rm -rf $(KLIB)/$(KMODDIR)/net/bluetooth/
 	@rm -rf $(KLIB)/$(KMODDIR)/drivers/bluetooth/
@@ -141,7 +132,7 @@ install-modules: modules
 		modules_install
 	@./scripts/update-initramfs
 
-install-scripts: $(MODPROBE)
+install-scripts:
 	@# All the scripts we can use
 	@mkdir -p $(DESTDIR)/usr/lib/compat-wireless/
 	@install scripts/modlib.sh	$(DESTDIR)/usr/lib/compat-wireless/
@@ -154,32 +145,31 @@ install-scripts: $(MODPROBE)
 	@install scripts/athload	$(DESTDIR)/usr/sbin/
 	@install scripts/b43load	$(DESTDIR)/usr/sbin/
 	@install scripts/iwl-load	$(DESTDIR)/usr/sbin/
-	@if [ ! -z "$(MADWIFI)" ] && [ -z "$(DESTDIR)" ]; then \
-		echo ;\
+	@if $(modinfo ath_pci > /dev/null 2>&1); then \
 		echo -n "Note: madwifi detected, we're going to disable it. "  ;\
 		echo "If you would like to enable it later you can run:"  ;\
 		echo "    sudo athenable madwifi"  ;\
 		echo ;\
 		echo Running athenable ath5k...;\
-		/usr/sbin/athenable ath5k ;\
+		$(DESTDIR)/usr/sbin/athenable ath5k ;\
 	fi
-	@if [ ! -z "$(OLD_IWL)" ] && [ -z "$(DESTDIR)" ]; then \
+	@if $(modinfo iwl4965 > /dev/null 2>&1); then \
 		echo ;\
 		echo -n "Note: iwl4965 detected, we're going to disable it. "  ;\
 		echo "If you would like to enable it later you can run:"  ;\
 		echo "    sudo iwl-load iwl4965"  ;\
 		echo ;\
 		echo Running iwl-enable iwlagn...;\
-		/usr/sbin/iwl-enable iwlagn ;\
+		$(DESTDIR)/usr/sbin/iwl-enable iwlagn ;\
 	fi
-	@if [ ! -z "$(OLD_ALX)" ] && [ -z "$(DESTDIR)" ]; then \
+	@if $(modinfo atl1c > /dev/null 2>&1); then \
 		echo ;\
 		echo -n "Note: atl1c detected, we're going to disable it. "  ;\
 		echo "If you would like to enable it later you can run:"  ;\
 		echo "    sudo alx-load atl1c"  ;\
 		echo ;\
 		echo Running alx-enable alx...;\
-		/usr/sbin/alx-enable alx;\
+		$(DESTDIR)/usr/sbin/alx-enable alx;\
 	fi
 	@# If on distributions like Mandriva which like to
 	@# compress their modules this will find out and do
@@ -205,7 +195,7 @@ install-scripts: $(MODPROBE)
 	@echo If unsure reboot.
 	@echo
 
-uninstall: $(MODPROBE)
+uninstall:
 	@# New location, matches upstream
 	@rm -rf $(KLIB)/$(KMODDIR)/compat/
 	@rm -rf $(KLIB)/$(KMODDIR)/net/mac80211/
