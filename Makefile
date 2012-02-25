@@ -76,9 +76,14 @@ export CREL_PRE:=.compat_autoconf_
 export CREL_CHECK:=$(CREL_PRE)$(CREL)
 
 include $(PWD)/$(COMPAT_CONFIG_CW)
+
+# Recursion lets us ensure we get this file included.
+# Trick is to run make -C $(PWD) modules later.
 -include $(PWD)/$(COMPAT_CONFIG)
 
-all: modules
+all: $(CREL_CHECK)
+
+$COMPAT_CONFIG: ;
 
 modules: $(CREL_CHECK)
 	@./scripts/check_config.sh
@@ -100,6 +105,7 @@ $(CREL_CHECK):
 	@./scripts/check_config.sh
 	@touch $@
 	@md5sum $(COMPAT_CONFIG_CW) > $(CONFIG_CHECK)
+	make -C $(PWD) modules
 
 btinstall: btuninstall bt-install-modules
 
