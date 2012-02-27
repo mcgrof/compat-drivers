@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Copyright 2009        Luis R. Rodriguez <mcgrof@gmail.com>
 #
 # This script allows you to select your compat-wireless driver and

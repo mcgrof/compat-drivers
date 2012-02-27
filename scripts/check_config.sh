@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # This script checks the compat-wireless configuration file and if changes were made
 # regenerates the compat_autoconf header.
 

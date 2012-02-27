@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Copyright 2009  Luis R. Rodriguez <mcgrof@gmail.com>
 #
 # You can use this to make stable compat-wireless releases
