@@ -146,7 +146,7 @@ install-scripts:
 	@install scripts/athload	$(DESTDIR)/usr/sbin/
 	@install scripts/b43load	$(DESTDIR)/usr/sbin/
 	@install scripts/iwl-load	$(DESTDIR)/usr/sbin/
-	@if $(modinfo ath_pci > /dev/null 2>&1); then \
+	@if [ $(shell modinfo ath_pci > /dev/null 2>&1 && echo 1) ]; then \
 		echo -n "Note: madwifi detected, we're going to disable it. "  ;\
 		echo "If you would like to enable it later you can run:"  ;\
 		echo "    sudo athenable madwifi"  ;\
@@ -154,7 +154,7 @@ install-scripts:
 		echo Running athenable ath5k...;\
 		$(DESTDIR)/usr/sbin/athenable ath5k ;\
 	fi
-	@if $(modinfo iwl4965 > /dev/null 2>&1); then \
+	@if [ $(shell modinfo iwl4965 > /dev/null 2>&1 && echo 1) ]; then \
 		echo ;\
 		echo -n "Note: iwl4965 detected, we're going to disable it. "  ;\
 		echo "If you would like to enable it later you can run:"  ;\
@@ -163,7 +163,7 @@ install-scripts:
 		echo Running iwl-enable iwlagn...;\
 		$(DESTDIR)/usr/sbin/iwl-enable iwlagn ;\
 	fi
-	@if $(modinfo atl1c > /dev/null 2>&1); then \
+	@if [ $(shell modinfo atl1c > /dev/null 2>&1 && echo 1) ]; then \
 		echo ;\
 		echo -n "Note: atl1c detected, we're going to disable it. "  ;\
 		echo "If you would like to enable it later you can run:"  ;\
