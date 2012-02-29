@@ -39,7 +39,7 @@ function module_disable {
 			echo -en "Disabling $MODULE ..."
 		fi
 		mv -f $i ${i}${IGNORE_SUFFIX}
-		depmod -ae
+		depmod -a
 		CHECK_AGAIN=`modprobe -l $MODULE`
 		if [ "$CHECK" != "$CHECK_AGAIN" ]; then
 			echo -e "\t[OK]\tModule disabled:"
@@ -65,7 +65,7 @@ function module_enable {
 		echo -en "Enabling $MODULE ..."
 		DIR=`dirname $i`
 		mv $i $DIR/$MODULE_KO
-		depmod -ae
+		depmod -a
 		CHECK=`modprobe -l $MODULE`
 		if [ "$DIR/$MODULE_KO" != $CHECK ]; then
 			if [ -z $CHECK ]; then
