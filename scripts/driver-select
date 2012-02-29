@@ -442,22 +442,27 @@ case $1 in
 # Ethernet and Bluetooth drivers
 	atl1)
 		enable_only_ethernet
+		disable_b44
 		echo -e "obj-\$(CONFIG_ATL1) += atlx/" > $DRIVERS_NET_ATHEROS
 		;;
 	atl2)
 		enable_only_ethernet
+		disable_b44
 		echo -e "obj-\$(CONFIG_ATL2) += atlx/" > $DRIVERS_NET_ATHEROS
 		;;
 	atl1e)
 		enable_only_ethernet
+		disable_b44
 		echo -e "obj-\$(CONFIG_ATL1E) += atl1e/" > $DRIVERS_NET_ATHEROS
 		;;
 	atl1c)
 		enable_only_ethernet
+		disable_b44
 		echo -e "obj-\$(CONFIG_ATL1C) += atl1c/" > $DRIVERS_NET_ATHEROS
 		;;
 	alx)
 		enable_only_ethernet
+		disable_b44
 		echo -e "obj-\$(CONFIG_ALX) += alx/" > $DRIVERS_NET_ATHEROS
 		;;
 	atlxx)
