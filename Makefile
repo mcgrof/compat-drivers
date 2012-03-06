@@ -163,6 +163,16 @@ install-scripts:
 		echo Running iwl-enable iwlagn...;\
 		$(DESTDIR)/usr/sbin/iwl-enable iwlagn ;\
 	fi
+	@if [ $(shell modinfo iwlagn > /dev/null 2>&1 && echo 1) ] \
+	 && [ $(shell modinfo iwlwifi > /dev/null 2>&1 && echo 1) ]; then \
+		echo ;\
+		echo -n "Note: iwlagn detected, we're going to disable it. " ;\
+		echo "If you would like to enable it later you can run:"  ;\
+		echo "    sudo iwl-load iwlagn"  ;\
+		echo ;\
+		echo Running iwl-enable iwlwifi...;\
+		$(DESTDIR)/usr/sbin/iwl-enable iwlwifi ;\
+	fi
 	@if [ $(shell modinfo atl1c > /dev/null 2>&1 && echo 1) ]; then \
 		echo ;\
 		echo -n "Note: atl1c detected, we're going to disable it. "  ;\

@@ -17,7 +17,14 @@ IWL_NEW="iwlagn"
 IWL_OLD="iwl4965"
 
 # Appended to module file at the end when we want to ignore one
-USAGE="Usage: $0 [ $IWL_NEW | $IWL_OLD ]"
+USAGE="Usage: $0 [ $IWL_NEW | $IWL_OLD | iwlwifi ]"
+
+function enable_iwlwifi {
+	for i in $IWL_OLD $IWL_NEW; do
+		module_disable $i
+	done
+	module_enable iwlwifi
+}
 
 function enable_iwlagn {
 	module_disable $IWL_OLD
@@ -41,6 +48,8 @@ if [ "$MODULE" == "iwl4965" ]; then
 	module_enable $IWL_OLD
 elif [ "$MODULE" == "iwlagn" ]; then
 	enable_iwlagn
+elif [ "$MODULE" == "iwlwifi" ]; then
+	enable_iwlwifi
 else
 	echo "$USAGE"
 	exit
