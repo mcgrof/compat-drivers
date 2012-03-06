@@ -3,7 +3,7 @@ here still, but for now we keep this here.
 
 --- a/drivers/bluetooth/hci_ldisc.c
 +++ b/drivers/bluetooth/hci_ldisc.c
-@@ -273,8 +273,13 @@ static int hci_uart_tty_open(struct tty_
+@@ -271,8 +271,13 @@ static int hci_uart_tty_open(struct tty_
  	/* FIXME: why is this needed. Note don't use ldisc_ref here as the
  	   open path is before the ldisc is referencable */
  
@@ -17,7 +17,7 @@ here still, but for now we keep this here.
  	tty_driver_flush_buffer(tty);
  
  	return 0;
-@@ -390,7 +395,9 @@ static int hci_uart_register_dev(struct
+@@ -388,7 +393,9 @@ static int hci_uart_register_dev(struct
  	hdev->close = hci_uart_close;
  	hdev->flush = hci_uart_flush;
  	hdev->send  = hci_uart_send_frame;
@@ -25,9 +25,9 @@ here still, but for now we keep this here.
  	hdev->parent = hu->tty->dev;
 +#endif
  
- 	if (!reset)
- 		set_bit(HCI_QUIRK_NO_RESET, &hdev->quirks);
-@@ -488,7 +495,11 @@ static int hci_uart_tty_ioctl(struct tty
+ 	if (test_bit(HCI_UART_RAW_DEVICE, &hu->hdev_flags))
+ 		set_bit(HCI_QUIRK_RAW_DEVICE, &hdev->quirks);
+@@ -491,7 +498,11 @@ static int hci_uart_tty_ioctl(struct tty
  		return hu->hdev_flags;
  
  	default:
@@ -94,7 +94,7 @@ here still, but for now we keep this here.
  	wake_up_process(session->task);
 --- a/net/bluetooth/hci_sock.c
 +++ b/net/bluetooth/hci_sock.c
-@@ -891,7 +891,11 @@ drop:
+@@ -893,7 +893,11 @@ drop:
  	goto done;
  }
  
@@ -106,7 +106,7 @@ here still, but for now we keep this here.
  {
  	struct hci_ufilter uf = { .opcode = 0 };
  	struct sock *sk = sock->sk;
-@@ -1063,8 +1067,12 @@ static struct proto hci_sk_proto = {
+@@ -1065,8 +1069,12 @@ static struct proto hci_sk_proto = {
  	.obj_size	= sizeof(struct hci_pinfo)
  };
  
@@ -590,7 +590,7 @@ here still, but for now we keep this here.
  
 --- a/net/bluetooth/l2cap_sock.c
 +++ b/net/bluetooth/l2cap_sock.c
-@@ -528,7 +528,14 @@ static int l2cap_sock_setsockopt_old(str
+@@ -530,7 +530,14 @@ static int l2cap_sock_setsockopt_old(str
  	return err;
  }
  
@@ -605,7 +605,7 @@ here still, but for now we keep this here.
  {
  	struct sock *sk = sock->sk;
  	struct l2cap_chan *chan = l2cap_pi(sk)->chan;
-@@ -1043,8 +1050,12 @@ static struct sock *l2cap_sock_alloc(str
+@@ -1057,8 +1064,12 @@ static struct sock *l2cap_sock_alloc(str
  	return sk;
  }
  
@@ -618,7 +618,7 @@ here still, but for now we keep this here.
  {
  	struct sock *sk;
  
-@@ -1056,7 +1067,11 @@ static int l2cap_sock_create(struct net
+@@ -1070,7 +1081,11 @@ static int l2cap_sock_create(struct net
  			sock->type != SOCK_DGRAM && sock->type != SOCK_RAW)
  		return -ESOCKTNOSUPPORT;
  
