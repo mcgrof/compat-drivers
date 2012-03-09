@@ -1,15 +1,15 @@
-Do not activate the mac80211 tracing by default as it does not work with 
-kernel <= 2.6.32. Compat also includes include/trace/define_trace.h over
-include/trace/events/module.h which makes this not compiling any more.
+Do not activate the mac80211 tracing for kernels <= 2.6.32
 
 --- a/net/mac80211/Makefile
 +++ b/net/mac80211/Makefile
-@@ -25,7 +25,7 @@ mac80211-y := \
+@@ -25,7 +25,9 @@ mac80211-y := \
  	wme.o \
  	event.o \
  	chan.o \
 -	driver-trace.o mlme.o
 +	mlme.o
++
++mac80211-$(CONFIG_COMPAT_MAC80211_DRIVER_API_TRACER) += driver-trace.o
  
  mac80211-$(CONFIG_MAC80211_LEDS) += led.o
  mac80211-$(CONFIG_MAC80211_DEBUGFS) += \
