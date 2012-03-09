@@ -41,7 +41,7 @@ here still, but for now we keep this here.
  
 --- a/net/bluetooth/af_bluetooth.c
 +++ b/net/bluetooth/af_bluetooth.c
-@@ -125,8 +125,12 @@ int bt_sock_unregister(int proto)
+@@ -122,8 +122,12 @@ int bt_sock_unregister(int proto)
  }
  EXPORT_SYMBOL(bt_sock_unregister);
  
@@ -54,7 +54,7 @@ here still, but for now we keep this here.
  {
  	int err;
  
-@@ -144,7 +148,11 @@ static int bt_sock_create(struct net *ne
+@@ -141,7 +145,11 @@ static int bt_sock_create(struct net *ne
  	read_lock(&bt_proto_lock);
  
  	if (bt_proto[proto] && try_module_get(bt_proto[proto]->owner)) {
@@ -63,10 +63,10 @@ here still, but for now we keep this here.
 +#else
 +		err = bt_proto[proto]->create(net, sock, proto);
 +#endif
- 		bt_sock_reclassify_lock(sock, proto);
+ 		if (!err)
+ 			bt_sock_reclassify_lock(sock->sk, proto);
  		module_put(bt_proto[proto]->owner);
- 	}
-@@ -475,7 +483,11 @@ int bt_sock_ioctl(struct socket *sock, u
+@@ -473,7 +481,11 @@ int bt_sock_ioctl(struct socket *sock, u
  		if (sk->sk_state == BT_LISTEN)
  			return -EINVAL;
  
