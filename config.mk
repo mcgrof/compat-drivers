@@ -279,7 +279,7 @@ CONFIG_ATH9K_COMMON=m
 # as default once we get minstrel properly tested and blessed by
 # our systems engineering team. CCK rates also need to be used
 # for long range considerations.
-CONFIG_ATH9K_RATE_CONTROL=y
+CONFIG_COMPAT_ATH9K_RATE_CONTROL=y
 
 # PCI Drivers
 ifdef CONFIG_PCI
