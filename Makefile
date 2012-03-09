@@ -77,12 +77,12 @@ include $(PWD)/$(COMPAT_CONFIG)
 all: modules
 
 modules: $(CREL_CHECK)
-	@./scripts/check_config.sh
+	@+./scripts/check_config.sh
 	$(MAKE) -C $(KLIB_BUILD) M=$(PWD) modules
 	@touch $@
 
 bt: $(CREL_CHECK)
-	@./scripts/check_config.sh
+	@+./scripts/check_config.sh
 	$(MAKE) -C $(KLIB_BUILD) M=$(PWD) BT=TRUE modules
 	@touch $@
 
@@ -92,7 +92,7 @@ bt: $(CREL_CHECK)
 $(CREL_CHECK):
 	@# Force to regenerate compat autoconf
 	@rm -f $(CONFIG_CHECK)
-	@./scripts/check_config.sh
+	@+./scripts/check_config.sh
 	@touch $@
 	@md5sum $(COMPAT_CONFIG) > $(CONFIG_CHECK)
 
