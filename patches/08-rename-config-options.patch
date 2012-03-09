@@ -1,3 +1,11 @@
+This file renames CONFIG_ options that may be defined in older
+kernels but that we know we can *safely* rename to other config
+option names to ensure we disable building these options at
+through this framework. An example here is ath9k's rate control
+aglorithm is always selected by default via CONFIG_ATH9K_RATE_CONTROL.
+By renaming this to CONFIG_COMPAT_ATH9K_RATE_CONTROL we have
+the flexibility to disable it for a replacement driver.
+
 In kernel 2.6.26 and older CONFIG_IWL4965 was build as an extra
 module, but now it is directly included in the iwlagn.
 
@@ -103,3 +111,36 @@ CONFIG_BT_HIDP does not build with older kernel versions.
 +obj-$(CONFIG_COMPAT_WL1251_SDIO)	+= wl1251_sdio.o
  
  ccflags-y += -D__CHECK_ENDIAN__
+--- a/drivers/net/wireless/ath/ath9k/Makefile
++++ b/drivers/net/wireless/ath/ath9k/Makefile
+@@ -6,7 +6,7 @@ ath9k-y +=	beacon.o \
+ 		xmit.o
+ 
+ ath9k-$(CONFIG_ATH9K_BTCOEX_SUPPORT) += mci.o
+-ath9k-$(CONFIG_ATH9K_RATE_CONTROL) += rc.o
++ath9k-$(CONFIG_COMPAT_ATH9K_RATE_CONTROL) += rc.o
+ ath9k-$(CONFIG_ATH9K_PCI) += pci.o
+ ath9k-$(CONFIG_ATH9K_AHB) += ahb.o
+ ath9k-$(CONFIG_ATH9K_DEBUGFS) += debug.o
+--- drivers/net/wireless/ath/ath9k/init.c
++++ drivers/net/wireless/ath/ath9k/init.c
+@@ -703,7 +703,7 @@ void ath9k_set_hw_capab(struct ath_softc
+ 	sc->ant_rx = hw->wiphy->available_antennas_rx;
+ 	sc->ant_tx = hw->wiphy->available_antennas_tx;
+ 
+-#ifdef CONFIG_ATH9K_RATE_CONTROL
++#ifdef CONFIG_COMPAT_ATH9K_RATE_CONTROL
+ 	hw->rate_control_algorithm = "ath9k_rate_control";
+ #endif
+ 
+--- drivers/net/wireless/ath/ath9k/rc.h
++++ drivers/net/wireless/ath/ath9k/rc.h
+@@ -219,7 +219,7 @@ struct ath_rate_priv {
+ 	struct ath_rc_stats rcstats[RATE_TABLE_SIZE];
+ };
+ 
+-#ifdef CONFIG_ATH9K_RATE_CONTROL
++#ifdef CONFIG_COMPAT_ATH9K_RATE_CONTROL
+ int ath_rate_control_register(void);
+ void ath_rate_control_unregister(void);
+ #else

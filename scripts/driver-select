@@ -4,6 +4,7 @@
 # This script allows you to select your compat-wireless driver and
 # reduce compilation time.
 
+COMPAT_CONFIG_CW="config.mk"
 DRIVERS_MAKEFILE="drivers/net/wireless/Makefile"
 ATH_MAKEFILE="drivers/net/wireless/ath/Makefile"
 ATH9K_MAKEFILE="drivers/net/wireless/ath/ath9k/Makefile"
@@ -33,7 +34,7 @@ PURPLE="\033[35m"
 CYAN="\033[36m"
 UNDERLINE="\033[02m"
 
-SUPPORTED_80211_DRIVERS="ath5k ath9k ath9k_htc carl9170 ath6kl b43 zd1211rw rt2x00 wl1251 wl12xx brcmsmac brcmfmac"
+SUPPORTED_80211_DRIVERS="ath5k ath9k ath9k_ap ath9k_htc carl9170 ath6kl b43 zd1211rw rt2x00 wl1251 wl12xx brcmsmac brcmfmac"
 
 # b43 needs some more work for driver-select, the SSB stuff, plus
 # what if you update b44 but not b43? It will bust.
@@ -243,6 +244,13 @@ function select_ath9k_driver
 	# In the future here we'll add stuff to disable ath9k_htc
 }
 
+function select_ath9k_driver_ap
+{
+	select_ath9k_driver
+	backup_file $COMPAT_CONFIG_CW
+	perl -i -ne 'print if ! /CONFIG_COMPAT_ATH9K_RATE_CONTROL/ ' $COMPAT_CONFIG_CW
+}
+
 function select_brcm80211_driver 
 {
 	backup_file $BRCM80211_MAKEFILE
@@ -380,6 +388,12 @@ case $1 in
 		disable_bt_usb_ethernet_var
 		select_driver		CONFIG_ATH_COMMON
 		select_ath9k_driver
+		;;
+	ath9k_ap)
+		disable_staging
+		disable_bt_usb_ethernet_var
+		select_driver		CONFIG_ATH_COMMON
+		select_ath9k_driver_ap
 		;;
 	carl9170)
 		disable_staging
