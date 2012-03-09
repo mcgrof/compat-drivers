@@ -240,7 +240,7 @@ wlunload:
 	@./scripts/wlunload.sh
 
 
-.PHONY: all clean install uninstall unload btunload wlunload modules bt
+.PHONY: all clean install uninstall unload btunload wlunload modules bt Makefile
 
 endif
 
