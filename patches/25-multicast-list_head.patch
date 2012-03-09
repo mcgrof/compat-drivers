@@ -600,7 +600,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  	return (u64)(unsigned long)fp;
 --- a/drivers/net/wireless/zd1211rw/zd_mac.c
 +++ b/drivers/net/wireless/zd1211rw/zd_mac.c
-@@ -1195,17 +1195,34 @@ static void zd_process_intr(struct work_
+@@ -1203,17 +1203,34 @@ static void zd_process_intr(struct work_
  
  
  static u64 zd_op_prepare_multicast(struct ieee80211_hw *hw,
