@@ -59,19 +59,19 @@ CFLAGS += \
 
 # These exported as they are used by the scripts
 # to check config and compat autoconf
-export COMPAT_CONFIG_CW=config.mk
-export COMPAT_CONFIG=.config
-export CONFIG_CHECK=.$(COMPAT_CONFIG_CW)_md5sum.txt
+export COMPAT_CONFIG_CW=$(PWD)/config.mk
+export COMPAT_CONFIG=$(PWD)/.config
+export CONFIG_CHECK=$(PWD)/.config.mk_md5sum.txt
 export COMPAT_AUTOCONF=include/linux/compat_autoconf.h
 export CREL=$(shell cat $(PWD)/compat_version)
 export CREL_PRE:=.compat_autoconf_
-export CREL_CHECK:=$(CREL_PRE)$(CREL)
+export CREL_CHECK:=$(PWD)/$(CREL_PRE)$(CREL)
 
-include $(PWD)/$(COMPAT_CONFIG_CW)
+include $(COMPAT_CONFIG_CW)
 
 # Recursion lets us ensure we get this file included.
 # Trick is to run make -C $(PWD) modules later.
--include $(PWD)/$(COMPAT_CONFIG)
+-include $(COMPAT_CONFIG)
 
 all: $(CREL_CHECK)
 
@@ -92,7 +92,7 @@ bt: $(CREL_CHECK)
 # $(COMPAT_CONFIG) file
 $(CREL_CHECK):
 	@# Force to regenerate compat autoconf
-	@./compat/scripts/gen-compat-config.sh > $(PWD)/$(COMPAT_CONFIG)
+	@./compat/scripts/gen-compat-config.sh > $(COMPAT_CONFIG)
 	@rm -f $(CONFIG_CHECK)
 	@./scripts/check_config.sh
 	@touch $@
