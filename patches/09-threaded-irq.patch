@@ -63,7 +63,7 @@ thread in process context as well.
  /* Data structure for the WLAN parts (802.11 cores) of the b43 chip. */
 --- a/drivers/net/wireless/wl12xx/main.c
 +++ b/drivers/net/wireless/wl12xx/main.c
-@@ -5439,14 +5439,25 @@ static int __devinit wl12xx_probe(struct
+@@ -5493,14 +5493,25 @@ static int __devinit wl12xx_probe(struct
  
  	platform_set_drvdata(pdev, wl);
  
@@ -89,7 +89,7 @@ thread in process context as well.
  	if (ret < 0) {
  		wl1271_error("request_irq() failed: %d", ret);
  		goto out_free_hw;
-@@ -5500,7 +5511,11 @@ out_bt_coex_state:
+@@ -5554,7 +5565,11 @@ out_bt_coex_state:
  	device_remove_file(wl->dev, &dev_attr_bt_coex_state);
  
  out_irq:
@@ -101,7 +101,7 @@ thread in process context as well.
  
  out_free_hw:
  	wl1271_free_hw(wl);
-@@ -5518,7 +5533,12 @@ static int __devexit wl12xx_remove(struc
+@@ -5572,7 +5587,12 @@ static int __devexit wl12xx_remove(struc
  		disable_irq_wake(wl->irq);
  	}
  	wl1271_unregister_hw(wl);

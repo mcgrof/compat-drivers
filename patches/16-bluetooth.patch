@@ -94,7 +94,7 @@ here still, but for now we keep this here.
  	wake_up_process(session->task);
 --- a/net/bluetooth/hci_sock.c
 +++ b/net/bluetooth/hci_sock.c
-@@ -893,7 +893,11 @@ drop:
+@@ -892,7 +892,11 @@ drop:
  	goto done;
  }
  
@@ -106,7 +106,7 @@ here still, but for now we keep this here.
  {
  	struct hci_ufilter uf = { .opcode = 0 };
  	struct sock *sk = sock->sk;
-@@ -1065,8 +1069,12 @@ static struct proto hci_sk_proto = {
+@@ -1064,8 +1068,12 @@ static struct proto hci_sk_proto = {
  	.obj_size	= sizeof(struct hci_pinfo)
  };
  
@@ -605,7 +605,7 @@ here still, but for now we keep this here.
  {
  	struct sock *sk = sock->sk;
  	struct l2cap_chan *chan = l2cap_pi(sk)->chan;
-@@ -1057,8 +1064,12 @@ static struct sock *l2cap_sock_alloc(str
+@@ -1058,8 +1065,12 @@ static struct sock *l2cap_sock_alloc(str
  	return sk;
  }
  
@@ -618,7 +618,7 @@ here still, but for now we keep this here.
  {
  	struct sock *sk;
  
-@@ -1070,7 +1081,11 @@ static int l2cap_sock_create(struct net
+@@ -1071,7 +1082,11 @@ static int l2cap_sock_create(struct net
  			sock->type != SOCK_DGRAM && sock->type != SOCK_RAW)
  		return -ESOCKTNOSUPPORT;
  

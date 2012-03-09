@@ -124,7 +124,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  	return mc_filter[0] | ((u64)(mc_filter[1]) << 32);
 --- a/drivers/net/wireless/ath/ath5k/mac80211-ops.c
 +++ b/drivers/net/wireless/ath/ath5k/mac80211-ops.c
-@@ -312,20 +312,42 @@ ath5k_bss_info_changed(struct ieee80211_
+@@ -316,20 +316,42 @@ ath5k_bss_info_changed(struct ieee80211_
  
  static u64
  ath5k_prepare_multicast(struct ieee80211_hw *hw,
@@ -167,7 +167,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  		pos ^= (val >> 18) ^ (val >> 12) ^ (val >> 6) ^ val;
  		pos &= 0x3f;
  		mfilt[pos / 32] |= (1 << (pos % 32));
-@@ -334,6 +356,9 @@ ath5k_prepare_multicast(struct ieee80211
+@@ -338,6 +360,9 @@ ath5k_prepare_multicast(struct ieee80211
  		* need to inform below not to reset the mcast */
  		/* ath5k_hw_set_mcast_filterindex(ah,
  		 *      ha->addr[5]); */
@@ -435,7 +435,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  			      size_t fw_name_len, u32 *hw_ver);
 --- a/drivers/net/wireless/p54/main.c
 +++ b/drivers/net/wireless/p54/main.c
-@@ -362,11 +362,18 @@ out:
+@@ -363,11 +363,18 @@ out:
  	return ret;
  }
  
@@ -454,7 +454,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  	int i;
  
  	BUILD_BUG_ON(ARRAY_SIZE(priv->mc_maclist) !=
-@@ -376,12 +383,23 @@ static u64 p54_prepare_multicast(struct
+@@ -377,12 +384,23 @@ static u64 p54_prepare_multicast(struct
  	 * Otherwise the firmware will drop it and ARP will no longer work.
  	 */
  	i = 1;
@@ -516,7 +516,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  static void rtl8180_configure_filter(struct ieee80211_hw *dev,
 --- a/drivers/net/wireless/rtl818x/rtl8187/dev.c
 +++ b/drivers/net/wireless/rtl818x/rtl8187/dev.c
-@@ -1205,9 +1205,17 @@ static void rtl8187_bss_info_changed(str
+@@ -1287,9 +1287,17 @@ static void rtl8187_bss_info_changed(str
  }
  
  static u64 rtl8187_prepare_multicast(struct ieee80211_hw *dev,
@@ -536,7 +536,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  static void rtl8187_configure_filter(struct ieee80211_hw *dev,
 --- a/drivers/net/wireless/wl12xx/main.c
 +++ b/drivers/net/wireless/wl12xx/main.c
-@@ -2743,11 +2743,20 @@ struct wl1271_filter_params {
+@@ -2748,11 +2748,20 @@ struct wl1271_filter_params {
  	u8 mc_list[ACX_MC_ADDRESS_GROUP_MAX][ETH_ALEN];
  };
  
@@ -557,7 +557,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  	struct wl1271 *wl = hw->priv;
  
  	if (unlikely(wl->state == WL1271_STATE_OFF))
-@@ -2760,16 +2769,40 @@ static u64 wl1271_op_prepare_multicast(s
+@@ -2765,16 +2774,40 @@ static u64 wl1271_op_prepare_multicast(s
  	}
  
  	/* update multicast filtering parameters */
@@ -651,7 +651,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  	}
 --- a/include/net/mac80211.h
 +++ b/include/net/mac80211.h
-@@ -2189,7 +2189,11 @@ struct ieee80211_ops {
+@@ -2190,7 +2190,11 @@ struct ieee80211_ops {
  			       enum ieee80211_tx_sync_type type);
  
  	u64 (*prepare_multicast)(struct ieee80211_hw *hw,
@@ -712,7 +712,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  
 --- a/net/mac80211/ieee80211_i.h
 +++ b/net/mac80211/ieee80211_i.h
-@@ -811,7 +811,12 @@ struct ieee80211_local {
+@@ -849,7 +849,12 @@ struct ieee80211_local {
  	struct work_struct recalc_smps;
  
  	/* aggregated multicast list */
