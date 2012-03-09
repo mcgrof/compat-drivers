@@ -79,7 +79,7 @@ modules: $(CREL_CHECK)
 	@touch $@
 
 bt: $(CREL_CHECK)
-	@./scripts/check_config.sh
+	+@./scripts/check_config.sh
 	$(MAKE) -C $(KLIB_BUILD) M=$(PWD) BT=TRUE modules
 	@touch $@
 
@@ -93,9 +93,9 @@ bt: $(CREL_CHECK)
 # being used.
 $(CREL_CHECK):
 	@# Force to regenerate compat autoconf
-	@./compat/scripts/gen-compat-config.sh > $(COMPAT_CONFIG)
+	+@./compat/scripts/gen-compat-config.sh > $(COMPAT_CONFIG)
 	@rm -f $(CONFIG_CHECK)
-	@./scripts/check_config.sh
+	+@./scripts/check_config.sh
 	@md5sum $(COMPAT_CONFIG_CW) > $(CONFIG_CHECK)
 	@touch $@
 
