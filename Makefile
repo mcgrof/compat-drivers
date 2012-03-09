@@ -12,6 +12,9 @@ DESTDIR?=
 
 ifneq ($(KERNELRELEASE),)
 
+include $(COMPAT_CONFIG_CW)
+include $(COMPAT_CONFIG)
+
 NOSTDINC_FLAGS := -I$(M)/include/ \
 	-include $(M)/include/linux/compat-2.6.h \
 	$(CFLAGS)
@@ -51,7 +54,7 @@ $(error "The path to this compat-wireless directory has spaces in it." \
 	"Please put it somewhere where there is no space")
 endif
 
-CFLAGS += \
+export CFLAGS += \
         -DCOMPAT_BASE_TREE="\"$(shell cat $(PWD)/compat_base_tree)\"" \
         -DCOMPAT_BASE_TREE_VERSION="\"$(shell cat $(PWD)/compat_base_tree_version)\"" \
         -DCOMPAT_PROJECT="\"Compat-wireless\"" \
@@ -67,18 +70,11 @@ export CREL=$(shell cat $(PWD)/compat_version)
 export CREL_PRE:=.compat_autoconf_
 export CREL_CHECK:=$(PWD)/$(CREL_PRE)$(CREL)
 
-include $(COMPAT_CONFIG_CW)
+all: modules
 
-# Recursion lets us ensure we get this file included.
-# Trick is to run make -C $(PWD) modules later.
--include $(COMPAT_CONFIG)
-
-all: $(CREL_CHECK)
-
-$COMPAT_CONFIG: ;
+$(COMPAT_CONFIG): ;
 
 modules: $(CREL_CHECK)
-	@./scripts/check_config.sh
 	$(MAKE) -C $(KLIB_BUILD) M=$(PWD) modules
 	@touch $@
 
@@ -87,17 +83,21 @@ bt: $(CREL_CHECK)
 	$(MAKE) -C $(KLIB_BUILD) M=$(PWD) BT=TRUE modules
 	@touch $@
 
-# With the above and this we make sure we generate a new compat autoconf per
-# new relase of compat-wireless-2.6 OR when the user updates the 
-# $(COMPAT_CONFIG) file
+# We use a CREL_CHECK variable which will depend on the environment used to
+# build. If the environment requirements change it forces a reconfiguration
+# check.  This means we force a new reconfiguration check if a the user gets a
+# new updates of compat-wireless or when the user updates the $(COMPAT_CONFIG)
+# file.
+# XXX: add kernel target to the CREL_CHECK mix, this would ensure we also
+# reconfigure and build again fresh if we detect a new target kernel is
+# being used.
 $(CREL_CHECK):
 	@# Force to regenerate compat autoconf
 	@./compat/scripts/gen-compat-config.sh > $(COMPAT_CONFIG)
 	@rm -f $(CONFIG_CHECK)
 	@./scripts/check_config.sh
-	@touch $@
 	@md5sum $(COMPAT_CONFIG_CW) > $(CONFIG_CHECK)
-	make -C $(PWD) modules
+	@touch $@
 
 btinstall: btuninstall bt-install-modules
 
