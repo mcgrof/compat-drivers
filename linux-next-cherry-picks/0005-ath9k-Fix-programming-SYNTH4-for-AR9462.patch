@@ -1,0 +1,32 @@
+From f4c6ac27d6f4fc775cf6532f298dc1fc346083a7 Mon Sep 17 00:00:00 2001
+From: Sujith Manoharan <c_manoha@qca.qualcomm.com>
+Date: Thu, 16 Feb 2012 11:52:50 +0530
+Subject: [PATCH] ath9k: Fix programming SYNTH4 for AR9462
+
+The LONG_SHIFT_SELECT offset is different for AR9462 from
+the other chip families. Fix this.
+
+Signed-off-by: Sujith Manoharan <c_manoha@qca.qualcomm.com>
+Signed-off-by: John W. Linville <linville@tuxdriver.com>
+---
+ drivers/net/wireless/ath/ath9k/ar9003_phy.h |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath9k/ar9003_phy.h b/drivers/net/wireless/ath/ath9k/ar9003_phy.h
+index aca24bf..81f3e85 100644
+--- a/drivers/net/wireless/ath/ath9k/ar9003_phy.h
++++ b/drivers/net/wireless/ath/ath9k/ar9003_phy.h
+@@ -625,8 +625,8 @@
+ #define AR_PHY_AIC_STAT_2_B0	(AR_SM_BASE + 0x4cc)
+ 
+ #define AR_PHY_65NM_CH0_SYNTH4      0x1608c
+-#define AR_PHY_SYNTH4_LONG_SHIFT_SELECT   0x00000002
+-#define AR_PHY_SYNTH4_LONG_SHIFT_SELECT_S 1
++#define AR_PHY_SYNTH4_LONG_SHIFT_SELECT   (AR_SREV_9462(ah) ? 0x00000001 : 0x00000002)
++#define AR_PHY_SYNTH4_LONG_SHIFT_SELECT_S (AR_SREV_9462(ah) ? 0 : 1)
+ #define AR_PHY_65NM_CH0_SYNTH7      0x16098
+ #define AR_PHY_65NM_CH0_BIAS1       0x160c0
+ #define AR_PHY_65NM_CH0_BIAS2       0x160c4
+-- 
+1.7.4.15.g7811d
+

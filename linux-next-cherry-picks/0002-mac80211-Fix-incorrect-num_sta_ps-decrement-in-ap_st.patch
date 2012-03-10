@@ -1,0 +1,68 @@
+From 608383bfc04aa222c3e9e896c32f56a5e5deaff0 Mon Sep 17 00:00:00 2001
+From: Helmut Schaa <helmut.schaa@googlemail.com>
+Date: Mon, 30 Jan 2012 15:18:00 +0100
+Subject: [PATCH] mac80211: Fix incorrect num_sta_ps decrement in ap_sta_ps_end
+
+If the driver blocked this specific STA with the help of
+ieee80211_sta_block_awake we won't clear WLAN_STA_PS_STA later but
+still decrement num_sta_ps. Hence, the next data frame from this
+STA will trigger ap_sta_ps_end again and also decrement num_sta_ps
+again leading to an incorrect num_sta_ps counter.
+
+This can result in problems with powersaving clients not waking up
+from PS because the TIM calculation might be skipped due to the
+incorrect num_sta_ps counter.
+
+Signed-off-by: Helmut Schaa <helmut.schaa@googlemail.com>
+Signed-off-by: John W. Linville <linville@tuxdriver.com>
+---
+ net/mac80211/rx.c       |    8 ++------
+ net/mac80211/sta_info.c |    4 +++-
+ 2 files changed, 5 insertions(+), 7 deletions(-)
+
+diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
+index 73d2138..ab29253 100644
+--- a/net/mac80211/rx.c
++++ b/net/mac80211/rx.c
+@@ -1145,19 +1145,15 @@ static void ap_sta_ps_start(struct sta_info *sta)
+ 
+ static void ap_sta_ps_end(struct sta_info *sta)
+ {
+-	struct ieee80211_sub_if_data *sdata = sta->sdata;
+-
+-	atomic_dec(&sdata->bss->num_sta_ps);
+-
+ #ifdef CONFIG_MAC80211_VERBOSE_PS_DEBUG
+ 	printk(KERN_DEBUG "%s: STA %pM aid %d exits power save mode\n",
+-	       sdata->name, sta->sta.addr, sta->sta.aid);
++	       sta->sdata->name, sta->sta.addr, sta->sta.aid);
+ #endif /* CONFIG_MAC80211_VERBOSE_PS_DEBUG */
+ 
+ 	if (test_sta_flag(sta, WLAN_STA_PS_DRIVER)) {
+ #ifdef CONFIG_MAC80211_VERBOSE_PS_DEBUG
+ 		printk(KERN_DEBUG "%s: STA %pM aid %d driver-ps-blocked\n",
+-		       sdata->name, sta->sta.addr, sta->sta.aid);
++		       sta->sdata->name, sta->sta.addr, sta->sta.aid);
+ #endif /* CONFIG_MAC80211_VERBOSE_PS_DEBUG */
+ 		return;
+ 	}
+diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
+index 0c79593..1fb4770 100644
+--- a/net/mac80211/sta_info.c
++++ b/net/mac80211/sta_info.c
+@@ -997,9 +997,11 @@ EXPORT_SYMBOL(ieee80211_find_sta);
+ static void clear_sta_ps_flags(void *_sta)
+ {
+ 	struct sta_info *sta = _sta;
++	struct ieee80211_sub_if_data *sdata = sta->sdata;
+ 
+ 	clear_sta_flag(sta, WLAN_STA_PS_DRIVER);
+-	clear_sta_flag(sta, WLAN_STA_PS_STA);
++	if (test_and_clear_sta_flag(sta, WLAN_STA_PS_STA))
++		atomic_dec(&sdata->bss->num_sta_ps);
+ }
+ 
+ /* powersave support code */
+-- 
+1.7.4.15.g7811d
+

@@ -1,0 +1,61 @@
+From 9da27232060411e98c27a8407610c794acb08c8b Mon Sep 17 00:00:00 2001
+From: Sujith Manoharan <c_manoha@qca.qualcomm.com>
+Date: Thu, 16 Feb 2012 11:53:00 +0530
+Subject: [PATCH] ath9k: Fix descriptor length for AR9462
+
+Change the descriptor length to 24 and explicitly
+set the control field 23 to zero. Not doing so would
+result in dropping of frames.
+
+Signed-off-by: Sujith Manoharan <c_manoha@qca.qualcomm.com>
+Signed-off-by: John W. Linville <linville@tuxdriver.com>
+---
+ drivers/net/wireless/ath/ath9k/ar9003_mac.c |    6 +++++-
+ drivers/net/wireless/ath/ath9k/ar9003_mac.h |    3 ++-
+ 2 files changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath9k/ar9003_mac.c b/drivers/net/wireless/ath/ath9k/ar9003_mac.c
+index 09b8c9d..39cb482 100644
+--- a/drivers/net/wireless/ath/ath9k/ar9003_mac.c
++++ b/drivers/net/wireless/ath/ath9k/ar9003_mac.c
+@@ -28,11 +28,14 @@ ar9003_set_txdesc(struct ath_hw *ah, void *ds, struct ath_tx_info *i)
+ 	struct ar9003_txc *ads = ds;
+ 	int checksum = 0;
+ 	u32 val, ctl12, ctl17;
++	u8 desc_len;
++
++	desc_len = (AR_SREV_9462(ah) ? 0x18 : 0x17);
+ 
+ 	val = (ATHEROS_VENDOR_ID << AR_DescId_S) |
+ 	      (1 << AR_TxRxDesc_S) |
+ 	      (1 << AR_CtrlStat_S) |
+-	      (i->qcu << AR_TxQcuNum_S) | 0x17;
++	      (i->qcu << AR_TxQcuNum_S) | desc_len;
+ 
+ 	checksum += val;
+ 	ACCESS_ONCE(ads->info) = val;
+@@ -81,6 +84,7 @@ ar9003_set_txdesc(struct ath_hw *ah, void *ds, struct ath_tx_info *i)
+ 	ads->ctl20 = 0;
+ 	ads->ctl21 = 0;
+ 	ads->ctl22 = 0;
++	ads->ctl23 = 0;
+ 
+ 	ctl17 = SM(i->keytype, AR_EncrType);
+ 	if (!i->is_first) {
+diff --git a/drivers/net/wireless/ath/ath9k/ar9003_mac.h b/drivers/net/wireless/ath/ath9k/ar9003_mac.h
+index e203b51..cbf60b0 100644
+--- a/drivers/net/wireless/ath/ath9k/ar9003_mac.h
++++ b/drivers/net/wireless/ath/ath9k/ar9003_mac.h
+@@ -92,7 +92,8 @@ struct ar9003_txc {
+ 	u32 ctl20;  /* DMA control 20 */
+ 	u32 ctl21;  /* DMA control 21 */
+ 	u32 ctl22;  /* DMA control 22 */
+-	u32 pad[9]; /* pad to cache line (128 bytes/32 dwords) */
++	u32 ctl23;  /* DMA control 23 */
++	u32 pad[8]; /* pad to cache line (128 bytes/32 dwords) */
+ } __packed __aligned(4);
+ 
+ struct ar9003_txs {
+-- 
+1.7.4.15.g7811d
+

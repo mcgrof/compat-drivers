@@ -1,0 +1,198 @@
+From 02f2f1a951f87644166926862ec32fb13511e2f3 Mon Sep 17 00:00:00 2001
+From: Johannes Berg <johannes.berg@intel.com>
+Date: Mon, 27 Feb 2012 12:18:30 +0100
+Subject: [PATCH] mac80211: handle non-bufferable MMPDUs correctly
+
+This renames the IEEE80211_TX_CTL_POLL_RESPONSE
+TX flag to IEEE80211_TX_CTL_NO_PS_BUFFER and also
+uses it for non-bufferable MMPDUs (all MMPDUs but
+deauth, disassoc and action frames.)
+
+Previously, mac80211 would let the MMPDU through
+but not set the flag so drivers supporting some
+hardware aids for avoiding the PS races would
+then reject the frame.
+
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: John W. Linville <linville@tuxdriver.com>
+---
+ drivers/net/wireless/iwlegacy/4965-mac.c  |    2 +-
+ drivers/net/wireless/iwlwifi/iwl-agn-tx.c |    6 +++++-
+ drivers/net/wireless/p54/txrx.c           |    2 +-
+ include/net/mac80211.h                    |   17 ++++++++++-------
+ net/mac80211/sta_info.c                   |    4 ++--
+ net/mac80211/tx.c                         |   17 +++++++++++------
+ 6 files changed, 30 insertions(+), 18 deletions(-)
+
+diff --git a/drivers/net/wireless/iwlegacy/4965-mac.c b/drivers/net/wireless/iwlegacy/4965-mac.c
+index 2d01db0..2329033 100644
+--- a/drivers/net/wireless/iwlegacy/4965-mac.c
++++ b/drivers/net/wireless/iwlegacy/4965-mac.c
+@@ -1693,7 +1693,7 @@ il4965_tx_skb(struct il_priv *il, struct sk_buff *skb)
+ 		sta_priv = (void *)sta->drv_priv;
+ 
+ 	if (sta_priv && sta_priv->asleep &&
+-	    (info->flags & IEEE80211_TX_CTL_POLL_RESPONSE)) {
++	    (info->flags & IEEE80211_TX_CTL_NO_PS_BUFFER)) {
+ 		/*
+ 		 * This sends an asynchronous command to the device,
+ 		 * but we can rely on it being processed before the
+diff --git a/drivers/net/wireless/iwlwifi/iwl-agn-tx.c b/drivers/net/wireless/iwlwifi/iwl-agn-tx.c
+index da18a8f..5f78567 100644
+--- a/drivers/net/wireless/iwlwifi/iwl-agn-tx.c
++++ b/drivers/net/wireless/iwlwifi/iwl-agn-tx.c
+@@ -322,7 +322,7 @@ int iwlagn_tx_skb(struct iwl_priv *priv, struct sk_buff *skb)
+ 		sta_priv = (void *)info->control.sta->drv_priv;
+ 
+ 	if (sta_priv && sta_priv->asleep &&
+-	    (info->flags & IEEE80211_TX_CTL_POLL_RESPONSE)) {
++	    (info->flags & IEEE80211_TX_CTL_NO_PS_BUFFER)) {
+ 		/*
+ 		 * This sends an asynchronous command to the device,
+ 		 * but we can rely on it being processed before the
+@@ -331,6 +331,10 @@ int iwlagn_tx_skb(struct iwl_priv *priv, struct sk_buff *skb)
+ 		 * counter.
+ 		 * For now set the counter to just 1 since we do not
+ 		 * support uAPSD yet.
++		 *
++		 * FIXME: If we get two non-bufferable frames one
++		 * after the other, we might only send out one of
++		 * them because this is racy.
+ 		 */
+ 		iwl_sta_modify_sleep_tx_count(priv, sta_id, 1);
+ 	}
+diff --git a/drivers/net/wireless/p54/txrx.c b/drivers/net/wireless/p54/txrx.c
+index 42b97bc..a08a6f0 100644
+--- a/drivers/net/wireless/p54/txrx.c
++++ b/drivers/net/wireless/p54/txrx.c
+@@ -690,7 +690,7 @@ static void p54_tx_80211_header(struct p54_common *priv, struct sk_buff *skb,
+ 	if (!(info->flags & IEEE80211_TX_CTL_ASSIGN_SEQ))
+ 		*flags |= P54_HDR_FLAG_DATA_OUT_SEQNR;
+ 
+-	if (info->flags & IEEE80211_TX_CTL_POLL_RESPONSE)
++	if (info->flags & IEEE80211_TX_CTL_NO_PS_BUFFER)
+ 		*flags |= P54_HDR_FLAG_DATA_OUT_NOCANCEL;
+ 
+ 	if (info->flags & IEEE80211_TX_CTL_CLEAR_PS_FILT)
+diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+index cbff4f9..7477f02 100644
+--- a/include/net/mac80211.h
++++ b/include/net/mac80211.h
+@@ -341,9 +341,9 @@ struct ieee80211_bss_conf {
+  *	used to indicate that a frame was already retried due to PS
+  * @IEEE80211_TX_INTFL_DONT_ENCRYPT: completely internal to mac80211,
+  *	used to indicate frame should not be encrypted
+- * @IEEE80211_TX_CTL_POLL_RESPONSE: This frame is a response to a poll
+- *	frame (PS-Poll or uAPSD) and should be sent although the station
+- *	is in powersave mode.
++ * @IEEE80211_TX_CTL_NO_PS_BUFFER: This frame is a response to a poll
++ *	frame (PS-Poll or uAPSD) or a non-bufferable MMPDU and must
++ *	be sent although the station is in powersave mode.
+  * @IEEE80211_TX_CTL_MORE_FRAMES: More frames will be passed to the
+  *	transmit function after the current frame, this can be used
+  *	by drivers to kick the DMA queue only if unset or when the
+@@ -399,7 +399,7 @@ enum mac80211_tx_control_flags {
+ 	IEEE80211_TX_INTFL_NEED_TXPROCESSING	= BIT(14),
+ 	IEEE80211_TX_INTFL_RETRIED		= BIT(15),
+ 	IEEE80211_TX_INTFL_DONT_ENCRYPT		= BIT(16),
+-	IEEE80211_TX_CTL_POLL_RESPONSE		= BIT(17),
++	IEEE80211_TX_CTL_NO_PS_BUFFER		= BIT(17),
+ 	IEEE80211_TX_CTL_MORE_FRAMES		= BIT(18),
+ 	IEEE80211_TX_INTFL_RETRANSMISSION	= BIT(19),
+ 	/* hole at 20, use later */
+@@ -425,7 +425,7 @@ enum mac80211_tx_control_flags {
+ 	IEEE80211_TX_CTL_SEND_AFTER_DTIM | IEEE80211_TX_CTL_AMPDU |	      \
+ 	IEEE80211_TX_STAT_TX_FILTERED |	IEEE80211_TX_STAT_ACK |		      \
+ 	IEEE80211_TX_STAT_AMPDU | IEEE80211_TX_STAT_AMPDU_NO_BACK |	      \
+-	IEEE80211_TX_CTL_RATE_CTRL_PROBE | IEEE80211_TX_CTL_POLL_RESPONSE |   \
++	IEEE80211_TX_CTL_RATE_CTRL_PROBE | IEEE80211_TX_CTL_NO_PS_BUFFER |    \
+ 	IEEE80211_TX_CTL_MORE_FRAMES | IEEE80211_TX_CTL_LDPC |		      \
+ 	IEEE80211_TX_CTL_STBC | IEEE80211_TX_STATUS_EOSP)
+ 
+@@ -1634,7 +1634,7 @@ void ieee80211_free_txskb(struct ieee80211_hw *hw, struct sk_buff *skb);
+  * the station sends a PS-Poll or a uAPSD trigger frame, mac80211
+  * will inform the driver of this with the @allow_buffered_frames
+  * callback; this callback is optional. mac80211 will then transmit
+- * the frames as usual and set the %IEEE80211_TX_CTL_POLL_RESPONSE
++ * the frames as usual and set the %IEEE80211_TX_CTL_NO_PS_BUFFER
+  * on each frame. The last frame in the service period (or the only
+  * response to a PS-Poll) also has %IEEE80211_TX_STATUS_EOSP set to
+  * indicate that it ends the service period; as this frame must have
+@@ -1642,6 +1642,9 @@ void ieee80211_free_txskb(struct ieee80211_hw *hw, struct sk_buff *skb);
+  * When TX status is reported for this frame, the service period is
+  * marked has having ended and a new one can be started by the peer.
+  *
++ * Additionally, non-bufferable MMPDUs can also be transmitted by
++ * mac80211 with the %IEEE80211_TX_CTL_NO_PS_BUFFER set in them.
++ *
+  * Another race condition can happen on some devices like iwlwifi
+  * when there are frames queued for the station and it wakes up
+  * or polls; the frames that are already queued could end up being
+@@ -2140,7 +2143,7 @@ enum ieee80211_frame_release_type {
+  * @allow_buffered_frames: Prepare device to allow the given number of frames
+  *	to go out to the given station. The frames will be sent by mac80211
+  *	via the usual TX path after this call. The TX information for frames
+- *	released will also have the %IEEE80211_TX_CTL_POLL_RESPONSE flag set
++ *	released will also have the %IEEE80211_TX_CTL_NO_PS_BUFFER flag set
+  *	and the last one will also have %IEEE80211_TX_STATUS_EOSP set. In case
+  *	frames from multiple TIDs are released and the driver might reorder
+  *	them between the TIDs, it must set the %IEEE80211_TX_STATUS_EOSP flag
+diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
+index 98613c8..cd0f265 100644
+--- a/net/mac80211/sta_info.c
++++ b/net/mac80211/sta_info.c
+@@ -1050,7 +1050,7 @@ static void ieee80211_send_null_response(struct ieee80211_sub_if_data *sdata,
+ 	 * exchange. Also set EOSP to indicate this packet
+ 	 * ends the poll/service period.
+ 	 */
+-	info->flags |= IEEE80211_TX_CTL_POLL_RESPONSE |
++	info->flags |= IEEE80211_TX_CTL_NO_PS_BUFFER |
+ 		       IEEE80211_TX_STATUS_EOSP |
+ 		       IEEE80211_TX_CTL_REQ_TX_STATUS;
+ 
+@@ -1177,7 +1177,7 @@ ieee80211_sta_ps_deliver_response(struct sta_info *sta,
+ 			 * STA may still remain is PS mode after this frame
+ 			 * exchange.
+ 			 */
+-			info->flags |= IEEE80211_TX_CTL_POLL_RESPONSE;
++			info->flags |= IEEE80211_TX_CTL_NO_PS_BUFFER;
+ 
+ 			/*
+ 			 * Use MoreData flag to indicate whether there are
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index 7c021f2..570737d 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -448,18 +448,23 @@ ieee80211_tx_h_unicast_ps_buf(struct ieee80211_tx_data *tx)
+ 	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)tx->skb->data;
+ 	struct ieee80211_local *local = tx->local;
+ 
+-	if (unlikely(!sta ||
+-		     ieee80211_is_probe_resp(hdr->frame_control) ||
+-		     ieee80211_is_auth(hdr->frame_control) ||
+-		     ieee80211_is_assoc_resp(hdr->frame_control) ||
+-		     ieee80211_is_reassoc_resp(hdr->frame_control)))
++	if (unlikely(!sta))
+ 		return TX_CONTINUE;
+ 
+ 	if (unlikely((test_sta_flag(sta, WLAN_STA_PS_STA) ||
+ 		      test_sta_flag(sta, WLAN_STA_PS_DRIVER)) &&
+-		     !(info->flags & IEEE80211_TX_CTL_POLL_RESPONSE))) {
++		     !(info->flags & IEEE80211_TX_CTL_NO_PS_BUFFER))) {
+ 		int ac = skb_get_queue_mapping(tx->skb);
+ 
++		/* only deauth, disassoc and action are bufferable MMPDUs */
++		if (ieee80211_is_mgmt(hdr->frame_control) &&
++		    !ieee80211_is_deauth(hdr->frame_control) &&
++		    !ieee80211_is_disassoc(hdr->frame_control) &&
++		    !ieee80211_is_action(hdr->frame_control)) {
++			info->flags |= IEEE80211_TX_CTL_NO_PS_BUFFER;
++			return TX_CONTINUE;
++		}
++
+ #ifdef CONFIG_MAC80211_VERBOSE_PS_DEBUG
+ 		printk(KERN_DEBUG "STA %pM aid %d: PS buffer for AC %d\n",
+ 		       sta->sta.addr, sta->sta.aid, ac);
+-- 
+1.7.4.15.g7811d
+
