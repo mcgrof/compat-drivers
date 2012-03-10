@@ -10,11 +10,9 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  drivers/net/wireless/ath/ath9k/xmit.c   |    7 +++++--
  2 files changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/beacon.c b/drivers/net/wireless/ath/ath9k/beacon.c
-index 6d1e465..43882f9 100644
 --- a/drivers/net/wireless/ath/ath9k/beacon.c
 +++ b/drivers/net/wireless/ath/ath9k/beacon.c
-@@ -91,7 +91,7 @@ static void ath_beacon_setup(struct ath_softc *sc, struct ath_vif *avp,
+@@ -91,7 +91,7 @@ static void ath_beacon_setup(struct ath_
  	info.txpower = MAX_RATE_POWER;
  	info.keyix = ATH9K_TXKEYIX_INVALID;
  	info.keytype = ATH9K_KEY_TYPE_CLEAR;
@@ -23,11 +21,9 @@ index 6d1e465..43882f9 100644
  
  	info.buf_addr[0] = bf->bf_buf_addr;
  	info.buf_len[0] = roundup(skb->len, 4);
-diff --git a/drivers/net/wireless/ath/ath9k/xmit.c b/drivers/net/wireless/ath/ath9k/xmit.c
-index 5dd27d2..9f78501 100644
 --- a/drivers/net/wireless/ath/ath9k/xmit.c
 +++ b/drivers/net/wireless/ath/ath9k/xmit.c
-@@ -2296,9 +2296,12 @@ void ath_tx_edma_tasklet(struct ath_softc *sc)
+@@ -2297,9 +2297,12 @@ void ath_tx_edma_tasklet(struct ath_soft
  			break;
  		}
  
@@ -42,6 +38,3 @@ index 5dd27d2..9f78501 100644
  
  		txq = &sc->tx.txq[ts.qid];
  
--- 
-1.7.4.15.g7811d
-

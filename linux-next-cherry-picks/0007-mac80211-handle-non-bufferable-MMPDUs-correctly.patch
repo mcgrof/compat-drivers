@@ -24,11 +24,9 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  net/mac80211/tx.c                         |   17 +++++++++++------
  6 files changed, 30 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/net/wireless/iwlegacy/4965-mac.c b/drivers/net/wireless/iwlegacy/4965-mac.c
-index 2d01db0..2329033 100644
 --- a/drivers/net/wireless/iwlegacy/4965-mac.c
 +++ b/drivers/net/wireless/iwlegacy/4965-mac.c
-@@ -1693,7 +1693,7 @@ il4965_tx_skb(struct il_priv *il, struct sk_buff *skb)
+@@ -1696,7 +1696,7 @@ il4965_tx_skb(struct il_priv *il, struct
  		sta_priv = (void *)sta->drv_priv;
  
  	if (sta_priv && sta_priv->asleep &&
@@ -37,11 +35,9 @@ index 2d01db0..2329033 100644
  		/*
  		 * This sends an asynchronous command to the device,
  		 * but we can rely on it being processed before the
-diff --git a/drivers/net/wireless/iwlwifi/iwl-agn-tx.c b/drivers/net/wireless/iwlwifi/iwl-agn-tx.c
-index da18a8f..5f78567 100644
 --- a/drivers/net/wireless/iwlwifi/iwl-agn-tx.c
 +++ b/drivers/net/wireless/iwlwifi/iwl-agn-tx.c
-@@ -322,7 +322,7 @@ int iwlagn_tx_skb(struct iwl_priv *priv, struct sk_buff *skb)
+@@ -322,7 +322,7 @@ int iwlagn_tx_skb(struct iwl_priv *priv,
  		sta_priv = (void *)info->control.sta->drv_priv;
  
  	if (sta_priv && sta_priv->asleep &&
@@ -50,7 +46,7 @@ index da18a8f..5f78567 100644
  		/*
  		 * This sends an asynchronous command to the device,
  		 * but we can rely on it being processed before the
-@@ -331,6 +331,10 @@ int iwlagn_tx_skb(struct iwl_priv *priv, struct sk_buff *skb)
+@@ -331,6 +331,10 @@ int iwlagn_tx_skb(struct iwl_priv *priv,
  		 * counter.
  		 * For now set the counter to just 1 since we do not
  		 * support uAPSD yet.
@@ -61,11 +57,9 @@ index da18a8f..5f78567 100644
  		 */
  		iwl_sta_modify_sleep_tx_count(priv, sta_id, 1);
  	}
-diff --git a/drivers/net/wireless/p54/txrx.c b/drivers/net/wireless/p54/txrx.c
-index 42b97bc..a08a6f0 100644
 --- a/drivers/net/wireless/p54/txrx.c
 +++ b/drivers/net/wireless/p54/txrx.c
-@@ -690,7 +690,7 @@ static void p54_tx_80211_header(struct p54_common *priv, struct sk_buff *skb,
+@@ -690,7 +690,7 @@ static void p54_tx_80211_header(struct p
  	if (!(info->flags & IEEE80211_TX_CTL_ASSIGN_SEQ))
  		*flags |= P54_HDR_FLAG_DATA_OUT_SEQNR;
  
@@ -74,8 +68,6 @@ index 42b97bc..a08a6f0 100644
  		*flags |= P54_HDR_FLAG_DATA_OUT_NOCANCEL;
  
  	if (info->flags & IEEE80211_TX_CTL_CLEAR_PS_FILT)
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index cbff4f9..7477f02 100644
 --- a/include/net/mac80211.h
 +++ b/include/net/mac80211.h
 @@ -341,9 +341,9 @@ struct ieee80211_bss_conf {
@@ -109,7 +101,7 @@ index cbff4f9..7477f02 100644
  	IEEE80211_TX_CTL_MORE_FRAMES | IEEE80211_TX_CTL_LDPC |		      \
  	IEEE80211_TX_CTL_STBC | IEEE80211_TX_STATUS_EOSP)
  
-@@ -1634,7 +1634,7 @@ void ieee80211_free_txskb(struct ieee80211_hw *hw, struct sk_buff *skb);
+@@ -1599,7 +1599,7 @@ void ieee80211_free_txskb(struct ieee802
   * the station sends a PS-Poll or a uAPSD trigger frame, mac80211
   * will inform the driver of this with the @allow_buffered_frames
   * callback; this callback is optional. mac80211 will then transmit
@@ -118,7 +110,7 @@ index cbff4f9..7477f02 100644
   * on each frame. The last frame in the service period (or the only
   * response to a PS-Poll) also has %IEEE80211_TX_STATUS_EOSP set to
   * indicate that it ends the service period; as this frame must have
-@@ -1642,6 +1642,9 @@ void ieee80211_free_txskb(struct ieee80211_hw *hw, struct sk_buff *skb);
+@@ -1607,6 +1607,9 @@ void ieee80211_free_txskb(struct ieee802
   * When TX status is reported for this frame, the service period is
   * marked has having ended and a new one can be started by the peer.
   *
@@ -128,7 +120,7 @@ index cbff4f9..7477f02 100644
   * Another race condition can happen on some devices like iwlwifi
   * when there are frames queued for the station and it wakes up
   * or polls; the frames that are already queued could end up being
-@@ -2140,7 +2143,7 @@ enum ieee80211_frame_release_type {
+@@ -2098,7 +2101,7 @@ enum ieee80211_frame_release_type {
   * @allow_buffered_frames: Prepare device to allow the given number of frames
   *	to go out to the given station. The frames will be sent by mac80211
   *	via the usual TX path after this call. The TX information for frames
@@ -137,11 +129,9 @@ index cbff4f9..7477f02 100644
   *	and the last one will also have %IEEE80211_TX_STATUS_EOSP set. In case
   *	frames from multiple TIDs are released and the driver might reorder
   *	them between the TIDs, it must set the %IEEE80211_TX_STATUS_EOSP flag
-diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
-index 98613c8..cd0f265 100644
 --- a/net/mac80211/sta_info.c
 +++ b/net/mac80211/sta_info.c
-@@ -1050,7 +1050,7 @@ static void ieee80211_send_null_response(struct ieee80211_sub_if_data *sdata,
+@@ -1113,7 +1113,7 @@ static void ieee80211_send_null_response
  	 * exchange. Also set EOSP to indicate this packet
  	 * ends the poll/service period.
  	 */
@@ -150,7 +140,7 @@ index 98613c8..cd0f265 100644
  		       IEEE80211_TX_STATUS_EOSP |
  		       IEEE80211_TX_CTL_REQ_TX_STATUS;
  
-@@ -1177,7 +1177,7 @@ ieee80211_sta_ps_deliver_response(struct sta_info *sta,
+@@ -1240,7 +1240,7 @@ ieee80211_sta_ps_deliver_response(struct
  			 * STA may still remain is PS mode after this frame
  			 * exchange.
  			 */
@@ -159,11 +149,9 @@ index 98613c8..cd0f265 100644
  
  			/*
  			 * Use MoreData flag to indicate whether there are
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index 7c021f2..570737d 100644
 --- a/net/mac80211/tx.c
 +++ b/net/mac80211/tx.c
-@@ -448,18 +448,23 @@ ieee80211_tx_h_unicast_ps_buf(struct ieee80211_tx_data *tx)
+@@ -448,18 +448,23 @@ ieee80211_tx_h_unicast_ps_buf(struct iee
  	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)tx->skb->data;
  	struct ieee80211_local *local = tx->local;
  
@@ -193,6 +181,3 @@ index 7c021f2..570737d 100644
  #ifdef CONFIG_MAC80211_VERBOSE_PS_DEBUG
  		printk(KERN_DEBUG "STA %pM aid %d: PS buffer for AC %d\n",
  		       sta->sta.addr, sta->sta.aid, ac);
--- 
-1.7.4.15.g7811d
-

@@ -13,11 +13,9 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  drivers/net/wireless/ath/ath9k/main.c |    3 ++-
  1 files changed, 2 insertions(+), 1 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/main.c b/drivers/net/wireless/ath/ath9k/main.c
-index 02e95c8..cc2535c 100644
 --- a/drivers/net/wireless/ath/ath9k/main.c
 +++ b/drivers/net/wireless/ath/ath9k/main.c
-@@ -2300,6 +2300,7 @@ static int ath9k_tx_last_beacon(struct ieee80211_hw *hw)
+@@ -2332,6 +2332,7 @@ static int ath9k_tx_last_beacon(struct i
  	struct ath_vif *avp;
  	struct ath_buf *bf;
  	struct ath_tx_status ts;
@@ -25,7 +23,7 @@ index 02e95c8..cc2535c 100644
  	int status;
  
  	vif = sc->beacon.bslot[0];
-@@ -2310,7 +2311,7 @@ static int ath9k_tx_last_beacon(struct ieee80211_hw *hw)
+@@ -2342,7 +2343,7 @@ static int ath9k_tx_last_beacon(struct i
  	if (!avp->is_bslot_active)
  		return 0;
  
@@ -34,6 +32,3 @@ index 02e95c8..cc2535c 100644
  		tasklet_disable(&sc->bcon_tasklet);
  
  		bf = avp->av_bcbuf;
--- 
-1.7.4.15.g7811d
-

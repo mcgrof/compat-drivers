@@ -14,11 +14,9 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  drivers/net/wireless/ath/ath9k/ar9003_mac.h |    3 ++-
  2 files changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/ar9003_mac.c b/drivers/net/wireless/ath/ath9k/ar9003_mac.c
-index 09b8c9d..39cb482 100644
 --- a/drivers/net/wireless/ath/ath9k/ar9003_mac.c
 +++ b/drivers/net/wireless/ath/ath9k/ar9003_mac.c
-@@ -28,11 +28,14 @@ ar9003_set_txdesc(struct ath_hw *ah, void *ds, struct ath_tx_info *i)
+@@ -28,11 +28,14 @@ ar9003_set_txdesc(struct ath_hw *ah, voi
  	struct ar9003_txc *ads = ds;
  	int checksum = 0;
  	u32 val, ctl12, ctl17;
@@ -34,7 +32,7 @@ index 09b8c9d..39cb482 100644
  
  	checksum += val;
  	ACCESS_ONCE(ads->info) = val;
-@@ -81,6 +84,7 @@ ar9003_set_txdesc(struct ath_hw *ah, void *ds, struct ath_tx_info *i)
+@@ -81,6 +84,7 @@ ar9003_set_txdesc(struct ath_hw *ah, voi
  	ads->ctl20 = 0;
  	ads->ctl21 = 0;
  	ads->ctl22 = 0;
@@ -42,8 +40,6 @@ index 09b8c9d..39cb482 100644
  
  	ctl17 = SM(i->keytype, AR_EncrType);
  	if (!i->is_first) {
-diff --git a/drivers/net/wireless/ath/ath9k/ar9003_mac.h b/drivers/net/wireless/ath/ath9k/ar9003_mac.h
-index e203b51..cbf60b0 100644
 --- a/drivers/net/wireless/ath/ath9k/ar9003_mac.h
 +++ b/drivers/net/wireless/ath/ath9k/ar9003_mac.h
 @@ -92,7 +92,8 @@ struct ar9003_txc {
@@ -56,6 +52,3 @@ index e203b51..cbf60b0 100644
  } __packed __aligned(4);
  
  struct ar9003_txs {
--- 
-1.7.4.15.g7811d
-

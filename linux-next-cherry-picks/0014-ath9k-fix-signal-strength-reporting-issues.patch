@@ -19,11 +19,9 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  drivers/net/wireless/ath/ath9k/recv.c |   12 +++++++-----
  1 files changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/recv.c b/drivers/net/wireless/ath/ath9k/recv.c
-index c95b77c..1b1b279 100644
 --- a/drivers/net/wireless/ath/ath9k/recv.c
 +++ b/drivers/net/wireless/ath/ath9k/recv.c
-@@ -948,6 +948,7 @@ static void ath9k_process_rssi(struct ath_common *common,
+@@ -954,6 +954,7 @@ static void ath9k_process_rssi(struct at
  	struct ath_softc *sc = hw->priv;
  	struct ath_hw *ah = common->ah;
  	int last_rssi;
@@ -31,7 +29,7 @@ index c95b77c..1b1b279 100644
  
  	if (!rx_stats->is_mybeacon ||
  	    ((ah->opmode != NL80211_IFTYPE_STATION) &&
-@@ -959,13 +960,12 @@ static void ath9k_process_rssi(struct ath_common *common,
+@@ -965,13 +966,12 @@ static void ath9k_process_rssi(struct at
  
  	last_rssi = sc->last_rssi;
  	if (likely(last_rssi != ATH_RSSI_DUMMY_MARKER))
@@ -49,7 +47,7 @@ index c95b77c..1b1b279 100644
  }
  
  /*
-@@ -1005,6 +1005,8 @@ static int ath9k_rx_skb_preprocess(struct ath_common *common,
+@@ -1011,6 +1011,8 @@ static int ath9k_rx_skb_preprocess(struc
  	rx_status->signal = ah->noise + rx_stats->rs_rssi;
  	rx_status->antenna = rx_stats->rs_antenna;
  	rx_status->flag |= RX_FLAG_MACTIME_MPDU;
@@ -58,6 +56,3 @@ index c95b77c..1b1b279 100644
  
  	return 0;
  }
--- 
-1.7.4.15.g7811d
-

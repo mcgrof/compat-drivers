@@ -12,8 +12,6 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  drivers/net/wireless/ath/ath9k/ar9003_phy.h |    4 ++--
  1 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/ar9003_phy.h b/drivers/net/wireless/ath/ath9k/ar9003_phy.h
-index aca24bf..81f3e85 100644
 --- a/drivers/net/wireless/ath/ath9k/ar9003_phy.h
 +++ b/drivers/net/wireless/ath/ath9k/ar9003_phy.h
 @@ -625,8 +625,8 @@
@@ -27,6 +25,3 @@ index aca24bf..81f3e85 100644
  #define AR_PHY_65NM_CH0_SYNTH7      0x16098
  #define AR_PHY_65NM_CH0_BIAS1       0x160c0
  #define AR_PHY_65NM_CH0_BIAS2       0x160c4
--- 
-1.7.4.15.g7811d
-
