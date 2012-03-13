@@ -14,7 +14,7 @@ This should go into patches/01-netdev.patch
  }
  
  
-@@ -341,8 +341,10 @@ static int alx_set_mac_address(struct ne
+@@ -337,8 +341,10 @@ static int alx_set_mac_address(struct ne
  	if (netif_running(netdev))
  		return -EBUSY;
  
@@ -25,7 +25,7 @@ This should go into patches/01-netdev.patch
  
  	memcpy(netdev->dev_addr, addr->sa_data, netdev->addr_len);
  	memcpy(hw->mac_addr, addr->sa_data, netdev->addr_len);
-@@ -2483,7 +2487,7 @@ static void alx_free_all_rtx_descriptor(
+@@ -2483,7 +2489,7 @@ static void alx_free_all_rtx_descriptor(
  	ring_header->size = ring_header->used = 0;
  }
  
@@ -34,7 +34,7 @@ This should go into patches/01-netdev.patch
  static netdev_features_t alx_fix_features(struct net_device *netdev,
  					  netdev_features_t features)
  {
-@@ -2515,6 +2519,8 @@ static int alx_set_features(struct net_d
+@@ -2515,6 +2521,8 @@ static int alx_set_features(struct net_d
  		alx_vlan_mode(netdev, features);
  	return 0;
  }
@@ -43,7 +43,7 @@ This should go into patches/01-netdev.patch
  /*
   * alx_change_mtu - Change the Maximum Transfer Unit
   */
-@@ -2538,7 +2544,17 @@ static int alx_change_mtu(struct net_dev
+@@ -2538,7 +2546,17 @@ static int alx_change_mtu(struct net_dev
  		adpt->hw.mtu = new_mtu;
  		adpt->rxbuf_size = new_mtu > ALX_DEF_RX_BUF_SIZE ?
  				   ALIGN(max_frame, 8) : ALX_DEF_RX_BUF_SIZE;
@@ -61,7 +61,7 @@ This should go into patches/01-netdev.patch
  		alx_reinit_locked(adpt);
  	}
  
-@@ -3444,8 +3460,10 @@ static const struct net_device_ops alx_n
+@@ -3444,8 +3462,10 @@ static const struct net_device_ops alx_n
  	.ndo_change_mtu         = alx_change_mtu,
  	.ndo_do_ioctl           = alx_ioctl,
  	.ndo_tx_timeout         = alx_tx_timeout,
@@ -72,7 +72,7 @@ This should go into patches/01-netdev.patch
  #ifdef CONFIG_NET_POLL_CONTROLLER
  	.ndo_poll_controller    = alx_poll_controller,
  #endif
-@@ -3532,7 +3550,7 @@ static int __devinit alx_init(struct pci
+@@ -3532,7 +3552,7 @@ static int __devinit alx_init(struct pci
  	netdev->base_addr = (unsigned long)adpt->hw.hw_addr;
  
  	/* set cb member of netdev structure*/
@@ -81,7 +81,7 @@ This should go into patches/01-netdev.patch
  	alx_set_ethtool_ops(netdev);
  	netdev->watchdog_timeo = ALX_WATCHDOG_TIME;
  	strncpy(netdev->name, pci_name(pdev), sizeof(netdev->name) - 1);
-@@ -3580,6 +3598,7 @@ static int __devinit alx_init(struct pci
+@@ -3580,6 +3600,7 @@ static int __devinit alx_init(struct pci
  	adpt->max_rxques = min_t(int, ALX_MAX_RX_QUEUES, num_online_cpus());
  	adpt->max_txques = min_t(int, ALX_MAX_TX_QUEUES, num_online_cpus());
  
@@ -89,7 +89,7 @@ This should go into patches/01-netdev.patch
  	netdev->hw_features = NETIF_F_SG	 |
  			      NETIF_F_HW_CSUM	 |
  			      NETIF_F_HW_VLAN_RX;
-@@ -3591,6 +3610,19 @@ static int __devinit alx_init(struct pci
+@@ -3591,6 +3612,19 @@ static int __devinit alx_init(struct pci
  	}
  	netdev->features = netdev->hw_features |
  			   NETIF_F_HW_VLAN_TX;
@@ -109,7 +109,7 @@ This should go into patches/01-netdev.patch
  
  	/* get mac addr and perm mac addr, set to register */
  	if (hw->cbs.get_mac_addr)
-@@ -3862,6 +3894,8 @@ static struct pci_error_handlers alx_err
+@@ -3862,6 +3896,8 @@ static struct pci_error_handlers alx_err
  #ifdef CONFIG_PM_SLEEP
  static SIMPLE_DEV_PM_OPS(alx_pm_ops, alx_suspend, alx_resume);
  #define ALX_PM_OPS      (&alx_pm_ops)
@@ -118,7 +118,7 @@ This should go into patches/01-netdev.patch
  #else
  #define ALX_PM_OPS      NULL
  #endif
-@@ -3874,7 +3908,12 @@ static struct pci_driver alx_driver = {
+@@ -3874,7 +3910,12 @@ static struct pci_driver alx_driver = {
  	.remove      = __devexit_p(alx_remove),
  	.shutdown    = alx_shutdown,
  	.err_handler = &alx_err_handler,
