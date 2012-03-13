@@ -120,3 +120,14 @@ This should go into patches/01-netdev.patch
  };
  
  
+@@ -341,8 +341,10 @@ static int alx_set_mac_address(struct ne
+ 	if (netif_running(netdev))
+ 		return -EBUSY;
+ 
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,36))
+ 	if (netdev->addr_assign_type & NET_ADDR_RANDOM)
+ 		netdev->addr_assign_type ^= NET_ADDR_RANDOM;
++#endif
+ 
+ 	memcpy(netdev->dev_addr, addr->sa_data, netdev->addr_len);
+ 	memcpy(hw->mac_addr, addr->sa_data, netdev->addr_len);
