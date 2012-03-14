@@ -651,8 +651,8 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  	}
 --- a/include/net/mac80211.h
 +++ b/include/net/mac80211.h
-@@ -2190,7 +2190,11 @@ struct ieee80211_ops {
- 			       enum ieee80211_tx_sync_type type);
+@@ -2150,7 +2150,11 @@ struct ieee80211_ops {
+ 				 u32 changed);
  
  	u64 (*prepare_multicast)(struct ieee80211_hw *hw,
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,35))
@@ -681,7 +681,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  		}
 --- a/net/mac80211/driver-ops.h
 +++ b/net/mac80211/driver-ops.h
-@@ -204,14 +204,28 @@ static inline void drv_finish_tx_sync(st
+@@ -169,14 +169,28 @@ static inline void drv_bss_info_changed(
  }
  
  static inline u64 drv_prepare_multicast(struct ieee80211_local *local,
@@ -712,7 +712,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  
 --- a/net/mac80211/ieee80211_i.h
 +++ b/net/mac80211/ieee80211_i.h
-@@ -849,7 +849,12 @@ struct ieee80211_local {
+@@ -848,7 +848,12 @@ struct ieee80211_local {
  	struct work_struct recalc_smps;
  
  	/* aggregated multicast list */

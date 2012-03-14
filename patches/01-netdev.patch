@@ -34,7 +34,7 @@ without creating a headache on maintenance of the pathes.
  
 --- a/drivers/net/wireless/ath/ath6kl/main.c
 +++ b/drivers/net/wireless/ath/ath6kl/main.c
-@@ -1175,7 +1175,7 @@ static const struct net_device_ops ath6k
+@@ -1201,7 +1201,7 @@ static const struct net_device_ops ath6k
  
  void init_netdev(struct net_device *dev)
  {
@@ -267,7 +267,7 @@ without creating a headache on maintenance of the pathes.
  #define LBS_DEB_LEAVE	0x00000002
 --- a/drivers/net/wireless/mac80211_hwsim.c
 +++ b/drivers/net/wireless/mac80211_hwsim.c
-@@ -1282,7 +1282,7 @@ static const struct net_device_ops hwsim
+@@ -1283,7 +1283,7 @@ static const struct net_device_ops hwsim
  
  static void hwsim_mon_setup(struct net_device *dev)
  {

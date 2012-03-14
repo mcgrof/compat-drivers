@@ -5,7 +5,7 @@ suspend and resume that are not backported.
 
 --- a/drivers/net/wireless/ath/ath6kl/cfg80211.c
 +++ b/drivers/net/wireless/ath/ath6kl/cfg80211.c
-@@ -2152,7 +2152,7 @@ int ath6kl_cfg80211_resume(struct ath6kl
+@@ -2240,7 +2240,7 @@ int ath6kl_cfg80211_resume(struct ath6kl
  }
  EXPORT_SYMBOL(ath6kl_cfg80211_resume);
  
@@ -14,7 +14,7 @@ suspend and resume that are not backported.
  
  /* hif layer decides what suspend mode to use */
  static int __ath6kl_cfg80211_suspend(struct wiphy *wiphy,
-@@ -2790,7 +2790,7 @@ static struct cfg80211_ops ath6kl_cfg802
+@@ -2951,7 +2951,7 @@ static struct cfg80211_ops ath6kl_cfg802
  	.del_pmksa = ath6kl_del_pmksa,
  	.flush_pmksa = ath6kl_flush_pmksa,
  	CFG80211_TESTMODE_CMD(ath6kl_tm_cmd)
@@ -25,7 +25,7 @@ suspend and resume that are not backported.
  #endif
 --- a/drivers/net/wireless/ath/ath6kl/hif-ops.h
 +++ b/drivers/net/wireless/ath/ath6kl/hif-ops.h
-@@ -83,6 +83,7 @@ static inline void ath6kl_hif_cleanup_sc
+@@ -84,6 +84,7 @@ static inline void ath6kl_hif_cleanup_sc
  	return ar->hif_ops->cleanup_scatter(ar);
  }
  
@@ -33,7 +33,7 @@ suspend and resume that are not backported.
  static inline int ath6kl_hif_suspend(struct ath6kl *ar,
  				     struct cfg80211_wowlan *wow)
  {
-@@ -90,6 +91,7 @@ static inline int ath6kl_hif_suspend(str
+@@ -91,6 +92,7 @@ static inline int ath6kl_hif_suspend(str
  
  	return ar->hif_ops->suspend(ar, wow);
  }
@@ -41,7 +41,7 @@ suspend and resume that are not backported.
  
  /*
   * Read from the ATH6KL through its diagnostic window. No cooperation from
-@@ -121,12 +123,14 @@ static inline int ath6kl_hif_bmi_write(s
+@@ -122,12 +124,14 @@ static inline int ath6kl_hif_bmi_write(s
  	return ar->hif_ops->bmi_write(ar, buf, len);
  }
  
@@ -58,7 +58,7 @@ suspend and resume that are not backported.
  {
 --- a/drivers/net/wireless/ath/ath6kl/sdio.c
 +++ b/drivers/net/wireless/ath/ath6kl/sdio.c
-@@ -808,6 +808,7 @@ static int ath6kl_set_sdio_pm_caps(struc
+@@ -836,6 +836,7 @@ static int ath6kl_set_sdio_pm_caps(struc
  	return ret;
  }
  
@@ -66,7 +66,7 @@ suspend and resume that are not backported.
  static int ath6kl_sdio_suspend(struct ath6kl *ar, struct cfg80211_wowlan *wow)
  {
  	struct ath6kl_sdio *ar_sdio = ath6kl_sdio_priv(ar);
-@@ -909,6 +910,7 @@ static int ath6kl_sdio_resume(struct ath
+@@ -953,6 +954,7 @@ static int ath6kl_sdio_resume(struct ath
  
  	return 0;
  }
@@ -74,7 +74,7 @@ suspend and resume that are not backported.
  
  /* set the window address register (using 4-byte register access ). */
  static int ath6kl_set_addrwin_reg(struct ath6kl *ar, u32 reg_addr, u32 addr)
-@@ -1210,8 +1212,10 @@ static const struct ath6kl_hif_ops ath6k
+@@ -1254,8 +1256,10 @@ static const struct ath6kl_hif_ops ath6k
  	.enable_scatter = ath6kl_sdio_enable_scatter,
  	.scat_req_rw = ath6kl_sdio_async_rw_scatter,
  	.cleanup_scatter = ath6kl_sdio_cleanup_scatter,
@@ -85,7 +85,7 @@ suspend and resume that are not backported.
  	.diag_read32 = ath6kl_sdio_diag_read32,
  	.diag_write32 = ath6kl_sdio_diag_write32,
  	.bmi_read = ath6kl_sdio_bmi_read,
-@@ -1221,7 +1225,7 @@ static const struct ath6kl_hif_ops ath6k
+@@ -1265,7 +1269,7 @@ static const struct ath6kl_hif_ops ath6k
  	.stop = ath6kl_sdio_stop,
  };
  
@@ -94,7 +94,7 @@ suspend and resume that are not backported.
  
  /*
   * Empty handlers so that mmc subsystem doesn't remove us entirely during
-@@ -1370,7 +1374,9 @@ static struct sdio_driver ath6kl_sdio_dr
+@@ -1415,7 +1419,9 @@ static struct sdio_driver ath6kl_sdio_dr
  	.id_table = ath6kl_sdio_devices,
  	.probe = ath6kl_sdio_probe,
  	.remove = ath6kl_sdio_remove,
