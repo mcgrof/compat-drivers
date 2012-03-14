@@ -358,17 +358,15 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  	.ndo_set_rx_mode	= ath6kl_set_multicast_list,
  };
  
---- a/drivers/net/wireless/ath/ath6kl/core.c
-+++ b/drivers/net/wireless/ath/ath6kl/core.c
-@@ -173,7 +173,11 @@ int ath6kl_core_init(struct ath6kl *ar)
- 
- 	set_bit(FIRST_BOOT, &ar->flag);
+@@ -1210,7 +1214,11 @@ void init_netdev(struct net_device *dev)
+ 				sizeof(struct wmi_data_hdr) + HTC_HDR_LENGTH
+ 				+ WMI_MAX_TX_META_SZ + ATH6KL_HTC_ALIGN_BYTES;
  
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,39))
- 	ndev->hw_features |= NETIF_F_IP_CSUM | NETIF_F_RXCSUM;
+ 	dev->hw_features |= NETIF_F_IP_CSUM | NETIF_F_RXCSUM;
 +#else
 +	ndev->features |= NETIF_F_IP_CSUM;
 +#endif
  
- 	ret = ath6kl_init_hw_start(ar);
- 	if (ret) {
+ 	return;
+ }
