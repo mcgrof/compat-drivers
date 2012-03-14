@@ -365,7 +365,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,39))
  	dev->hw_features |= NETIF_F_IP_CSUM | NETIF_F_RXCSUM;
 +#else
-+	ndev->features |= NETIF_F_IP_CSUM;
++	dev->features |= NETIF_F_IP_CSUM;
 +#endif
  
  	return;
