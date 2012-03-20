@@ -780,3 +780,41 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  	mutex_init(&local->iflist_mtx);
  	mutex_init(&local->mtx);
  
+--- a/drivers/net/wireless/ath/ath6kl/main.c
++++ b/drivers/net/wireless/ath/ath6kl/main.c
+@@ -1119,7 +1119,11 @@ static void ath6kl_set_multicast_list(st
+ 	list_for_each_entry_safe(mc_filter, tmp, &vif->mc_filter, list) {
+ 		found = false;
+ 		netdev_for_each_mc_addr(ha, ndev) {
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,35))
+ 			if (memcmp(ha->addr, mc_filter->hw_addr,
++#else
++			if (memcmp(ha->dmi_addr, mc_filter->hw_addr,
++#endif
+ 				   ATH6KL_MCAST_FILTER_MAC_ADDR_SIZE) == 0) {
+ 				found = true;
+ 				break;
+@@ -1153,7 +1157,11 @@ static void ath6kl_set_multicast_list(st
+ 	netdev_for_each_mc_addr(ha, ndev) {
+ 		found = false;
+ 		list_for_each_entry(mc_filter, &vif->mc_filter, list) {
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,35))
+ 			if (memcmp(ha->addr, mc_filter->hw_addr,
++#else
++			if (memcmp(ha->dmi_addr, mc_filter->hw_addr,
++#endif
+ 				   ATH6KL_MCAST_FILTER_MAC_ADDR_SIZE) == 0) {
+ 				found = true;
+ 				break;
+@@ -1168,7 +1176,11 @@ static void ath6kl_set_multicast_list(st
+ 				goto out;
+ 			}
+ 
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,35))
+ 			memcpy(mc_filter->hw_addr, ha->addr,
++#else
++			memcpy(mc_filter->hw_addr, ha->dmi_addr,
++#endif
+ 			       ATH6KL_MCAST_FILTER_MAC_ADDR_SIZE);
+ 			/* Set the multicast filter */
+ 			ath6kl_dbg(ATH6KL_DBG_TRC,
