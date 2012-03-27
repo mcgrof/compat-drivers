@@ -23,7 +23,7 @@ without creating a headache on maintenance of the pathes.
  	if (unlikely(retval < 0)) {
 --- a/drivers/net/usb/usbnet.c
 +++ b/drivers/net/usb/usbnet.c
-@@ -1377,7 +1377,7 @@ usbnet_probe (struct usb_interface *udev
+@@ -1379,7 +1379,7 @@ usbnet_probe (struct usb_interface *udev
  		net->features |= NETIF_F_HIGHDMA;
  #endif
  
