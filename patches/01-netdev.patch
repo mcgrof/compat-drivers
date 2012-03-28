@@ -23,7 +23,7 @@ without creating a headache on maintenance of the pathes.
  	if (unlikely(retval < 0)) {
 --- a/drivers/net/usb/usbnet.c
 +++ b/drivers/net/usb/usbnet.c
-@@ -1370,7 +1370,7 @@ usbnet_probe (struct usb_interface *udev
+@@ -1372,7 +1372,7 @@ usbnet_probe (struct usb_interface *udev
  		net->features |= NETIF_F_HIGHDMA;
  #endif
  
@@ -336,7 +336,7 @@ without creating a headache on maintenance of the pathes.
  	atl1e_set_ethtool_ops(netdev);
 --- a/drivers/net/atl1c/atl1c_main.c
 +++ b/drivers/net/atl1c/atl1c_main.c
-@@ -2600,7 +2600,7 @@ static int atl1c_init_netdev(struct net_
+@@ -2596,7 +2596,7 @@ static int atl1c_init_netdev(struct net_
  	pci_set_drvdata(pdev, netdev);
  
  	netdev->irq  = pdev->irq;

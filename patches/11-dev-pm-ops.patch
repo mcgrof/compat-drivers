@@ -9,7 +9,7 @@ calls on compat code with only slight modifications.
 
 --- a/drivers/net/atl1c/atl1c_main.c
 +++ b/drivers/net/atl1c/atl1c_main.c
-@@ -2880,6 +2880,9 @@ static struct pci_error_handlers atl1c_e
+@@ -2876,6 +2876,9 @@ static struct pci_error_handlers atl1c_e
  
  static SIMPLE_DEV_PM_OPS(atl1c_pm_ops, atl1c_suspend, atl1c_resume);
  
@@ -19,7 +19,7 @@ calls on compat code with only slight modifications.
  static struct pci_driver atl1c_driver = {
  	.name     = atl1c_driver_name,
  	.id_table = atl1c_pci_tbl,
-@@ -2887,7 +2890,12 @@ static struct pci_driver atl1c_driver =
+@@ -2883,7 +2886,12 @@ static struct pci_driver atl1c_driver =
  	.remove   = __devexit_p(atl1c_remove),
  	.shutdown = atl1c_shutdown,
  	.err_handler = &atl1c_err_handler,
@@ -119,7 +119,7 @@ calls on compat code with only slight modifications.
  int ath_pci_init(void)
 --- a/drivers/net/wireless/libertas/if_spi.c
 +++ b/drivers/net/wireless/libertas/if_spi.c
-@@ -1253,6 +1253,7 @@ static int __devexit libertas_spi_remove
+@@ -1254,6 +1254,7 @@ static int __devexit libertas_spi_remove
  	return 0;
  }
  
@@ -127,7 +127,7 @@ calls on compat code with only slight modifications.
  static int if_spi_suspend(struct device *dev)
  {
  	struct spi_device *spi = to_spi_device(dev);
-@@ -1286,6 +1287,7 @@ static const struct dev_pm_ops if_spi_pm
+@@ -1287,6 +1288,7 @@ static const struct dev_pm_ops if_spi_pm
  	.suspend	= if_spi_suspend,
  	.resume		= if_spi_resume,
  };
@@ -135,7 +135,7 @@ calls on compat code with only slight modifications.
  
  static struct spi_driver libertas_spi_driver = {
  	.probe	= if_spi_probe,
-@@ -1294,7 +1296,9 @@ static struct spi_driver libertas_spi_dr
+@@ -1295,7 +1297,9 @@ static struct spi_driver libertas_spi_dr
  		.name	= "libertas_spi",
  		.bus	= &spi_bus_type,
  		.owner	= THIS_MODULE,
@@ -190,7 +190,7 @@ calls on compat code with only slight modifications.
  
 --- a/drivers/net/wireless/iwlegacy/iwl3945-base.c
 +++ b/drivers/net/wireless/iwlegacy/iwl3945-base.c
-@@ -4236,7 +4236,12 @@ static struct pci_driver iwl3945_driver
+@@ -4235,7 +4235,12 @@ static struct pci_driver iwl3945_driver
  	.id_table = iwl3945_hw_card_ids,
  	.probe = iwl3945_pci_probe,
  	.remove = __devexit_p(iwl3945_pci_remove),
@@ -220,7 +220,7 @@ calls on compat code with only slight modifications.
  static int __init iwl4965_init(void)
 --- a/drivers/net/wireless/iwlwifi/iwl-agn.c
 +++ b/drivers/net/wireless/iwlwifi/iwl-agn.c
-@@ -3925,7 +3925,12 @@ static struct pci_driver iwl_driver = {
+@@ -3913,7 +3913,12 @@ static struct pci_driver iwl_driver = {
  	.id_table = iwl_hw_card_ids,
  	.probe = iwl_pci_probe,
  	.remove = __devexit_p(iwl_pci_remove),
