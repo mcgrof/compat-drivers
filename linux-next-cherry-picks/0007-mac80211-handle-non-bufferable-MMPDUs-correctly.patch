@@ -181,3 +181,14 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  #ifdef CONFIG_MAC80211_VERBOSE_PS_DEBUG
  		printk(KERN_DEBUG "STA %pM aid %d: PS buffer for AC %d\n",
  		       sta->sta.addr, sta->sta.aid, ac);
+--- a/drivers/net/wireless/ath/carl9170/tx.c
++++ b/drivers/net/wireless/ath/carl9170/tx.c
+@@ -1245,7 +1245,7 @@ static bool carl9170_tx_ps_drop(struct a
+ 	tx_info = IEEE80211_SKB_CB(skb);
+ 
+ 	if (unlikely(sta_info->sleeping) &&
+-	    !(tx_info->flags & (IEEE80211_TX_CTL_POLL_RESPONSE |
++	    !(tx_info->flags & (IEEE80211_TX_CTL_NO_PS_BUFFER |
+ 				IEEE80211_TX_CTL_CLEAR_PS_FILT))) {
+ 		rcu_read_unlock();
+ 
