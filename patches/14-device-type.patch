@@ -36,7 +36,7 @@ compile warning.
  {
 --- a/drivers/net/usb/usbnet.c
 +++ b/drivers/net/usb/usbnet.c
-@@ -1290,13 +1290,17 @@ static const struct net_device_ops usbne
+@@ -1292,13 +1292,17 @@ static const struct net_device_ops usbne
  
  // precondition: never called in_interrupt
  
