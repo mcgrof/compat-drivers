@@ -381,10 +381,10 @@ calls on compat code with only slight modifications.
 -	.poweroff = p54p_suspend,
 -	.restore = p54p_resume,
 -};
-+compat_pci_suspend(p54_suspend)
-+compat_pci_resume(p54_resume)
++compat_pci_suspend(p54p_suspend)
++compat_pci_resume(p54p_resume)
 +
-+static SIMPLE_DEV_PM_OPS(p54_pm_ops, p54_suspend, p54_resume);
++static SIMPLE_DEV_PM_OPS(p54pci_pm_ops, p54p_suspend, p54p_resume);
  
  #define P54P_PM_OPS (&p54pci_pm_ops)
  #else
@@ -395,8 +395,8 @@ calls on compat code with only slight modifications.
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
  	.driver.pm	= P54P_PM_OPS,
 +#elif defined(CONFIG_PM)
-+	.suspend    = p54_suspend_compat,
-+	.resume     = p54_resume_compat,
++	.suspend    = p54p_suspend_compat,
++	.resume     = p54p_resume_compat,
 +#endif
  };
  
