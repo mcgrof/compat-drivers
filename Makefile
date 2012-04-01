@@ -12,8 +12,8 @@ DESTDIR?=
 
 ifneq ($(KERNELRELEASE),)
 
-include $(COMPAT_CONFIG_CW)
 include $(COMPAT_CONFIG)
+include $(COMPAT_CONFIG_CW)
 
 NOSTDINC_FLAGS := -I$(M)/include/ \
 	-include $(M)/include/linux/compat-2.6.h \
