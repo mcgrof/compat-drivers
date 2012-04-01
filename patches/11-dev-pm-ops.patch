@@ -381,8 +381,8 @@ calls on compat code with only slight modifications.
 -	.poweroff = p54p_suspend,
 -	.restore = p54p_resume,
 -};
-+compat_pci_suspend(p54p_suspend)
-+compat_pci_resume(p54p_resume)
++compat_pci_suspend(p54_suspend)
++compat_pci_resume(p54_resume)
 +
 +static SIMPLE_DEV_PM_OPS(p54_pm_ops, p54_suspend, p54_resume);
  
