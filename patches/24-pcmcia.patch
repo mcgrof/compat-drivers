@@ -191,7 +191,7 @@
  	.id_table	= bluecard_ids,
 --- a/drivers/bluetooth/bt3c_cs.c
 +++ b/drivers/bluetooth/bt3c_cs.c
-@@ -187,7 +187,11 @@ static void bt3c_write_wakeup(bt3c_info_
+@@ -186,7 +186,11 @@ static void bt3c_write_wakeup(bt3c_info_
  		return;
  
  	do {
@@ -203,7 +203,7 @@
  		register struct sk_buff *skb;
  		register int len;
  
-@@ -225,7 +229,11 @@ static void bt3c_receive(bt3c_info_t *in
+@@ -224,7 +228,11 @@ static void bt3c_receive(bt3c_info_t *in
  		return;
  	}
  
@@ -215,7 +215,7 @@
  
  	avail = bt3c_read(iobase, 0x7006);
  	//printk("bt3c_cs: receiving %d bytes\n", avail);
-@@ -346,7 +354,11 @@ static irqreturn_t bt3c_interrupt(int ir
+@@ -345,7 +353,11 @@ static irqreturn_t bt3c_interrupt(int ir
  		/* our irq handler is shared */
  		return IRQ_NONE;
  
@@ -227,7 +227,7 @@
  
  	spin_lock(&(info->lock));
  
-@@ -474,7 +486,11 @@ static int bt3c_load_firmware(bt3c_info_
+@@ -473,7 +485,11 @@ static int bt3c_load_firmware(bt3c_info_
  	unsigned int iobase, size, addr, fcs, tmp;
  	int i, err = 0;
  
@@ -239,7 +239,7 @@
  
  	/* Reset */
  	bt3c_io_write(iobase, 0x8040, 0x0404);
-@@ -646,8 +662,27 @@ static int bt3c_probe(struct pcmcia_devi
+@@ -645,8 +661,27 @@ static int bt3c_probe(struct pcmcia_devi
  	info->p_dev = link;
  	link->priv = info;
  
@@ -267,7 +267,7 @@
  
  	return bt3c_config(link);
  }
-@@ -661,6 +696,7 @@ static void bt3c_detach(struct pcmcia_de
+@@ -660,6 +695,7 @@ static void bt3c_detach(struct pcmcia_de
  	kfree(info);
  }
  
@@ -275,7 +275,7 @@
  static int bt3c_check_config(struct pcmcia_device *p_dev, void *priv_data)
  {
  	int *try = priv_data;
-@@ -699,6 +735,63 @@ static int bt3c_check_config_notpicky(st
+@@ -698,6 +734,63 @@ static int bt3c_check_config_notpicky(st
  	}
  	return -ENODEV;
  }
@@ -339,7 +339,7 @@
  
  static int bt3c_config(struct pcmcia_device *link)
  {
-@@ -722,9 +815,15 @@ static int bt3c_config(struct pcmcia_dev
+@@ -721,9 +814,15 @@ static int bt3c_config(struct pcmcia_dev
  	goto failed;
  
  found_port:
@@ -355,7 +355,7 @@
  
  	i = pcmcia_enable_device(link);
  	if (i != 0)
-@@ -759,7 +858,13 @@ MODULE_DEVICE_TABLE(pcmcia, bt3c_ids);
+@@ -758,7 +857,13 @@ MODULE_DEVICE_TABLE(pcmcia, bt3c_ids);
  
  static struct pcmcia_driver bt3c_driver = {
  	.owner		= THIS_MODULE,
@@ -371,7 +371,7 @@
  	.id_table	= bt3c_ids,
 --- a/drivers/bluetooth/btuart_cs.c
 +++ b/drivers/bluetooth/btuart_cs.c
-@@ -141,7 +141,11 @@ static void btuart_write_wakeup(btuart_i
+@@ -140,7 +140,11 @@ static void btuart_write_wakeup(btuart_i
  	}
  
  	do {
@@ -383,7 +383,7 @@
  		register struct sk_buff *skb;
  		register int len;
  
-@@ -182,7 +186,11 @@ static void btuart_receive(btuart_info_t
+@@ -181,7 +185,11 @@ static void btuart_receive(btuart_info_t
  		return;
  	}
  
@@ -395,7 +395,7 @@
  
  	do {
  		info->hdev->stat.byte_rx++;
-@@ -296,7 +304,11 @@ static irqreturn_t btuart_interrupt(int
+@@ -295,7 +303,11 @@ static irqreturn_t btuart_interrupt(int
  		/* our irq handler is shared */
  		return IRQ_NONE;
  
@@ -407,7 +407,7 @@
  
  	spin_lock(&(info->lock));
  
-@@ -353,7 +365,11 @@ static void btuart_change_speed(btuart_i
+@@ -352,7 +364,11 @@ static void btuart_change_speed(btuart_i
  		return;
  	}
  
@@ -419,7 +419,7 @@
  
  	spin_lock_irqsave(&(info->lock), flags);
  
-@@ -472,7 +488,11 @@ static int btuart_hci_ioctl(struct hci_d
+@@ -471,7 +487,11 @@ static int btuart_hci_ioctl(struct hci_d
  static int btuart_open(btuart_info_t *info)
  {
  	unsigned long flags;
@@ -431,7 +431,7 @@
  	struct hci_dev *hdev;
  
  	spin_lock_init(&(info->lock));
-@@ -539,7 +559,11 @@ static int btuart_open(btuart_info_t *in
+@@ -538,7 +558,11 @@ static int btuart_open(btuart_info_t *in
  static int btuart_close(btuart_info_t *info)
  {
  	unsigned long flags;
@@ -443,7 +443,7 @@
  	struct hci_dev *hdev = info->hdev;
  
  	if (!hdev)
-@@ -575,8 +599,27 @@ static int btuart_probe(struct pcmcia_de
+@@ -574,8 +598,27 @@ static int btuart_probe(struct pcmcia_de
  	info->p_dev = link;
  	link->priv = info;
  
@@ -471,7 +471,7 @@
  
  	return btuart_config(link);
  }
-@@ -590,6 +633,7 @@ static void btuart_detach(struct pcmcia_
+@@ -589,6 +632,7 @@ static void btuart_detach(struct pcmcia_
  	kfree(info);
  }
  
@@ -479,7 +479,7 @@
  static int btuart_check_config(struct pcmcia_device *p_dev, void *priv_data)
  {
  	int *try = priv_data;
-@@ -628,6 +672,63 @@ static int btuart_check_config_notpicky(
+@@ -627,6 +671,63 @@ static int btuart_check_config_notpicky(
  	}
  	return -ENODEV;
  }
@@ -543,7 +543,7 @@
  
  static int btuart_config(struct pcmcia_device *link)
  {
-@@ -651,9 +752,15 @@ static int btuart_config(struct pcmcia_d
+@@ -650,9 +751,15 @@ static int btuart_config(struct pcmcia_d
  	goto failed;
  
  found_port:
@@ -559,7 +559,7 @@
  
  	i = pcmcia_enable_device(link);
  	if (i != 0)
-@@ -687,7 +794,13 @@ MODULE_DEVICE_TABLE(pcmcia, btuart_ids);
+@@ -686,7 +793,13 @@ MODULE_DEVICE_TABLE(pcmcia, btuart_ids);
  
  static struct pcmcia_driver btuart_driver = {
  	.owner		= THIS_MODULE,
@@ -575,7 +575,7 @@
  	.id_table	= btuart_ids,
 --- a/drivers/bluetooth/dtl1_cs.c
 +++ b/drivers/bluetooth/dtl1_cs.c
-@@ -145,7 +145,11 @@ static void dtl1_write_wakeup(dtl1_info_
+@@ -144,7 +144,11 @@ static void dtl1_write_wakeup(dtl1_info_
  	}
  
  	do {
@@ -587,7 +587,7 @@
  		register struct sk_buff *skb;
  		register int len;
  
-@@ -210,7 +214,11 @@ static void dtl1_receive(dtl1_info_t *in
+@@ -209,7 +213,11 @@ static void dtl1_receive(dtl1_info_t *in
  		return;
  	}
  
@@ -599,7 +599,7 @@
  
  	do {
  		info->hdev->stat.byte_rx++;
-@@ -297,7 +305,11 @@ static irqreturn_t dtl1_interrupt(int ir
+@@ -296,7 +304,11 @@ static irqreturn_t dtl1_interrupt(int ir
  		/* our irq handler is shared */
  		return IRQ_NONE;
  
@@ -611,7 +611,7 @@
  
  	spin_lock(&(info->lock));
  
-@@ -452,7 +464,11 @@ static int dtl1_hci_ioctl(struct hci_dev
+@@ -451,7 +463,11 @@ static int dtl1_hci_ioctl(struct hci_dev
  static int dtl1_open(dtl1_info_t *info)
  {
  	unsigned long flags;
@@ -623,7 +623,7 @@
  	struct hci_dev *hdev;
  
  	spin_lock_init(&(info->lock));
-@@ -496,8 +512,13 @@ static int dtl1_open(dtl1_info_t *info)
+@@ -495,8 +511,13 @@ static int dtl1_open(dtl1_info_t *info)
  	outb(UART_LCR_WLEN8, iobase + UART_LCR);	/* Reset DLAB */
  	outb((UART_MCR_DTR | UART_MCR_RTS | UART_MCR_OUT2), iobase + UART_MCR);
  
@@ -637,7 +637,7 @@
  
  	/* Turn on interrupts */
  	outb(UART_IER_RLSI | UART_IER_RDI | UART_IER_THRI, iobase + UART_IER);
-@@ -522,7 +543,11 @@ static int dtl1_open(dtl1_info_t *info)
+@@ -521,7 +542,11 @@ static int dtl1_open(dtl1_info_t *info)
  static int dtl1_close(dtl1_info_t *info)
  {
  	unsigned long flags;
@@ -649,7 +649,7 @@
  	struct hci_dev *hdev = info->hdev;
  
  	if (!hdev)
-@@ -558,7 +583,24 @@ static int dtl1_probe(struct pcmcia_devi
+@@ -557,7 +582,24 @@ static int dtl1_probe(struct pcmcia_devi
  	info->p_dev = link;
  	link->priv = info;
  
@@ -674,7 +674,7 @@
  
  	return dtl1_config(link);
  }
-@@ -573,6 +615,7 @@ static void dtl1_detach(struct pcmcia_de
+@@ -572,6 +614,7 @@ static void dtl1_detach(struct pcmcia_de
  	kfree(info);
  }
  
@@ -682,7 +682,7 @@
  static int dtl1_confcheck(struct pcmcia_device *p_dev, void *priv_data)
  {
  	if ((p_dev->resource[1]->end) || (p_dev->resource[1]->end < 8))
-@@ -583,6 +626,29 @@ static int dtl1_confcheck(struct pcmcia_
+@@ -582,6 +625,29 @@ static int dtl1_confcheck(struct pcmcia_
  
  	return pcmcia_request_io(p_dev);
  }
@@ -712,7 +712,7 @@
  
  static int dtl1_config(struct pcmcia_device *link)
  {
-@@ -590,13 +656,23 @@ static int dtl1_config(struct pcmcia_dev
+@@ -589,13 +655,23 @@ static int dtl1_config(struct pcmcia_dev
  	int i;
  
  	/* Look for a generic full-sized window */
@@ -736,7 +736,7 @@
  
  	i = pcmcia_enable_device(link);
  	if (i != 0)
-@@ -623,7 +699,13 @@ MODULE_DEVICE_TABLE(pcmcia, dtl1_ids);
+@@ -622,7 +698,13 @@ MODULE_DEVICE_TABLE(pcmcia, dtl1_ids);
  
  static struct pcmcia_driver dtl1_driver = {
  	.owner		= THIS_MODULE,

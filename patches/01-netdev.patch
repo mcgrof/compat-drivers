@@ -23,7 +23,7 @@ without creating a headache on maintenance of the pathes.
  	if (unlikely(retval < 0)) {
 --- a/drivers/net/usb/usbnet.c
 +++ b/drivers/net/usb/usbnet.c
-@@ -1377,7 +1377,7 @@ usbnet_probe (struct usb_interface *udev
+@@ -1386,7 +1386,7 @@ usbnet_probe (struct usb_interface *udev
  		net->features |= NETIF_F_HIGHDMA;
  #endif
  
@@ -289,7 +289,7 @@ without creating a headache on maintenance of the pathes.
  	priv->media_connected = false;
 --- a/drivers/net/wireless/orinoco/main.c
 +++ b/drivers/net/wireless/orinoco/main.c
-@@ -2270,14 +2270,18 @@ int orinoco_if_add(struct orinoco_privat
+@@ -2278,14 +2278,18 @@ int orinoco_if_add(struct orinoco_privat
  #endif
  	/* Default to standard ops if not set */
  	if (ops)
