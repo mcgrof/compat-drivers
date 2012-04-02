@@ -307,7 +307,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  }
 --- a/drivers/net/wireless/mwifiex/debugfs.c
 +++ b/drivers/net/wireless/mwifiex/debugfs.c
-@@ -228,7 +228,11 @@ mwifiex_info_read(struct file *file, cha
+@@ -216,7 +216,11 @@ mwifiex_info_read(struct file *file, cha
  
  		netdev_for_each_mc_addr(ha, netdev)
  			p += sprintf(p, "multicast_address[%d]=\"%pM\"\n",
