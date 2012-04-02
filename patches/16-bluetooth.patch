@@ -17,16 +17,6 @@ here still, but for now we keep this here.
  	tty_driver_flush_buffer(tty);
  
  	return 0;
-@@ -388,7 +393,9 @@ static int hci_uart_register_dev(struct
- 	hdev->close = hci_uart_close;
- 	hdev->flush = hci_uart_flush;
- 	hdev->send  = hci_uart_send_frame;
-+#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,37)
- 	hdev->parent = hu->tty->dev;
-+#endif
- 
- 	if (test_bit(HCI_UART_RAW_DEVICE, &hu->hdev_flags))
- 		set_bit(HCI_QUIRK_RAW_DEVICE, &hdev->quirks);
 @@ -491,7 +498,11 @@ static int hci_uart_tty_ioctl(struct tty
  		return hu->hdev_flags;
  
