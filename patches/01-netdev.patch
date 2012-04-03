@@ -289,7 +289,7 @@ without creating a headache on maintenance of the pathes.
  	priv->media_connected = false;
 --- a/drivers/net/wireless/orinoco/main.c
 +++ b/drivers/net/wireless/orinoco/main.c
-@@ -2278,14 +2278,18 @@ int orinoco_if_add(struct orinoco_privat
+@@ -2270,14 +2270,18 @@ int orinoco_if_add(struct orinoco_privat
  #endif
  	/* Default to standard ops if not set */
  	if (ops)

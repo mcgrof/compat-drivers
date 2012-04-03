@@ -144,7 +144,7 @@ calls on compat code with only slight modifications.
  int ath_pci_init(void)
 --- a/drivers/net/wireless/iwlegacy/3945-mac.c
 +++ b/drivers/net/wireless/iwlegacy/3945-mac.c
-@@ -3881,7 +3881,12 @@ static struct pci_driver il3945_driver =
+@@ -3883,7 +3883,12 @@ static struct pci_driver il3945_driver =
  	.id_table = il3945_hw_card_ids,
  	.probe = il3945_pci_probe,
  	.remove = __devexit_p(il3945_pci_remove),
@@ -159,7 +159,7 @@ calls on compat code with only slight modifications.
  static int __init
 --- a/drivers/net/wireless/iwlegacy/4965-mac.c
 +++ b/drivers/net/wireless/iwlegacy/4965-mac.c
-@@ -6758,7 +6758,12 @@ static struct pci_driver il4965_driver =
+@@ -6760,7 +6760,12 @@ static struct pci_driver il4965_driver =
  	.id_table = il4965_hw_card_ids,
  	.probe = il4965_pci_probe,
  	.remove = __devexit_p(il4965_pci_remove),
@@ -174,7 +174,7 @@ calls on compat code with only slight modifications.
  static int __init
 --- a/drivers/net/wireless/iwlegacy/common.c
 +++ b/drivers/net/wireless/iwlegacy/common.c
-@@ -4909,15 +4909,17 @@ il_pci_resume(struct device *device)
+@@ -4900,15 +4900,17 @@ il_pci_resume(struct device *device)
  }
  EXPORT_SYMBOL(il_pci_resume);
  
