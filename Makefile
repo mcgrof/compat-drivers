@@ -12,7 +12,7 @@ DESTDIR?=
 
 ifneq ($(KERNELRELEASE),)
 
-include $(COMPAT_CONFIG)
+-include $(COMPAT_CONFIG)
 include $(COMPAT_CONFIG_CW)
 
 NOSTDINC_FLAGS := -I$(M)/include/ \
