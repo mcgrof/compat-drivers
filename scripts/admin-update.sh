@@ -641,7 +641,10 @@ if [ -d ./.git ]; then
 	echo -e "Base tree version: ${PURPLE}$(cat compat_base_tree_version)${NORMAL}" >> $CODE_METRICS
 	echo -e "compat-wireless release: ${YELLOW}$(cat compat_version)${NORMAL}" >> $CODE_METRICS
 
-	cat $CODE_METRICS
 fi
+
+echo -e "Code metrics archive: ${GREEN}http://bit.ly/H6BTF7${NORMAL}" >> $CODE_METRICS
+
+cat $CODE_METRICS
 
 ./scripts/driver-select restore
