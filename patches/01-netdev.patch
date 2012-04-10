@@ -170,7 +170,7 @@ without creating a headache on maintenance of the pathes.
  }
  EXPORT_SYMBOL(wireless_send_event);
  
-@@ -923,8 +952,13 @@ static int wireless_process_ioctl(struct
+@@ -925,8 +954,13 @@ static int wireless_process_ioctl(struct
  			return private(dev, iwr, cmd, info, handler);
  	}
  	/* Old driver API : call driver ioctl handler */
@@ -186,7 +186,7 @@ without creating a headache on maintenance of the pathes.
  
 --- a/drivers/net/wireless/ipw2x00/ipw2100.c
 +++ b/drivers/net/wireless/ipw2x00/ipw2100.c
-@@ -6103,7 +6103,7 @@ static struct net_device *ipw2100_alloc_
+@@ -6114,7 +6114,7 @@ static struct net_device *ipw2100_alloc_
  	priv->ieee->perfect_rssi = -20;
  	priv->ieee->worst_rssi = -85;
  
