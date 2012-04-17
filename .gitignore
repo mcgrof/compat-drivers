@@ -1,4 +1,6 @@
 drivers
+mac80211
+bluetooth
 include
 net
 compat
