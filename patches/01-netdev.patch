@@ -170,7 +170,7 @@ without creating a headache on maintenance of the pathes.
  }
  EXPORT_SYMBOL(wireless_send_event);
  
-@@ -922,8 +951,13 @@ static int wireless_process_ioctl(struct
+@@ -924,8 +953,13 @@ static int wireless_process_ioctl(struct
  			return private(dev, iwr, cmd, info, handler);
  	}
  	/* Old driver API : call driver ioctl handler */
@@ -289,7 +289,7 @@ without creating a headache on maintenance of the pathes.
  	priv->media_connected = false;
 --- a/drivers/net/wireless/orinoco/main.c
 +++ b/drivers/net/wireless/orinoco/main.c
-@@ -2270,14 +2270,18 @@ int orinoco_if_add(struct orinoco_privat
+@@ -2278,14 +2278,18 @@ int orinoco_if_add(struct orinoco_privat
  #endif
  	/* Default to standard ops if not set */
  	if (ops)

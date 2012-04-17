@@ -4,7 +4,7 @@ position before.
 
 --- a/net/bluetooth/hci_core.c
 +++ b/net/bluetooth/hci_core.c
-@@ -1802,8 +1802,12 @@ int hci_register_dev(struct hci_dev *hde
+@@ -1807,8 +1807,12 @@ int hci_register_dev(struct hci_dev *hde
  
  	write_unlock(&hci_dev_list_lock);
  
