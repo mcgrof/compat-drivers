@@ -34,7 +34,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  static u32 atl1c_get_msglevel(struct net_device *netdev)
  {
  	struct atl1c_adapter *adapter = netdev_priv(netdev);
-@@ -302,6 +309,11 @@ static const struct ethtool_ops atl1c_et
+@@ -301,6 +308,11 @@ static const struct ethtool_ops atl1c_et
  	.get_link               = ethtool_op_get_link,
  	.get_eeprom_len         = atl1c_get_eeprom_len,
  	.get_eeprom             = atl1c_get_eeprom,
@@ -48,7 +48,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  void atl1c_set_ethtool_ops(struct net_device *netdev)
 --- a/drivers/net/ethernet/atheros/atl1c/atl1c_main.c
 +++ b/drivers/net/ethernet/atheros/atl1c/atl1c_main.c
-@@ -488,6 +488,7 @@ static void atl1c_set_rxbufsize(struct a
+@@ -466,6 +466,7 @@ static void atl1c_set_rxbufsize(struct a
  		roundup(mtu + ETH_HLEN + ETH_FCS_LEN + VLAN_HLEN, 8) : AT_RX_BUF_SIZE;
  }
  
@@ -56,7 +56,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  static netdev_features_t atl1c_fix_features(struct net_device *netdev,
  	netdev_features_t features)
  {
-@@ -516,6 +517,7 @@ static int atl1c_set_features(struct net
+@@ -494,6 +495,7 @@ static int atl1c_set_features(struct net
  
  	return 0;
  }
@@ -64,7 +64,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  
  /*
   * atl1c_change_mtu - Change the Maximum Transfer Unit
-@@ -543,8 +545,19 @@ static int atl1c_change_mtu(struct net_d
+@@ -521,8 +523,19 @@ static int atl1c_change_mtu(struct net_d
  		netdev->mtu = new_mtu;
  		adapter->hw.max_frame_size = new_mtu;
  		atl1c_set_rxbufsize(adapter, netdev);
@@ -84,7 +84,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  		atl1c_up(adapter);
  		clear_bit(__AT_RESETTING, &adapter->flags);
  		if (adapter->hw.ctrl_flags & ATL1C_FPGA_VERSION) {
-@@ -2604,8 +2617,10 @@ static const struct net_device_ops atl1c
+@@ -2440,8 +2453,10 @@ static const struct net_device_ops atl1c
  	.ndo_set_mac_address	= atl1c_set_mac_addr,
  	.ndo_set_rx_mode	= atl1c_set_multi,
  	.ndo_change_mtu		= atl1c_change_mtu,
@@ -95,7 +95,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  	.ndo_do_ioctl		= atl1c_ioctl,
  	.ndo_tx_timeout		= atl1c_tx_timeout,
  	.ndo_get_stats		= atl1c_get_stats,
-@@ -2624,6 +2639,7 @@ static int atl1c_init_netdev(struct net_
+@@ -2460,6 +2475,7 @@ static int atl1c_init_netdev(struct net_
  	atl1c_set_ethtool_ops(netdev);
  
  	/* TODO: add when ready */
@@ -103,7 +103,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  	netdev->hw_features =	NETIF_F_SG	   |
  				NETIF_F_HW_CSUM	   |
  				NETIF_F_HW_VLAN_RX |
-@@ -2631,6 +2647,14 @@ static int atl1c_init_netdev(struct net_
+@@ -2467,6 +2483,14 @@ static int atl1c_init_netdev(struct net_
  				NETIF_F_TSO6;
  	netdev->features =	netdev->hw_features |
  				NETIF_F_HW_VLAN_TX;
@@ -191,7 +191,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  }
 --- a/drivers/net/ethernet/atheros/atlx/atl1.c
 +++ b/drivers/net/ethernet/atheros/atlx/atl1.c
-@@ -2876,8 +2876,10 @@ static const struct net_device_ops atl1_
+@@ -2924,8 +2924,10 @@ static const struct net_device_ops atl1_
  	.ndo_validate_addr	= eth_validate_addr,
  	.ndo_set_mac_address	= atl1_set_mac,
  	.ndo_change_mtu		= atl1_change_mtu,
@@ -202,7 +202,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  	.ndo_do_ioctl		= atlx_ioctl,
  	.ndo_tx_timeout		= atlx_tx_timeout,
  #ifdef CONFIG_NET_POLL_CONTROLLER
-@@ -2987,11 +2989,13 @@ static int __devinit atl1_probe(struct p
+@@ -3036,11 +3038,13 @@ static int __devinit atl1_probe(struct p
  	netdev->features |= NETIF_F_SG;
  	netdev->features |= (NETIF_F_HW_VLAN_TX | NETIF_F_HW_VLAN_RX);
  
@@ -216,7 +216,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  
  	/*
  	 * patch for some L1 of old version,
-@@ -3606,6 +3610,14 @@ static int atl1_set_pauseparam(struct ne
+@@ -3653,6 +3657,14 @@ static int atl1_set_pauseparam(struct ne
  	return 0;
  }
  
@@ -231,7 +231,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  static void atl1_get_strings(struct net_device *netdev, u32 stringset,
  	u8 *data)
  {
-@@ -3678,4 +3690,10 @@ static const struct ethtool_ops atl1_eth
+@@ -3725,4 +3737,10 @@ static const struct ethtool_ops atl1_eth
  	.nway_reset		= atl1_nway_reset,
  	.get_ethtool_stats	= atl1_get_ethtool_stats,
  	.get_sset_count		= atl1_get_sset_count,
@@ -315,7 +315,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  static void atl2_set_ethtool_ops(struct net_device *netdev)
 --- a/drivers/net/ethernet/atheros/atlx/atlx.c
 +++ b/drivers/net/ethernet/atheros/atlx/atlx.c
-@@ -248,6 +248,7 @@ static void atlx_restore_vlan(struct atl
+@@ -255,6 +255,7 @@ static void atlx_restore_vlan(struct atl
  	atlx_vlan_mode(adapter->netdev, adapter->netdev->features);
  }
  
@@ -323,7 +323,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  static netdev_features_t atlx_fix_features(struct net_device *netdev,
  	netdev_features_t features)
  {
-@@ -273,5 +274,6 @@ static int atlx_set_features(struct net_
+@@ -280,5 +281,6 @@ static int atlx_set_features(struct net_
  
  	return 0;
  }
@@ -332,7 +332,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  #endif /* ATLX_C */
 --- a/drivers/net/wireless/ath/ath6kl/main.c
 +++ b/drivers/net/wireless/ath/ath6kl/main.c
-@@ -1048,6 +1048,7 @@ static struct net_device_stats *ath6kl_g
+@@ -1054,6 +1054,7 @@ static struct net_device_stats *ath6kl_g
  	return &vif->net_stats;
  }
  
@@ -340,7 +340,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  static int ath6kl_set_features(struct net_device *dev,
  			       netdev_features_t features)
  {
-@@ -1080,6 +1081,7 @@ static int ath6kl_set_features(struct ne
+@@ -1086,6 +1087,7 @@ static int ath6kl_set_features(struct ne
  
  	return err;
  }
@@ -348,7 +348,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  
  static void ath6kl_set_multicast_list(struct net_device *ndev)
  {
-@@ -1207,7 +1209,9 @@ static const struct net_device_ops ath6k
+@@ -1213,7 +1215,9 @@ static const struct net_device_ops ath6k
  	.ndo_stop               = ath6kl_close,
  	.ndo_start_xmit         = ath6kl_data_tx,
  	.ndo_get_stats          = ath6kl_get_stats,
@@ -358,7 +358,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  	.ndo_set_rx_mode	= ath6kl_set_multicast_list,
  };
  
-@@ -1222,7 +1226,11 @@ void init_netdev(struct net_device *dev)
+@@ -1228,7 +1232,11 @@ void init_netdev(struct net_device *dev)
  				sizeof(struct wmi_data_hdr) + HTC_HDR_LENGTH
  				+ WMI_MAX_TX_META_SZ + ATH6KL_HTC_ALIGN_BYTES;
  

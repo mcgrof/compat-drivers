@@ -5,7 +5,7 @@ suspend and resume that are not backported.
 
 --- a/drivers/net/wireless/ath/ath6kl/cfg80211.c
 +++ b/drivers/net/wireless/ath/ath6kl/cfg80211.c
-@@ -2240,7 +2240,7 @@ int ath6kl_cfg80211_resume(struct ath6kl
+@@ -2376,7 +2376,7 @@ int ath6kl_cfg80211_resume(struct ath6kl
  }
  EXPORT_SYMBOL(ath6kl_cfg80211_resume);
  
@@ -14,7 +14,7 @@ suspend and resume that are not backported.
  
  /* hif layer decides what suspend mode to use */
  static int __ath6kl_cfg80211_suspend(struct wiphy *wiphy,
-@@ -2951,7 +2951,7 @@ static struct cfg80211_ops ath6kl_cfg802
+@@ -3209,7 +3209,7 @@ static struct cfg80211_ops ath6kl_cfg802
  	.del_pmksa = ath6kl_del_pmksa,
  	.flush_pmksa = ath6kl_flush_pmksa,
  	CFG80211_TESTMODE_CMD(ath6kl_tm_cmd)
@@ -106,7 +106,7 @@ suspend and resume that are not backported.
  static int __init ath6kl_sdio_init(void)
 --- a/drivers/net/wireless/libertas/if_sdio.c
 +++ b/drivers/net/wireless/libertas/if_sdio.c
-@@ -1306,6 +1306,7 @@ static void if_sdio_remove(struct sdio_f
+@@ -1319,6 +1319,7 @@ static void if_sdio_remove(struct sdio_f
  	lbs_deb_leave(LBS_DEB_SDIO);
  }
  
@@ -114,7 +114,7 @@ suspend and resume that are not backported.
  static int if_sdio_suspend(struct device *dev)
  {
  	struct sdio_func *func = dev_to_sdio_func(dev);
-@@ -1359,15 +1360,18 @@ static const struct dev_pm_ops if_sdio_p
+@@ -1372,15 +1373,18 @@ static const struct dev_pm_ops if_sdio_p
  	.suspend	= if_sdio_suspend,
  	.resume		= if_sdio_resume,
  };
@@ -135,8 +135,8 @@ suspend and resume that are not backported.
  /*******************************************************************/
 --- a/drivers/net/wireless/mwifiex/sdio.c
 +++ b/drivers/net/wireless/mwifiex/sdio.c
-@@ -126,8 +126,10 @@ mwifiex_sdio_remove(struct sdio_func *fu
- 		return;
+@@ -129,8 +129,10 @@ mwifiex_sdio_remove(struct sdio_func *fu
+ 	wait_for_completion(&adapter->fw_load);
  
  	if (user_rmmod) {
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,34))
@@ -146,7 +146,7 @@ suspend and resume that are not backported.
  
  		for (i = 0; i < adapter->priv_num; i++)
  			if ((GET_BSS_ROLE(adapter->priv[i]) ==
-@@ -144,6 +146,7 @@ mwifiex_sdio_remove(struct sdio_func *fu
+@@ -147,6 +149,7 @@ mwifiex_sdio_remove(struct sdio_func *fu
  	kfree(card);
  }
  
@@ -154,7 +154,7 @@ suspend and resume that are not backported.
  /*
   * SDIO suspend.
   *
-@@ -251,6 +254,7 @@ static int mwifiex_sdio_resume(struct de
+@@ -254,6 +257,7 @@ static int mwifiex_sdio_resume(struct de
  
  	return 0;
  }
@@ -162,7 +162,7 @@ suspend and resume that are not backported.
  
  /* Device ID for SD8787 */
  #define SDIO_DEVICE_ID_MARVELL_8787   (0x9119)
-@@ -266,10 +270,12 @@ static const struct sdio_device_id mwifi
+@@ -269,10 +273,12 @@ static const struct sdio_device_id mwifi
  
  MODULE_DEVICE_TABLE(sdio, mwifiex_ids);
  
@@ -175,7 +175,7 @@ suspend and resume that are not backported.
  
  static struct sdio_driver mwifiex_sdio = {
  	.name = "mwifiex_sdio",
-@@ -278,7 +284,9 @@ static struct sdio_driver mwifiex_sdio =
+@@ -281,7 +287,9 @@ static struct sdio_driver mwifiex_sdio =
  	.remove = mwifiex_sdio_remove,
  	.drv = {
  		.owner = THIS_MODULE,

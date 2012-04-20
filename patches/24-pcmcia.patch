@@ -969,7 +969,7 @@
  		IRQF_SHARED, DRV_NAME, card);
  	if (ret) {
  		pr_err("error in request_irq\n");
-@@ -994,7 +1065,13 @@ MODULE_DEVICE_TABLE(pcmcia, if_cs_ids);
+@@ -992,7 +1063,13 @@ MODULE_DEVICE_TABLE(pcmcia, if_cs_ids);
  
  static struct pcmcia_driver lbs_driver = {
  	.owner		= THIS_MODULE,

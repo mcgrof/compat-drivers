@@ -6,7 +6,7 @@ thread in process context as well.
 
 --- a/drivers/net/wireless/b43/main.c
 +++ b/drivers/net/wireless/b43/main.c
-@@ -4193,8 +4193,13 @@ redo:
+@@ -4207,8 +4207,13 @@ redo:
  	if (b43_bus_host_is_sdio(dev->dev)) {
  		b43_sdio_free_irq(dev);
  	} else {
@@ -20,7 +20,7 @@ thread in process context as well.
  	}
  	mutex_lock(&wl->mutex);
  	dev = wl->current_dev;
-@@ -4236,9 +4241,17 @@ static int b43_wireless_core_start(struc
+@@ -4250,9 +4255,17 @@ static int b43_wireless_core_start(struc
  			goto out;
  		}
  	} else {
@@ -38,7 +38,7 @@ thread in process context as well.
  		if (err) {
  			b43err(dev->wl, "Cannot request IRQ-%d\n",
  			       dev->dev->irq);
-@@ -5026,6 +5039,10 @@ static int b43_setup_bands(struct b43_wl
+@@ -5040,6 +5053,10 @@ static int b43_setup_bands(struct b43_wl
  
  static void b43_wireless_core_detach(struct b43_wldev *dev)
  {
@@ -63,7 +63,7 @@ thread in process context as well.
  /* Data structure for the WLAN parts (802.11 cores) of the b43 chip. */
 --- a/drivers/net/wireless/ti/wlcore/main.c
 +++ b/drivers/net/wireless/ti/wlcore/main.c
-@@ -5493,14 +5493,25 @@ static int __devinit wl12xx_probe(struct
+@@ -4986,14 +4986,25 @@ int __devinit wlcore_probe(struct wl1271
  
  	platform_set_drvdata(pdev, wl);
  
@@ -89,7 +89,7 @@ thread in process context as well.
  	if (ret < 0) {
  		wl1271_error("request_irq() failed: %d", ret);
  		goto out_free_hw;
-@@ -5554,7 +5565,11 @@ out_bt_coex_state:
+@@ -5047,7 +5058,11 @@ out_bt_coex_state:
  	device_remove_file(wl->dev, &dev_attr_bt_coex_state);
  
  out_irq:
@@ -100,8 +100,8 @@ thread in process context as well.
 +#endif
  
  out_free_hw:
- 	wl1271_free_hw(wl);
-@@ -5081,7 +5081,12 @@ int __devexit wlcore_remove(struct platf
+ 	wlcore_free_hw(wl);
+@@ -5066,7 +5081,12 @@ int __devexit wlcore_remove(struct platf
  		disable_irq_wake(wl->irq);
  	}
  	wl1271_unregister_hw(wl);

@@ -30,9 +30,9 @@ in compat.
 
 --- a/net/mac80211/tx.c
 +++ b/net/mac80211/tx.c
-@@ -1474,6 +1474,10 @@ void ieee80211_xmit(struct ieee80211_sub
- 				return;
- 			}
+@@ -1497,6 +1497,10 @@ void ieee80211_xmit(struct ieee80211_sub
+ 		return;
+ 	}
  
 +#if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,27))
 +	/* Older kernels do not have the select_queue callback */

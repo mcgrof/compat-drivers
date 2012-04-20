@@ -54,7 +54,7 @@ CONFIG_BT_HIDP does not build with older kernel versions.
  			bool last_phy_res_valid;
 --- a/drivers/net/wireless/libertas/Makefile
 +++ b/drivers/net/wireless/libertas/Makefile
-@@ -16,5 +16,5 @@ libertas_spi-objs += if_spi.o
+@@ -17,5 +17,5 @@ libertas_spi-objs += if_spi.o
  obj-$(CONFIG_LIBERTAS)     += libertas.o
  obj-$(CONFIG_LIBERTAS_USB) += usb8xxx.o
  obj-$(CONFIG_LIBERTAS_CS)  += libertas_cs.o
@@ -124,7 +124,7 @@ CONFIG_BT_HIDP does not build with older kernel versions.
  ath9k-$(CONFIG_ATH9K_DEBUGFS) += debug.o
 --- a/drivers/net/wireless/ath/ath9k/init.c
 +++ b/drivers/net/wireless/ath/ath9k/init.c
-@@ -695,7 +695,7 @@ void ath9k_set_hw_capab(struct ath_softc
+@@ -700,7 +700,7 @@ void ath9k_set_hw_capab(struct ath_softc
  	sc->ant_rx = hw->wiphy->available_antennas_rx;
  	sc->ant_tx = hw->wiphy->available_antennas_tx;
  
