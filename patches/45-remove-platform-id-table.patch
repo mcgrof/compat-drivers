@@ -1,7 +1,7 @@
---- a/drivers/net/wireless/wl12xx/main.c
-+++ b/drivers/net/wireless/wl12xx/main.c
-@@ -5631,16 +5631,20 @@ static int __devexit wl12xx_remove(struc
- 	return 0;
+--- a/drivers/net/wireless/ti/wl12xx/main.c
++++ b/drivers/net/wireless/ti/wl12xx/main.c
+@@ -1350,16 +1350,20 @@ static int __devinit wl12xx_probe(struct
+ 	return wlcore_probe(wl, pdev);
  }
  
 +#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,30)
@@ -14,7 +14,7 @@
  
  static struct platform_driver wl12xx_driver = {
  	.probe		= wl12xx_probe,
- 	.remove		= __devexit_p(wl12xx_remove),
+ 	.remove		= __devexit_p(wlcore_remove),
 +#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,30)
  	.id_table	= wl12xx_id_table,
 +#endif

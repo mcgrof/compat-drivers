@@ -26,8 +26,8 @@ cases.
  #include <linux/module.h>
  
  /*
---- a/drivers/net/wireless/wl1251/main.c
-+++ b/drivers/net/wireless/wl1251/main.c
+--- a/drivers/net/wireless/ti/wl1251/main.c
++++ b/drivers/net/wireless/ti/wl1251/main.c
 @@ -24,6 +24,9 @@
  #include <linux/firmware.h>
  #include <linux/delay.h>
@@ -38,8 +38,8 @@ cases.
  #include <linux/crc32.h>
  #include <linux/etherdevice.h>
  #include <linux/vmalloc.h>
---- a/drivers/net/wireless/wl1251/spi.c
-+++ b/drivers/net/wireless/wl1251/spi.c
+--- a/drivers/net/wireless/ti/wl1251/spi.c
++++ b/drivers/net/wireless/t/wl1251/spi.c
 @@ -24,6 +24,9 @@
  #include <linux/module.h>
  #include <linux/slab.h>
