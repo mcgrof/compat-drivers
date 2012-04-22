@@ -133,3 +133,33 @@ CONFIG_BT_HIDP does not build with older kernel versions.
  int ath_rate_control_register(void);
  void ath_rate_control_unregister(void);
  #else
+--- a/net/bluetooth/rfcomm/Makefile
++++ b/net/bluetooth/rfcomm/Makefile
+@@ -5,4 +5,4 @@
+ obj-$(CONFIG_BT_RFCOMM) += rfcomm.o
+ 
+ rfcomm-y			:= core.o sock.o
+-rfcomm-$(CONFIG_BT_RFCOMM_TTY)	+= tty.o
++rfcomm-$(CONFIG_COMPAT_BT_RFCOMM_TTY)	+= tty.o
+--- a/include/net/bluetooth/rfcomm.h
++++ b/include/net/bluetooth/rfcomm.h
+@@ -357,7 +357,7 @@ struct rfcomm_dev_list_req {
+ 
+ int  rfcomm_dev_ioctl(struct sock *sk, unsigned int cmd, void __user *arg);
+ 
+-#ifdef CONFIG_BT_RFCOMM_TTY
++#ifdef CONFIG_COMPAT_BT_RFCOMM_TTY
+ int  rfcomm_init_ttys(void);
+ void rfcomm_cleanup_ttys(void);
+ #else
+--- a/net/bluetooth/rfcomm/sock.c
++++ b/net/bluetooth/rfcomm/sock.c
+@@ -873,7 +873,7 @@ static int rfcomm_sock_ioctl(struct sock
+ 	err = bt_sock_ioctl(sock, cmd, arg);
+ 
+ 	if (err == -ENOIOCTLCMD) {
+-#ifdef CONFIG_BT_RFCOMM_TTY
++#ifdef CONFIG_COMPAT_BT_RFCOMM_TTY
+ 		lock_sock(sk);
+ 		err = rfcomm_dev_ioctl(sk, cmd, (void __user *) arg);
+ 		release_sock(sk);
