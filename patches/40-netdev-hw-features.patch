@@ -48,7 +48,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  void atl1c_set_ethtool_ops(struct net_device *netdev)
 --- a/drivers/net/ethernet/atheros/atl1c/atl1c_main.c
 +++ b/drivers/net/ethernet/atheros/atl1c/atl1c_main.c
-@@ -466,6 +466,7 @@ static void atl1c_set_rxbufsize(struct a
+@@ -495,6 +495,7 @@ static void atl1c_set_rxbufsize(struct a
  		roundup(mtu + ETH_HLEN + ETH_FCS_LEN + VLAN_HLEN, 8) : AT_RX_BUF_SIZE;
  }
  
@@ -56,7 +56,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  static netdev_features_t atl1c_fix_features(struct net_device *netdev,
  	netdev_features_t features)
  {
-@@ -494,6 +495,7 @@ static int atl1c_set_features(struct net
+@@ -523,6 +524,7 @@ static int atl1c_set_features(struct net
  
  	return 0;
  }
@@ -64,7 +64,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  
  /*
   * atl1c_change_mtu - Change the Maximum Transfer Unit
-@@ -521,8 +523,19 @@ static int atl1c_change_mtu(struct net_d
+@@ -555,8 +557,19 @@ static int atl1c_change_mtu(struct net_d
  		netdev->mtu = new_mtu;
  		adapter->hw.max_frame_size = new_mtu;
  		atl1c_set_rxbufsize(adapter, netdev);
@@ -84,7 +84,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  		atl1c_up(adapter);
  		clear_bit(__AT_RESETTING, &adapter->flags);
  		if (adapter->hw.ctrl_flags & ATL1C_FPGA_VERSION) {
-@@ -2440,8 +2453,10 @@ static const struct net_device_ops atl1c
+@@ -2454,8 +2467,10 @@ static const struct net_device_ops atl1c
  	.ndo_set_mac_address	= atl1c_set_mac_addr,
  	.ndo_set_rx_mode	= atl1c_set_multi,
  	.ndo_change_mtu		= atl1c_change_mtu,
@@ -95,7 +95,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  	.ndo_do_ioctl		= atl1c_ioctl,
  	.ndo_tx_timeout		= atl1c_tx_timeout,
  	.ndo_get_stats		= atl1c_get_stats,
-@@ -2460,6 +2475,7 @@ static int atl1c_init_netdev(struct net_
+@@ -2474,6 +2489,7 @@ static int atl1c_init_netdev(struct net_
  	atl1c_set_ethtool_ops(netdev);
  
  	/* TODO: add when ready */
@@ -103,7 +103,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  	netdev->hw_features =	NETIF_F_SG	   |
  				NETIF_F_HW_CSUM	   |
  				NETIF_F_HW_VLAN_RX |
-@@ -2467,6 +2483,14 @@ static int atl1c_init_netdev(struct net_
+@@ -2481,6 +2497,14 @@ static int atl1c_init_netdev(struct net_
  				NETIF_F_TSO6;
  	netdev->features =	netdev->hw_features |
  				NETIF_F_HW_VLAN_TX;

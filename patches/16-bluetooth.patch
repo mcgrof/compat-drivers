@@ -508,7 +508,7 @@ here still, but for now we keep this here.
  	struct rfcomm_dlc *dlc = dev->dlc;
 --- a/net/bluetooth/sco.c
 +++ b/net/bluetooth/sco.c
-@@ -436,8 +436,12 @@ static struct sock *sco_sock_alloc(struc
+@@ -439,8 +439,12 @@ static struct sock *sco_sock_alloc(struc
  	return sk;
  }
  
@@ -521,7 +521,7 @@ here still, but for now we keep this here.
  {
  	struct sock *sk;
  
-@@ -653,7 +657,11 @@ static int sco_sock_sendmsg(struct kiocb
+@@ -669,7 +673,11 @@ static int sco_sock_sendmsg(struct kiocb
  	return err;
  }
  
@@ -580,7 +580,7 @@ here still, but for now we keep this here.
  
 --- a/net/bluetooth/l2cap_sock.c
 +++ b/net/bluetooth/l2cap_sock.c
-@@ -531,7 +531,14 @@ static int l2cap_sock_setsockopt_old(str
+@@ -535,7 +535,14 @@ static int l2cap_sock_setsockopt_old(str
  	return err;
  }
  
@@ -595,7 +595,7 @@ here still, but for now we keep this here.
  {
  	struct sock *sk = sock->sk;
  	struct l2cap_chan *chan = l2cap_pi(sk)->chan;
-@@ -1060,8 +1067,12 @@ static struct sock *l2cap_sock_alloc(str
+@@ -1064,8 +1071,12 @@ static struct sock *l2cap_sock_alloc(str
  	return sk;
  }
  
@@ -608,7 +608,7 @@ here still, but for now we keep this here.
  {
  	struct sock *sk;
  
-@@ -1073,7 +1084,11 @@ static int l2cap_sock_create(struct net
+@@ -1077,7 +1088,11 @@ static int l2cap_sock_create(struct net
  			sock->type != SOCK_DGRAM && sock->type != SOCK_RAW)
  		return -ESOCKTNOSUPPORT;
  
