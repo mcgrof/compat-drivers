@@ -834,7 +834,31 @@
  	.remove		= __devexit_p(b43_pcmcia_remove),
 --- a/drivers/net/wireless/libertas/if_cs.c
 +++ b/drivers/net/wireless/libertas/if_cs.c
-@@ -780,7 +780,11 @@ static void if_cs_release(struct pcmcia_
+@@ -757,7 +759,11 @@ static void if_cs_prog_firmware(struct l
+ 		goto out;
+ 
+ 	/* Now actually get the IRQ */
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,35))
+ 	ret = request_irq(card->p_dev->irq, if_cs_interrupt,
++#else
++	ret = request_irq(p_dev->irq.AssignedIRQ, if_cs_interrupt,
++#endif
+ 		IRQF_SHARED, DRV_NAME, card);
+ 	if (ret) {
+ 		pr_err("error in request_irq\n");
+@@ -775,7 +781,11 @@ static void if_cs_prog_firmware(struct l
+ 	priv->fw_ready = 1;
+ 	if (lbs_start_card(priv) != 0) {
+ 		pr_err("could not activate card\n");
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,35))
+ 		free_irq(card->p_dev->irq, card);
++#else
++		free_irq(card->p_dev->irq.AssignedIRQ, card);
++#endif
+ 	}
+ 
+ out:
+@@ -824,7 +834,11 @@ static void if_cs_release(struct pcmcia_
  
  	lbs_deb_enter(LBS_DEB_CS);
  
@@ -846,7 +870,7 @@
  	pcmcia_disable_device(p_dev);
  	if (card->iobase)
  		ioport_unmap(card->iobase);
-@@ -788,7 +792,7 @@ static void if_cs_release(struct pcmcia_
+@@ -832,7 +840,7 @@ static void if_cs_release(struct pcmcia_
  	lbs_deb_leave(LBS_DEB_CS);
  }
  
@@ -855,7 +879,7 @@
  static int if_cs_ioprobe(struct pcmcia_device *p_dev, void *priv_data)
  {
  	p_dev->resource[0]->flags &= ~IO_DATA_PATH_WIDTH;
-@@ -798,9 +802,39 @@ static int if_cs_ioprobe(struct pcmcia_d
+@@ -842,9 +850,39 @@ static int if_cs_ioprobe(struct pcmcia_d
  		pr_err("wrong CIS (check number of IO windows)\n");
  		return -ENODEV;
  	}
@@ -895,7 +919,7 @@
  }
  
  static int if_cs_probe(struct pcmcia_device *p_dev)
-@@ -821,7 +855,16 @@ static int if_cs_probe(struct pcmcia_dev
+@@ -863,7 +901,16 @@ static int if_cs_probe(struct pcmcia_dev
  	card->p_dev = p_dev;
  	p_dev->priv = card;
  
@@ -912,7 +936,7 @@
  
  	if (pcmcia_loop_config(p_dev, if_cs_ioprobe, NULL)) {
  		pr_err("error in pcmcia_loop_config\n");
-@@ -833,12 +876,26 @@ static int if_cs_probe(struct pcmcia_dev
+@@ -875,12 +922,26 @@ static int if_cs_probe(struct pcmcia_dev
  	 * a handler to the interrupt, unless the 'Handler' member of
  	 * the irq structure is initialized.
  	 */
@@ -939,7 +963,7 @@
  	if (!card->iobase) {
  		pr_err("error in ioport_map\n");
  		ret = -EIO;
-@@ -852,7 +909,17 @@ static int if_cs_probe(struct pcmcia_dev
+@@ -894,7 +955,17 @@ static int if_cs_probe(struct pcmcia_dev
  	}
  
  	/* Finally, report what we've done */
@@ -957,19 +981,7 @@
  
  	/*
  	 * Most of the libertas cards can do unaligned register access, but some
-@@ -921,7 +988,11 @@ static int if_cs_probe(struct pcmcia_dev
- 	priv->fw_ready = 1;
- 
- 	/* Now actually get the IRQ */
-+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,35))
- 	ret = request_irq(p_dev->irq, if_cs_interrupt,
-+#else
-+	ret = request_irq(p_dev->irq.AssignedIRQ, if_cs_interrupt,
-+#endif
- 		IRQF_SHARED, DRV_NAME, card);
- 	if (ret) {
- 		pr_err("error in request_irq\n");
-@@ -992,7 +1063,13 @@ MODULE_DEVICE_TABLE(pcmcia, if_cs_ids);
+@@ -1002,7 +1073,13 @@ MODULE_DEVICE_TABLE(pcmcia, if_cs_ids);
  
  static struct pcmcia_driver lbs_driver = {
  	.owner		= THIS_MODULE,
