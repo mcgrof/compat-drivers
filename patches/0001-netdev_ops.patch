@@ -201,7 +201,7 @@ Date:   Wed Nov 19 21:32:24 2008 -0800
  	atl1e_set_ethtool_ops(netdev);
 --- a/drivers/net/ethernet/atheros/atl1c/atl1c_main.c
 +++ b/drivers/net/ethernet/atheros/atl1c/atl1c_main.c
-@@ -2465,7 +2465,7 @@ static int atl1c_init_netdev(struct net_
+@@ -2345,7 +2345,7 @@ static int atl1c_init_netdev(struct net_
  	SET_NETDEV_DEV(netdev, &pdev->dev);
  	pci_set_drvdata(pdev, netdev);
  

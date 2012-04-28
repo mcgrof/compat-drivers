@@ -13,7 +13,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
 
 --- a/drivers/net/ethernet/atheros/atl1c/atl1c_main.c
 +++ b/drivers/net/ethernet/atheros/atl1c/atl1c_main.c
-@@ -413,7 +413,11 @@ static void atl1c_set_multi(struct net_d
+@@ -394,7 +394,11 @@ static void atl1c_set_multi(struct net_d
  
  	/* comoute mc addresses' hash value ,and put it into hash table */
  	netdev_for_each_mc_addr(ha, netdev) {
@@ -741,7 +741,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  	spin_unlock_bh(&local->filter_lock);
  	netif_addr_unlock_bh(sdata->dev);
  
-@@ -741,7 +746,12 @@ static void ieee80211_set_multicast_list
+@@ -743,7 +748,12 @@ static void ieee80211_set_multicast_list
  		sdata->flags ^= IEEE80211_SDATA_PROMISC;
  	}
  	spin_lock_bh(&local->filter_lock);
