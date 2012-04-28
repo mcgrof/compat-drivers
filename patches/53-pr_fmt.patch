@@ -414,22 +414,6 @@ compiler warnings. This is going to be sent upstream.
  #include <linux/if.h>
  #include <linux/module.h>
  #include <linux/err.h>
---- a/net/bluetooth/lib.c
-+++ b/net/bluetooth/lib.c
-@@ -24,11 +24,13 @@
- 
- /* Bluetooth kernel library. */
- 
-+#undef pr_fmt
- #define pr_fmt(fmt) "Bluetooth: " fmt
- 
- #include <linux/module.h>
- 
- #include <linux/kernel.h>
-+#include <linux/printk.h>
- #include <linux/stddef.h>
- #include <linux/string.h>
- #include <asm/errno.h>
 --- a/net/wireless/lib80211_crypt_tkip.c
 +++ b/net/wireless/lib80211_crypt_tkip.c
 @@ -10,8 +10,10 @@
