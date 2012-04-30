@@ -841,7 +841,7 @@
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,35))
  	ret = request_irq(card->p_dev->irq, if_cs_interrupt,
 +#else
-+	ret = request_irq(p_dev->irq.AssignedIRQ, if_cs_interrupt,
++	ret = request_irq(card->p_dev->irq.AssignedIRQ, if_cs_interrupt,
 +#endif
  		IRQF_SHARED, DRV_NAME, card);
  	if (ret) {
