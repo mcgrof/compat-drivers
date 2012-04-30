@@ -106,9 +106,9 @@ suspend and resume that are not backported.
  }
 +#endif /* (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,34)) */
  
- /* Device ID for SD8787 */
- #define SDIO_DEVICE_ID_MARVELL_8787   (0x9119)
-@@ -269,10 +273,12 @@ static const struct sdio_device_id mwifi
+ /* Device ID for SD8786 */
+ #define SDIO_DEVICE_ID_MARVELL_8786   (0x9116)
+@@ -272,10 +276,12 @@ static const struct sdio_device_id mwifi
  
  MODULE_DEVICE_TABLE(sdio, mwifiex_ids);
  
@@ -121,7 +121,7 @@ suspend and resume that are not backported.
  
  static struct sdio_driver mwifiex_sdio = {
  	.name = "mwifiex_sdio",
-@@ -281,7 +287,9 @@ static struct sdio_driver mwifiex_sdio =
+@@ -284,7 +290,9 @@ static struct sdio_driver mwifiex_sdio =
  	.remove = mwifiex_sdio_remove,
  	.drv = {
  		.owner = THIS_MODULE,
@@ -151,7 +151,7 @@ suspend and resume that are not backported.
  	int retry = 0;
  	while (atomic_read(&sdiodev->suspend) && retry++ != 30)
  		wait_event_timeout(*wq, false, HZ/100);
-@@ -540,7 +540,7 @@ static void brcmf_ops_sdio_remove(struct
+@@ -546,7 +546,7 @@ static void brcmf_ops_sdio_remove(struct
  	}
  }
  
@@ -160,7 +160,7 @@ suspend and resume that are not backported.
  static int brcmf_sdio_suspend(struct device *dev)
  {
  	mmc_pm_flag_t sdio_flags;
-@@ -590,7 +590,7 @@ static struct sdio_driver brcmf_sdmmc_dr
+@@ -596,7 +596,7 @@ static struct sdio_driver brcmf_sdmmc_dr
  	.remove = brcmf_ops_sdio_remove,
  	.name = "brcmfmac",
  	.id_table = brcmf_sdmmc_ids,
