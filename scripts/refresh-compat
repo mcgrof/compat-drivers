@@ -11,9 +11,9 @@
 # udev/
 # include/
 # scripts/
-# compat_base_tree
-# compat_base_tree_version
-# compat_version
+# .compat_base_tree
+# .compat_base_tree_version
+# .compat_version
 # config.mk
 #
 # An example git tree for standalone development will be provided later.
@@ -52,9 +52,9 @@ COPY="$COPY scripts/compress_modules"
 COPY="$COPY scripts/gen-compat-autoconf.sh"
 COPY="$COPY scripts/modlib.sh"
 COPY="$COPY scripts/update-initramfs"
-COPY="$COPY compat_base_tree"
-COPY="$COPY compat_base_tree_version"
-COPY="$COPY compat_version"
+COPY="$COPY .compat_base_tree"
+COPY="$COPY .compat_base_tree_version"
+COPY="$COPY .compat_version"
 COPY="$COPY config.mk"
 COPY="$COPY $EXTRA_COPY"
 
@@ -89,10 +89,10 @@ rm -f .config
 
 cp -f ${COMPAT_SRC}/${REFRESH_LOCAL} ${REFRESH_TARGET}
 
-if [[ ! -f compat_base_tree_version ]]; then
+if [[ ! -f .compat_base_tree_version ]]; then
 	echo -e "Failed at copying files over..."
 	exit 1
 fi
 
 echo
-echo -e "Synched with ${CYAN}$(cat compat_version)${NORMAL}"
+echo -e "Synched with ${CYAN}$(cat .compat_version)${NORMAL}"

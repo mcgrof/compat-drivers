@@ -55,10 +55,10 @@ $(error "The path to this compat-wireless directory has spaces in it." \
 endif
 
 export CFLAGS += \
-        -DCOMPAT_BASE_TREE="\"$(shell cat $(PWD)/compat_base_tree)\"" \
-        -DCOMPAT_BASE_TREE_VERSION="\"$(shell cat $(PWD)/compat_base_tree_version)\"" \
+        -DCOMPAT_BASE_TREE="\"$(shell cat $(PWD)/.compat_base_tree)\"" \
+        -DCOMPAT_BASE_TREE_VERSION="\"$(shell cat $(PWD)/.compat_base_tree_version)\"" \
         -DCOMPAT_PROJECT="\"Compat-wireless\"" \
-        -DCOMPAT_VERSION="\"$(shell cat $(PWD)/compat_version)\""
+        -DCOMPAT_VERSION="\"$(shell cat $(PWD)/.compat_version)\""
 
 # These exported as they are used by the scripts
 # to check config and compat autoconf
@@ -66,7 +66,7 @@ export COMPAT_CONFIG_CW=$(PWD)/config.mk
 export COMPAT_CONFIG=$(PWD)/.config
 export CONFIG_CHECK=$(PWD)/.config.mk_md5sum.txt
 export COMPAT_AUTOCONF=include/linux/compat_autoconf.h
-export CREL=$(shell cat $(PWD)/compat_version)
+export CREL=$(shell cat $(PWD)/.compat_version)
 export CREL_PRE:=.compat_autoconf_
 export CREL_CHECK:=$(PWD)/$(CREL_PRE)$(CREL)
 

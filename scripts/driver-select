@@ -278,7 +278,7 @@ if [ $# -ne 1 ]; then
 	exit
 fi
 
-if [ ! -f compat_version ]; then
+if [ ! -f .compat_version ]; then
 	echo "Must run $0 from the compat-wireless top level directory"
 	exit
 fi

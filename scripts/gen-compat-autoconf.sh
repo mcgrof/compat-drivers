@@ -12,8 +12,8 @@
 # This indicates which is the oldest kernel we support
 # Update this if you are adding support for older kernels.
 OLDEST_KERNEL_SUPPORTED="2.6.24"
-COMPAT_RELEASE="compat_version"
-KERNEL_RELEASE="compat_base_tree_version"
+COMPAT_RELEASE=".compat_version"
+KERNEL_RELEASE=".compat_base_tree_version"
 MULT_DEP_FILE=".compat_pivot_dep"
 
 if [ $# -ne 2 ]; then

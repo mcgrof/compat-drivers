@@ -602,25 +602,25 @@ echo -e "Origin remote URL: ${CYAN}${GIT_REMOTE_URL}${NORMAL}"
 cd $DIR
 if [ -d ./.git ]; then
 	if [[ ${POSTFIX_RELEASE_TAG} != "" ]]; then
-		echo -e "$(git describe)-${POSTFIX_RELEASE_TAG}" > compat_version
+		echo -e "$(git describe)-${POSTFIX_RELEASE_TAG}" > .compat_version
 	else
-		echo -e "$(git describe)" > compat_version
+		echo -e "$(git describe)" > .compat_version
 	fi
 
 	cd $GIT_TREE
 	TREE_NAME=${GIT_REMOTE_URL##*/}
 
-	echo $TREE_NAME > $DIR/compat_base_tree
-	echo $GIT_DESCRIBE > $DIR/compat_base_tree_version
+	echo $TREE_NAME > $DIR/.compat_base_tree
+	echo $GIT_DESCRIBE > $DIR/.compat_base_tree_version
 
 	case $TREE_NAME in
 	"wireless-testing.git") # John's wireless-testing
-		# We override the compat_base_tree_version for wireless-testing
+		# We override the .compat_base_tree_version for wireless-testing
 		# as john keeps the Linus' tags and does not write a tag for his
 		# tree himself so git describe would yield a v2.6.3x.y-etc but
 		# what is more useful is just the wireless-testing master tag
 		MASTER_TAG=$(git tag -l| grep master | tail -1)
-		echo $MASTER_TAG > $DIR/compat_base_tree_version
+		echo $MASTER_TAG > $DIR/.compat_base_tree_version
 		echo -e "This is a ${RED}wireless-testing.git${NORMAL} compat-wireless release"
 		;;
 	"linux-next.git") # The linux-next integration testing tree
@@ -639,9 +639,9 @@ if [ -d ./.git ]; then
 	esac
 
 	cd $DIR
-	echo -e "\nBase tree: ${GREEN}$(cat compat_base_tree)${NORMAL}" >> $CODE_METRICS
-	echo -e "Base tree version: ${PURPLE}$(cat compat_base_tree_version)${NORMAL}" >> $CODE_METRICS
-	echo -e "compat-wireless release: ${YELLOW}$(cat compat_version)${NORMAL}" >> $CODE_METRICS
+	echo -e "\nBase tree: ${GREEN}$(cat .compat_base_tree)${NORMAL}" >> $CODE_METRICS
+	echo -e "Base tree version: ${PURPLE}$(cat .compat_base_tree_version)${NORMAL}" >> $CODE_METRICS
+	echo -e "compat-wireless release: ${YELLOW}$(cat .compat_version)${NORMAL}" >> $CODE_METRICS
 
 fi
 
