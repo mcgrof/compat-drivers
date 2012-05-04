@@ -1,0 +1,21 @@
+#!/bin/bash
+# Copyright 2012    Luis R. Rodriguez <mcgrof@frijolero.org>
+#
+# You can keep this in synch with your git tree after running
+# This script just update your local copy.
+
+source .compat_copy
+UPDATE_SCRIPT="$COMPAT_SRC/scripts/refresh-compat"
+
+if [[ ! -d $COMPAT_SRC ]]; then
+	echo -e "You should have compat-wireless.git cloned and checked out under $COMPAT_SRC"
+	echo -e "The git tree: git://github.com/mcgrof/compat-wireless.git"
+	exit 1
+fi
+
+if [[ ! -f $UPDATE_SCRIPT ]]; then
+	echo -e "$UPDATE_SCRIPT must exist"
+	exit 1
+fi
+
+exec $UPDATE_SCRIPT
