@@ -7,7 +7,7 @@ v2.6.36-rc1~571^2~104
 
 --- a/drivers/net/ethernet/atheros/atl1c/atl1c_main.c
 +++ b/drivers/net/ethernet/atheros/atl1c/atl1c_main.c
-@@ -460,7 +460,9 @@ static int atl1c_set_mac_addr(struct net
+@@ -477,7 +477,9 @@ static int atl1c_set_mac_addr(struct net
  
  	memcpy(netdev->dev_addr, addr->sa_data, netdev->addr_len);
  	memcpy(adapter->hw.mac_addr, addr->sa_data, netdev->addr_len);
@@ -15,9 +15,9 @@ v2.6.36-rc1~571^2~104
  	netdev->addr_assign_type &= ~NET_ADDR_RANDOM;
 +#endif
  
- 	atl1c_hw_set_mac_addr(&adapter->hw);
+ 	atl1c_hw_set_mac_addr(&adapter->hw, adapter->hw.mac_addr);
  
-@@ -2498,7 +2500,9 @@ static int __devinit atl1c_probe(struct
+@@ -2571,7 +2573,9 @@ static int __devinit atl1c_probe(struct
  	}
  	if (atl1c_read_mac_addr(&adapter->hw)) {
  		/* got a random MAC address, set NET_ADDR_RANDOM to netdev */
