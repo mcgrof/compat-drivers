@@ -367,54 +367,6 @@ here still, but for now we keep this here.
  	kfree(session);
  	return err;
  }
-@@ -1195,6 +1329,7 @@ int hidp_get_conninfo(struct hidp_connin
- 	return err;
- }
- 
-+#if (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,27))
- static const struct hid_device_id hidp_table[] = {
- 	{ HID_BLUETOOTH_DEVICE(HID_ANY_ID, HID_ANY_ID) },
- 	{ }
-@@ -1204,6 +1339,7 @@ static struct hid_driver hidp_driver = {
- 	.name = "generic-bluetooth",
- 	.id_table = hidp_table,
- };
-+#endif
- 
- static int __init hidp_init(void)
- {
-@@ -1211,11 +1347,14 @@ static int __init hidp_init(void)
- 
- 	BT_INFO("HIDP (Human Interface Emulation) ver %s", VERSION);
- 
-+#if (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,27))
- 	ret = hid_register_driver(&hidp_driver);
- 	if (ret)
- 		goto err;
-+#endif
- 
- 	ret = hidp_init_sockets();
-+#if (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,27))
- 	if (ret)
- 		goto err_drv;
- 
-@@ -1223,13 +1362,16 @@ static int __init hidp_init(void)
- err_drv:
- 	hid_unregister_driver(&hidp_driver);
- err:
-+#endif
- 	return ret;
- }
- 
- static void __exit hidp_exit(void)
- {
- 	hidp_cleanup_sockets();
-+#if (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,27))
- 	hid_unregister_driver(&hidp_driver);
-+#endif
- }
- 
- module_init(hidp_init);
 --- a/net/bluetooth/rfcomm/sock.c
 +++ b/net/bluetooth/rfcomm/sock.c
 @@ -324,8 +324,13 @@ static struct sock *rfcomm_sock_alloc(st
