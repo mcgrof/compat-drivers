@@ -427,7 +427,7 @@ cp $GIT_TREE/$DIR/Makefile $DIR
 COMPAT="compat"
 mkdir -p $COMPAT
 echo "Copying $GIT_COMPAT_TREE/ files..."
-cp $GIT_COMPAT_TREE/compat/*.c $COMPAT/
+cp $GIT_COMPAT_TREE/compat/*.[ch] $COMPAT/
 cp $GIT_COMPAT_TREE/compat/Makefile $COMPAT/
 cp -a $GIT_COMPAT_TREE/udev .
 cp -a $GIT_COMPAT_TREE/scripts $COMPAT/
