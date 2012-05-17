@@ -597,6 +597,11 @@ GIT_REMOTE=$(git config branch.${GIT_BRANCH}.remote)
 GIT_REMOTE=${GIT_REMOTE:-origin}
 GIT_REMOTE_URL=$(git config remote.${GIT_REMOTE}.url)
 GIT_REMOTE_URL=${GIT_REMOTE_URL:-unknown}
+
+cd $GIT_COMPAT_TREE
+git describe > $DIR/.compat_base
+cd $DIR
+
 echo -e "${GREEN}Updated${NORMAL} from local tree: ${BLUE}${GIT_TREE}${NORMAL}"
 echo -e "Origin remote URL: ${CYAN}${GIT_REMOTE_URL}${NORMAL}"
 cd $DIR
@@ -633,9 +638,11 @@ if [ -d ./.git ]; then
 	cd $DIR
 	echo -e "\nBase tree: ${GREEN}$(cat .compat_base_tree)${NORMAL}" >> $CODE_METRICS
 	echo -e "Base tree version: ${PURPLE}$(cat .compat_base_tree_version)${NORMAL}" >> $CODE_METRICS
+	echo -e "compat.git: ${CYAN}$(cat .compat_base)${NORMAL}" >> $CODE_METRICS
 	echo -e "compat-wireless release: ${YELLOW}$(cat .compat_version)${NORMAL}" >> $CODE_METRICS
 
 fi
+
 
 echo -e "Code metrics archive: ${GREEN}http://bit.ly/H6BTF7${NORMAL}" >> $CODE_METRICS
 

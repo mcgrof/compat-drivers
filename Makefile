@@ -70,6 +70,7 @@ $(error "The path to this compat-wireless directory has spaces in it." \
 endif
 
 export CFLAGS += \
+        -DCOMPAT_BASE="\"$(shell cat $(PWD)/.compat_base)\"" \
         -DCOMPAT_BASE_TREE="\"$(shell cat $(PWD)/.compat_base_tree)\"" \
         -DCOMPAT_BASE_TREE_VERSION="\"$(shell cat $(PWD)/.compat_base_tree_version)\"" \
         -DCOMPAT_PROJECT="\"Compat-wireless\"" \
