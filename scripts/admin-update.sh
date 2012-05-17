@@ -615,17 +615,9 @@ if [ -d ./.git ]; then
 
 	case $TREE_NAME in
 	"wireless-testing.git") # John's wireless-testing
-		# We override the .compat_base_tree_version for wireless-testing
-		# as john keeps the Linus' tags and does not write a tag for his
-		# tree himself so git describe would yield a v2.6.3x.y-etc but
-		# what is more useful is just the wireless-testing master tag
-		MASTER_TAG=$(git tag -l| grep master | tail -1)
-		echo $MASTER_TAG > $DIR/.compat_base_tree_version
 		echo -e "This is a ${RED}wireless-testing.git${NORMAL} compat-wireless release"
 		;;
 	"linux-next.git") # The linux-next integration testing tree
-		MASTER_TAG=$(git tag -l| grep next | tail -1)
-		echo $MASTER_TAG > $DIR/master-tag
 		echo -e "This is a ${RED}linux-next.git${NORMAL} compat-wireless release"
 		;;
 	"linux-stable.git") # Greg's all stable tree
