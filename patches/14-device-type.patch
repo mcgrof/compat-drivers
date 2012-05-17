@@ -18,7 +18,7 @@ compile warning.
  };
 +#endif
  
- static int cfg80211_netdev_notifier_call(struct notifier_block * nb,
+ static int cfg80211_netdev_notifier_call(struct notifier_block *nb,
  					 unsigned long state,
 --- a/net/bluetooth/bnep/core.c
 +++ b/net/bluetooth/bnep/core.c

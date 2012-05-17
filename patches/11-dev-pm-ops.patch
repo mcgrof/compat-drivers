@@ -9,7 +9,7 @@ calls on compat code with only slight modifications.
 
 --- a/drivers/bcma/host_pci.c
 +++ b/drivers/bcma/host_pci.c
-@@ -255,6 +255,10 @@ static int bcma_host_pci_resume(struct d
+@@ -258,6 +258,10 @@ static int bcma_host_pci_resume(struct d
  
  static SIMPLE_DEV_PM_OPS(bcma_pm_ops, bcma_host_pci_suspend,
  			 bcma_host_pci_resume);
@@ -20,7 +20,7 @@ calls on compat code with only slight modifications.
  #define BCMA_PM_OPS	(&bcma_pm_ops)
  
  #else /* CONFIG_PM */
-@@ -278,7 +282,12 @@ static struct pci_driver bcma_pci_bridge
+@@ -281,7 +285,12 @@ static struct pci_driver bcma_pci_bridge
  	.id_table = bcma_pci_bridge_tbl,
  	.probe = bcma_host_pci_probe,
  	.remove = __devexit_p(bcma_host_pci_remove),

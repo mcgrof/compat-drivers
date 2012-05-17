@@ -438,8 +438,8 @@ compiler warnings. This is going to be sent upstream.
  
 +#include <linux/printk.h>
  #include <linux/delay.h>
- #include <linux/pci.h>
  
+ #include <defs.h>
 --- a/drivers/net/wireless/rtlwifi/wifi.h
 +++ b/drivers/net/wireless/rtlwifi/wifi.h
 @@ -30,8 +30,10 @@

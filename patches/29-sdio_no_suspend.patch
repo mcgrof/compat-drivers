@@ -13,7 +13,7 @@ suspend and resume that are not backported.
  static int ath6kl_set_sdio_pm_caps(struct ath6kl *ar)
  {
  	struct ath6kl_sdio *ar_sdio = ath6kl_sdio_priv(ar);
-@@ -953,6 +954,17 @@ static int ath6kl_sdio_resume(struct ath
+@@ -956,6 +957,17 @@ static int ath6kl_sdio_resume(struct ath
  
  	return 0;
  }
@@ -31,7 +31,7 @@ suspend and resume that are not backported.
  
  /* set the window address register (using 4-byte register access ). */
  static int ath6kl_set_addrwin_reg(struct ath6kl *ar, u32 reg_addr, u32 addr)
-@@ -1265,7 +1277,7 @@ static const struct ath6kl_hif_ops ath6k
+@@ -1267,7 +1279,7 @@ static const struct ath6kl_hif_ops ath6k
  	.stop = ath6kl_sdio_stop,
  };
  
@@ -40,7 +40,7 @@ suspend and resume that are not backported.
  
  /*
   * Empty handlers so that mmc subsystem doesn't remove us entirely during
-@@ -1415,7 +1427,9 @@ static struct sdio_driver ath6kl_sdio_dr
+@@ -1417,7 +1429,9 @@ static struct sdio_driver ath6kl_sdio_dr
  	.id_table = ath6kl_sdio_devices,
  	.probe = ath6kl_sdio_probe,
  	.remove = ath6kl_sdio_remove,
