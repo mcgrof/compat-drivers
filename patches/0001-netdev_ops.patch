@@ -38,7 +38,7 @@ Date:   Wed Nov 19 21:32:24 2008 -0800
 
 --- a/drivers/net/usb/rndis_host.c
 +++ b/drivers/net/usb/rndis_host.c
-@@ -355,7 +355,7 @@ generic_rndis_bind(struct usbnet *dev, s
+@@ -358,7 +358,7 @@ generic_rndis_bind(struct usbnet *dev, s
  	dev->rx_urb_size &= ~(dev->maxpacket - 1);
  	u.init->max_transfer_size = cpu_to_le32(dev->rx_urb_size);
  
@@ -49,7 +49,7 @@ Date:   Wed Nov 19 21:32:24 2008 -0800
  	if (unlikely(retval < 0)) {
 --- a/drivers/net/usb/usbnet.c
 +++ b/drivers/net/usb/usbnet.c
-@@ -1388,7 +1388,7 @@ usbnet_probe (struct usb_interface *udev
+@@ -1410,7 +1410,7 @@ usbnet_probe (struct usb_interface *udev
  		net->features |= NETIF_F_HIGHDMA;
  #endif
  
@@ -71,15 +71,15 @@ Date:   Wed Nov 19 21:32:24 2008 -0800
  
 --- a/drivers/net/wireless/rndis_wlan.c
 +++ b/drivers/net/wireless/rndis_wlan.c
-@@ -3463,7 +3463,7 @@ static int rndis_wlan_bind(struct usbnet
+@@ -3450,7 +3450,7 @@ static int rndis_wlan_bind(struct usbnet
  	 * rndis_host wants to avoid all OID as much as possible
  	 * so do promisc/multicast handling in rndis_wlan.
  	 */
 -	usbdev->net->netdev_ops = &rndis_wlan_netdev_ops;
 +	netdev_attach_ops(usbdev->net, &rndis_wlan_netdev_ops);
  
- 	tmp = RNDIS_PACKET_TYPE_DIRECTED | RNDIS_PACKET_TYPE_BROADCAST;
- 	retval = rndis_set_oid(usbdev, OID_GEN_CURRENT_PACKET_FILTER, &tmp,
+ 	tmp = cpu_to_le32(RNDIS_PACKET_TYPE_DIRECTED | RNDIS_PACKET_TYPE_BROADCAST);
+ 	retval = rndis_set_oid(usbdev,
 --- a/drivers/net/ethernet/broadcom/b44.c
 +++ b/drivers/net/ethernet/broadcom/b44.c
 @@ -2159,7 +2159,7 @@ static int __devinit b44_init_one(struct
@@ -157,7 +157,7 @@ Date:   Wed Nov 19 21:32:24 2008 -0800
  
 --- a/drivers/net/wireless/mac80211_hwsim.c
 +++ b/drivers/net/wireless/mac80211_hwsim.c
-@@ -1290,7 +1290,7 @@ static const struct net_device_ops hwsim
+@@ -1295,7 +1295,7 @@ static const struct net_device_ops hwsim
  
  static void hwsim_mon_setup(struct net_device *dev)
  {

@@ -8,7 +8,7 @@ compile tested against older kernels.
 
 --- a/drivers/net/usb/rndis_host.c
 +++ b/drivers/net/usb/rndis_host.c
-@@ -329,6 +329,11 @@ generic_rndis_bind(struct usbnet *dev, s
+@@ -332,6 +332,11 @@ generic_rndis_bind(struct usbnet *dev, s
  	u.init->major_version = cpu_to_le32(1);
  	u.init->minor_version = cpu_to_le32(0);
  
