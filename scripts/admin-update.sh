@@ -25,6 +25,7 @@ INCLUDE_LINUX="ieee80211.h nl80211.h"
 INCLUDE_LINUX="$INCLUDE_LINUX pci_ids.h eeprom_93cx6.h"
 INCLUDE_LINUX="$INCLUDE_LINUX ath9k_platform.h"
 INCLUDE_LINUX="$INCLUDE_LINUX wl12xx.h"
+INCLUDE_LINUX="$INCLUDE_LINUX rndis.h"
 
 # For rndis_wext
 INCLUDE_LINUX_USB="usbnet.h rndis_host.h"
