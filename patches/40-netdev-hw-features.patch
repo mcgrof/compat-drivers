@@ -216,7 +216,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  
  	/*
  	 * patch for some L1 of old version,
-@@ -3606,6 +3610,14 @@ static int atl1_set_pauseparam(struct ne
+@@ -3604,6 +3608,14 @@ static int atl1_set_pauseparam(struct ne
  	return 0;
  }
  
@@ -231,7 +231,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  static void atl1_get_strings(struct net_device *netdev, u32 stringset,
  	u8 *data)
  {
-@@ -3678,4 +3690,10 @@ static const struct ethtool_ops atl1_eth
+@@ -3676,4 +3688,10 @@ static const struct ethtool_ops atl1_eth
  	.nway_reset		= atl1_nway_reset,
  	.get_ethtool_stats	= atl1_get_ethtool_stats,
  	.get_sset_count		= atl1_get_sset_count,

@@ -70,7 +70,7 @@ calls on compat code with only slight modifications.
  static SIMPLE_DEV_PM_OPS(atl1_pm_ops, atl1_suspend, atl1_resume);
  #define ATL1_PM_OPS	(&atl1_pm_ops)
  
-@@ -3108,7 +3111,12 @@ static struct pci_driver atl1_driver = {
+@@ -3106,7 +3109,12 @@ static struct pci_driver atl1_driver = {
  	.probe = atl1_probe,
  	.remove = __devexit_p(atl1_remove),
  	.shutdown = atl1_shutdown,
