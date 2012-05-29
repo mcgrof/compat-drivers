@@ -75,3 +75,33 @@ cases.
  
  /**
   * DOC: Key handling basics
+--- a/net/bluetooth/bnep/sock.c
++++ b/net/bluetooth/bnep/sock.c
+@@ -26,6 +26,7 @@
+ 
+ #include <linux/export.h>
+ #include <linux/file.h>
++#include <linux/compat.h>
+ 
+ #include "bnep.h"
+ 
+--- a/net/bluetooth/hci_sock.c
++++ b/net/bluetooth/hci_sock.c
+@@ -25,6 +25,7 @@
+ /* Bluetooth HCI sockets. */
+ 
+ #include <linux/export.h>
++#include <linux/compat.h>
+ #include <asm/unaligned.h>
+ 
+ #include <net/bluetooth/bluetooth.h>
+--- a/net/bluetooth/hidp/sock.c
++++ b/net/bluetooth/hidp/sock.c
+@@ -22,6 +22,7 @@
+ 
+ #include <linux/export.h>
+ #include <linux/file.h>
++#include <linux/compat.h>
+ 
+ #include "hidp.h"
+ 
