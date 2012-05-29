@@ -585,7 +585,7 @@
 +		unsigned int iobase = info->p_dev->io.BasePort1;
 +#endif
  		register struct sk_buff *skb;
- 		register int len;
+ 		int len;
  
 @@ -209,7 +213,11 @@ static void dtl1_receive(dtl1_info_t *in
  		return;

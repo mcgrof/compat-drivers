@@ -179,7 +179,7 @@ Date:   Wed Nov 19 21:32:24 2008 -0800
  	priv->media_connected = false;
 --- a/net/bluetooth/bnep/netdev.c
 +++ b/net/bluetooth/bnep/netdev.c
-@@ -232,7 +232,7 @@ void bnep_net_setup(struct net_device *d
+@@ -224,7 +224,7 @@ void bnep_net_setup(struct net_device *d
  
  	ether_setup(dev);
  	dev->priv_flags &= ~IFF_TX_SKB_SHARING;

@@ -36,7 +36,7 @@ compile tested against older kernels.
  
 --- a/net/bluetooth/bnep/netdev.c
 +++ b/net/bluetooth/bnep/netdev.c
-@@ -170,8 +170,12 @@ static inline int bnep_net_proto_filter(
+@@ -162,8 +162,12 @@ static int bnep_net_proto_filter(struct
  }
  #endif
  
