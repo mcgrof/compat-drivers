@@ -84,14 +84,16 @@ here still, but for now we keep this here.
  	wake_up_process(session->task);
 --- a/net/bluetooth/hci_sock.c
 +++ b/net/bluetooth/hci_sock.c
-@@ -891,7 +891,11 @@ drop:
+@@ -882,8 +882,13 @@ drop:
  	goto done;
  }
  
 +#if (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,31))
- static int hci_sock_setsockopt(struct socket *sock, int level, int optname, char __user *optval, unsigned int len)
+ static int hci_sock_setsockopt(struct socket *sock, int level, int optname,
+ 			       char __user *optval, unsigned int len)
 +#else
-+static int hci_sock_setsockopt(struct socket *sock, int level, int optname, char __user *optval, int len)
++static int hci_sock_setsockopt(struct socket *sock, int level, int optname,
++			       char __user *optval, int len)
 +#endif
  {
  	struct hci_ufilter uf = { .opcode = 0 };
