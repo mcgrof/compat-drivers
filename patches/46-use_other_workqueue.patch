@@ -4,8 +4,8 @@ position before.
 
 --- a/net/bluetooth/hci_core.c
 +++ b/net/bluetooth/hci_core.c
-@@ -1722,8 +1722,12 @@ int hci_register_dev(struct hci_dev *hde
- 
+@@ -1724,8 +1724,12 @@ int hci_register_dev(struct hci_dev *hde
+ 	list_add(&hdev->list, &hci_dev_list);
  	write_unlock(&hci_dev_list_lock);
  
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,37))
