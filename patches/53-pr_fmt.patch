@@ -374,6 +374,20 @@ compiler warnings. This is going to be sent upstream.
  #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
  
  #include <linux/types.h>
+--- a/net/bluetooth/lib.c
++++ b/net/bluetooth/lib.c
+@@ -24,9 +24,11 @@
+ 
+ /* Bluetooth kernel library. */
+ 
++#undef pr_fmt
+ #define pr_fmt(fmt) "Bluetooth: " fmt
+ 
+ #include <linux/export.h>
++#include <linux/printk.h>
+ 
+ #include <net/bluetooth/bluetooth.h>
+ 
 --- a/net/wireless/lib80211.c
 +++ b/net/wireless/lib80211.c
 @@ -13,8 +13,10 @@
