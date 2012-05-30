@@ -29,7 +29,7 @@
  	}
  
  	do {
-+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,36)
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,36))
  		unsigned int iobase = info->p_dev->resource[0]->start;
 +#else
 +		unsigned int iobase = info->p_dev->io.BasePort1;
