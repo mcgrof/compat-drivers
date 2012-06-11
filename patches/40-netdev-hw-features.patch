@@ -84,7 +84,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  		atl1c_up(adapter);
  		clear_bit(__AT_RESETTING, &adapter->flags);
  	}
-@@ -2407,8 +2420,10 @@ static const struct net_device_ops atl1c
+@@ -2406,8 +2419,10 @@ static const struct net_device_ops atl1c
  	.ndo_set_mac_address	= atl1c_set_mac_addr,
  	.ndo_set_rx_mode	= atl1c_set_multi,
  	.ndo_change_mtu		= atl1c_change_mtu,
@@ -95,7 +95,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  	.ndo_do_ioctl		= atl1c_ioctl,
  	.ndo_tx_timeout		= atl1c_tx_timeout,
  	.ndo_get_stats		= atl1c_get_stats,
-@@ -2427,6 +2442,7 @@ static int atl1c_init_netdev(struct net_
+@@ -2426,6 +2441,7 @@ static int atl1c_init_netdev(struct net_
  	atl1c_set_ethtool_ops(netdev);
  
  	/* TODO: add when ready */
@@ -103,7 +103,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  	netdev->hw_features =	NETIF_F_SG	   |
  				NETIF_F_HW_CSUM	   |
  				NETIF_F_HW_VLAN_RX |
-@@ -2434,6 +2450,14 @@ static int atl1c_init_netdev(struct net_
+@@ -2433,6 +2449,14 @@ static int atl1c_init_netdev(struct net_
  				NETIF_F_TSO6;
  	netdev->features =	netdev->hw_features |
  				NETIF_F_HW_VLAN_TX;
@@ -150,7 +150,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  
  /*
   * atl1e_change_mtu - Change the Maximum Transfer Unit
-@@ -1948,7 +1950,11 @@ void atl1e_down(struct atl1e_adapter *ad
+@@ -1943,7 +1945,11 @@ void atl1e_down(struct atl1e_adapter *ad
  	 * reschedule our watchdog timer */
  	set_bit(__AT_DOWN, &adapter->flags);
  
@@ -162,7 +162,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  
  	/* reset MAC to disable all RX/TX */
  	atl1e_reset_hw(&adapter->hw);
-@@ -2218,8 +2224,10 @@ static const struct net_device_ops atl1e
+@@ -2213,8 +2219,10 @@ static const struct net_device_ops atl1e
  	.ndo_set_rx_mode	= atl1e_set_multi,
  	.ndo_validate_addr	= eth_validate_addr,
  	.ndo_set_mac_address	= atl1e_set_mac_addr,
@@ -173,7 +173,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  	.ndo_change_mtu		= atl1e_change_mtu,
  	.ndo_do_ioctl		= atl1e_ioctl,
  	.ndo_tx_timeout		= atl1e_tx_timeout,
-@@ -2239,10 +2247,15 @@ static int atl1e_init_netdev(struct net_
+@@ -2234,10 +2242,15 @@ static int atl1e_init_netdev(struct net_
  	netdev->watchdog_timeo = AT_TX_WATCHDOG;
  	atl1e_set_ethtool_ops(netdev);
  
@@ -332,7 +332,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  #endif /* ATLX_C */
 --- a/drivers/net/wireless/ath/ath6kl/main.c
 +++ b/drivers/net/wireless/ath/ath6kl/main.c
-@@ -1109,6 +1109,7 @@ static struct net_device_stats *ath6kl_g
+@@ -1108,6 +1108,7 @@ static struct net_device_stats *ath6kl_g
  	return &vif->net_stats;
  }
  
@@ -340,7 +340,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  static int ath6kl_set_features(struct net_device *dev,
  			       netdev_features_t features)
  {
-@@ -1141,6 +1142,7 @@ static int ath6kl_set_features(struct ne
+@@ -1140,6 +1141,7 @@ static int ath6kl_set_features(struct ne
  
  	return err;
  }
@@ -348,7 +348,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  
  static void ath6kl_set_multicast_list(struct net_device *ndev)
  {
-@@ -1285,7 +1287,9 @@ static const struct net_device_ops ath6k
+@@ -1284,7 +1286,9 @@ static const struct net_device_ops ath6k
  	.ndo_stop               = ath6kl_close,
  	.ndo_start_xmit         = ath6kl_data_tx,
  	.ndo_get_stats          = ath6kl_get_stats,
@@ -358,7 +358,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  	.ndo_set_rx_mode	= ath6kl_set_multicast_list,
  };
  
-@@ -1300,7 +1304,11 @@ void init_netdev(struct net_device *dev)
+@@ -1299,7 +1303,11 @@ void init_netdev(struct net_device *dev)
  				sizeof(struct wmi_data_hdr) + HTC_HDR_LENGTH
  				+ WMI_MAX_TX_META_SZ + ATH6KL_HTC_ALIGN_BYTES;
  

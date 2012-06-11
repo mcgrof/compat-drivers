@@ -534,7 +534,7 @@ here still, but for now we keep this here.
  
 --- a/net/bluetooth/l2cap_sock.c
 +++ b/net/bluetooth/l2cap_sock.c
-@@ -538,7 +538,14 @@ static int l2cap_sock_setsockopt_old(str
+@@ -559,7 +559,14 @@ static int l2cap_sock_setsockopt_old(str
  	return err;
  }
  
@@ -549,7 +549,7 @@ here still, but for now we keep this here.
  {
  	struct sock *sk = sock->sk;
  	struct l2cap_chan *chan = l2cap_pi(sk)->chan;
-@@ -1166,8 +1173,12 @@ static struct sock *l2cap_sock_alloc(str
+@@ -1187,8 +1194,12 @@ static struct sock *l2cap_sock_alloc(str
  	return sk;
  }
  
@@ -562,7 +562,7 @@ here still, but for now we keep this here.
  {
  	struct sock *sk;
  
-@@ -1179,7 +1190,11 @@ static int l2cap_sock_create(struct net
+@@ -1200,7 +1211,11 @@ static int l2cap_sock_create(struct net
  			sock->type != SOCK_DGRAM && sock->type != SOCK_RAW)
  		return -ESOCKTNOSUPPORT;
  

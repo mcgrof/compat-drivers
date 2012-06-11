@@ -17,7 +17,7 @@ v2.6.36-rc1~571^2~104
  
  	atl1c_hw_set_mac_addr(&adapter->hw, adapter->hw.mac_addr);
  
-@@ -2571,7 +2573,9 @@ static int __devinit atl1c_probe(struct
+@@ -2570,7 +2572,9 @@ static int __devinit atl1c_probe(struct
  	}
  	if (atl1c_read_mac_addr(&adapter->hw)) {
  		/* got a random MAC address, set NET_ADDR_RANDOM to netdev */

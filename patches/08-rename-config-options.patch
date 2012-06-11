@@ -79,7 +79,7 @@ CONFIG_BT_HIDP does not build with older kernel versions.
 +obj-$(CONFIG_COMPAT_BT_HIDP)	+= hidp/
  
  bluetooth-y := af_bluetooth.o hci_core.o hci_conn.o hci_event.o mgmt.o \
- 	hci_sock.o hci_sysfs.o l2cap_core.o l2cap_sock.o smp.o sco.o lib.o
+ 	hci_sock.o hci_sysfs.o l2cap_core.o l2cap_sock.o smp.o sco.o lib.o \
 --- a/net/bluetooth/hidp/Makefile
 +++ b/net/bluetooth/hidp/Makefile
 @@ -2,6 +2,6 @@
@@ -104,8 +104,8 @@ CONFIG_BT_HIDP does not build with older kernel versions.
  ccflags-y += -D__CHECK_ENDIAN__
 --- a/drivers/net/wireless/ath/ath9k/Makefile
 +++ b/drivers/net/wireless/ath/ath9k/Makefile
-@@ -6,7 +6,7 @@ ath9k-y +=	beacon.o \
- 		xmit.o
+@@ -8,7 +8,7 @@ ath9k-y +=	beacon.o \
+ 		antenna.o
  
  ath9k-$(CONFIG_ATH9K_BTCOEX_SUPPORT) += mci.o
 -ath9k-$(CONFIG_ATH9K_RATE_CONTROL) += rc.o
@@ -115,7 +115,7 @@ CONFIG_BT_HIDP does not build with older kernel versions.
  ath9k-$(CONFIG_ATH9K_DEBUGFS) += debug.o
 --- a/drivers/net/wireless/ath/ath9k/init.c
 +++ b/drivers/net/wireless/ath/ath9k/init.c
-@@ -721,7 +721,7 @@ void ath9k_set_hw_capab(struct ath_softc
+@@ -731,7 +731,7 @@ void ath9k_set_hw_capab(struct ath_softc
  	sc->ant_rx = hw->wiphy->available_antennas_rx;
  	sc->ant_tx = hw->wiphy->available_antennas_tx;
  

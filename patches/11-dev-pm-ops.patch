@@ -35,7 +35,7 @@ calls on compat code with only slight modifications.
  int __init bcma_host_pci_init(void)
 --- a/drivers/net/ethernet/atheros/atl1c/atl1c_main.c
 +++ b/drivers/net/ethernet/atheros/atl1c/atl1c_main.c
-@@ -2695,6 +2695,9 @@ static struct pci_error_handlers atl1c_e
+@@ -2694,6 +2694,9 @@ static struct pci_error_handlers atl1c_e
  
  static SIMPLE_DEV_PM_OPS(atl1c_pm_ops, atl1c_suspend, atl1c_resume);
  
@@ -45,7 +45,7 @@ calls on compat code with only slight modifications.
  static struct pci_driver atl1c_driver = {
  	.name     = atl1c_driver_name,
  	.id_table = atl1c_pci_tbl,
-@@ -2702,7 +2705,12 @@ static struct pci_driver atl1c_driver =
+@@ -2701,7 +2704,12 @@ static struct pci_driver atl1c_driver =
  	.remove   = __devexit_p(atl1c_remove),
  	.shutdown = atl1c_shutdown,
  	.err_handler = &atl1c_err_handler,
@@ -110,7 +110,7 @@ calls on compat code with only slight modifications.
  module_pci_driver(ath5k_pci_driver);
 --- a/drivers/net/wireless/ath/ath9k/pci.c
 +++ b/drivers/net/wireless/ath/ath9k/pci.c
-@@ -335,14 +335,10 @@ static int ath_pci_resume(struct device
+@@ -340,14 +340,10 @@ static int ath_pci_resume(struct device
  	return 0;
  }
  
@@ -129,7 +129,7 @@ calls on compat code with only slight modifications.
  
  #define ATH9K_PM_OPS	(&ath9k_pm_ops)
  
-@@ -360,7 +356,12 @@ static struct pci_driver ath_pci_driver
+@@ -365,7 +361,12 @@ static struct pci_driver ath_pci_driver
  	.id_table   = ath_pci_id_table,
  	.probe      = ath_pci_probe,
  	.remove     = ath_pci_remove,
@@ -159,7 +159,7 @@ calls on compat code with only slight modifications.
  static int __init
 --- a/drivers/net/wireless/iwlegacy/4965-mac.c
 +++ b/drivers/net/wireless/iwlegacy/4965-mac.c
-@@ -6758,7 +6758,12 @@ static struct pci_driver il4965_driver =
+@@ -6769,7 +6769,12 @@ static struct pci_driver il4965_driver =
  	.id_table = il4965_hw_card_ids,
  	.probe = il4965_pci_probe,
  	.remove = __devexit_p(il4965_pci_remove),

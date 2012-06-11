@@ -651,7 +651,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  	}
 --- a/include/net/mac80211.h
 +++ b/include/net/mac80211.h
-@@ -2267,7 +2267,11 @@ struct ieee80211_ops {
+@@ -2275,7 +2275,11 @@ struct ieee80211_ops {
  				 u32 changed);
  
  	u64 (*prepare_multicast)(struct ieee80211_hw *hw,
@@ -712,7 +712,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  
 --- a/net/mac80211/ieee80211_i.h
 +++ b/net/mac80211/ieee80211_i.h
-@@ -883,7 +883,12 @@ struct ieee80211_local {
+@@ -852,7 +852,12 @@ struct ieee80211_local {
  	struct work_struct recalc_smps;
  
  	/* aggregated multicast list */
@@ -727,7 +727,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  
 --- a/net/mac80211/iface.c
 +++ b/net/mac80211/iface.c
-@@ -570,8 +570,13 @@ static void ieee80211_do_stop(struct iee
+@@ -567,8 +567,13 @@ static void ieee80211_do_stop(struct iee
  
  	netif_addr_lock_bh(sdata->dev);
  	spin_lock_bh(&local->filter_lock);
@@ -741,7 +741,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  	spin_unlock_bh(&local->filter_lock);
  	netif_addr_unlock_bh(sdata->dev);
  
-@@ -745,7 +750,12 @@ static void ieee80211_set_multicast_list
+@@ -742,7 +747,12 @@ static void ieee80211_set_multicast_list
  		sdata->flags ^= IEEE80211_SDATA_PROMISC;
  	}
  	spin_lock_bh(&local->filter_lock);
@@ -782,7 +782,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  
 --- a/drivers/net/wireless/ath/ath6kl/main.c
 +++ b/drivers/net/wireless/ath/ath6kl/main.c
-@@ -1195,7 +1195,11 @@ static void ath6kl_set_multicast_list(st
+@@ -1194,7 +1194,11 @@ static void ath6kl_set_multicast_list(st
  	list_for_each_entry_safe(mc_filter, tmp, &vif->mc_filter, list) {
  		found = false;
  		netdev_for_each_mc_addr(ha, ndev) {
@@ -794,7 +794,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  				   ATH6KL_MCAST_FILTER_MAC_ADDR_SIZE) == 0) {
  				found = true;
  				break;
-@@ -1229,7 +1233,11 @@ static void ath6kl_set_multicast_list(st
+@@ -1228,7 +1232,11 @@ static void ath6kl_set_multicast_list(st
  	netdev_for_each_mc_addr(ha, ndev) {
  		found = false;
  		list_for_each_entry(mc_filter, &vif->mc_filter, list) {
@@ -806,7 +806,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  				   ATH6KL_MCAST_FILTER_MAC_ADDR_SIZE) == 0) {
  				found = true;
  				break;
-@@ -1244,7 +1252,11 @@ static void ath6kl_set_multicast_list(st
+@@ -1243,7 +1251,11 @@ static void ath6kl_set_multicast_list(st
  				goto out;
  			}
  
