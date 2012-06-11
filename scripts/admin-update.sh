@@ -2,21 +2,21 @@
 # 
 # Copyright 2007, 2008, 2010	Luis R. Rodriguez <mcgrof@winlab.rutgers.edu>
 #
-# Use this to update compat-wireless-2.6 to the latest
-# wireless-testing.git tree you have.
+# Use this to update compat-wireless to the latest
+# linux-next.git tree you have.
 #
-# Usage: you should have the latest pull of wireless-2.6.git
-# git://git.kernel.org/pub/scm/linux/kernel/git/linville/wireless-testing.git
-# We assume you have it on your ~/devel/wireless-testing/ directory. If you do,
-# just run this script from the compat-wireless-2.6 directory.
+# Usage: you should have the latest pull of linux-next.git
+# git://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git
+# We assume you have it on your ~/linux-next/ directory. If you do,
+# just run this script from the compat-wireless directory.
 # You can specify where your GIT_TREE is by doing:
 #
-# export GIT_TREE=/home/mcgrof/wireless-testing/
+# export GIT_TREE=/home/mcgrof/linux-next/
 # 
 # for example
 #
 GIT_URL="git://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git"
-GIT_COMPAT_URL="git://git.kernel.org/pub/scm/linux/kernel/git/mcgrof/compat.git"
+GIT_COMPAT_URL="git://github.com/mcgrof/compat.git"
 
 INCLUDE_NET_BT="hci_core.h l2cap.h bluetooth.h rfcomm.h hci.h hci_mon.h mgmt.h sco.h smp.h a2mp.h"
 NET_BT_DIRS="bluetooth bluetooth/bnep bluetooth/cmtp bluetooth/rfcomm bluetooth/hidp"

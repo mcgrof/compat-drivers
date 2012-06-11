@@ -3,8 +3,8 @@
 #
 # You can use this to make stable compat-wireless releases
 #
-# The assumption is you have the linux-2.6-allstable git tree on your $HOME
-# git://git.kernel.org/pub/scm/linux/kernel/git/hpa/linux-2.6-allstable.git
+# The assumption is you have the linux-stable git tree on your $HOME
+# git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git
 #
 # Local branches will be created based on the remote linux-2.6.X.y branches.
 # If your branch already exists we will nuke it for you to avoid rebasing.

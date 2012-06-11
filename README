@@ -302,8 +302,8 @@ compatibility. You will then need to checkout three trees to start hacking on
 compat-wireless:
 
 git://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git
-git://git.kernel.org/pub/scm/linux/kernel/git/mcgrof/compat.git
-git://git.kernel.org/pub/scm/linux/kernel/git/mcgrof/compat-wireless-2.6.git
+git://github.com/mcgrof/compat.git
+git://github.com/mcgrof/compat-wireless.git
 
 Linux next
 ----------
