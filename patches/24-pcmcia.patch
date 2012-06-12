@@ -30,13 +30,13 @@
  
  	do {
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,36))
- 		unsigned int iobase = info->p_dev->resource[0]->start;
+ 		register unsigned int iobase = info->p_dev->resource[0]->start;
 +#else
 +		unsigned int iobase = info->p_dev->io.BasePort1;
 +#endif
- 		unsigned int offset;
- 		unsigned char command;
- 		unsigned long ready_bit;
+ 		register unsigned int offset;
+ 		register unsigned char command;
+ 		register unsigned long ready_bit;
 @@ -378,7 +391,11 @@ static void bluecard_receive(bluecard_in
  		return;
  	}
@@ -196,12 +196,12 @@
  
  	do {
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,36))
- 		unsigned int iobase = info->p_dev->resource[0]->start;
+ 		register unsigned int iobase = info->p_dev->resource[0]->start;
 +#else
-+		unsigned int iobase = info->p_dev->io.BasePort1;
++		register unsigned int iobase = info->p_dev->io.BasePort1;
 +#endif
  		register struct sk_buff *skb;
- 		int len;
+ 		register int len;
  
 @@ -224,7 +228,11 @@ static void bt3c_receive(bt3c_info_t *in
  		return;
@@ -376,12 +376,12 @@
  
  	do {
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,36))
- 		unsigned int iobase = info->p_dev->resource[0]->start;
+ 		register unsigned int iobase = info->p_dev->resource[0]->start;
 +#else
-+		unsigned int iobase = info->p_dev->io.BasePort1;
++		register unsigned int iobase = info->p_dev->io.BasePort1;
 +#endif
  		register struct sk_buff *skb;
- 		int len;
+ 		register int len;
  
 @@ -181,7 +185,11 @@ static void btuart_receive(btuart_info_t
  		return;
@@ -580,12 +580,12 @@
  
  	do {
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,36))
- 		unsigned int iobase = info->p_dev->resource[0]->start;
+ 		register unsigned int iobase = info->p_dev->resource[0]->start;
 +#else
-+		unsigned int iobase = info->p_dev->io.BasePort1;
++		register unsigned int iobase = info->p_dev->io.BasePort1;
 +#endif
  		register struct sk_buff *skb;
- 		int len;
+ 		register int len;
  
 @@ -209,7 +213,11 @@ static void dtl1_receive(dtl1_info_t *in
  		return;
