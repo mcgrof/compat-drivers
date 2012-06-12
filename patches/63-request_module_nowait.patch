@@ -1,0 +1,27 @@
+request_module_nowait() was added on 2.6.30 but we can't
+backport it. Under some circumstances though request_module_nowait()
+likely was not meant to be used on purpose and instead we can
+assume request_module() will work. This patch addresses the few
+places where request_module_nowait() was used but that we can
+at least somewhat assume that this can work. We do not backport
+this into compat.git as a direct static inline given that there
+are surely some places where request_module() cannot be used.
+
+All users of request_module_nowait() should revise their code and
+snsure that is indeed what was meant.
+
+--- a/drivers/net/wireless/iwlwifi/iwl-drv.c
++++ b/drivers/net/wireless/iwlwifi/iwl-drv.c
+@@ -910,7 +910,12 @@ static void iwl_ucode_callback(const str
+ 		if (!drv->op_mode)
+ 			goto out_unbind;
+ 	} else {
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,30))
+ 		request_module_nowait("%s", op->name);
++#else
++		/* Goes untested */
++		request_module("%s", op->name);
++#endif
+ 	}
+ 
+ 	/*
