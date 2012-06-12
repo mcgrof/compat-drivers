@@ -22,7 +22,7 @@ compile warning.
  					 unsigned long state,
 --- a/net/bluetooth/bnep/core.c
 +++ b/net/bluetooth/bnep/core.c
-@@ -528,9 +528,11 @@ static struct device *bnep_get_device(st
+@@ -545,9 +545,11 @@ static struct device *bnep_get_device(st
  	return conn ? &conn->dev : NULL;
  }
  
