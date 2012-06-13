@@ -12,7 +12,7 @@
  	case IL_LED_DEFAULT:
 --- a/drivers/net/wireless/iwlwifi/dvm/led.c
 +++ b/drivers/net/wireless/iwlwifi/dvm/led.c
-@@ -188,7 +188,9 @@ void iwl_leds_init(struct iwl_priv *priv
+@@ -187,7 +187,9 @@ void iwl_leds_init(struct iwl_priv *priv
  				   wiphy_name(priv->hw->wiphy));
  	priv->led.brightness_set = iwl_led_brightness_set;
  	priv->led.blink_set = iwl_led_blink_set;

@@ -151,7 +151,7 @@ here still, but for now we keep this here.
  };
 --- a/net/bluetooth/hidp/core.c
 +++ b/net/bluetooth/hidp/core.c
-@@ -379,6 +379,7 @@ err:
+@@ -380,6 +380,7 @@ err:
  	return ret;
  }
  
@@ -159,7 +159,7 @@ here still, but for now we keep this here.
  static int hidp_output_raw_report(struct hid_device *hid, unsigned char *data, size_t count,
  		unsigned char report_type)
  {
-@@ -437,6 +438,16 @@ err:
+@@ -438,6 +439,16 @@ err:
  	mutex_unlock(&session->report_mutex);
  	return ret;
  }
@@ -176,7 +176,7 @@ here still, but for now we keep this here.
  
  static void hidp_idle_timeout(unsigned long arg)
  {
-@@ -738,8 +749,14 @@ static int hidp_session(void *arg)
+@@ -739,8 +750,14 @@ static int hidp_session(void *arg)
  	}
  
  	if (session->hid) {
@@ -191,7 +191,7 @@ here still, but for now we keep this here.
  	}
  
  	/* Wakeup user-space polling for socket errors */
-@@ -850,6 +867,70 @@ static void hidp_close(struct hid_device
+@@ -851,6 +868,70 @@ static void hidp_close(struct hid_device
  {
  }
  
@@ -262,7 +262,7 @@ here still, but for now we keep this here.
  static int hidp_parse(struct hid_device *hid)
  {
  	struct hidp_session *session = hid->driver_data;
-@@ -937,7 +1018,9 @@ static int hidp_setup_hid(struct hidp_se
+@@ -938,7 +1019,9 @@ static int hidp_setup_hid(struct hidp_se
  	hid->dev.parent = &session->conn->dev;
  	hid->ll_driver = &hidp_hid_driver;
  
@@ -272,7 +272,7 @@ here still, but for now we keep this here.
  	hid->hid_output_raw_report = hidp_output_raw_report;
  
  	return 0;
-@@ -948,6 +1031,7 @@ fault:
+@@ -949,6 +1032,7 @@ fault:
  
  	return err;
  }
@@ -280,7 +280,7 @@ here still, but for now we keep this here.
  
  int hidp_add_connection(struct hidp_connadd_req *req, struct socket *ctrl_sock, struct socket *intr_sock)
  {
-@@ -963,6 +1047,39 @@ int hidp_add_connection(struct hidp_conn
+@@ -964,6 +1048,39 @@ int hidp_add_connection(struct hidp_conn
  
  	BT_DBG("rd_data %p rd_size %d", req->rd_data, req->rd_size);
  
@@ -320,7 +320,7 @@ here still, but for now we keep this here.
  	down_write(&hidp_session_sem);
  
  	s = __hidp_get_session(&bt_sk(ctrl_sock->sk)->dst);
-@@ -1010,6 +1127,7 @@ int hidp_add_connection(struct hidp_conn
+@@ -1011,6 +1128,7 @@ int hidp_add_connection(struct hidp_conn
  
  	__hidp_link_session(session);
  
@@ -328,7 +328,7 @@ here still, but for now we keep this here.
  	if (req->rd_size > 0) {
  		err = hidp_setup_hid(session, req);
  		if (err)
-@@ -1021,6 +1139,16 @@ int hidp_add_connection(struct hidp_conn
+@@ -1022,6 +1140,16 @@ int hidp_add_connection(struct hidp_conn
  		if (err < 0)
  			goto purge;
  	}
@@ -345,7 +345,7 @@ here still, but for now we keep this here.
  
  	hidp_set_timer(session);
  
-@@ -1079,6 +1207,7 @@ unlink:
+@@ -1080,6 +1208,7 @@ unlink:
  		session->input = NULL;
  	}
  
@@ -353,7 +353,7 @@ here still, but for now we keep this here.
  	if (session->hid) {
  		hid_destroy_device(session->hid);
  		session->hid = NULL;
-@@ -1092,10 +1221,15 @@ purge:
+@@ -1093,10 +1222,15 @@ purge:
  
  	skb_queue_purge(&session->ctrl_transmit);
  	skb_queue_purge(&session->intr_transmit);
