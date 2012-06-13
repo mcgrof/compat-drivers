@@ -780,8 +780,8 @@ compiler warnings. This is going to be sent upstream.
  #include "htc.h"
  
  MODULE_AUTHOR("Atheros Communications");
---- a/drivers/net/wireless/iwlwifi/iwl-agn.c
-+++ b/drivers/net/wireless/iwlwifi/iwl-agn.c
+--- a/drivers/net/wireless/iwlwifi/dvm/main.c
++++ b/drivers/net/wireless/iwlwifi/dvm/main.c
 @@ -27,8 +27,10 @@
   *
   *****************************************************************************/
@@ -793,8 +793,8 @@ compiler warnings. This is going to be sent upstream.
  #include <linux/kernel.h>
  #include <linux/module.h>
  #include <linux/init.h>
---- a/drivers/net/wireless/iwlwifi/iwl-pci.c
-+++ b/drivers/net/wireless/iwlwifi/iwl-pci.c
+--- a/drivers/net/wireless/iwlwifi/pcie/drv.c
++++ b/drivers/net/wireless/iwlwifi/pcie/drv.c
 @@ -61,8 +61,10 @@
   *
   *****************************************************************************/

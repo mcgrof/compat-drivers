@@ -26,8 +26,8 @@
  #if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,30)
  	il->led.max_brightness = 1;
  #endif
---- a/drivers/net/wireless/iwlwifi/iwl-led.c
-+++ b/drivers/net/wireless/iwlwifi/iwl-led.c
+--- a/drivers/net/wireless/iwlwifi/dvm/led.c
++++ b/drivers/net/wireless/iwlwifi/dvm/led.c
 @@ -163,6 +163,7 @@ static void iwl_led_brightness_set(struc
  	iwl_led_cmd(priv, on, 0);
  }
