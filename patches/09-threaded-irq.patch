@@ -116,13 +116,14 @@ thread in process context as well.
  	return 0;
 --- a/drivers/net/wireless/ti/wlcore/wlcore.h
 +++ b/drivers/net/wireless/ti/wlcore/wlcore.h
-@@ -355,6 +355,9 @@ struct wl1271 {
- 
- 	/* RX Data filter rule state - enabled/disabled */
- 	bool rx_filter_enabled[WL1271_MAX_RX_FILTERS];
+@@ -141,7 +141,9 @@ struct wl1271_stats {
+ struct wl1271 {
+ 	struct ieee80211_hw *hw;
+ 	bool mac80211_registered;
+-
 +#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,31)
 +	struct compat_threaded_irq irq_compat;
 +#endif
- };
+ 	struct device *dev;
  
- int __devinit wlcore_probe(struct wl1271 *wl, struct platform_device *pdev);
+ 	void *if_priv;
