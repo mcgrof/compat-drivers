@@ -654,6 +654,7 @@ export CONFIG_WLCORE=m
 ifdef CONFIG_CRC7
 export CONFIG_WL1251=m
 export CONFIG_WL12XX=m
+export CONFIG_WL18XX=m
 endif #CONFIG_CRC7
 
 export CONFIG_MWIFIEX=m
