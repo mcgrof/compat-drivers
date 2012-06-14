@@ -27,7 +27,7 @@ Date:   Tue Apr 3 22:59:17 2012 +0000
 
 --- a/drivers/net/usb/usbnet.c
 +++ b/drivers/net/usb/usbnet.c
-@@ -909,7 +909,9 @@ static const struct ethtool_ops usbnet_e
+@@ -906,7 +906,9 @@ static const struct ethtool_ops usbnet_e
  	.get_drvinfo		= usbnet_get_drvinfo,
  	.get_msglevel		= usbnet_get_msglevel,
  	.set_msglevel		= usbnet_set_msglevel,
