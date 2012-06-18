@@ -499,8 +499,8 @@ if [[ "$GET_STABLE_PENDING" = y ]]; then
 	fi
 	echo -e "${GREEN}Generating stable cherry picks... ${NORMAL}"
 	echo -e "\nUsing command on directory $PWD:"
-	echo -e "\ngit format-patch --grep=\"stable@kernel.org\" -o $PENDING_STABLE_DIR ${LAST_STABLE_UPDATE}.. $WSTABLE"
-	git format-patch --grep="stable@kernel.org" -o $PENDING_STABLE_DIR ${LAST_STABLE_UPDATE}.. $WSTABLE
+	echo -e "\ngit format-patch --grep=\"stable@vger.kernel.org\" -o $PENDING_STABLE_DIR ${LAST_STABLE_UPDATE}.. $WSTABLE"
+	git format-patch --grep="stable@vger.kernel.org" -o $PENDING_STABLE_DIR ${LAST_STABLE_UPDATE}.. $WSTABLE
 	if [ ! -d ${LAST_DIR}/${PENDING_STABLE_DIR} ]; then
 		echo -e "Assumption that ${LAST_DIR}/${PENDING_STABLE_DIR} directory exists failed"
 		exit 1
