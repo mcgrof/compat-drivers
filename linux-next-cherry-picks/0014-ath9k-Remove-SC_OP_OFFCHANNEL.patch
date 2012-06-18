@@ -1,7 +1,7 @@
 From 4cb54fa3a2456e66d8e3bae663d66f00cbb9e483 Mon Sep 17 00:00:00 2001
 From: Sujith Manoharan <c_manoha@qca.qualcomm.com>
 Date: Mon, 4 Jun 2012 16:27:52 +0530
-Subject: [PATCH 14/32] ath9k: Remove SC_OP_OFFCHANNEL
+Subject: [PATCH 14/57] ath9k: Remove SC_OP_OFFCHANNEL
 
 mac80211's IEEE80211_CONF_OFFCHANNEL can be used directly
 to track offchannel state. Also pass the correct boolean

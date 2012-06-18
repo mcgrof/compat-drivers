@@ -1,7 +1,7 @@
 From 0603143e47a34d0485a13fd7f46e56a97e687e34 Mon Sep 17 00:00:00 2001
 From: Rajkumar Manoharan <rmanohar@qca.qualcomm.com>
 Date: Mon, 4 Jun 2012 16:28:36 +0530
-Subject: [PATCH 22/32] ath9k: BT coex performance tuning for AR9462
+Subject: [PATCH 22/57] ath9k: BT coex performance tuning for AR9462
 
 Use smaller aggregation limit and increasing aggregation threshold
 for osla that could improve wlan performance when there is HID profile.

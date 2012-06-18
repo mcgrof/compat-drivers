@@ -1,7 +1,7 @@
 From 99922a45e96b22df387823ad5ecfe4dc26a96c9e Mon Sep 17 00:00:00 2001
 From: Rajkumar Manoharan <rmanohar@qca.qualcomm.com>
 Date: Mon, 4 Jun 2012 16:28:31 +0530
-Subject: [PATCH 21/32] ath9k_hw: fix BT RF performance
+Subject: [PATCH 21/57] ath9k_hw: fix BT RF performance
 
 When software rfkill is triggered, before put the chip in reset
 state, give LNA and SPDT control to BT to make sure BT can have

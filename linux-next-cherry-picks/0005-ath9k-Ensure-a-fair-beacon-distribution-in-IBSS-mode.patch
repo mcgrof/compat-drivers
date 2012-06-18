@@ -1,7 +1,7 @@
 From d202caff28d69f4ec6cf56568f79b0916294cade Mon Sep 17 00:00:00 2001
 From: Vivek Natarajan <nataraja@qca.qualcomm.com>
 Date: Tue, 29 May 2012 15:59:55 +0530
-Subject: [PATCH 05/32] ath9k: Ensure a fair beacon distribution in IBSS mode
+Subject: [PATCH 05/57] ath9k: Ensure a fair beacon distribution in IBSS mode
 
 Configure CWmin based on slot time for IBSS mode. This helps
 in increasing the beacon distribution of ath9k to accepted

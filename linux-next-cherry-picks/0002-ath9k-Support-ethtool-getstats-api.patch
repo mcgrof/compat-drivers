@@ -1,7 +1,7 @@
 From b90bd9d14f866318497acee571f79e621a735d69 Mon Sep 17 00:00:00 2001
 From: Ben Greear <greearb@candelatech.com>
 Date: Tue, 15 May 2012 15:33:25 -0700
-Subject: [PATCH 02/32] ath9k: Support ethtool getstats api.
+Subject: [PATCH 02/57] ath9k: Support ethtool getstats api.
 
 This returns many of the values that formerly could
 only be obtained from debugfs.  This should be an

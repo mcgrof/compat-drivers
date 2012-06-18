@@ -1,7 +1,7 @@
 From 6995fb805ed5de852a7d49413730980bc7173e82 Mon Sep 17 00:00:00 2001
 From: Rajkumar Manoharan <rmanohar@qca.qualcomm.com>
 Date: Mon, 4 Jun 2012 16:28:52 +0530
-Subject: [PATCH 25/32] ath9k: improve BT FTP/PAN performance
+Subject: [PATCH 25/57] ath9k: improve BT FTP/PAN performance
 
 When BT FTP/PAN transmits while WLAN is idle, the one of 9462 chain
 often picks up BT's tx signal and starts receiving. If the current

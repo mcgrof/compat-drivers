@@ -1,7 +1,7 @@
 From c9ae6ab4c7d7aa29f9607ac69daafbc241fc123e Mon Sep 17 00:00:00 2001
 From: Rajkumar Manoharan <rmanohar@qca.qualcomm.com>
 Date: Mon, 4 Jun 2012 16:28:41 +0530
-Subject: [PATCH 23/32] ath: do not update cycle counters with sleep mode
+Subject: [PATCH 23/57] ath: do not update cycle counters with sleep mode
 
 When the chip is waking up from sleep state, the cycle counters
 might have incorrect readings. So it is better not to update those

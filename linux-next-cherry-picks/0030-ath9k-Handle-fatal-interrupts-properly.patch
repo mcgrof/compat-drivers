@@ -1,7 +1,7 @@
 From b74713d04effbacd3d126ce94cec18742187b6ce Mon Sep 17 00:00:00 2001
 From: Sujith Manoharan <c_manoha@qca.qualcomm.com>
 Date: Mon, 4 Jun 2012 20:24:01 +0530
-Subject: [PATCH 30/32] ath9k: Handle fatal interrupts properly
+Subject: [PATCH 30/57] ath9k: Handle fatal interrupts properly
 
 When a fatal interrupt is received or it is detected that the baseband
 has hung, the chip has to be reset immediately.  Otherwise, we end up

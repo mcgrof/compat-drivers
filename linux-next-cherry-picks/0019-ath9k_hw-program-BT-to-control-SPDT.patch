@@ -1,7 +1,7 @@
 From 9dc08eceb7491331e81acde625e0d9c82aa86a16 Mon Sep 17 00:00:00 2001
 From: Rajkumar Manoharan <rmanohar@qca.qualcomm.com>
 Date: Mon, 4 Jun 2012 16:28:20 +0530
-Subject: [PATCH 19/32] ath9k_hw: program BT to control SPDT
+Subject: [PATCH 19/57] ath9k_hw: program BT to control SPDT
 
 program BT to control SPDT everytime while loading switch table
 from eeprom.

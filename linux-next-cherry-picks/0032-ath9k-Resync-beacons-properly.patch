@@ -1,7 +1,7 @@
 From 196fb860ceb6b937cbe608ea3ea0209bd4edf3b2 Mon Sep 17 00:00:00 2001
 From: Sujith Manoharan <c_manoha@qca.qualcomm.com>
 Date: Mon, 4 Jun 2012 20:24:13 +0530
-Subject: [PATCH 32/32] ath9k: Resync beacons properly
+Subject: [PATCH 32/57] ath9k: Resync beacons properly
 
 After a chip reset, the beacon timers have to re-programmed
 correctly for a station in associated state. Use the PS flags

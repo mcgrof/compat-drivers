@@ -1,7 +1,7 @@
 From 2c208890c6d4e16076c6664137703ec813e8fa6c Mon Sep 17 00:00:00 2001
 From: Joe Perches <joe@perches.com>
 Date: Mon, 4 Jun 2012 12:44:17 +0000
-Subject: [PATCH 03/32] wireless: Remove casts to same type
+Subject: [PATCH 03/57] wireless: Remove casts to same type
 
 Adding casts of objects to the same type is unnecessary
 and confusing for a human reader.

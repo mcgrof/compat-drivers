@@ -1,7 +1,7 @@
 From 97ba515a201bc61c7d36c41ad728b0a7debd5d88 Mon Sep 17 00:00:00 2001
 From: Sujith Manoharan <c_manoha@qca.qualcomm.com>
 Date: Mon, 4 Jun 2012 16:27:41 +0530
-Subject: [PATCH 12/32] ath9k: Add MCI interrupt to debugfs statistics
+Subject: [PATCH 12/57] ath9k: Add MCI interrupt to debugfs statistics
 
 Signed-off-by: Sujith Manoharan <c_manoha@qca.qualcomm.com>
 Signed-off-by: John W. Linville <linville@tuxdriver.com>

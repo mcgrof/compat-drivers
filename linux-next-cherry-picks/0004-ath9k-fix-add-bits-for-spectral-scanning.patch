@@ -1,7 +1,7 @@
 From 620a55687b20c23ca7b8d8560b0e8fb3ca13869a Mon Sep 17 00:00:00 2001
 From: Zefir Kurtisi <zefir.kurtisi@neratec.com>
 Date: Wed, 23 May 2012 13:34:31 +0200
-Subject: [PATCH 04/32] ath9k: fix/add bits for spectral scanning
+Subject: [PATCH 04/57] ath9k: fix/add bits for spectral scanning
 
 Updates for spectral scanning register modification for AR93x:
  * fix bits for spectral_scan_count

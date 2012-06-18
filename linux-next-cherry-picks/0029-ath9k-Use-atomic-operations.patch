@@ -1,7 +1,7 @@
 From 781b14a3153a722fec820374271316537881076e Mon Sep 17 00:00:00 2001
 From: Sujith Manoharan <c_manoha@qca.qualcomm.com>
 Date: Mon, 4 Jun 2012 20:23:55 +0530
-Subject: [PATCH 29/32] ath9k: Use atomic operations
+Subject: [PATCH 29/57] ath9k: Use atomic operations
 
 The 'sc_flags' variable is being used in a number of places
 with no locking whatsoever. This patch converts the usage

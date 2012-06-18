@@ -1,7 +1,7 @@
 From af68abadac378f7a4a44fe766383e7b88c7f9c3b Mon Sep 17 00:00:00 2001
 From: Sujith Manoharan <c_manoha@qca.qualcomm.com>
 Date: Mon, 4 Jun 2012 20:23:43 +0530
-Subject: [PATCH 27/32] ath9k: Fix work handling
+Subject: [PATCH 27/57] ath9k: Fix work handling
 
 * Currently, there is no synchronization between the reset
   work and the tx-poll work. Fix this and make sure that we

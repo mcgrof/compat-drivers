@@ -1,0 +1,45 @@
+From a23415fd7ed4bfa8e203ecf141d43da7180193af Mon Sep 17 00:00:00 2001
+From: Mohammed Shafi Shajakhan <mohammed@qca.qualcomm.com>
+Date: Wed, 6 Jun 2012 10:33:42 +0530
+Subject: [PATCH 34/57] ath9k: remove incompatible IBSS interface check in
+ change_iface
+
+'cfg80211: fix interface combinations' ensures that if an interface
+type is not advertised by the driver in any of the interface combinations
+(via ieee80211_iface_combination) then it shall be treated as a single
+incompatible interface. if there are more than one interfaces present
+and changing them to incompatible interface type is not possible.
+These checks will be properly handled by cfg80211_change_iface ->
+cfg80211_can_change_interface.
+
+this patch is dependent on 'cfg80211: fix interface combinations'
+
+Signed-off-by: Mohammed Shafi Shajakhan <mohammed@qca.qualcomm.com>
+Signed-off-by: John W. Linville <linville@tuxdriver.com>
+---
+ drivers/net/wireless/ath/ath9k/main.c |    9 ---------
+ 1 file changed, 9 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath9k/main.c b/drivers/net/wireless/ath/ath9k/main.c
+index 08506f1..ac41f1e 100644
+--- a/drivers/net/wireless/ath/ath9k/main.c
++++ b/drivers/net/wireless/ath/ath9k/main.c
+@@ -1467,15 +1467,6 @@ static int ath9k_change_interface(struct ieee80211_hw *hw,
+ 	mutex_lock(&sc->mutex);
+ 	ath9k_ps_wakeup(sc);
+ 
+-	/* See if new interface type is valid. */
+-	if ((new_type == NL80211_IFTYPE_ADHOC) &&
+-	    (sc->nvifs > 1)) {
+-		ath_err(common, "When using ADHOC, it must be the only"
+-			" interface.\n");
+-		ret = -EINVAL;
+-		goto out;
+-	}
+-
+ 	if (ath9k_uses_beacons(new_type) &&
+ 	    !ath9k_uses_beacons(vif->type)) {
+ 		if (sc->nbcnvifs >= ATH_BCBUF) {
+-- 
+1.7.10.rc1.22.gf5241
+

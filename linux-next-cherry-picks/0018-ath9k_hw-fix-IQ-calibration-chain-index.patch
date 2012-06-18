@@ -1,7 +1,7 @@
 From 4fb7175bbd6a32899617b96b0b73c2ad651dfd03 Mon Sep 17 00:00:00 2001
 From: Rajkumar Manoharan <rmanohar@qca.qualcomm.com>
 Date: Mon, 4 Jun 2012 16:28:14 +0530
-Subject: [PATCH 18/32] ath9k_hw: fix IQ calibration chain index
+Subject: [PATCH 18/57] ath9k_hw: fix IQ calibration chain index
 
 The chain index to perform IQ calibration is counted to number of valid
 tx chains and then used for indexing chain specific registers. If the

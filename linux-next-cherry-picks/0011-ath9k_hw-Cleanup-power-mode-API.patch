@@ -1,7 +1,7 @@
 From 31604cf0a73ffd63929f3a646d5402d5901c6e4b Mon Sep 17 00:00:00 2001
 From: Sujith Manoharan <c_manoha@qca.qualcomm.com>
 Date: Mon, 4 Jun 2012 16:27:36 +0530
-Subject: [PATCH 11/32] ath9k_hw: Cleanup power mode API
+Subject: [PATCH 11/57] ath9k_hw: Cleanup power mode API
 
 The 'setChip' variable is unused, remove it and
 simplify the functions.

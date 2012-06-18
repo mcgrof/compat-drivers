@@ -1,7 +1,7 @@
 From e6930c4b32aaa30fb9510984509afcc9f61fa39c Mon Sep 17 00:00:00 2001
 From: Sujith Manoharan <c_manoha@qca.qualcomm.com>
 Date: Mon, 4 Jun 2012 16:27:58 +0530
-Subject: [PATCH 15/32] ath9k: Use separate operational flags for BTCOEX
+Subject: [PATCH 15/57] ath9k: Use separate operational flags for BTCOEX
 
 Also, use atomic operations to check the flags.
 

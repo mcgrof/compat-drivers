@@ -1,7 +1,7 @@
 From 8da07830e10a91cbe7badf9767230aafdd520b9c Mon Sep 17 00:00:00 2001
 From: Sujith Manoharan <c_manoha@qca.qualcomm.com>
 Date: Mon, 4 Jun 2012 20:23:49 +0530
-Subject: [PATCH 28/32] ath9k: Move LNA code to antenna.c
+Subject: [PATCH 28/57] ath9k: Move LNA code to antenna.c
 
 And use a helper function to setup antennae after a reset.
 

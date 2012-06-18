@@ -1,7 +1,7 @@
 From aaa1ec46b3be258b851477024fb41e140b14d1a6 Mon Sep 17 00:00:00 2001
 From: Sujith Manoharan <c_manoha@qca.qualcomm.com>
 Date: Mon, 4 Jun 2012 16:27:08 +0530
-Subject: [PATCH 06/32] ath9k: Prune ath9k_init_device
+Subject: [PATCH 06/57] ath9k: Prune ath9k_init_device
 
 Instead of cluttering ath9k_init_device() with 'ath_softc'
 specific initialization code, use ath9k_init_softc() to

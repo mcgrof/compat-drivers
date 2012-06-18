@@ -1,7 +1,7 @@
 From d09f5f4cfb9f4c6aa8c18ea522e824660d4096d7 Mon Sep 17 00:00:00 2001
 From: Sujith Manoharan <c_manoha@qca.qualcomm.com>
 Date: Mon, 4 Jun 2012 16:27:14 +0530
-Subject: [PATCH 07/32] ath9k: Handle ASPM properly
+Subject: [PATCH 07/57] ath9k: Handle ASPM properly
 
 ASPM has to be disabled when BTCOEX is in use, do this properly
 by calling the bus-specific ASPM init routine after the

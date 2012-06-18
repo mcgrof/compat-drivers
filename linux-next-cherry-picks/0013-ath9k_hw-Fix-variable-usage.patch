@@ -1,7 +1,7 @@
 From 2fd5d35bc87a301d5c10397c5b38a4ec8532a975 Mon Sep 17 00:00:00 2001
 From: Sujith Manoharan <c_manoha@qca.qualcomm.com>
 Date: Mon, 4 Jun 2012 16:27:47 +0530
-Subject: [PATCH 13/32] ath9k_hw: Fix variable usage
+Subject: [PATCH 13/57] ath9k_hw: Fix variable usage
 
 Exposed by sparse:
 ar9003_mci.c:1134:31: warning: Using plain integer as NULL pointer

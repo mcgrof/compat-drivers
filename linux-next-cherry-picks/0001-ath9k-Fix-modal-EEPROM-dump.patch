@@ -1,7 +1,7 @@
 From d25360b19008e59585defb16823804c40d4723ab Mon Sep 17 00:00:00 2001
 From: Mohammed Shafi Shajakhan <mohammed@qca.qualcomm.com>
 Date: Tue, 15 May 2012 15:24:47 +0530
-Subject: [PATCH 01/32] ath9k: Fix modal EEPROM dump
+Subject: [PATCH 01/57] ath9k: Fix modal EEPROM dump
 
 we provide excess buffer size for 'simple_read_from_buffer'
 for modal EEPROM dump. This results in trailing NULL bytes

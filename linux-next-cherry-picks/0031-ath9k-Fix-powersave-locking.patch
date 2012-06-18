@@ -1,7 +1,7 @@
 From 07c15a3ffd68ff1a3276daa26885b277f19e4abd Mon Sep 17 00:00:00 2001
 From: Sujith Manoharan <c_manoha@qca.qualcomm.com>
 Date: Mon, 4 Jun 2012 20:24:07 +0530
-Subject: [PATCH 31/32] ath9k: Fix powersave locking
+Subject: [PATCH 31/57] ath9k: Fix powersave locking
 
 The 'ps_flags' is used/accessed in a variety of contexts
 and requires proper locking. Use 'sc_pm_lock' appropriately.

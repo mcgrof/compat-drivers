@@ -1,7 +1,7 @@
 From 4f6bd1a8dfcc649912310777a44c49849ae2a63d Mon Sep 17 00:00:00 2001
 From: Rajkumar Manoharan <rmanohar@qca.qualcomm.com>
 Date: Mon, 4 Jun 2012 16:28:08 +0530
-Subject: [PATCH 17/32] ath9k: cleanup MCI indentation
+Subject: [PATCH 17/57] ath9k: cleanup MCI indentation
 
 Fix bad indentation & if nesting to lose about two levels
 of unnecessary indentation.

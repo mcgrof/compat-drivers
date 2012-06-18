@@ -1,7 +1,7 @@
 From 5d294a168012ec9a5258efae0a1282e94691a5d4 Mon Sep 17 00:00:00 2001
 From: Rajkumar Manoharan <rmanohar@qca.qualcomm.com>
 Date: Mon, 4 Jun 2012 16:28:03 +0530
-Subject: [PATCH 16/32] ath9k_hw: update ar9462 initval table to fix rx
+Subject: [PATCH 16/57] ath9k_hw: update ar9462 initval table to fix rx
 
 The wrong ADC sample phase that happen between awake and
 network/full sleep will lead to improper rx noisefloor

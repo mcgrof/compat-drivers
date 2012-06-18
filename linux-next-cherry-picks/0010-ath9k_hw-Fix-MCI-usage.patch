@@ -1,7 +1,7 @@
 From 5955b2b0ef208e03188ef1c2810c004bde493253 Mon Sep 17 00:00:00 2001
 From: Sujith Manoharan <c_manoha@qca.qualcomm.com>
 Date: Mon, 4 Jun 2012 16:27:30 +0530
-Subject: [PATCH 10/32] ath9k_hw: Fix MCI usage
+Subject: [PATCH 10/57] ath9k_hw: Fix MCI usage
 
 MCI has to be handled only when BTCOEX is actually enabled.
 Check for this condition before calling MCI related functions

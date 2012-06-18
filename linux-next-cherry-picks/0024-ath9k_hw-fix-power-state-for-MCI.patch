@@ -1,7 +1,7 @@
 From 153dccd467b818b1dd3a6801b14e94a7a48ef859 Mon Sep 17 00:00:00 2001
 From: Rajkumar Manoharan <rmanohar@qca.qualcomm.com>
 Date: Mon, 4 Jun 2012 16:28:47 +0530
-Subject: [PATCH 24/32] ath9k_hw: fix power state for MCI
+Subject: [PATCH 24/57] ath9k_hw: fix power state for MCI
 
 Program MCI related power registers only if MCI interrupts
 are enabled. This could help to reduce power consumptions when

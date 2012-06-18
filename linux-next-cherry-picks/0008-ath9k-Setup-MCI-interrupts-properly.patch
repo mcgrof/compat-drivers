@@ -1,7 +1,7 @@
 From e270e776a0985511146555e79edbe53539809adb Mon Sep 17 00:00:00 2001
 From: Sujith Manoharan <c_manoha@qca.qualcomm.com>
 Date: Mon, 4 Jun 2012 16:27:19 +0530
-Subject: [PATCH 08/32] ath9k: Setup MCI interrupts properly
+Subject: [PATCH 08/57] ath9k: Setup MCI interrupts properly
 
 MCI interrupts have to be enabled only when BTCOEX is
 actually in use.

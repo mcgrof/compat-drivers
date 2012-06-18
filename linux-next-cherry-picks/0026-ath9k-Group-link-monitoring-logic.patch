@@ -1,7 +1,7 @@
 From ef1b6cd9a1ba06a3daf9a03aa8f25d52d1f2c31a Mon Sep 17 00:00:00 2001
 From: Sujith Manoharan <c_manoha@qca.qualcomm.com>
 Date: Mon, 4 Jun 2012 20:23:37 +0530
-Subject: [PATCH 26/32] ath9k: Group link monitoring logic
+Subject: [PATCH 26/57] ath9k: Group link monitoring logic
 
 Add link.c and move all the link/connection monitoring
 code to it.
@@ -584,11 +584,86 @@ index 0000000..7368b96
 +
 +	return ret;
 +}
-diff --git a/drivers/net/wireless/ath/ath9k/main.c b/drivers/net/wireless/ath/ath9k/main.c
-index 623b04f..304769a 100644
+diff --git a/drivers/net/wireless/ath/ath9k/xmit.c b/drivers/net/wireless/ath/ath9k/xmit.c
+index d59dd01..6619a39 100644
+--- a/drivers/net/wireless/ath/ath9k/xmit.c
++++ b/drivers/net/wireless/ath/ath9k/xmit.c
+@@ -105,19 +105,19 @@ static int ath_max_4ms_framelen[4][32] = {
+ /* Aggregation logic */
+ /*********************/
+ 
+-static void ath_txq_lock(struct ath_softc *sc, struct ath_txq *txq)
++void ath_txq_lock(struct ath_softc *sc, struct ath_txq *txq)
+ 	__acquires(&txq->axq_lock)
+ {
+ 	spin_lock_bh(&txq->axq_lock);
+ }
+ 
+-static void ath_txq_unlock(struct ath_softc *sc, struct ath_txq *txq)
++void ath_txq_unlock(struct ath_softc *sc, struct ath_txq *txq)
+ 	__releases(&txq->axq_lock)
+ {
+ 	spin_unlock_bh(&txq->axq_lock);
+ }
+ 
+-static void ath_txq_unlock_complete(struct ath_softc *sc, struct ath_txq *txq)
++void ath_txq_unlock_complete(struct ath_softc *sc, struct ath_txq *txq)
+ 	__releases(&txq->axq_lock)
+ {
+ 	struct sk_buff_head q;
+@@ -2231,46 +2231,6 @@ static void ath_tx_processq(struct ath_softc *sc, struct ath_txq *txq)
+ 	ath_txq_unlock_complete(sc, txq);
+ }
+ 
+-static void ath_tx_complete_poll_work(struct work_struct *work)
+-{
+-	struct ath_softc *sc = container_of(work, struct ath_softc,
+-			tx_complete_work.work);
+-	struct ath_txq *txq;
+-	int i;
+-	bool needreset = false;
+-#ifdef CONFIG_ATH9K_DEBUGFS
+-	sc->tx_complete_poll_work_seen++;
+-#endif
+-
+-	for (i = 0; i < ATH9K_NUM_TX_QUEUES; i++)
+-		if (ATH_TXQ_SETUP(sc, i)) {
+-			txq = &sc->tx.txq[i];
+-			ath_txq_lock(sc, txq);
+-			if (txq->axq_depth) {
+-				if (txq->axq_tx_inprogress) {
+-					needreset = true;
+-					ath_txq_unlock(sc, txq);
+-					break;
+-				} else {
+-					txq->axq_tx_inprogress = true;
+-				}
+-			}
+-			ath_txq_unlock_complete(sc, txq);
+-		}
+-
+-	if (needreset) {
+-		ath_dbg(ath9k_hw_common(sc->sc_ah), RESET,
+-			"tx hung, resetting the chip\n");
+-		RESET_STAT_INC(sc, RESET_TYPE_TX_HANG);
+-		ieee80211_queue_work(sc->hw, &sc->hw_reset_work);
+-	}
+-
+-	ieee80211_queue_delayed_work(sc->hw, &sc->tx_complete_work,
+-			msecs_to_jiffies(ATH_TX_COMPLETE_POLL_INT));
+-}
+-
+-
+-
+ void ath_tx_tasklet(struct ath_softc *sc)
+ {
+ 	struct ath_hw *ah = sc->sc_ah;
+-- 
+1.7.10.rc1.22.gf5241
+
 --- a/drivers/net/wireless/ath/ath9k/main.c
 +++ b/drivers/net/wireless/ath/ath9k/main.c
-@@ -144,84 +144,6 @@ void ath9k_ps_restore(struct ath_softc *sc)
+@@ -144,84 +144,6 @@ void ath9k_ps_restore(struct ath_softc *
  	spin_unlock_irqrestore(&sc->sc_pm_lock, flags);
  }
  
@@ -673,7 +748,7 @@ index 623b04f..304769a 100644
  static void __ath_cancel_work(struct ath_softc *sc)
  {
  	cancel_work_sync(&sc->paprd_work);
-@@ -380,258 +302,6 @@ static int ath_set_channel(struct ath_softc *sc, struct ieee80211_hw *hw,
+@@ -380,258 +302,6 @@ static int ath_set_channel(struct ath_so
  	return r;
  }
  
@@ -932,7 +1007,7 @@ index 623b04f..304769a 100644
  static void ath_node_attach(struct ath_softc *sc, struct ieee80211_sta *sta,
  			    struct ieee80211_vif *vif)
  {
-@@ -669,7 +339,6 @@ static void ath_node_detach(struct ath_softc *sc, struct ieee80211_sta *sta)
+@@ -669,7 +339,6 @@ static void ath_node_detach(struct ath_s
  		ath_tx_node_cleanup(sc, an);
  }
  
@@ -940,7 +1015,7 @@ index 623b04f..304769a 100644
  void ath9k_tasklet(unsigned long data)
  {
  	struct ath_softc *sc = (struct ath_softc *)data;
-@@ -903,87 +572,6 @@ void ath_reset_work(struct work_struct *work)
+@@ -903,96 +572,6 @@ void ath_reset_work(struct work_struct *
  	ath_reset(sc, true);
  }
  
@@ -1013,6 +1088,15 @@ index 623b04f..304769a 100644
 -					    hw_pll_work.work);
 -	u32 pll_sqsum;
 -
+-	/*
+-	 * ensure that the PLL WAR is executed only
+-	 * after the STA is associated (or) if the
+-	 * beaconing had started in interfaces that
+-	 * uses beacons.
+-	 */
+-	if (!(sc->sc_flags & SC_OP_BEACONS))
+-		return;
+-
 -	if (AR_SREV_9485(sc->sc_ah)) {
 -
 -		ath9k_ps_wakeup(sc);
@@ -1028,7 +1112,7 @@ index 623b04f..304769a 100644
  /**********************/
  /* mac80211 callbacks */
  /**********************/
-@@ -1389,25 +977,6 @@ static void ath9k_do_vif_add_setup(struct ieee80211_hw *hw,
+@@ -1398,25 +977,6 @@ static void ath9k_do_vif_add_setup(struc
  	}
  }
  
@@ -1054,80 +1138,3 @@ index 623b04f..304769a 100644
  static int ath9k_add_interface(struct ieee80211_hw *hw,
  			       struct ieee80211_vif *vif)
  {
-diff --git a/drivers/net/wireless/ath/ath9k/xmit.c b/drivers/net/wireless/ath/ath9k/xmit.c
-index d59dd01..6619a39 100644
---- a/drivers/net/wireless/ath/ath9k/xmit.c
-+++ b/drivers/net/wireless/ath/ath9k/xmit.c
-@@ -105,19 +105,19 @@ static int ath_max_4ms_framelen[4][32] = {
- /* Aggregation logic */
- /*********************/
- 
--static void ath_txq_lock(struct ath_softc *sc, struct ath_txq *txq)
-+void ath_txq_lock(struct ath_softc *sc, struct ath_txq *txq)
- 	__acquires(&txq->axq_lock)
- {
- 	spin_lock_bh(&txq->axq_lock);
- }
- 
--static void ath_txq_unlock(struct ath_softc *sc, struct ath_txq *txq)
-+void ath_txq_unlock(struct ath_softc *sc, struct ath_txq *txq)
- 	__releases(&txq->axq_lock)
- {
- 	spin_unlock_bh(&txq->axq_lock);
- }
- 
--static void ath_txq_unlock_complete(struct ath_softc *sc, struct ath_txq *txq)
-+void ath_txq_unlock_complete(struct ath_softc *sc, struct ath_txq *txq)
- 	__releases(&txq->axq_lock)
- {
- 	struct sk_buff_head q;
-@@ -2231,46 +2231,6 @@ static void ath_tx_processq(struct ath_softc *sc, struct ath_txq *txq)
- 	ath_txq_unlock_complete(sc, txq);
- }
- 
--static void ath_tx_complete_poll_work(struct work_struct *work)
--{
--	struct ath_softc *sc = container_of(work, struct ath_softc,
--			tx_complete_work.work);
--	struct ath_txq *txq;
--	int i;
--	bool needreset = false;
--#ifdef CONFIG_ATH9K_DEBUGFS
--	sc->tx_complete_poll_work_seen++;
--#endif
--
--	for (i = 0; i < ATH9K_NUM_TX_QUEUES; i++)
--		if (ATH_TXQ_SETUP(sc, i)) {
--			txq = &sc->tx.txq[i];
--			ath_txq_lock(sc, txq);
--			if (txq->axq_depth) {
--				if (txq->axq_tx_inprogress) {
--					needreset = true;
--					ath_txq_unlock(sc, txq);
--					break;
--				} else {
--					txq->axq_tx_inprogress = true;
--				}
--			}
--			ath_txq_unlock_complete(sc, txq);
--		}
--
--	if (needreset) {
--		ath_dbg(ath9k_hw_common(sc->sc_ah), RESET,
--			"tx hung, resetting the chip\n");
--		RESET_STAT_INC(sc, RESET_TYPE_TX_HANG);
--		ieee80211_queue_work(sc->hw, &sc->hw_reset_work);
--	}
--
--	ieee80211_queue_delayed_work(sc->hw, &sc->tx_complete_work,
--			msecs_to_jiffies(ATH_TX_COMPLETE_POLL_INT));
--}
--
--
--
- void ath_tx_tasklet(struct ath_softc *sc)
- {
- 	struct ath_hw *ah = sc->sc_ah;
--- 
-1.7.10.rc1.22.gf5241
-
