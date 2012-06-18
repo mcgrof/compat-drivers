@@ -448,9 +448,9 @@ export WSTABLE="
         drivers/net/wireless/
         net/bluetooth/
         drivers/bluetooth/
-        drivers/net/atl1c/
-        drivers/net/atl1e/
-        drivers/net/atlx/
+        drivers/net/ethernet/atheros/atl1c/
+        drivers/net/ethernet/atheros/atl1e/
+        drivers/net/ethernet/atheros/atlx/
         include/linux/nl80211.h
         include/linux/rfkill.h
         include/net/cfg80211.h
