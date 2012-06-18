@@ -1,0 +1,39 @@
+From 8fd9d059af12786341dec5a688e607bcdb372238 Mon Sep 17 00:00:00 2001
+From: Albert Pool <albertpool@solcon.nl>
+Date: Mon, 14 May 2012 18:08:32 +0200
+Subject: [PATCH 2/5] rt2800usb: 2001:3c17 is an RT3370 device
+
+D-Link DWA-123 rev A1
+
+Signed-off-by: Albert Pool<albertpool@solcon.nl>
+Cc: <stable@vger.kernel.org>
+Acked-by: Gertjan van Wingerde <gwingerde@gmail.com>
+Signed-off-by: John W. Linville <linville@tuxdriver.com>
+---
+ drivers/net/wireless/rt2x00/rt2800usb.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/rt2x00/rt2800usb.c b/drivers/net/wireless/rt2x00/rt2800usb.c
+index bf78317..20a5040 100644
+--- a/drivers/net/wireless/rt2x00/rt2800usb.c
++++ b/drivers/net/wireless/rt2x00/rt2800usb.c
+@@ -1137,6 +1137,8 @@ static struct usb_device_id rt2800usb_device_table[] = {
+ #ifdef CONFIG_RT2800USB_RT33XX
+ 	/* Belkin */
+ 	{ USB_DEVICE(0x050d, 0x945b) },
++	/* D-Link */
++	{ USB_DEVICE(0x2001, 0x3c17) },
+ 	/* Panasonic */
+ 	{ USB_DEVICE(0x083a, 0xb511) },
+ 	/* Philips */
+@@ -1237,7 +1239,6 @@ static struct usb_device_id rt2800usb_device_table[] = {
+ 	/* D-Link */
+ 	{ USB_DEVICE(0x07d1, 0x3c0b) },
+ 	{ USB_DEVICE(0x07d1, 0x3c17) },
+-	{ USB_DEVICE(0x2001, 0x3c17) },
+ 	/* Encore */
+ 	{ USB_DEVICE(0x203d, 0x14a1) },
+ 	/* Gemtek */
+-- 
+1.7.10.rc1.22.gf5241
+
