@@ -230,6 +230,7 @@ uninstall:
 	@rm -f $(KLIB)/$(KMODDIR)/drivers/misc/eeprom_93cx6.ko*
 	@rm -f $(KLIB)/$(KMODDIR)/drivers/net/b44.ko*
 	@/sbin/depmod -a
+	@./scripts/update-initramfs
 	@echo 
 
 clean:
