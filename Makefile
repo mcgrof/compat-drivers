@@ -158,7 +158,6 @@ install-scripts:
 	@install scripts/athenable	$(DESTDIR)/usr/sbin/
 	@install scripts/b43enable	$(DESTDIR)/usr/sbin/
 	@install scripts/iwl-enable	$(DESTDIR)/usr/sbin/
-	@install scripts/alx-enable	$(DESTDIR)/usr/sbin/
 	@install scripts/athload	$(DESTDIR)/usr/sbin/
 	@install scripts/b43load	$(DESTDIR)/usr/sbin/
 	@install scripts/iwl-load	$(DESTDIR)/usr/sbin/
@@ -188,15 +187,6 @@ install-scripts:
 		echo ;\
 		echo Running iwl-enable iwlwifi...;\
 		$(DESTDIR)/usr/sbin/iwl-enable iwlwifi ;\
-	fi
-	@if [ $(shell modinfo atl1c > /dev/null 2>&1 && echo 1) ]; then \
-		echo ;\
-		echo -n "Note: atl1c detected, we're going to disable it. "  ;\
-		echo "If you would like to enable it later you can run:"  ;\
-		echo "    sudo alx-load atl1c"  ;\
-		echo ;\
-		echo Running alx-enable alx...;\
-		$(DESTDIR)/usr/sbin/alx-enable alx;\
 	fi
 	@# If on distributions like Mandriva which like to
 	@# compress their modules this will find out and do
