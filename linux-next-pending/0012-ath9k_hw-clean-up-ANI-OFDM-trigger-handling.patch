@@ -1,0 +1,76 @@
+Subject: [PATCH 9/9] ath9k_hw: clean up ANI OFDM trigger handling
+Date:	Fri, 15 Jun 2012 15:25:27 +0200
+Message-Id: <1339766727-61926-9-git-send-email-nbd@openwrt.org>
+X-Mailer: git-send-email 1.7.3.2
+In-Reply-To: <1339766727-61926-8-git-send-email-nbd@openwrt.org>
+References: <1339766727-61926-1-git-send-email-nbd@openwrt.org>
+ <1339766727-61926-2-git-send-email-nbd@openwrt.org>
+ <1339766727-61926-3-git-send-email-nbd@openwrt.org>
+ <1339766727-61926-4-git-send-email-nbd@openwrt.org>
+ <1339766727-61926-5-git-send-email-nbd@openwrt.org>
+ <1339766727-61926-6-git-send-email-nbd@openwrt.org>
+ <1339766727-61926-7-git-send-email-nbd@openwrt.org>
+ <1339766727-61926-8-git-send-email-nbd@openwrt.org>
+Sender:	linux-wireless-owner@vger.kernel.org
+Precedence: bulk
+List-ID: <linux-wireless.vger.kernel.org>
+X-Mailing-List:	linux-wireless@vger.kernel.org
+
+Adjust ah->config.ofdm_trig_{high,low} when setting noise immunity values
+to simplify threshold checks in ath9k_hw_ani_monitor
+
+Signed-off-by: Felix Fietkau <nbd@openwrt.org>
+---
+ drivers/net/wireless/ath/ath9k/ani.c |   23 ++++++++++-------------
+ 1 files changed, 10 insertions(+), 13 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath9k/ani.c b/drivers/net/wireless/ath/ath9k/ani.c
+index 6ee0875..a90aa0b 100644
+--- a/drivers/net/wireless/ath/ath9k/ani.c
++++ b/drivers/net/wireless/ath/ath9k/ani.c
+@@ -179,6 +179,14 @@ static void ath9k_hw_set_ofdm_nil(struct ath_hw *ah, u8 immunityLevel)
+ 			ath9k_hw_ani_control(ah,
+ 				ATH9K_ANI_OFDM_WEAK_SIGNAL_DETECTION,
+ 				entry_ofdm->ofdm_weak_signal_on);
++
++	if (aniState->ofdmNoiseImmunityLevel >= ATH9K_ANI_OFDM_DEF_LEVEL) {
++		ah->config.ofdm_trig_high = ATH9K_ANI_OFDM_TRIG_HIGH;
++		ah->config.ofdm_trig_low = ATH9K_ANI_OFDM_TRIG_LOW_ABOVE_INI;
++	} else {
++		ah->config.ofdm_trig_high = ATH9K_ANI_OFDM_TRIG_HIGH_BELOW_INI;
++		ah->config.ofdm_trig_low = ATH9K_ANI_OFDM_TRIG_LOW;
++	}
+ }
+ 
+ static void ath9k_hw_ani_ofdm_err_trigger(struct ath_hw *ah)
+@@ -428,21 +436,10 @@ void ath9k_hw_ani_monitor(struct ath_hw *ah, struct ath9k_channel *chan)
+ 
+ 	if (aniState->listenTime > ah->aniperiod) {
+ 		if (cckPhyErrRate < ah->config.cck_trig_low &&
+-		    ((ofdmPhyErrRate < ah->config.ofdm_trig_low &&
+-		      aniState->ofdmNoiseImmunityLevel <
+-		      ATH9K_ANI_OFDM_DEF_LEVEL) ||
+-		     (ofdmPhyErrRate < ATH9K_ANI_OFDM_TRIG_LOW_ABOVE_INI &&
+-		      aniState->ofdmNoiseImmunityLevel >=
+-		      ATH9K_ANI_OFDM_DEF_LEVEL))) {
++		    ofdmPhyErrRate < ah->config.ofdm_trig_low) {
+ 			ath9k_hw_ani_lower_immunity(ah);
+ 			aniState->ofdmsTurn = !aniState->ofdmsTurn;
+-		} else if ((ofdmPhyErrRate > ah->config.ofdm_trig_high &&
+-			    aniState->ofdmNoiseImmunityLevel >=
+-			    ATH9K_ANI_OFDM_DEF_LEVEL) ||
+-			   (ofdmPhyErrRate >
+-			    ATH9K_ANI_OFDM_TRIG_HIGH_BELOW_INI &&
+-			    aniState->ofdmNoiseImmunityLevel <
+-			    ATH9K_ANI_OFDM_DEF_LEVEL)) {
++		} else if (ofdmPhyErrRate > ah->config.ofdm_trig_high) {
+ 			ath9k_hw_ani_ofdm_err_trigger(ah);
+ 			aniState->ofdmsTurn = false;
+ 		} else if (cckPhyErrRate > ah->config.cck_trig_high) {
+-- 
+1.7.3.2
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-wireless" in
+the body of a message to majordomo@vger.kernel.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

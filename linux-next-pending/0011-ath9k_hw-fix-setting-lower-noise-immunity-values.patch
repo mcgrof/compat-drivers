@@ -1,0 +1,105 @@
+Subject: [PATCH 8/9] ath9k_hw: fix setting lower noise immunity values
+Date:	Fri, 15 Jun 2012 15:25:26 +0200
+Message-Id: <1339766727-61926-8-git-send-email-nbd@openwrt.org>
+X-Mailer: git-send-email 1.7.3.2
+In-Reply-To: <1339766727-61926-7-git-send-email-nbd@openwrt.org>
+References: <1339766727-61926-1-git-send-email-nbd@openwrt.org>
+ <1339766727-61926-2-git-send-email-nbd@openwrt.org>
+ <1339766727-61926-3-git-send-email-nbd@openwrt.org>
+ <1339766727-61926-4-git-send-email-nbd@openwrt.org>
+ <1339766727-61926-5-git-send-email-nbd@openwrt.org>
+ <1339766727-61926-6-git-send-email-nbd@openwrt.org>
+ <1339766727-61926-7-git-send-email-nbd@openwrt.org>
+Sender:	linux-wireless-owner@vger.kernel.org
+Precedence: bulk
+List-ID: <linux-wireless.vger.kernel.org>
+X-Mailing-List:	linux-wireless@vger.kernel.org
+
+Commit af1e8a6f "ath9k: reset noiseimmunity level to default" was supposed
+to ensure that the default noise immunity level is above the INI
+values, however it prevents setting lower noise immunity values altogether.
+Fix this by moving the checks to the right function.
+
+Signed-off-by: Felix Fietkau <nbd@openwrt.org>
+---
+ drivers/net/wireless/ath/ath9k/ani.c |   24 ++++++++++++------------
+ 1 files changed, 12 insertions(+), 12 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath9k/ani.c b/drivers/net/wireless/ath/ath9k/ani.c
+index da73fa2..6ee0875 100644
+--- a/drivers/net/wireless/ath/ath9k/ani.c
++++ b/drivers/net/wireless/ath/ath9k/ani.c
+@@ -154,9 +154,7 @@ static void ath9k_hw_set_ofdm_nil(struct ath_hw *ah, u8 immunityLevel)
+ 		aniState->rssiThrLow, aniState->rssiThrHigh);
+ 
+ 	if (aniState->update_ani)
+-		aniState->ofdmNoiseImmunityLevel =
+-			(immunityLevel > ATH9K_ANI_OFDM_DEF_LEVEL) ?
+-			immunityLevel : ATH9K_ANI_OFDM_DEF_LEVEL;
++		aniState->ofdmNoiseImmunityLevel = immunityLevel;
+ 
+ 	entry_ofdm = &ofdm_level_table[aniState->ofdmNoiseImmunityLevel];
+ 	entry_cck = &cck_level_table[aniState->cckNoiseImmunityLevel];
+@@ -217,9 +215,7 @@ static void ath9k_hw_set_cck_nil(struct ath_hw *ah, u_int8_t immunityLevel)
+ 		immunityLevel = ATH9K_ANI_CCK_MAX_LEVEL_LOW_RSSI;
+ 
+ 	if (aniState->update_ani)
+-		aniState->cckNoiseImmunityLevel =
+-			(immunityLevel > ATH9K_ANI_CCK_DEF_LEVEL) ?
+-			immunityLevel : ATH9K_ANI_CCK_DEF_LEVEL;
++		aniState->cckNoiseImmunityLevel = immunityLevel;
+ 
+ 	entry_ofdm = &ofdm_level_table[aniState->ofdmNoiseImmunityLevel];
+ 	entry_cck = &cck_level_table[aniState->cckNoiseImmunityLevel];
+@@ -285,6 +281,7 @@ void ath9k_ani_reset(struct ath_hw *ah, bool is_scanning)
+ 	struct ar5416AniState *aniState = &ah->curchan->ani;
+ 	struct ath9k_channel *chan = ah->curchan;
+ 	struct ath_common *common = ath9k_hw_common(ah);
++	int ofdm_nil, cck_nil;
+ 
+ 	if (!DO_ANI(ah))
+ 		return;
+@@ -306,6 +303,11 @@ void ath9k_ani_reset(struct ath_hw *ah, bool is_scanning)
+ 	/* always allow mode (on/off) to be controlled */
+ 	ah->ani_function |= ATH9K_ANI_MODE;
+ 
++	ofdm_nil = max_t(int, ATH9K_ANI_OFDM_DEF_LEVEL,
++			 aniState->ofdmNoiseImmunityLevel);
++	cck_nil = max_t(int, ATH9K_ANI_CCK_DEF_LEVEL,
++			 aniState->cckNoiseImmunityLevel);
++
+ 	if (is_scanning ||
+ 	    (ah->opmode != NL80211_IFTYPE_STATION &&
+ 	     ah->opmode != NL80211_IFTYPE_ADHOC)) {
+@@ -329,8 +331,8 @@ void ath9k_ani_reset(struct ath_hw *ah, bool is_scanning)
+ 				aniState->cckNoiseImmunityLevel);
+ 
+ 			aniState->update_ani = false;
+-			ath9k_hw_set_ofdm_nil(ah, ATH9K_ANI_OFDM_DEF_LEVEL);
+-			ath9k_hw_set_cck_nil(ah, ATH9K_ANI_CCK_DEF_LEVEL);
++			ofdm_nil = ATH9K_ANI_OFDM_DEF_LEVEL;
++			cck_nil = ATH9K_ANI_CCK_DEF_LEVEL;
+ 		}
+ 	} else {
+ 		/*
+@@ -346,11 +348,9 @@ void ath9k_ani_reset(struct ath_hw *ah, bool is_scanning)
+ 			aniState->cckNoiseImmunityLevel);
+ 
+ 			aniState->update_ani = true;
+-			ath9k_hw_set_ofdm_nil(ah,
+-					      aniState->ofdmNoiseImmunityLevel);
+-			ath9k_hw_set_cck_nil(ah,
+-					     aniState->cckNoiseImmunityLevel);
+ 	}
++	ath9k_hw_set_ofdm_nil(ah, ofdm_nil);
++	ath9k_hw_set_cck_nil(ah, cck_nil);
+ 
+ 	/*
+ 	 * enable phy counters if hw supports or if not, enable phy
+-- 
+1.7.3.2
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-wireless" in
+the body of a message to majordomo@vger.kernel.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

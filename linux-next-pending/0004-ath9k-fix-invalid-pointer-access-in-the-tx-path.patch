@@ -1,0 +1,87 @@
+Subject: [PATCH v2 3.5 2/2] ath9k: fix invalid pointer access in the tx path
+Date:	Fri, 15 Jun 2012 03:04:53 +0200
+Message-Id: <1339722293-28613-2-git-send-email-nbd@openwrt.org>
+X-Mailer: git-send-email 1.7.3.2
+In-Reply-To: <1339722293-28613-1-git-send-email-nbd@openwrt.org>
+References: <1339722293-28613-1-git-send-email-nbd@openwrt.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+Sender:	linux-wireless-owner@vger.kernel.org
+Precedence: bulk
+List-ID: <linux-wireless.vger.kernel.org>
+X-Mailing-List:	linux-wireless@vger.kernel.org
+
+After setup_frame_info has been called, only info->control.rates is still
+valid, other control fields have been overwritten by the ath_frame_info
+data. Move the access to info->control.vif for checking short preamble
+to setup_frame_info before it gets overwritten.
+
+This regression was introduced in commit d47a61aa
+"ath9k: Fix multi-VIF BSS handling"
+
+Signed-off-by: Felix Fietkau <nbd@openwrt.org>
+Reported-by: Thomas Hühn <thomas@net.t-labs.tu-berlin.de>
+Cc: Sujith Manoharan <c_manoha@qca.qualcomm.com>
+Cc: stable@vger.kernel.org [3.4]
+---
+ drivers/net/wireless/ath/ath9k/ath9k.h |    1 +
+ drivers/net/wireless/ath/ath9k/xmit.c  |   29 +++++++++++++++++------------
+ 2 files changed, 18 insertions(+), 12 deletions(-)
+
+--- a/drivers/net/wireless/ath/ath9k/ath9k.h
++++ b/drivers/net/wireless/ath/ath9k/ath9k.h
+@@ -215,6 +215,7 @@ struct ath_frame_info {
+ 	u8 keyix;
+ 	u8 retries;
+ 	bool short_preamble;
++	u8 rtscts_rate;
+ };
+ 
+ struct ath_buf_state {
+--- a/drivers/net/wireless/ath/ath9k/xmit.c
++++ b/drivers/net/wireless/ath/ath9k/xmit.c
+@@ -950,16 +950,7 @@ static void ath_buf_set_rate(struct ath_
+ 	/* set dur_update_en for l-sig computation except for PS-Poll frames */
+ 	info->dur_update = !ieee80211_is_pspoll(hdr->frame_control);
+ 
+-	/*
+-	 * We check if Short Preamble is needed for the CTS rate by
+-	 * checking the BSS's global flag.
+-	 * But for the rate series, IEEE80211_TX_RC_USE_SHORT_PREAMBLE is used.
+-	 */
+-	rate = ieee80211_get_rts_cts_rate(sc->hw, tx_info);
+-	info->rtscts_rate = rate->hw_value;
+-
+-	if (fi->short_preamble)
+-		info->rtscts_rate |= rate->hw_value_short;
++	info->rtscts_rate = fi->rtscts_rate;
+ 
+ 	for (i = 0; i < 4; i++) {
+ 		bool is_40, is_sgi, is_sp;
+@@ -1776,6 +1767,7 @@ static void setup_frame_info(struct ieee
+ 	struct ieee80211_sta *sta = tx_info->control.sta;
+ 	struct ieee80211_key_conf *hw_key = tx_info->control.hw_key;
+ 	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
++	const struct ieee80211_rate *rate;
+ 	struct ath_frame_info *fi = get_frame_info(skb);
+ 	struct ath_node *an = NULL;
+ 	enum ath9k_key_type keytype;
+@@ -1785,6 +1777,7 @@ static void setup_frame_info(struct ieee
+ 	    tx_info->control.vif->bss_conf.use_short_preamble)
+ 		short_preamble = true;
+ 
++	rate = ieee80211_get_rts_cts_rate(hw, tx_info);
+ 	keytype = ath9k_cmn_get_hw_crypto_keytype(skb);
+ 
+ 	if (sta)
+@@ -1799,6 +1792,9 @@ static void setup_frame_info(struct ieee
+ 		fi->keyix = ATH9K_TXKEYIX_INVALID;
+ 	fi->keytype = keytype;
+ 	fi->framelen = framelen;
++	fi->rtscts_rate = rate->hw_value;
++	if (short_preamble)
++		fi->rtscts_rate |= rate->hw_value_short;
+ 	fi->short_preamble = short_preamble;
+ }
+ 
