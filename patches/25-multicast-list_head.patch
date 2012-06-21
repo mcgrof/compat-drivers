@@ -494,7 +494,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  
 --- a/drivers/net/wireless/rtl818x/rtl8180/dev.c
 +++ b/drivers/net/wireless/rtl818x/rtl8180/dev.c
-@@ -814,10 +814,19 @@ static void rtl8180_bss_info_changed(str
+@@ -816,10 +816,19 @@ static void rtl8180_bss_info_changed(str
  	}
  }
  
@@ -782,7 +782,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  
 --- a/drivers/net/wireless/ath/ath6kl/main.c
 +++ b/drivers/net/wireless/ath/ath6kl/main.c
-@@ -1194,7 +1194,11 @@ static void ath6kl_set_multicast_list(st
+@@ -1201,7 +1201,11 @@ static void ath6kl_set_multicast_list(st
  	list_for_each_entry_safe(mc_filter, tmp, &vif->mc_filter, list) {
  		found = false;
  		netdev_for_each_mc_addr(ha, ndev) {
@@ -794,7 +794,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  				   ATH6KL_MCAST_FILTER_MAC_ADDR_SIZE) == 0) {
  				found = true;
  				break;
-@@ -1228,7 +1232,11 @@ static void ath6kl_set_multicast_list(st
+@@ -1235,7 +1239,11 @@ static void ath6kl_set_multicast_list(st
  	netdev_for_each_mc_addr(ha, ndev) {
  		found = false;
  		list_for_each_entry(mc_filter, &vif->mc_filter, list) {
@@ -806,7 +806,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  				   ATH6KL_MCAST_FILTER_MAC_ADDR_SIZE) == 0) {
  				found = true;
  				break;
-@@ -1243,7 +1251,11 @@ static void ath6kl_set_multicast_list(st
+@@ -1250,7 +1258,11 @@ static void ath6kl_set_multicast_list(st
  				goto out;
  			}
  

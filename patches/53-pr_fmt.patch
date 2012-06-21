@@ -255,7 +255,7 @@ compiler warnings. This is going to be sent upstream.
 +#include <linux/printk.h>
  #include <linux/pci_ids.h>
  #include <linux/if_ether.h>
- #include <net/mac80211.h>
+ #include <net/cfg80211.h>
 --- a/drivers/net/wireless/brcm80211/brcmutil/utils.c
 +++ b/drivers/net/wireless/brcm80211/brcmutil/utils.c
 @@ -14,8 +14,10 @@

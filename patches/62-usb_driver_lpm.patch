@@ -1,6 +1,6 @@
 --- a/drivers/bluetooth/ath3k.c
 +++ b/drivers/bluetooth/ath3k.c
-@@ -445,7 +445,9 @@ static struct usb_driver ath3k_driver =
+@@ -448,7 +448,9 @@ static struct usb_driver ath3k_driver =
  	.probe		= ath3k_probe,
  	.disconnect	= ath3k_disconnect,
  	.id_table	= ath3k_table,
@@ -48,7 +48,7 @@
  module_usb_driver(bpa10x_driver);
 --- a/drivers/bluetooth/btusb.c
 +++ b/drivers/bluetooth/btusb.c
-@@ -1222,7 +1222,9 @@ static struct usb_driver btusb_driver =
+@@ -1224,7 +1224,9 @@ static struct usb_driver btusb_driver =
  #endif
  	.id_table	= btusb_table,
  	.supports_autosuspend = 1,
@@ -216,7 +216,7 @@
  module_usb_driver(rt2500usb_driver);
 --- a/drivers/net/wireless/rt2x00/rt2800usb.c
 +++ b/drivers/net/wireless/rt2x00/rt2800usb.c
-@@ -1303,7 +1303,9 @@ static struct usb_driver rt2800usb_drive
+@@ -1304,7 +1304,9 @@ static struct usb_driver rt2800usb_drive
  	.disconnect	= rt2x00usb_disconnect,
  	.suspend	= rt2x00usb_suspend,
  	.resume		= rt2x00usb_resume,
