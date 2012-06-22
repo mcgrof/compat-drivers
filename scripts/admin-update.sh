@@ -581,7 +581,7 @@ for dir in $EXTRA_PATCHES; do
 	if [ $FOUND -eq 0 ]; then
 		continue
 	fi
-	for i in $dir/*.patch; do
+	for i in $(ls -v $dir/*.patch); do
 		echo -e "${GREEN}Applying backport patch${NORMAL}: ${BLUE}$i${NORMAL}"
 		patch -p1 -N -t < $i
 		RET=$?
