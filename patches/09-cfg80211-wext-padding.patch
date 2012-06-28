@@ -30,7 +30,7 @@ moved due to struct enlargements.
 
 --- a/include/net/cfg80211.h
 +++ b/include/net/cfg80211.h
-@@ -2057,6 +2057,9 @@ struct wiphy_wowlan_support {
+@@ -2111,6 +2111,9 @@ struct wiphy_wowlan_support {
  struct wiphy {
  	/* assign these fields before you register the wiphy */
  
@@ -42,7 +42,7 @@ moved due to struct enlargements.
  	u8 addr_mask[ETH_ALEN];
 --- a/net/wireless/core.c
 +++ b/net/wireless/core.c
-@@ -332,6 +332,17 @@ struct wiphy *wiphy_new(const struct cfg
+@@ -269,6 +269,17 @@ struct wiphy *wiphy_new(const struct cfg
  	struct cfg80211_registered_device *rdev;
  	int alloc_size;
  

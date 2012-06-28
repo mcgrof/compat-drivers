@@ -8,7 +8,7 @@ compile warning.
 
 --- a/net/wireless/core.c
 +++ b/net/wireless/core.c
-@@ -783,9 +783,11 @@ static void wdev_cleanup_work(struct wor
+@@ -720,9 +720,11 @@ static void wdev_cleanup_work(struct wor
  	dev_put(wdev->netdev);
  }
  
@@ -36,7 +36,7 @@ compile warning.
  {
 --- a/drivers/net/usb/usbnet.c
 +++ b/drivers/net/usb/usbnet.c
-@@ -1321,13 +1321,17 @@ static const struct net_device_ops usbne
+@@ -1326,13 +1326,17 @@ static const struct net_device_ops usbne
  
  // precondition: never called in_interrupt
  

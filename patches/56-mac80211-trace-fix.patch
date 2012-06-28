@@ -19,7 +19,7 @@
  	trace_mac80211_info(&vaf);
  	va_end(args);
  }
-@@ -33,10 +37,16 @@ void __sdata_dbg(bool print, const char *fmt, ...)
+@@ -33,10 +37,16 @@ void __sdata_dbg(bool print, const char
  	va_list args;
  
  	va_start(args, fmt);
@@ -57,7 +57,7 @@
  	trace_mac80211_err(&vaf);
  	va_end(args);
  }
-@@ -64,10 +78,16 @@ void __wiphy_dbg(struct wiphy *wiphy, bool print, const char *fmt, ...)
+@@ -64,10 +78,16 @@ void __wiphy_dbg(struct wiphy *wiphy, bo
  	va_list args;
  
  	va_start(args, fmt);
