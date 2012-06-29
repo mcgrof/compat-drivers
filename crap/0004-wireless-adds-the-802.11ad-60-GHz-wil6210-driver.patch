@@ -107,7 +107,7 @@ index 0000000..f54d053
 +wil6210-objs += debug.o
 +wil6210-objs += txrx.o
 +
-+subdir-ccflags-y += -Werror
++#subdir-ccflags-y += -Werror
 +
 +# Debug Tx/Rx flows
 +#subdir-ccflags-y += -DWIL_DEBUG_TXRX
