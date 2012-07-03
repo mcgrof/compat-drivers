@@ -1,7 +1,7 @@
-From 0a608689d20ee4751176d71cf98ce63ea76d243a Mon Sep 17 00:00:00 2001
+From 3ec48999cc20705378ae8580b684ed7409df8ab6 Mon Sep 17 00:00:00 2001
 From: Vladimir Kondratiev <qca_vkondrat@qca.qualcomm.com>
-Date: Thu, 28 Jun 2012 14:17:00 +0300
-Subject: [PATCH 5/5] wireless: bitrate calculation for 60g
+Date: Tue, 3 Jul 2012 11:37:30 +0300
+Subject: [PATCH 2/2] cfg80211: bitrate calculation for 60g
 
 60g band uses different from .11n MCS scheme, so bitrate should be calculated
 differently
@@ -13,10 +13,10 @@ Signed-off-by: Vladimir Kondratiev <qca_vkondrat@qca.qualcomm.com>
  2 files changed, 51 insertions(+)
 
 diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index 56e840d..f760520 100644
+index 8837efc..51f67a9 100644
 --- a/include/net/cfg80211.h
 +++ b/include/net/cfg80211.h
-@@ -563,11 +563,13 @@ enum station_info_flags {
+@@ -580,11 +580,13 @@ enum station_info_flags {
   * @RATE_INFO_FLAGS_MCS: @tx_bitrate_mcs filled
   * @RATE_INFO_FLAGS_40_MHZ_WIDTH: 40 Mhz width transmission
   * @RATE_INFO_FLAGS_SHORT_GI: 400ns guard interval
@@ -31,16 +31,16 @@ index 56e840d..f760520 100644
  
  /**
 diff --git a/net/wireless/util.c b/net/wireless/util.c
-index 98b2a8d..77319a6 100644
+index 6e52726..e31f1db 100644
 --- a/net/wireless/util.c
 +++ b/net/wireless/util.c
-@@ -890,12 +890,61 @@ int cfg80211_change_iface(struct cfg80211_registered_device *rdev,
+@@ -900,12 +900,61 @@ int cfg80211_change_iface(struct cfg80211_registered_device *rdev,
  	return err;
  }
  
-+static u16 cfg80211_calculate_bitrate_60g(struct rate_info *rate)
++static u32 cfg80211_calculate_bitrate_60g(struct rate_info *rate)
 +{
-+	static const u16 __mcs2bitrate[] = {
++	static const u32 __mcs2bitrate[] = {
 +		/* control PHY */
 +		[0] =   275,
 +		/* SC PHY */
@@ -85,7 +85,7 @@ index 98b2a8d..77319a6 100644
 +	return __mcs2bitrate[rate->mcs];
 +}
 +
- u16 cfg80211_calculate_bitrate(struct rate_info *rate)
+ u32 cfg80211_calculate_bitrate(struct rate_info *rate)
  {
  	int modulation, streams, bitrate;
  
