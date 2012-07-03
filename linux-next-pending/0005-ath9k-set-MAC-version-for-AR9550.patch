@@ -1,0 +1,28 @@
+From 52f9077e8ae3b3bff00ea6019318582d743f3e11 Mon Sep 17 00:00:00 2001
+From: Gabor Juhos <juhosg@openwrt.org>
+Date: Tue, 3 Jul 2012 19:13:17 +0200
+Subject: [PATCH 05/24] ath9k: set MAC version for AR9550
+
+Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
+Acked-by: Luis R. Rodriguez <mcgrof@qca.qualcomm.com>
+---
+ drivers/net/wireless/ath/ath9k/hw.c |    3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/drivers/net/wireless/ath/ath9k/hw.c b/drivers/net/wireless/ath/ath9k/hw.c
+index ebfb2a3..36cf591 100644
+--- a/drivers/net/wireless/ath/ath9k/hw.c
++++ b/drivers/net/wireless/ath/ath9k/hw.c
+@@ -342,6 +342,9 @@ static void ath9k_hw_read_revisions(struct ath_hw *ah)
+ 		val = REG_READ(ah, AR_SREV);
+ 		ah->hw_version.macRev = MS(val, AR_SREV_REVISION2);
+ 		return;
++	case AR9300_DEVID_QCA955X:
++		ah->hw_version.macVersion = AR_SREV_VERSION_9550;
++		return;
+ 	}
+ 
+ 	val = REG_READ(ah, AR_SREV) & AR_SREV_ID;
+-- 
+1.7.10.rc1.22.gf5241
+

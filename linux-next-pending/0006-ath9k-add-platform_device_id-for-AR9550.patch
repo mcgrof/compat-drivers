@@ -1,0 +1,29 @@
+From 2103a57be1dc424f7da6b0b7ea1fec5711c096a7 Mon Sep 17 00:00:00 2001
+From: Gabor Juhos <juhosg@openwrt.org>
+Date: Tue, 3 Jul 2012 19:13:18 +0200
+Subject: [PATCH 06/24] ath9k: add platform_device_id for AR9550
+
+Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
+Acked-by: Luis R. Rodriguez <mcgrof@qca.qualcomm.com>
+---
+ drivers/net/wireless/ath/ath9k/ahb.c |    4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/drivers/net/wireless/ath/ath9k/ahb.c b/drivers/net/wireless/ath/ath9k/ahb.c
+index 4a4e8a2..3a69804 100644
+--- a/drivers/net/wireless/ath/ath9k/ahb.c
++++ b/drivers/net/wireless/ath/ath9k/ahb.c
+@@ -35,6 +35,10 @@ static const struct platform_device_id ath9k_platform_id_table[] = {
+ 		.name = "ar934x_wmac",
+ 		.driver_data = AR9300_DEVID_AR9340,
+ 	},
++	{
++		.name = "qca955x_wmac",
++		.driver_data = AR9300_DEVID_QCA955X,
++	},
+ 	{},
+ };
+ 
+-- 
+1.7.10.rc1.22.gf5241
+

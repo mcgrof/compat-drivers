@@ -1,0 +1,26 @@
+From cba928bf9628db85562741a6f80134835bc5cf89 Mon Sep 17 00:00:00 2001
+From: Gabor Juhos <juhosg@openwrt.org>
+Date: Tue, 3 Jul 2012 19:13:15 +0200
+Subject: [PATCH 03/24] ath9k: define DEVID for QCA955x
+
+Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
+Acked-by: Luis R. Rodriguez <mcgrof@qca.qualcomm.com>
+---
+ drivers/net/wireless/ath/ath9k/hw.h |    1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/net/wireless/ath/ath9k/hw.h b/drivers/net/wireless/ath/ath9k/hw.h
+index 9409660..97060c6 100644
+--- a/drivers/net/wireless/ath/ath9k/hw.h
++++ b/drivers/net/wireless/ath/ath9k/hw.h
+@@ -48,6 +48,7 @@
+ #define AR9300_DEVID_AR9580	0x0033
+ #define AR9300_DEVID_AR9462	0x0034
+ #define AR9300_DEVID_AR9330	0x0035
++#define AR9300_DEVID_QCA955X	0x0038
+ 
+ #define AR5416_AR9100_DEVID	0x000b
+ 
+-- 
+1.7.10.rc1.22.gf5241
+

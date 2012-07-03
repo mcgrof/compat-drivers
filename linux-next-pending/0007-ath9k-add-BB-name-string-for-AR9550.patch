@@ -1,0 +1,26 @@
+From b4cc06a4477dd9c37610986307577938487cb743 Mon Sep 17 00:00:00 2001
+From: Gabor Juhos <juhosg@openwrt.org>
+Date: Tue, 3 Jul 2012 19:13:19 +0200
+Subject: [PATCH 07/24] ath9k: add BB name string for AR9550
+
+Signed-off-by: Gabor Juhos <juhosg@openwrt.org>
+Acked-by: Luis R. Rodriguez <mcgrof@qca.qualcomm.com>
+---
+ drivers/net/wireless/ath/ath9k/hw.c |    1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/net/wireless/ath/ath9k/hw.c b/drivers/net/wireless/ath/ath9k/hw.c
+index 36cf591..8eb7f58 100644
+--- a/drivers/net/wireless/ath/ath9k/hw.c
++++ b/drivers/net/wireless/ath/ath9k/hw.c
+@@ -3140,6 +3140,7 @@ static struct {
+ 	{ AR_SREV_VERSION_9340,		"9340" },
+ 	{ AR_SREV_VERSION_9485,         "9485" },
+ 	{ AR_SREV_VERSION_9462,         "9462" },
++	{ AR_SREV_VERSION_9550,         "9550" },
+ };
+ 
+ /* For devices with external radios */
+-- 
+1.7.10.rc1.22.gf5241
+
