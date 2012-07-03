@@ -338,6 +338,7 @@ for i in $NET_DIRS; do
 	echo "Copying $GIT_TREE/net/$i/*.[ch]"
 	cp $GIT_TREE/net/$i/*.[ch] net/$i/
 	cp $GIT_TREE/net/$i/Makefile net/$i/
+	cp $GIT_TREE/net/$i/Kconfig net/$i/
 	rm -f net/$i/*.mod.c
 done
 
