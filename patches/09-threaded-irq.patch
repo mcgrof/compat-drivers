@@ -89,7 +89,7 @@ thread in process context as well.
  	if (ret < 0) {
  		wl1271_error("request_irq() failed: %d", ret);
  		goto out_free_hw;
-@@ -5570,7 +5581,11 @@ out_unreg:
+@@ -5572,7 +5583,11 @@ out_unreg:
  	wl1271_unregister_hw(wl);
  
  out_irq:
@@ -101,7 +101,7 @@ thread in process context as well.
  
  out_free_hw:
  	wlcore_free_hw(wl);
-@@ -5589,7 +5604,12 @@ int __devexit wlcore_remove(struct platf
+@@ -5591,7 +5606,12 @@ int __devexit wlcore_remove(struct platf
  		disable_irq_wake(wl->irq);
  	}
  	wl1271_unregister_hw(wl);

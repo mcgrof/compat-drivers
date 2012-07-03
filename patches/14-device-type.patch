@@ -8,7 +8,7 @@ compile warning.
 
 --- a/net/wireless/core.c
 +++ b/net/wireless/core.c
-@@ -720,9 +720,11 @@ static void wdev_cleanup_work(struct wor
+@@ -738,9 +738,11 @@ static void wdev_cleanup_work(struct wor
  	dev_put(wdev->netdev);
  }
  
@@ -18,8 +18,8 @@ compile warning.
  };
 +#endif
  
- static int cfg80211_netdev_notifier_call(struct notifier_block *nb,
- 					 unsigned long state,
+ static struct ieee80211_channel *
+ cfg80211_get_any_chan(struct cfg80211_registered_device *rdev)
 --- a/net/bluetooth/bnep/core.c
 +++ b/net/bluetooth/bnep/core.c
 @@ -528,9 +528,11 @@ static struct device *bnep_get_device(st

@@ -20,7 +20,7 @@ calls on compat code with only slight modifications.
  #define BCMA_PM_OPS	(&bcma_pm_ops)
  
  #else /* CONFIG_PM */
-@@ -281,7 +285,12 @@ static struct pci_driver bcma_pci_bridge
+@@ -282,7 +286,12 @@ static struct pci_driver bcma_pci_bridge
  	.id_table = bcma_pci_bridge_tbl,
  	.probe = bcma_host_pci_probe,
  	.remove = __devexit_p(bcma_host_pci_remove),
@@ -174,7 +174,7 @@ calls on compat code with only slight modifications.
  static int __init
 --- a/drivers/net/wireless/iwlegacy/common.c
 +++ b/drivers/net/wireless/iwlegacy/common.c
-@@ -4909,15 +4909,17 @@ il_pci_resume(struct device *device)
+@@ -4910,15 +4910,17 @@ il_pci_resume(struct device *device)
  }
  EXPORT_SYMBOL(il_pci_resume);
  
