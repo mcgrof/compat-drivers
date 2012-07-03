@@ -9,7 +9,7 @@ dev_printk to make them show up again.
  
  		va_copy(args2, args);
  		vaf.va = &args2;
--		dev_dbg(dev, "%c %s %pV", in_interrupt() ? 'I' : 'U',
+-		dev_err(dev, "%c %s %pV", in_interrupt() ? 'I' : 'U',
 -			function, &vaf);
 +		dev_printk(KERN_DEBUG, dev, "%c %s %pV",
 +			   in_interrupt() ? 'I' : 'U',
