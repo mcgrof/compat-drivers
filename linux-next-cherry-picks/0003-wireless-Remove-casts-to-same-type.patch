@@ -35,11 +35,9 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  drivers/net/wireless/ath/ath9k/eeprom_def.c    |    3 +--
  3 files changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c b/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c
-index dfb0441..ca88155 100644
 --- a/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c
 +++ b/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c
-@@ -3178,7 +3178,7 @@ static int ar9300_compress_decision(struct ath_hw *ah,
+@@ -3178,7 +3178,7 @@ static int ar9300_compress_decision(stru
  				mdata_size, length);
  			return -1;
  		}
@@ -48,7 +46,7 @@ index dfb0441..ca88155 100644
  		ath_dbg(common, EEPROM,
  			"restored eeprom %d: uncompressed, length %d\n",
  			it, length);
-@@ -3199,7 +3199,7 @@ static int ar9300_compress_decision(struct ath_hw *ah,
+@@ -3199,7 +3199,7 @@ static int ar9300_compress_decision(stru
  			"restore eeprom %d: block, reference %d, length %d\n",
  			it, reference, length);
  		ar9300_uncompress_block(ah, mptr, mdata_size,
@@ -57,11 +55,9 @@ index dfb0441..ca88155 100644
  		break;
  	default:
  		ath_dbg(common, EEPROM, "unknown compression code %d\n", code);
-diff --git a/drivers/net/wireless/ath/ath9k/eeprom_4k.c b/drivers/net/wireless/ath/ath9k/eeprom_4k.c
-index 4322ac8..92543d1 100644
 --- a/drivers/net/wireless/ath/ath9k/eeprom_4k.c
 +++ b/drivers/net/wireless/ath/ath9k/eeprom_4k.c
-@@ -188,8 +188,7 @@ static int ath9k_hw_4k_check_eeprom(struct ath_hw *ah)
+@@ -188,8 +188,7 @@ static int ath9k_hw_4k_check_eeprom(stru
  {
  #define EEPROM_4K_SIZE (sizeof(struct ar5416_eeprom_4k) / sizeof(u16))
  	struct ath_common *common = ath9k_hw_common(ah);
@@ -71,11 +67,9 @@ index 4322ac8..92543d1 100644
  	u16 *eepdata, temp, magic, magic2;
  	u32 sum = 0, el;
  	bool need_swap = false;
-diff --git a/drivers/net/wireless/ath/ath9k/eeprom_def.c b/drivers/net/wireless/ath/ath9k/eeprom_def.c
-index b5fba8b..a9f071b 100644
 --- a/drivers/net/wireless/ath/ath9k/eeprom_def.c
 +++ b/drivers/net/wireless/ath/ath9k/eeprom_def.c
-@@ -264,8 +264,7 @@ static u32 ath9k_hw_def_dump_eeprom(struct ath_hw *ah, bool dump_base_hdr,
+@@ -264,8 +264,7 @@ static u32 ath9k_hw_def_dump_eeprom(stru
  
  static int ath9k_hw_def_check_eeprom(struct ath_hw *ah)
  {
@@ -85,6 +79,3 @@ index b5fba8b..a9f071b 100644
  	struct ath_common *common = ath9k_hw_common(ah);
  	u16 *eepdata, temp, magic, magic2;
  	u32 sum = 0, el;
--- 
-1.7.10.rc1.22.gf5241
-

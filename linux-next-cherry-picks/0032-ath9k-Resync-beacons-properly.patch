@@ -15,11 +15,9 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  drivers/net/wireless/ath/ath9k/main.c |   14 ++++++++++++--
  1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/main.c b/drivers/net/wireless/ath/ath9k/main.c
-index 88f7ad1..c0f478b 100644
 --- a/drivers/net/wireless/ath/ath9k/main.c
 +++ b/drivers/net/wireless/ath/ath9k/main.c
-@@ -210,6 +210,7 @@ static bool ath_complete_reset(struct ath_softc *sc, bool start)
+@@ -210,6 +210,7 @@ static bool ath_complete_reset(struct at
  {
  	struct ath_hw *ah = sc->sc_ah;
  	struct ath_common *common = ath9k_hw_common(ah);
@@ -27,7 +25,7 @@ index 88f7ad1..c0f478b 100644
  
  	if (ath_startrecv(sc) != 0) {
  		ath_err(common, "Unable to restart recv logic\n");
-@@ -224,9 +225,18 @@ static bool ath_complete_reset(struct ath_softc *sc, bool start)
+@@ -224,9 +225,18 @@ static bool ath_complete_reset(struct at
  	ath9k_hw_enable_interrupts(ah);
  
  	if (!(sc->hw->conf.flags & IEEE80211_CONF_OFFCHANNEL) && start) {
@@ -35,9 +33,9 @@ index 88f7ad1..c0f478b 100644
 -			ath_set_beacon(sc);
 +		if (!test_bit(SC_OP_BEACONS, &sc->sc_flags))
 +			goto work;
-+
-+		ath_set_beacon(sc);
  
++		ath_set_beacon(sc);
++
 +		if (ah->opmode == NL80211_IFTYPE_STATION &&
 +		    test_bit(SC_OP_PRIM_STA_VIF, &sc->sc_flags)) {
 +			spin_lock_irqsave(&sc->sc_pm_lock, flags);
@@ -48,6 +46,3 @@ index 88f7ad1..c0f478b 100644
  		ath_restart_work(sc);
  	}
  
--- 
-1.7.10.rc1.22.gf5241
-

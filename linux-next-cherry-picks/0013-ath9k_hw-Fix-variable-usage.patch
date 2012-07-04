@@ -12,11 +12,9 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  drivers/net/wireless/ath/ath9k/ar9003_mci.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/ar9003_mci.c b/drivers/net/wireless/ath/ath9k/ar9003_mci.c
-index 9331d73..b501bf1 100644
 --- a/drivers/net/wireless/ath/ath9k/ar9003_mci.c
 +++ b/drivers/net/wireless/ath/ath9k/ar9003_mci.c
-@@ -1131,7 +1131,7 @@ void ar9003_mci_init_cal_req(struct ath_hw *ah, bool *is_reusable)
+@@ -1131,7 +1131,7 @@ void ar9003_mci_init_cal_req(struct ath_
  	if (ar9003_mci_wait_for_gpm(ah, MCI_GPM_BT_CAL_GRANT, 0, 50000)) {
  		ath_dbg(common, MCI, "MCI BT_CAL_GRANT received\n");
  	} else {
@@ -25,6 +23,3 @@ index 9331d73..b501bf1 100644
  		ath_dbg(common, MCI, "MCI BT_CAL_GRANT not received\n");
  	}
  }
--- 
-1.7.10.rc1.22.gf5241
-

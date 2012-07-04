@@ -13,11 +13,9 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  drivers/net/wireless/ath/ath9k/main.c |    1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/ath/ath9k/main.c b/drivers/net/wireless/ath/ath9k/main.c
-index d739c8e..623b04f 100644
 --- a/drivers/net/wireless/ath/ath9k/main.c
 +++ b/drivers/net/wireless/ath/ath9k/main.c
-@@ -101,6 +101,7 @@ void ath9k_ps_wakeup(struct ath_softc *sc)
+@@ -101,6 +101,7 @@ void ath9k_ps_wakeup(struct ath_softc *s
  		spin_lock(&common->cc_lock);
  		ath_hw_cycle_counters_update(common);
  		memset(&common->cc_survey, 0, sizeof(common->cc_survey));
@@ -25,6 +23,3 @@ index d739c8e..623b04f 100644
  		spin_unlock(&common->cc_lock);
  	}
  
--- 
-1.7.10.rc1.22.gf5241
-

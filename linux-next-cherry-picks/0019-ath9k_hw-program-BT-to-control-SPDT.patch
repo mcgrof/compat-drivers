@@ -12,11 +12,9 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  drivers/net/wireless/ath/ath9k/ar9003_eeprom.c |    1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c b/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c
-index f794828..2cdf82b 100644
 --- a/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c
 +++ b/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c
-@@ -3613,6 +3613,7 @@ static void ar9003_hw_ant_ctrl_apply(struct ath_hw *ah, bool is2ghz)
+@@ -3613,6 +3613,7 @@ static void ar9003_hw_ant_ctrl_apply(str
  		value = ar9003_switch_com_spdt_get(ah, is2ghz);
  		REG_RMW_FIELD(ah, AR_PHY_GLB_CONTROL,
  				AR_SWITCH_TABLE_COM_SPDT_ALL, value);
@@ -24,6 +22,3 @@ index f794828..2cdf82b 100644
  	}
  
  	value = ar9003_hw_ant_ctrl_common_2_get(ah, is2ghz);
--- 
-1.7.10.rc1.22.gf5241
-

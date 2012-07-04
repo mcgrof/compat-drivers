@@ -18,11 +18,9 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  drivers/net/wireless/ath/ath9k/main.c  |   22 ++++++++++++++++-----
  3 files changed, 37 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/ath9k.h b/drivers/net/wireless/ath/ath9k/ath9k.h
-index d804416..2faa181 100644
 --- a/drivers/net/wireless/ath/ath9k/ath9k.h
 +++ b/drivers/net/wireless/ath/ath9k/ath9k.h
-@@ -431,6 +431,7 @@ void ath9k_set_beaconing_status(struct ath_softc *sc, bool status);
+@@ -432,6 +432,7 @@ void ath9k_set_beaconing_status(struct a
  #define ATH_RESTART_CALINTERVAL   1200000 /* 20 minutes */
  
  #define ATH_PAPRD_TIMEOUT	100 /* msecs */
@@ -30,11 +28,9 @@ index d804416..2faa181 100644
  
  void ath_tx_complete_poll_work(struct work_struct *work);
  void ath_reset_work(struct work_struct *work);
-diff --git a/drivers/net/wireless/ath/ath9k/link.c b/drivers/net/wireless/ath/ath9k/link.c
-index 7368b96..89b38a9 100644
 --- a/drivers/net/wireless/ath/ath9k/link.c
 +++ b/drivers/net/wireless/ath/ath9k/link.c
-@@ -52,6 +52,7 @@ void ath_tx_complete_poll_work(struct work_struct *work)
+@@ -52,6 +52,7 @@ void ath_tx_complete_poll_work(struct wo
  			"tx hung, resetting the chip\n");
  		RESET_STAT_INC(sc, RESET_TYPE_TX_HANG);
  		ieee80211_queue_work(sc->hw, &sc->hw_reset_work);
@@ -54,7 +50,7 @@ index 7368b96..89b38a9 100644
  {
  	static int count;
  	struct ath_common *common = ath9k_hw_common(sc->sc_ah);
-@@ -117,29 +118,33 @@ static void ath_hw_pll_rx_hang_check(struct ath_softc *sc, u32 pll_sqsum)
+@@ -117,29 +118,33 @@ static void ath_hw_pll_rx_hang_check(str
  	if (pll_sqsum >= 0x40000) {
  		count++;
  		if (count == 3) {
@@ -99,7 +95,7 @@ index 7368b96..89b38a9 100644
  }
  
  /*
-@@ -293,7 +298,7 @@ void ath_paprd_calibrate(struct work_struct *work)
+@@ -293,7 +298,7 @@ void ath_paprd_calibrate(struct work_str
  		if (ar9003_paprd_create_curve(ah, caldata, chain)) {
  			ath_dbg(common, CALIBRATE,
  				"PAPRD create curve failed on chain %d\n",
@@ -108,11 +104,9 @@ index 7368b96..89b38a9 100644
  			break;
  		}
  
-diff --git a/drivers/net/wireless/ath/ath9k/main.c b/drivers/net/wireless/ath/ath9k/main.c
-index 304769a..b228aff 100644
 --- a/drivers/net/wireless/ath/ath9k/main.c
 +++ b/drivers/net/wireless/ath/ath9k/main.c
-@@ -158,6 +158,22 @@ static void ath_cancel_work(struct ath_softc *sc)
+@@ -158,6 +158,22 @@ static void ath_cancel_work(struct ath_s
  	cancel_work_sync(&sc->hw_reset_work);
  }
  
@@ -135,7 +129,7 @@ index 304769a..b228aff 100644
  static bool ath_prepare_reset(struct ath_softc *sc, bool retry_tx, bool flush)
  {
  	struct ath_hw *ah = sc->sc_ah;
-@@ -209,11 +225,7 @@ static bool ath_complete_reset(struct ath_softc *sc, bool start)
+@@ -209,11 +225,7 @@ static bool ath_complete_reset(struct at
  		if (sc->sc_flags & SC_OP_BEACONS)
  			ath_set_beacon(sc);
  
@@ -148,6 +142,3 @@ index 304769a..b228aff 100644
  	}
  
  	if ((ah->caps.hw_caps & ATH9K_HW_CAP_ANT_DIV_COMB) && sc->ant_rx != 3) {
--- 
-1.7.10.rc1.22.gf5241
-

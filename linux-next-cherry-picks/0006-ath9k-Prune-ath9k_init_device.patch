@@ -13,11 +13,9 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  drivers/net/wireless/ath/ath9k/init.c |   15 +++++++--------
  1 file changed, 7 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/init.c b/drivers/net/wireless/ath/ath9k/init.c
-index dee9e09..3e22839 100644
 --- a/drivers/net/wireless/ath/ath9k/init.c
 +++ b/drivers/net/wireless/ath/ath9k/init.c
-@@ -489,6 +489,7 @@ static void ath9k_init_misc(struct ath_softc *sc)
+@@ -491,6 +491,7 @@ static void ath9k_init_misc(struct ath_s
  
  	setup_timer(&common->ani.timer, ath_ani_calibrate, (unsigned long)sc);
  
@@ -25,7 +23,7 @@ index dee9e09..3e22839 100644
  	sc->config.txpowlimit = ATH_TXPOWER_MAX;
  	memcpy(common->bssidmask, ath_bcast_mac, ETH_ALEN);
  	sc->beacon.slottime = ATH9K_SLOT_TIME_9;
-@@ -560,6 +561,12 @@ static int ath9k_init_softc(u16 devid, struct ath_softc *sc,
+@@ -562,6 +563,12 @@ static int ath9k_init_softc(u16 devid, s
  	tasklet_init(&sc->bcon_tasklet, ath_beacon_tasklet,
  		     (unsigned long)sc);
  
@@ -38,7 +36,7 @@ index dee9e09..3e22839 100644
  	/*
  	 * Cache line size is used to size and align various
  	 * structures used to communicate with the hardware.
-@@ -782,11 +789,6 @@ int ath9k_init_device(u16 devid, struct ath_softc *sc,
+@@ -784,11 +791,6 @@ int ath9k_init_device(u16 devid, struct
  		ARRAY_SIZE(ath9k_tpt_blink));
  #endif
  
@@ -50,7 +48,7 @@ index dee9e09..3e22839 100644
  	/* Register with mac80211 */
  	error = ieee80211_register_hw(hw);
  	if (error)
-@@ -805,9 +807,6 @@ int ath9k_init_device(u16 devid, struct ath_softc *sc,
+@@ -807,9 +809,6 @@ int ath9k_init_device(u16 devid, struct
  			goto error_world;
  	}
  
@@ -60,6 +58,3 @@ index dee9e09..3e22839 100644
  	ath_init_leds(sc);
  	ath_start_rfkill_poll(sc);
  
--- 
-1.7.10.rc1.22.gf5241
-

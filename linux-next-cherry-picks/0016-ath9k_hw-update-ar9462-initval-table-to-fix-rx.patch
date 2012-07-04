@@ -13,11 +13,9 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  drivers/net/wireless/ath/ath9k/ar9462_2p0_initvals.h |    4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/ar9462_2p0_initvals.h b/drivers/net/wireless/ath/ath9k/ar9462_2p0_initvals.h
-index 1d6658e..a10ece0 100644
 --- a/drivers/net/wireless/ath/ath9k/ar9462_2p0_initvals.h
 +++ b/drivers/net/wireless/ath/ath9k/ar9462_2p0_initvals.h
-@@ -958,7 +958,7 @@ static const u32 ar9462_2p0_radio_core[][2] = {
+@@ -958,7 +958,7 @@ static const u32 ar9462_2p0_radio_core[]
  	{0x0001604c, 0x2699e04f},
  	{0x00016050, 0x6db6db6c},
  	{0x00016058, 0x6c200000},
@@ -26,7 +24,7 @@ index 1d6658e..a10ece0 100644
  	{0x00016084, 0x9a68048c},
  	{0x00016088, 0x54214514},
  	{0x0001608c, 0x1203040b},
-@@ -981,7 +981,7 @@ static const u32 ar9462_2p0_radio_core[][2] = {
+@@ -981,7 +981,7 @@ static const u32 ar9462_2p0_radio_core[]
  	{0x00016144, 0x02084080},
  	{0x00016148, 0x000080c0},
  	{0x00016280, 0x050a0001},
@@ -35,6 +33,3 @@ index 1d6658e..a10ece0 100644
  	{0x00016288, 0x00000000},
  	{0x0001628c, 0xe3000000},
  	{0x00016290, 0xa1005080},
--- 
-1.7.10.rc1.22.gf5241
-

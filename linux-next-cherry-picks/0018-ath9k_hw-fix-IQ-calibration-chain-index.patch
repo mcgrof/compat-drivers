@@ -14,11 +14,9 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  drivers/net/wireless/ath/ath9k/ar9003_calib.c |   15 ++++++---------
  1 file changed, 6 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/ar9003_calib.c b/drivers/net/wireless/ath/ath9k/ar9003_calib.c
-index f83a4a2..d7deb8c 100644
 --- a/drivers/net/wireless/ath/ath9k/ar9003_calib.c
 +++ b/drivers/net/wireless/ath/ath9k/ar9003_calib.c
-@@ -653,7 +653,6 @@ static void ar9003_hw_detect_outlier(int *mp_coeff, int nmeasurement,
+@@ -653,7 +653,6 @@ static void ar9003_hw_detect_outlier(int
  }
  
  static void ar9003_hw_tx_iqcal_load_avg_2_passes(struct ath_hw *ah,
@@ -26,7 +24,7 @@ index f83a4a2..d7deb8c 100644
  						 struct coeff *coeff,
  						 bool is_reusable)
  {
-@@ -677,7 +676,9 @@ static void ar9003_hw_tx_iqcal_load_avg_2_passes(struct ath_hw *ah,
+@@ -677,7 +676,9 @@ static void ar9003_hw_tx_iqcal_load_avg_
  	}
  
  	/* Load the average of 2 passes */
@@ -37,7 +35,7 @@ index f83a4a2..d7deb8c 100644
  		nmeasurement = REG_READ_FIELD(ah,
  				AR_PHY_TX_IQCAL_STATUS_B0,
  				AR_PHY_CALIBRATED_GAINS_0);
-@@ -767,16 +768,13 @@ static void ar9003_hw_tx_iq_cal_post_proc(struct ath_hw *ah, bool is_reusable)
+@@ -767,16 +768,13 @@ static void ar9003_hw_tx_iq_cal_post_pro
  	};
  	struct coeff coeff;
  	s32 iq_res[6];
@@ -56,7 +54,7 @@ index f83a4a2..d7deb8c 100644
  		nmeasurement = REG_READ_FIELD(ah,
  				AR_PHY_TX_IQCAL_STATUS_B0,
  				AR_PHY_CALIBRATED_GAINS_0);
-@@ -839,8 +837,7 @@ static void ar9003_hw_tx_iq_cal_post_proc(struct ath_hw *ah, bool is_reusable)
+@@ -839,8 +837,7 @@ static void ar9003_hw_tx_iq_cal_post_pro
  				coeff.phs_coeff[i][im] -= 128;
  		}
  	}
@@ -66,6 +64,3 @@ index f83a4a2..d7deb8c 100644
  
  	return;
  
--- 
-1.7.10.rc1.22.gf5241
-

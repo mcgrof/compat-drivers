@@ -13,8 +13,6 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  drivers/net/wireless/ath/ath9k/mci.c |   14 +++++++-------
  1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/mci.c b/drivers/net/wireless/ath/ath9k/mci.c
-index e53df86..f0c8fa4 100644
 --- a/drivers/net/wireless/ath/ath9k/mci.c
 +++ b/drivers/net/wireless/ath/ath9k/mci.c
 @@ -20,7 +20,7 @@
@@ -26,7 +24,7 @@ index e53df86..f0c8fa4 100644
  
  static struct ath_mci_profile_info*
  ath_mci_find_profile(struct ath_mci_profile *mci,
-@@ -120,6 +120,8 @@ static void ath_mci_update_scheme(struct ath_softc *sc)
+@@ -120,6 +120,8 @@ static void ath_mci_update_scheme(struct
  	if (mci_hw->config & ATH_MCI_CONFIG_DISABLE_TUNING)
  		goto skip_tuning;
  
@@ -44,7 +42,7 @@ index e53df86..f0c8fa4 100644
  	if (btcoex->duty_cycle > ATH_MCI_MAX_DUTY_CYCLE)
  		btcoex->duty_cycle = ATH_MCI_MAX_DUTY_CYCLE;
  
-@@ -247,14 +249,12 @@ static void ath_mci_process_profile(struct ath_softc *sc,
+@@ -247,14 +249,12 @@ static void ath_mci_process_profile(stru
  	btcoex->btcoex_period = ATH_MCI_DEF_BT_PERIOD;
  	mci->aggr_limit = mci->num_sco ? 6 : 0;
  
@@ -62,6 +60,3 @@ index e53df86..f0c8fa4 100644
  
  	ieee80211_queue_work(sc->hw, &sc->mci_work);
  }
--- 
-1.7.10.rc1.22.gf5241
-

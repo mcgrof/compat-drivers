@@ -17,8 +17,6 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  5 files changed, 511 insertions(+), 479 deletions(-)
  create mode 100644 drivers/net/wireless/ath/ath9k/link.c
 
-diff --git a/drivers/net/wireless/ath/ath9k/Makefile b/drivers/net/wireless/ath/ath9k/Makefile
-index 3f0b8472..4d60fa8 100644
 --- a/drivers/net/wireless/ath/ath9k/Makefile
 +++ b/drivers/net/wireless/ath/ath9k/Makefile
 @@ -3,7 +3,8 @@ ath9k-y +=	beacon.o \
@@ -30,12 +28,10 @@ index 3f0b8472..4d60fa8 100644
 +		link.o
  
  ath9k-$(CONFIG_ATH9K_BTCOEX_SUPPORT) += mci.o
- ath9k-$(CONFIG_ATH9K_RATE_CONTROL) += rc.o
-diff --git a/drivers/net/wireless/ath/ath9k/ath9k.h b/drivers/net/wireless/ath/ath9k/ath9k.h
-index ce10d1a..d804416 100644
+ ath9k-$(CONFIG_COMPAT_ATH9K_RATE_CONTROL) += rc.o
 --- a/drivers/net/wireless/ath/ath9k/ath9k.h
 +++ b/drivers/net/wireless/ath/ath9k/ath9k.h
-@@ -326,6 +326,9 @@ int ath_rx_init(struct ath_softc *sc, int nbufs);
+@@ -327,6 +327,9 @@ int ath_rx_init(struct ath_softc *sc, in
  void ath_rx_cleanup(struct ath_softc *sc);
  int ath_rx_tasklet(struct ath_softc *sc, int flush, bool hp);
  struct ath_txq *ath_txq_setup(struct ath_softc *sc, int qtype, int subtype);
@@ -45,7 +41,7 @@ index ce10d1a..d804416 100644
  void ath_tx_cleanupq(struct ath_softc *sc, struct ath_txq *txq);
  bool ath_drain_all_txq(struct ath_softc *sc, bool retry_tx);
  void ath_draintxq(struct ath_softc *sc,
-@@ -415,9 +418,9 @@ int ath_beaconq_config(struct ath_softc *sc);
+@@ -416,9 +419,9 @@ int ath_beaconq_config(struct ath_softc
  void ath_set_beacon(struct ath_softc *sc);
  void ath9k_set_beaconing_status(struct ath_softc *sc, bool status);
  
@@ -58,7 +54,7 @@ index ce10d1a..d804416 100644
  
  #define ATH_STA_SHORT_CALINTERVAL 1000    /* 1 second */
  #define ATH_AP_SHORT_CALINTERVAL  100     /* 100 ms */
-@@ -429,6 +432,7 @@ void ath9k_set_beaconing_status(struct ath_softc *sc, bool status);
+@@ -430,6 +433,7 @@ void ath9k_set_beaconing_status(struct a
  
  #define ATH_PAPRD_TIMEOUT	100 /* msecs */
  
@@ -66,7 +62,7 @@ index ce10d1a..d804416 100644
  void ath_reset_work(struct work_struct *work);
  void ath_hw_check(struct work_struct *work);
  void ath_hw_pll_work(struct work_struct *work);
-@@ -437,6 +441,8 @@ void ath_start_rx_poll(struct ath_softc *sc, u8 nbeacon);
+@@ -438,6 +442,8 @@ void ath_start_rx_poll(struct ath_softc
  void ath_paprd_calibrate(struct work_struct *work);
  void ath_ani_calibrate(unsigned long data);
  void ath_start_ani(struct ath_common *common);
@@ -75,15 +71,12 @@ index ce10d1a..d804416 100644
  
  /**********/
  /* BTCOEX */
-@@ -741,5 +747,4 @@ void ath9k_calculate_iter_data(struct ieee80211_hw *hw,
+@@ -742,5 +748,4 @@ void ath9k_calculate_iter_data(struct ie
  			       struct ieee80211_vif *vif,
  			       struct ath9k_vif_iter_data *iter_data);
  
 -
  #endif /* ATH9K_H */
-diff --git a/drivers/net/wireless/ath/ath9k/link.c b/drivers/net/wireless/ath/ath9k/link.c
-new file mode 100644
-index 0000000..7368b96
 --- /dev/null
 +++ b/drivers/net/wireless/ath/ath9k/link.c
 @@ -0,0 +1,497 @@
@@ -584,11 +577,9 @@ index 0000000..7368b96
 +
 +	return ret;
 +}
-diff --git a/drivers/net/wireless/ath/ath9k/xmit.c b/drivers/net/wireless/ath/ath9k/xmit.c
-index d59dd01..6619a39 100644
 --- a/drivers/net/wireless/ath/ath9k/xmit.c
 +++ b/drivers/net/wireless/ath/ath9k/xmit.c
-@@ -105,19 +105,19 @@ static int ath_max_4ms_framelen[4][32] = {
+@@ -105,19 +105,19 @@ static int ath_max_4ms_framelen[4][32] =
  /* Aggregation logic */
  /*********************/
  
@@ -611,7 +602,7 @@ index d59dd01..6619a39 100644
  	__releases(&txq->axq_lock)
  {
  	struct sk_buff_head q;
-@@ -2231,46 +2231,6 @@ static void ath_tx_processq(struct ath_softc *sc, struct ath_txq *txq)
+@@ -2236,46 +2236,6 @@ static void ath_tx_processq(struct ath_s
  	ath_txq_unlock_complete(sc, txq);
  }
  
@@ -658,9 +649,6 @@ index d59dd01..6619a39 100644
  void ath_tx_tasklet(struct ath_softc *sc)
  {
  	struct ath_hw *ah = sc->sc_ah;
--- 
-1.7.10.rc1.22.gf5241
-
 --- a/drivers/net/wireless/ath/ath9k/main.c
 +++ b/drivers/net/wireless/ath/ath9k/main.c
 @@ -144,84 +144,6 @@ void ath9k_ps_restore(struct ath_softc *
