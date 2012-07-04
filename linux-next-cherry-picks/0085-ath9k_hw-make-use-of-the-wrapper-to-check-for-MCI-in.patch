@@ -13,11 +13,9 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  drivers/net/wireless/ath/ath9k/gpio.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/gpio.c b/drivers/net/wireless/ath/ath9k/gpio.c
-index 26032cb..9ae6a4d 100644
 --- a/drivers/net/wireless/ath/ath9k/gpio.c
 +++ b/drivers/net/wireless/ath/ath9k/gpio.c
-@@ -416,7 +416,7 @@ int ath9k_init_btcoex(struct ath_softc *sc)
+@@ -416,7 +416,7 @@ int ath9k_init_btcoex(struct ath_softc *
  		txq = sc->tx.txq_map[WME_AC_BE];
  		ath9k_hw_init_btcoex_hw(sc->sc_ah, txq->axq_qnum);
  		sc->btcoex.bt_stomp_type = ATH_BTCOEX_STOMP_LOW;
@@ -26,6 +24,3 @@ index 26032cb..9ae6a4d 100644
  			sc->btcoex.duty_cycle = ATH_BTCOEX_DEF_DUTY_CYCLE;
  			INIT_LIST_HEAD(&sc->btcoex.mci.info);
  
--- 
-1.7.11.1
-

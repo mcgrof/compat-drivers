@@ -46,11 +46,9 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  drivers/net/wireless/ath/ath9k/main.c | 6 +++---
  1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/main.c b/drivers/net/wireless/ath/ath9k/main.c
-index e2e6958..c14cf5a 100644
 --- a/drivers/net/wireless/ath/ath9k/main.c
 +++ b/drivers/net/wireless/ath/ath9k/main.c
-@@ -150,9 +150,9 @@ static void __ath_cancel_work(struct ath_softc *sc)
+@@ -150,9 +150,9 @@ static void __ath_cancel_work(struct ath
  	cancel_work_sync(&sc->hw_check_work);
  	cancel_delayed_work_sync(&sc->tx_complete_work);
  	cancel_delayed_work_sync(&sc->hw_pll_work);
@@ -63,6 +61,3 @@ index e2e6958..c14cf5a 100644
  }
  
  static void ath_cancel_work(struct ath_softc *sc)
--- 
-1.7.11.1
-

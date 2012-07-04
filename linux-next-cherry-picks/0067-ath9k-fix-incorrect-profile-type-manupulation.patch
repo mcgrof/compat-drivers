@@ -16,11 +16,9 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  drivers/net/wireless/ath/ath9k/mci.c | 15 ++++++++++++++-
  1 file changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/mci.c b/drivers/net/wireless/ath/ath9k/mci.c
-index 7d34a50..c40e568 100644
 --- a/drivers/net/wireless/ath/ath9k/mci.c
 +++ b/drivers/net/wireless/ath/ath9k/mci.c
-@@ -233,8 +233,21 @@ static void ath_mci_process_profile(struct ath_softc *sc,
+@@ -233,8 +233,21 @@ static void ath_mci_process_profile(stru
  	struct ath_mci_profile_info *entry = NULL;
  
  	entry = ath_mci_find_profile(mci, info);
@@ -43,6 +41,3 @@ index 7d34a50..c40e568 100644
  
  	if (info->start) {
  		if (!entry && !ath_mci_add_profile(common, mci, info))
--- 
-1.7.11.1
-

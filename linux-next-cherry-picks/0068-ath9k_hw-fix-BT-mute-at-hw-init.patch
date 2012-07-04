@@ -18,11 +18,9 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  drivers/net/wireless/ath/ath9k/reg.h        | 4 ----
  2 files changed, 8 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/ar9003_mci.c b/drivers/net/wireless/ath/ath9k/ar9003_mci.c
-index cc2853a..867238f 100644
 --- a/drivers/net/wireless/ath/ath9k/ar9003_mci.c
 +++ b/drivers/net/wireless/ath/ath9k/ar9003_mci.c
-@@ -767,10 +767,6 @@ static void ar9003_mci_mute_bt(struct ath_hw *ah)
+@@ -767,10 +767,6 @@ static void ar9003_mci_mute_bt(struct at
  {
  	/* disable all MCI messages */
  	REG_WRITE(ah, AR_MCI_MSG_ATTRIBUTES_TABLE, 0xffff0000);
@@ -33,8 +31,6 @@ index cc2853a..867238f 100644
  	REG_SET_BIT(ah, AR_MCI_TX_CTRL, AR_MCI_TX_CTRL_DISABLE_LNA_UPDATE);
  
  	/* wait pending HW messages to flush out */
-diff --git a/drivers/net/wireless/ath/ath9k/reg.h b/drivers/net/wireless/ath/ath9k/reg.h
-index 75acefb..5046b28 100644
 --- a/drivers/net/wireless/ath/ath9k/reg.h
 +++ b/drivers/net/wireless/ath/ath9k/reg.h
 @@ -2162,10 +2162,6 @@ enum {
@@ -48,6 +44,3 @@ index 75acefb..5046b28 100644
  #define AR_BTCOEX_MAX_TXPWR(_x)				(0x18c0 + ((_x) << 2))
  #define AR_BTCOEX_WL_LNA				0x1940
  #define AR_BTCOEX_RFGAIN_CTRL				0x1944
--- 
-1.7.11.1
-

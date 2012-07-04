@@ -17,11 +17,9 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  drivers/net/wireless/ath/ath9k/hw.h         |   9 +-
  4 files changed, 19 insertions(+), 468 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/ani.c b/drivers/net/wireless/ath/ath9k/ani.c
-index 4949d8b..175c3f5 100644
 --- a/drivers/net/wireless/ath/ath9k/ani.c
 +++ b/drivers/net/wireless/ath/ath9k/ani.c
-@@ -104,11 +104,6 @@ static const struct ani_cck_level_entry cck_level_table[] = {
+@@ -104,11 +104,6 @@ static const struct ani_cck_level_entry
  #define ATH9K_ANI_CCK_DEF_LEVEL \
  	2 /* default level - matches the INI settings */
  
@@ -33,7 +31,7 @@ index 4949d8b..175c3f5 100644
  static void ath9k_hw_update_mibstats(struct ath_hw *ah,
  				     struct ath9k_mib_stats *stats)
  {
-@@ -131,11 +126,6 @@ static void ath9k_ani_restart(struct ath_hw *ah)
+@@ -131,11 +126,6 @@ static void ath9k_ani_restart(struct ath
  	aniState = &ah->curchan->ani;
  	aniState->listenTime = 0;
  
@@ -45,7 +43,7 @@ index 4949d8b..175c3f5 100644
  	ath_dbg(common, ANI, "Writing ofdmbase=%u   cckbase=%u\n",
  		ofdm_base, cck_base);
  
-@@ -154,110 +144,6 @@ static void ath9k_ani_restart(struct ath_hw *ah)
+@@ -154,110 +144,6 @@ static void ath9k_ani_restart(struct ath
  	aniState->cckPhyErrCount = 0;
  }
  
@@ -156,7 +154,7 @@ index 4949d8b..175c3f5 100644
  /* Adjust the OFDM Noise Immunity Level */
  static void ath9k_hw_set_ofdm_nil(struct ath_hw *ah, u8 immunityLevel)
  {
-@@ -309,11 +195,6 @@ static void ath9k_hw_ani_ofdm_err_trigger(struct ath_hw *ah)
+@@ -309,11 +195,6 @@ static void ath9k_hw_ani_ofdm_err_trigge
  	if (!DO_ANI(ah))
  		return;
  
@@ -168,7 +166,7 @@ index 4949d8b..175c3f5 100644
  	aniState = &ah->curchan->ani;
  
  	if (aniState->ofdmNoiseImmunityLevel < ATH9K_ANI_OFDM_MAX_LEVEL)
-@@ -371,70 +252,12 @@ static void ath9k_hw_ani_cck_err_trigger(struct ath_hw *ah)
+@@ -371,70 +252,12 @@ static void ath9k_hw_ani_cck_err_trigger
  	if (!DO_ANI(ah))
  		return;
  
@@ -239,7 +237,7 @@ index 4949d8b..175c3f5 100644
  /*
   * only lower either OFDM or CCK errors per turn
   * we lower the other one next time
-@@ -445,11 +268,6 @@ static void ath9k_hw_ani_lower_immunity(struct ath_hw *ah)
+@@ -445,11 +268,6 @@ static void ath9k_hw_ani_lower_immunity(
  
  	aniState = &ah->curchan->ani;
  
@@ -251,7 +249,7 @@ index 4949d8b..175c3f5 100644
  	/* lower OFDM noise immunity */
  	if (aniState->ofdmNoiseImmunityLevel > 0 &&
  	    (aniState->ofdmsTurn || aniState->cckNoiseImmunityLevel == 0)) {
-@@ -462,71 +280,6 @@ static void ath9k_hw_ani_lower_immunity(struct ath_hw *ah)
+@@ -462,71 +280,6 @@ static void ath9k_hw_ani_lower_immunity(
  		ath9k_hw_set_cck_nil(ah, aniState->cckNoiseImmunityLevel - 1);
  }
  
@@ -323,7 +321,7 @@ index 4949d8b..175c3f5 100644
  /*
   * Restore the ANI parameters in the HAL and reset the statistics.
   * This routine should be called for every hardware reset and for
-@@ -541,9 +294,6 @@ void ath9k_ani_reset(struct ath_hw *ah, bool is_scanning)
+@@ -541,9 +294,6 @@ void ath9k_ani_reset(struct ath_hw *ah,
  	if (!DO_ANI(ah))
  		return;
  
@@ -333,7 +331,7 @@ index 4949d8b..175c3f5 100644
  	BUG_ON(aniState == NULL);
  	ah->stats.ast_ani_reset++;
  
-@@ -640,11 +390,6 @@ static bool ath9k_hw_ani_read_counters(struct ath_hw *ah)
+@@ -640,11 +390,6 @@ static bool ath9k_hw_ani_read_counters(s
  		return false;
  	}
  
@@ -345,7 +343,7 @@ index 4949d8b..175c3f5 100644
  	aniState->listenTime += listenTime;
  
  	ath9k_hw_update_mibstats(ah, &ah->ah_mibStats);
-@@ -652,26 +397,6 @@ static bool ath9k_hw_ani_read_counters(struct ath_hw *ah)
+@@ -652,26 +397,6 @@ static bool ath9k_hw_ani_read_counters(s
  	phyCnt1 = REG_READ(ah, AR_PHY_ERR_1);
  	phyCnt2 = REG_READ(ah, AR_PHY_ERR_2);
  
@@ -372,7 +370,7 @@ index 4949d8b..175c3f5 100644
  	ofdmPhyErrCnt = phyCnt1 - ofdm_base;
  	ah->stats.ast_ani_ofdmerrs +=
  		ofdmPhyErrCnt - aniState->ofdmPhyErrCount;
-@@ -810,9 +535,6 @@ void ath9k_hw_proc_mib_event(struct ath_hw *ah)
+@@ -810,9 +535,6 @@ void ath9k_hw_proc_mib_event(struct ath_
  	if (((phyCnt1 & AR_MIBCNT_INTRMASK) == AR_MIBCNT_INTRMASK) ||
  	    ((phyCnt2 & AR_MIBCNT_INTRMASK) == AR_MIBCNT_INTRMASK)) {
  
@@ -382,22 +380,22 @@ index 4949d8b..175c3f5 100644
  		/* NB: always restart to insure the h/w counters are reset */
  		ath9k_ani_restart(ah);
  	}
-@@ -843,45 +565,28 @@ void ath9k_hw_ani_init(struct ath_hw *ah)
+@@ -843,45 +565,28 @@ void ath9k_hw_ani_init(struct ath_hw *ah
  
  	ath_dbg(common, ANI, "Initialize ANI\n");
  
 -	if (use_new_ani(ah)) {
 -		ah->config.ofdm_trig_high = ATH9K_ANI_OFDM_TRIG_HIGH_NEW;
 -		ah->config.ofdm_trig_low = ATH9K_ANI_OFDM_TRIG_LOW_NEW;
--
++	ah->config.ofdm_trig_high = ATH9K_ANI_OFDM_TRIG_HIGH_NEW;
++	ah->config.ofdm_trig_low = ATH9K_ANI_OFDM_TRIG_LOW_NEW;
+ 
 -		ah->config.cck_trig_high = ATH9K_ANI_CCK_TRIG_HIGH_NEW;
 -		ah->config.cck_trig_low = ATH9K_ANI_CCK_TRIG_LOW_NEW;
 -	} else {
 -		ah->config.ofdm_trig_high = ATH9K_ANI_OFDM_TRIG_HIGH_OLD;
 -		ah->config.ofdm_trig_low = ATH9K_ANI_OFDM_TRIG_LOW_OLD;
-+	ah->config.ofdm_trig_high = ATH9K_ANI_OFDM_TRIG_HIGH_NEW;
-+	ah->config.ofdm_trig_low = ATH9K_ANI_OFDM_TRIG_LOW_NEW;
- 
+-
 -		ah->config.cck_trig_high = ATH9K_ANI_CCK_TRIG_HIGH_OLD;
 -		ah->config.cck_trig_low = ATH9K_ANI_CCK_TRIG_LOW_OLD;
 -	}
@@ -428,21 +426,20 @@ index 4949d8b..175c3f5 100644
 -			ani->spurImmunityLevel =
 -				ATH9K_ANI_SPUR_IMMUNE_LVL_OLD;
 -			ani->firstepLevel = ATH9K_ANI_FIRSTEP_LVL_OLD;
--
--			ani->cckWeakSigThreshold =
--				ATH9K_ANI_CCK_WEAK_SIG_THR;
--		}
 +		if (AR_SREV_9300_20_OR_LATER(ah))
 +			ani->mrcCCKOff =
 +				!ATH9K_ANI_ENABLE_MRC_CCK;
 +		else
 +			ani->mrcCCKOff = true;
-+
+ 
+-			ani->cckWeakSigThreshold =
+-				ATH9K_ANI_CCK_WEAK_SIG_THR;
+-		}
 +		ani->ofdmsTurn = true;
  
  		ani->rssiThrHigh = ATH9K_ANI_RSSI_THR_HIGH;
  		ani->rssiThrLow = ATH9K_ANI_RSSI_THR_LOW;
-@@ -895,13 +600,8 @@ void ath9k_hw_ani_init(struct ath_hw *ah)
+@@ -895,13 +600,8 @@ void ath9k_hw_ani_init(struct ath_hw *ah
  	 * since we expect some ongoing maintenance on the tables, let's sanity
  	 * check here default level should not modify INI setting.
  	 */
@@ -458,11 +455,9 @@ index 4949d8b..175c3f5 100644
  
  	if (ah->config.enable_ani)
  		ah->proc_phyerr |= HAL_PROCESS_ANI;
-diff --git a/drivers/net/wireless/ath/ath9k/ar5008_phy.c b/drivers/net/wireless/ath/ath9k/ar5008_phy.c
-index d2fb78b..736747c 100644
 --- a/drivers/net/wireless/ath/ath9k/ar5008_phy.c
 +++ b/drivers/net/wireless/ath/ath9k/ar5008_phy.c
-@@ -995,141 +995,6 @@ static u32 ar5008_hw_compute_pll_control(struct ath_hw *ah,
+@@ -995,141 +995,6 @@ static u32 ar5008_hw_compute_pll_control
  	return pll;
  }
  
@@ -604,7 +599,7 @@ index d2fb78b..736747c 100644
  static bool ar5008_hw_ani_control_new(struct ath_hw *ah,
  				      enum ath9k_ani_cmd cmd,
  				      int param)
-@@ -1545,11 +1410,8 @@ void ar5008_hw_attach_phy_ops(struct ath_hw *ah)
+@@ -1545,11 +1410,8 @@ void ar5008_hw_attach_phy_ops(struct ath
  	priv_ops->do_getnf = ar5008_hw_do_getnf;
  	priv_ops->set_radar_params = ar5008_hw_set_radar_params;
  
@@ -618,8 +613,6 @@ index d2fb78b..736747c 100644
  
  	if (AR_SREV_9100(ah) || AR_SREV_9160_10_OR_LATER(ah))
  		priv_ops->compute_pll_control = ar9160_hw_compute_pll_control;
-diff --git a/drivers/net/wireless/ath/ath9k/ar9002_hw.c b/drivers/net/wireless/ath/ath9k/ar9002_hw.c
-index d9a69fc..edf21ea 100644
 --- a/drivers/net/wireless/ath/ath9k/ar9002_hw.c
 +++ b/drivers/net/wireless/ath/ath9k/ar9002_hw.c
 @@ -21,10 +21,6 @@
@@ -633,11 +626,9 @@ index d9a69fc..edf21ea 100644
  /* General hardware code for the A5008/AR9001/AR9002 hadware families */
  
  static void ar9002_hw_init_mode_regs(struct ath_hw *ah)
-diff --git a/drivers/net/wireless/ath/ath9k/hw.h b/drivers/net/wireless/ath/ath9k/hw.h
-index 03d5909..111a046 100644
 --- a/drivers/net/wireless/ath/ath9k/hw.h
 +++ b/drivers/net/wireless/ath/ath9k/hw.h
-@@ -1019,14 +1019,7 @@ void ar9002_hw_attach_ops(struct ath_hw *ah);
+@@ -1019,14 +1019,7 @@ void ar9002_hw_attach_ops(struct ath_hw
  void ar9003_hw_attach_ops(struct ath_hw *ah);
  
  void ar9002_hw_load_ani_reg(struct ath_hw *ah, struct ath9k_channel *chan);
@@ -653,6 +644,3 @@ index 03d5909..111a046 100644
  void ath9k_ani_reset(struct ath_hw *ah, bool is_scanning);
  void ath9k_hw_proc_mib_event(struct ath_hw *ah);
  void ath9k_hw_ani_monitor(struct ath_hw *ah, struct ath9k_channel *chan);
--- 
-1.7.11.1
-

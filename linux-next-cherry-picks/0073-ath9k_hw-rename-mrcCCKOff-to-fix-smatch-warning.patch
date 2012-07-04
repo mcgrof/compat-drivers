@@ -18,11 +18,9 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  drivers/net/wireless/ath/ath9k/ar9003_phy.c | 10 +++++-----
  4 files changed, 10 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/ani.c b/drivers/net/wireless/ath/ath9k/ani.c
-index a90aa0b..7ebc346 100644
 --- a/drivers/net/wireless/ath/ath9k/ani.c
 +++ b/drivers/net/wireless/ath/ath9k/ani.c
-@@ -238,7 +238,7 @@ static void ath9k_hw_set_cck_nil(struct ath_hw *ah, u_int8_t immunityLevel)
+@@ -238,7 +238,7 @@ static void ath9k_hw_set_cck_nil(struct
  	if (!AR_SREV_9300_20_OR_LATER(ah) || AR_SREV_9485(ah))
  		return;
  
@@ -31,7 +29,7 @@ index a90aa0b..7ebc346 100644
  		ath9k_hw_ani_control(ah,
  				     ATH9K_ANI_MRC_CCK,
  				     entry_cck->mrc_cck_on);
-@@ -525,11 +525,7 @@ void ath9k_hw_ani_init(struct ath_hw *ah)
+@@ -525,11 +525,7 @@ void ath9k_hw_ani_init(struct ath_hw *ah
  
  		ani->firstepLevel = ATH9K_ANI_FIRSTEP_LVL;
  
@@ -44,8 +42,6 @@ index a90aa0b..7ebc346 100644
  
  		ani->ofdmsTurn = true;
  
-diff --git a/drivers/net/wireless/ath/ath9k/ani.h b/drivers/net/wireless/ath/ath9k/ani.h
-index 79c85fc..e9d841b 100644
 --- a/drivers/net/wireless/ath/ath9k/ani.h
 +++ b/drivers/net/wireless/ath/ath9k/ani.h
 @@ -62,8 +62,6 @@
@@ -66,11 +62,9 @@ index 79c85fc..e9d841b 100644
  	u8 spurImmunityLevel;
  	u8 firstepLevel;
  	u8 ofdmWeakSigDetect;
-diff --git a/drivers/net/wireless/ath/ath9k/ar5008_phy.c b/drivers/net/wireless/ath/ath9k/ar5008_phy.c
-index b6efcd9..874186b 100644
 --- a/drivers/net/wireless/ath/ath9k/ar5008_phy.c
 +++ b/drivers/net/wireless/ath/ath9k/ar5008_phy.c
-@@ -1234,7 +1234,7 @@ static bool ar5008_hw_ani_control_new(struct ath_hw *ah,
+@@ -1234,7 +1234,7 @@ static bool ar5008_hw_ani_control_new(st
  		aniState->spurImmunityLevel,
  		aniState->ofdmWeakSigDetect ? "on" : "off",
  		aniState->firstepLevel,
@@ -79,7 +73,7 @@ index b6efcd9..874186b 100644
  		aniState->listenTime,
  		aniState->ofdmPhyErrCount,
  		aniState->cckPhyErrCount);
-@@ -1322,7 +1322,7 @@ static void ar5008_hw_ani_cache_ini_regs(struct ath_hw *ah)
+@@ -1322,7 +1322,7 @@ static void ar5008_hw_ani_cache_ini_regs
  	aniState->spurImmunityLevel = ATH9K_ANI_SPUR_IMMUNE_LVL;
  	aniState->firstepLevel = ATH9K_ANI_FIRSTEP_LVL;
  	aniState->ofdmWeakSigDetect = ATH9K_ANI_USE_OFDM_WEAK_SIG;
@@ -88,11 +82,9 @@ index b6efcd9..874186b 100644
  }
  
  static void ar5008_hw_set_nf_limits(struct ath_hw *ah)
-diff --git a/drivers/net/wireless/ath/ath9k/ar9003_phy.c b/drivers/net/wireless/ath/ath9k/ar9003_phy.c
-index ec8a8d5..f1975b9 100644
 --- a/drivers/net/wireless/ath/ath9k/ar9003_phy.c
 +++ b/drivers/net/wireless/ath/ath9k/ar9003_phy.c
-@@ -979,16 +979,16 @@ static bool ar9003_hw_ani_control(struct ath_hw *ah,
+@@ -979,16 +979,16 @@ static bool ar9003_hw_ani_control(struct
  			      AR_PHY_MRC_CCK_ENABLE, is_on);
  		REG_RMW_FIELD(ah, AR_PHY_MRC_CCK_CTRL,
  			      AR_PHY_MRC_CCK_MUX_REG, is_on);
@@ -112,7 +104,7 @@ index ec8a8d5..f1975b9 100644
  		}
  	break;
  	}
-@@ -1004,7 +1004,7 @@ static bool ar9003_hw_ani_control(struct ath_hw *ah,
+@@ -1004,7 +1004,7 @@ static bool ar9003_hw_ani_control(struct
  		aniState->spurImmunityLevel,
  		aniState->ofdmWeakSigDetect ? "on" : "off",
  		aniState->firstepLevel,
@@ -121,7 +113,7 @@ index ec8a8d5..f1975b9 100644
  		aniState->listenTime,
  		aniState->ofdmPhyErrCount,
  		aniState->cckPhyErrCount);
-@@ -1114,7 +1114,7 @@ static void ar9003_hw_ani_cache_ini_regs(struct ath_hw *ah)
+@@ -1114,7 +1114,7 @@ static void ar9003_hw_ani_cache_ini_regs
  	aniState->spurImmunityLevel = ATH9K_ANI_SPUR_IMMUNE_LVL;
  	aniState->firstepLevel = ATH9K_ANI_FIRSTEP_LVL;
  	aniState->ofdmWeakSigDetect = ATH9K_ANI_USE_OFDM_WEAK_SIG;
@@ -130,6 +122,3 @@ index ec8a8d5..f1975b9 100644
  }
  
  static void ar9003_hw_set_radar_params(struct ath_hw *ah,
--- 
-1.7.11.1
-

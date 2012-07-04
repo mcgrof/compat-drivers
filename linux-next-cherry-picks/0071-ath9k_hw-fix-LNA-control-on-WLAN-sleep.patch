@@ -14,11 +14,9 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  drivers/net/wireless/ath/ath9k/ar9003_mci.c | 17 +++++++++++++++--
  1 file changed, 15 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/ar9003_mci.c b/drivers/net/wireless/ath/ath9k/ar9003_mci.c
-index 867238f..6155837 100644
 --- a/drivers/net/wireless/ath/ath9k/ar9003_mci.c
 +++ b/drivers/net/wireless/ath/ath9k/ar9003_mci.c
-@@ -1015,9 +1015,14 @@ void ar9003_mci_2g5g_switch(struct ath_hw *ah, bool force)
+@@ -1015,9 +1015,14 @@ void ar9003_mci_2g5g_switch(struct ath_h
  		return;
  
  	if (mci->is_2g) {
@@ -35,7 +33,7 @@ index 867238f..6155837 100644
  			    AR_MCI_TX_CTRL_DISABLE_LNA_UPDATE);
  		REG_CLR_BIT(ah, AR_PHY_GLB_CONTROL,
  			    AR_BTCOEX_CTRL_BT_OWN_SPDT_CTRL);
-@@ -1025,6 +1030,11 @@ void ar9003_mci_2g5g_switch(struct ath_hw *ah, bool force)
+@@ -1025,6 +1030,11 @@ void ar9003_mci_2g5g_switch(struct ath_h
  		if (!(mci->config & ATH_MCI_CONFIG_DISABLE_OSLA))
  			ar9003_mci_osla_setup(ah, true);
  	} else {
@@ -47,7 +45,7 @@ index 867238f..6155837 100644
  		REG_SET_BIT(ah, AR_MCI_TX_CTRL,
  			    AR_MCI_TX_CTRL_DISABLE_LNA_UPDATE);
  		REG_SET_BIT(ah, AR_PHY_GLB_CONTROL,
-@@ -1251,6 +1261,9 @@ void ar9003_mci_bt_gain_ctrl(struct ath_hw *ah)
+@@ -1251,6 +1261,9 @@ void ar9003_mci_bt_gain_ctrl(struct ath_
  
  	ath_dbg(common, MCI, "Give LNA and SPDT control to BT\n");
  
@@ -57,6 +55,3 @@ index 867238f..6155837 100644
  	REG_SET_BIT(ah, AR_PHY_GLB_CONTROL, AR_BTCOEX_CTRL_BT_OWN_SPDT_CTRL);
  	mci->is_2g = false;
  	mci->update_2g5g = true;
--- 
-1.7.11.1
-

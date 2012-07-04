@@ -13,11 +13,9 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  drivers/net/wireless/ath/ath9k/mci.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/mci.c b/drivers/net/wireless/ath/ath9k/mci.c
-index c40e568..64cc782 100644
 --- a/drivers/net/wireless/ath/ath9k/mci.c
 +++ b/drivers/net/wireless/ath/ath9k/mci.c
-@@ -348,7 +348,7 @@ static void ath_mci_msg(struct ath_softc *sc, u8 opcode, u8 *rx_payload)
+@@ -348,7 +348,7 @@ static void ath_mci_msg(struct ath_softc
  
  		seq_num = *((u32 *)(rx_payload + 12));
  		ath_dbg(common, MCI,
@@ -26,6 +24,3 @@ index c40e568..64cc782 100644
  			profile_status.is_link, profile_status.conn_handle,
  			profile_status.is_critical, seq_num);
  
--- 
-1.7.11.1
-

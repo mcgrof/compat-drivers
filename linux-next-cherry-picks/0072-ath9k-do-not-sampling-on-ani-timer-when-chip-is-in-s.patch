@@ -17,11 +17,9 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  drivers/net/wireless/ath/ath9k/link.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/link.c b/drivers/net/wireless/ath/ath9k/link.c
-index a105c94..91650fe 100644
 --- a/drivers/net/wireless/ath/ath9k/link.c
 +++ b/drivers/net/wireless/ath/ath9k/link.c
-@@ -407,6 +407,7 @@ void ath_ani_calibrate(unsigned long data)
+@@ -407,6 +407,7 @@ void ath_ani_calibrate(unsigned long dat
  		longcal ? "long" : "", shortcal ? "short" : "",
  		aniflag ? "ani" : "", common->ani.caldone ? "true" : "false");
  
@@ -37,6 +35,3 @@ index a105c94..91650fe 100644
  	cal_interval = ATH_LONG_CALINTERVAL;
  	if (sc->sc_ah->config.enable_ani)
  		cal_interval = min(cal_interval,
--- 
-1.7.11.1
-

@@ -45,11 +45,9 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  drivers/net/wireless/ath/ath9k/recv.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/recv.c b/drivers/net/wireless/ath/ath9k/recv.c
-index 599667a..0735aeb 100644
 --- a/drivers/net/wireless/ath/ath9k/recv.c
 +++ b/drivers/net/wireless/ath/ath9k/recv.c
-@@ -695,9 +695,9 @@ static bool ath_edma_get_buffers(struct ath_softc *sc,
+@@ -658,9 +658,9 @@ static bool ath_edma_get_buffers(struct
  			__skb_unlink(skb, &rx_edma->rx_fifo);
  			list_add_tail(&bf->list, &sc->rx.rxbuf);
  			ath_rx_edma_buf_link(sc, qtype);
@@ -61,6 +59,3 @@ index 599667a..0735aeb 100644
  	}
  
  	*dest = bf;
--- 
-1.7.11.1
-

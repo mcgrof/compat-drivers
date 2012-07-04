@@ -14,11 +14,9 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  drivers/net/wireless/ath/ath9k/ar9003_phy.c | 4 +---
  1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/ar9003_phy.c b/drivers/net/wireless/ath/ath9k/ar9003_phy.c
-index f1975b9..6b91ebb 100644
 --- a/drivers/net/wireless/ath/ath9k/ar9003_phy.c
 +++ b/drivers/net/wireless/ath/ath9k/ar9003_phy.c
-@@ -173,7 +173,7 @@ static void ar9003_hw_spur_mitigate_mrc_cck(struct ath_hw *ah,
+@@ -173,7 +173,7 @@ static void ar9003_hw_spur_mitigate_mrc_
  	int cur_bb_spur, negative = 0, cck_spur_freq;
  	int i;
  	int range, max_spur_cnts, synth_freq;
@@ -27,7 +25,7 @@ index f1975b9..6b91ebb 100644
  
  	/*
  	 * Need to verify range +/- 10 MHz in control channel, otherwise spur
-@@ -181,8 +181,6 @@ static void ar9003_hw_spur_mitigate_mrc_cck(struct ath_hw *ah,
+@@ -181,8 +181,6 @@ static void ar9003_hw_spur_mitigate_mrc_
  	 */
  
  	if (AR_SREV_9485(ah) || AR_SREV_9340(ah) || AR_SREV_9330(ah)) {
@@ -36,6 +34,3 @@ index f1975b9..6b91ebb 100644
  		if (spur_fbin_ptr[0] == 0) /* No spur */
  			return;
  		max_spur_cnts = 5;
--- 
-1.7.11.1
-

@@ -21,8 +21,6 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  .../net/wireless/ath/ath9k/ar9580_1p0_initvals.h   |  772 +---------
  7 files changed, 652 insertions(+), 2879 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/ar9003_2p2_initvals.h b/drivers/net/wireless/ath/ath9k/ar9003_2p2_initvals.h
-index 952cb2b..89bf94d 100644
 --- a/drivers/net/wireless/ath/ath9k/ar9003_2p2_initvals.h
 +++ b/drivers/net/wireless/ath/ath9k/ar9003_2p2_initvals.h
 @@ -1,5 +1,6 @@
@@ -32,11 +30,9 @@ index 952cb2b..89bf94d 100644
   *
   * Permission to use, copy, modify, and/or distribute this software for any
   * purpose with or without fee is hereby granted, provided that the above
-diff --git a/drivers/net/wireless/ath/ath9k/ar9330_1p1_initvals.h b/drivers/net/wireless/ath/ath9k/ar9330_1p1_initvals.h
-index 1bd3a3d..6e1756b 100644
 --- a/drivers/net/wireless/ath/ath9k/ar9330_1p1_initvals.h
 +++ b/drivers/net/wireless/ath/ath9k/ar9330_1p1_initvals.h
-@@ -337,12 +337,7 @@ static const u32 ar9331_modes_low_ob_db_tx_gain_1p1[][5] = {
+@@ -337,12 +337,7 @@ static const u32 ar9331_modes_low_ob_db_
  	{0x00016284, 0x14d3f000, 0x14d3f000, 0x14d3f000, 0x14d3f000},
  };
  
@@ -50,7 +46,7 @@ index 1bd3a3d..6e1756b 100644
  
  static const u32 ar9331_1p1_xtal_25M[][2] = {
  	/* Addr      allmodes  */
-@@ -783,17 +778,7 @@ static const u32 ar9331_modes_high_power_tx_gain_1p1[][5] = {
+@@ -783,17 +778,7 @@ static const u32 ar9331_modes_high_power
  	{0x00016284, 0x14d3f000, 0x14d3f000, 0x14d3f000, 0x14d3f000},
  };
  
@@ -69,7 +65,7 @@ index 1bd3a3d..6e1756b 100644
  
  static const u32 ar9331_1p1_soc_preamble[][2] = {
  	/* Addr      allmodes  */
-@@ -1112,38 +1097,4 @@ static const u32 ar9331_common_tx_gain_offset1_1[][1] = {
+@@ -1112,38 +1097,4 @@ static const u32 ar9331_common_tx_gain_o
  	{0x00000000},
  };
  
@@ -108,8 +104,6 @@ index 1bd3a3d..6e1756b 100644
 -};
 -
  #endif /* INITVALS_9330_1P1_H */
-diff --git a/drivers/net/wireless/ath/ath9k/ar9330_1p2_initvals.h b/drivers/net/wireless/ath/ath9k/ar9330_1p2_initvals.h
-index 0e6ca08..57ed8a1 100644
 --- a/drivers/net/wireless/ath/ath9k/ar9330_1p2_initvals.h
 +++ b/drivers/net/wireless/ath/ath9k/ar9330_1p2_initvals.h
 @@ -1,5 +1,6 @@
@@ -131,7 +125,7 @@ index 0e6ca08..57ed8a1 100644
  	{0x0000a410, 0x000050d7, 0x000050d7, 0x000050d7, 0x000050d7},
  	{0x0000a500, 0x00022200, 0x00022200, 0x00000000, 0x00000000},
  	{0x0000a504, 0x05062002, 0x05062002, 0x04000002, 0x04000002},
-@@ -102,8 +103,14 @@ static const u32 ar9331_modes_lowest_ob_db_tx_gain_1p2[][5] = {
+@@ -102,8 +103,14 @@ static const u32 ar9331_modes_lowest_ob_
  	{0x0000a63c, 0x04011004, 0x04011004, 0x04011004, 0x04011004},
  };
  
@@ -147,7 +141,7 @@ index 0e6ca08..57ed8a1 100644
  	{0x00009810, 0xd00a8005, 0xd00a8005, 0xd00a8005, 0xd00a8005},
  	{0x00009820, 0x206a002e, 0x206a002e, 0x206a002e, 0x206a002e},
  	{0x00009824, 0x5ac640d0, 0x5ac640d0, 0x5ac640d0, 0x5ac640d0},
-@@ -147,191 +154,6 @@ static const u32 ar9331_1p2_baseband_postamble[][5] = {
+@@ -147,191 +154,6 @@ static const u32 ar9331_1p2_baseband_pos
  	{0x0000ae18, 0x00000000, 0x00000000, 0x00000000, 0x00000000},
  };
  
@@ -339,7 +333,7 @@ index 0e6ca08..57ed8a1 100644
  static const u32 ar9331_1p2_radio_core[][2] = {
  	/* Addr      allmodes  */
  	{0x00016000, 0x36db6db6},
-@@ -397,684 +219,24 @@ static const u32 ar9331_1p2_radio_core[][2] = {
+@@ -397,684 +219,24 @@ static const u32 ar9331_1p2_radio_core[]
  	{0x000163d4, 0x00000000},
  };
  
@@ -1035,11 +1029,9 @@ index 0e6ca08..57ed8a1 100644
 +#define ar9331_common_rx_gain_1p2 ar9485_common_rx_gain_1_1
  
  #endif /* INITVALS_9330_1P2_H */
-diff --git a/drivers/net/wireless/ath/ath9k/ar9340_initvals.h b/drivers/net/wireless/ath/ath9k/ar9340_initvals.h
-index 210fd79..1d8235e 100644
 --- a/drivers/net/wireless/ath/ath9k/ar9340_initvals.h
 +++ b/drivers/net/wireless/ath/ath9k/ar9340_initvals.h
-@@ -100,18 +100,7 @@ static const u32 ar9340Modes_lowest_ob_db_tx_gain_table_1p0[][5] = {
+@@ -100,18 +100,7 @@ static const u32 ar9340Modes_lowest_ob_d
  	{0x00016448, 0x24925266, 0x24925266, 0x24925266, 0x24925266},
  };
  
@@ -1059,7 +1051,7 @@ index 210fd79..1d8235e 100644
  
  static const u32 ar9340_1p0_radio_core[][2] = {
  	/* Addr      allmodes  */
-@@ -224,22 +213,9 @@ static const u32 ar9340_1p0_radio_core_40M[][2] = {
+@@ -224,22 +213,9 @@ static const u32 ar9340_1p0_radio_core_4
  	{0x000160b0, 0x01885f5a},
  };
  
@@ -1084,7 +1076,7 @@ index 210fd79..1d8235e 100644
  
  static const u32 ar9340_1p0_baseband_postamble[][5] = {
  	/* Addr      5G_HT20     5G_HT40     2G_HT40     2G_HT20   */
-@@ -1359,265 +1335,7 @@ static const u32 ar9340_1p0_mac_core[][2] = {
+@@ -1359,265 +1335,7 @@ static const u32 ar9340_1p0_mac_core[][2
  	{0x000083d0, 0x000101ff},
  };
  
@@ -1351,8 +1343,6 @@ index 210fd79..1d8235e 100644
  
  static const u32 ar9340_1p0_soc_preamble[][2] = {
  	/* Addr      allmodes  */
-diff --git a/drivers/net/wireless/ath/ath9k/ar9462_2p0_initvals.h b/drivers/net/wireless/ath/ath9k/ar9462_2p0_initvals.h
-index bbf48918a..4ef7dcc 100644
 --- a/drivers/net/wireless/ath/ath9k/ar9462_2p0_initvals.h
 +++ b/drivers/net/wireless/ath/ath9k/ar9462_2p0_initvals.h
 @@ -1,5 +1,6 @@
@@ -1363,7 +1353,7 @@ index bbf48918a..4ef7dcc 100644
   *
   * Permission to use, copy, modify, and/or distribute this software for any
   * purpose with or without fee is hereby granted, provided that the above
-@@ -1007,7 +1008,7 @@ static const u32 ar9462_2p0_radio_core[][2] = {
+@@ -1007,7 +1008,7 @@ static const u32 ar9462_2p0_radio_core[]
  
  static const u32 ar9462_2p0_soc_preamble[][2] = {
  	/* Addr      allmodes  */
@@ -1372,8 +1362,6 @@ index bbf48918a..4ef7dcc 100644
  	{0x00007020, 0x00000000},
  	{0x00007034, 0x00000002},
  	{0x00007038, 0x000004c2},
-diff --git a/drivers/net/wireless/ath/ath9k/ar9485_initvals.h b/drivers/net/wireless/ath/ath9k/ar9485_initvals.h
-index d16d029..fb4497f 100644
 --- a/drivers/net/wireless/ath/ath9k/ar9485_initvals.h
 +++ b/drivers/net/wireless/ath/ath9k/ar9485_initvals.h
 @@ -1,5 +1,6 @@
@@ -2121,7 +2109,7 @@ index d16d029..fb4497f 100644
  	{0x000098bc, 0x00000002, 0x00000002, 0x00000002, 0x00000002},
  	{0x0000a410, 0x000050d9, 0x000050d9, 0x000050d8, 0x000050d8},
  	{0x0000a458, 0x00000000, 0x00000000, 0x00000000, 0x00000000},
-@@ -681,8 +234,14 @@ static const u32 ar9485Modes_high_power_tx_gain_1_1[][5] = {
+@@ -681,8 +234,14 @@ static const u32 ar9485Modes_high_power_
  	{0x00016048, 0x6c924260, 0x6c924260, 0x6c924260, 0x6c924260},
  };
  
@@ -2531,7 +2519,7 @@ index d16d029..fb4497f 100644
  	{0x0000a000, 0x00010000},
  	{0x0000a004, 0x00030002},
  	{0x0000a008, 0x00050004},
-@@ -945,153 +520,14 @@ static const u32 ar9485_common_rx_gain_1_1[][2] = {
+@@ -945,153 +520,14 @@ static const u32 ar9485_common_rx_gain_1
  	{0x0000a0d4, 0x22012202},
  	{0x0000a0d8, 0x221f2200},
  	{0x0000a0dc, 0x221d221e},
@@ -2693,7 +2681,7 @@ index d16d029..fb4497f 100644
  	{0x0000a100, 0x66006601},
  	{0x0000a104, 0x661e661f},
  	{0x0000a108, 0x7703661d},
-@@ -1158,4 +594,260 @@ static const u32 ar9485Common_wo_xlna_rx_gain_1_1[][2] = {
+@@ -1158,4 +594,260 @@ static const u32 ar9485Common_wo_xlna_rx
  	{0x0000a1fc, 0x00000296},
  };
  
@@ -2955,8 +2943,6 @@ index d16d029..fb4497f 100644
 +};
 +
 +#endif /* INITVALS_9485_H */
-diff --git a/drivers/net/wireless/ath/ath9k/ar9580_1p0_initvals.h b/drivers/net/wireless/ath/ath9k/ar9580_1p0_initvals.h
-index 06b3f0d..6e1915a 100644
 --- a/drivers/net/wireless/ath/ath9k/ar9580_1p0_initvals.h
 +++ b/drivers/net/wireless/ath/ath9k/ar9580_1p0_initvals.h
 @@ -1,5 +1,6 @@
@@ -2987,7 +2973,7 @@ index 06b3f0d..6e1915a 100644
  
  static const u32 ar9580_1p0_radio_postamble[][5] = {
  	/* Addr      5G_HT20     5G_HT40     2G_HT40     2G_HT20   */
-@@ -208,17 +198,7 @@ static const u32 ar9580_1p0_baseband_core[][2] = {
+@@ -208,17 +198,7 @@ static const u32 ar9580_1p0_baseband_cor
  	{0x0000c420, 0x00000000},
  };
  
@@ -3006,7 +2992,7 @@ index 06b3f0d..6e1915a 100644
  
  static const u32 ar9580_1p0_low_ob_db_tx_gain_table[][5] = {
  	/* Addr      5G_HT20     5G_HT40     2G_HT40     2G_HT20   */
-@@ -326,111 +306,7 @@ static const u32 ar9580_1p0_low_ob_db_tx_gain_table[][5] = {
+@@ -326,111 +306,7 @@ static const u32 ar9580_1p0_low_ob_db_tx
  	{0x00016868, 0x6db6db6c, 0x6db6db6c, 0x6db6db6c, 0x6db6db6c},
  };
  
@@ -3119,7 +3105,7 @@ index 06b3f0d..6e1915a 100644
  
  static const u32 ar9580_1p0_lowest_ob_db_tx_gain_table[][5] = {
  	/* Addr      5G_HT20     5G_HT40     2G_HT40     2G_HT20   */
-@@ -538,12 +414,7 @@ static const u32 ar9580_1p0_lowest_ob_db_tx_gain_table[][5] = {
+@@ -538,12 +414,7 @@ static const u32 ar9580_1p0_lowest_ob_db
  	{0x00016868, 0x6db6db6c, 0x6db6db6c, 0x6db6db6c, 0x6db6db6c},
  };
  
@@ -3133,7 +3119,7 @@ index 06b3f0d..6e1915a 100644
  
  static const u32 ar9580_1p0_mac_core[][2] = {
  	/* Addr      allmodes  */
-@@ -808,376 +679,11 @@ static const u32 ar9580_1p0_mixed_ob_db_tx_gain_table[][5] = {
+@@ -808,376 +679,11 @@ static const u32 ar9580_1p0_mixed_ob_db_
  	{0x00016868, 0x6db6db6c, 0x6db6db6c, 0x6db6db6c, 0x6db6db6c},
  };
  
@@ -3513,7 +3499,7 @@ index 06b3f0d..6e1915a 100644
  
  static const u32 ar9580_1p0_soc_preamble[][2] = {
  	/* Addr      allmodes  */
-@@ -1189,265 +695,7 @@ static const u32 ar9580_1p0_soc_preamble[][2] = {
+@@ -1189,265 +695,7 @@ static const u32 ar9580_1p0_soc_preamble
  	{0x00007048, 0x00000008},
  };
  
@@ -3780,6 +3766,3 @@ index 06b3f0d..6e1915a 100644
  
  static const u32 ar9580_1p0_radio_core[][2] = {
  	/* Addr      allmodes  */
--- 
-1.7.11.1
-
