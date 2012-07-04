@@ -12,11 +12,9 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  drivers/net/wireless/ath/ath9k/hw.c |  175 +++++++++++++++++------------------
  1 file changed, 85 insertions(+), 90 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/hw.c b/drivers/net/wireless/ath/ath9k/hw.c
-index a7231ca..9f0f5f7 100644
 --- a/drivers/net/wireless/ath/ath9k/hw.c
 +++ b/drivers/net/wireless/ath/ath9k/hw.c
-@@ -2004,39 +2004,38 @@ EXPORT_SYMBOL(ath9k_hw_reset);
+@@ -2016,39 +2016,38 @@ EXPORT_SYMBOL(ath9k_hw_reset);
   * Notify Power Mgt is disabled in self-generated frames.
   * If requested, force chip to sleep.
   */
@@ -36,12 +34,18 @@ index a7231ca..9f0f5f7 100644
 -			REG_WRITE(ah, AR_MCI_INTERRUPT_RX_MSG_EN, 0);
 -			udelay(100);
 -		}
- 
+-
 -		/*
 -		 * Clear the RTC force wake bit to allow the
 -		 * mac to go to sleep.
 -		 */
 -		REG_CLR_BIT(ah, AR_RTC_FORCE_WAKE, AR_RTC_FORCE_WAKE_EN);
+-
+-		if (AR_SREV_9462(ah))
+-			udelay(100);
+ 
+-		if (!AR_SREV_9100(ah) && !AR_SREV_9300_20_OR_LATER(ah))
+-			REG_WRITE(ah, AR_RC, AR_RC_AHB | AR_RC_HOSTIF);
 +	if (AR_SREV_9462(ah)) {
 +		REG_WRITE(ah, AR_TIMER_MODE,
 +			  REG_READ(ah, AR_TIMER_MODE) & 0xFFFFFF00);
@@ -54,24 +58,20 @@ index a7231ca..9f0f5f7 100644
 +		udelay(100);
 +	}
  
--		if (AR_SREV_9462(ah))
--			udelay(100);
-+	/*
-+	 * Clear the RTC force wake bit to allow the
-+	 * mac to go to sleep.
-+	 */
-+	REG_CLR_BIT(ah, AR_RTC_FORCE_WAKE, AR_RTC_FORCE_WAKE_EN);
- 
--		if (!AR_SREV_9100(ah) && !AR_SREV_9300_20_OR_LATER(ah))
--			REG_WRITE(ah, AR_RC, AR_RC_AHB | AR_RC_HOSTIF);
-+	if (AR_SREV_9462(ah))
-+		udelay(100);
- 
 -		/* Shutdown chip. Active low */
 -		if (!AR_SREV_5416(ah) && !AR_SREV_9271(ah)) {
 -			REG_CLR_BIT(ah, AR_RTC_RESET, AR_RTC_RESET_EN);
 -			udelay(2);
 -		}
++	/*
++	 * Clear the RTC force wake bit to allow the
++	 * mac to go to sleep.
++	 */
++	REG_CLR_BIT(ah, AR_RTC_FORCE_WAKE, AR_RTC_FORCE_WAKE_EN);
++
++	if (AR_SREV_9462(ah))
++		udelay(100);
++
 +	if (!AR_SREV_9100(ah) && !AR_SREV_9300_20_OR_LATER(ah))
 +		REG_WRITE(ah, AR_RC, AR_RC_AHB | AR_RC_HOSTIF);
 +
@@ -82,7 +82,7 @@ index a7231ca..9f0f5f7 100644
  	}
  
  	/* Clear Bit 14 of AR_WA after putting chip into Full Sleep mode. */
-@@ -2049,44 +2048,42 @@ static void ath9k_set_power_sleep(struct ath_hw *ah, int setChip)
+@@ -2061,44 +2060,42 @@ static void ath9k_set_power_sleep(struct
   * frames. If request, set power mode of chip to
   * auto/normal.  Duration in units of 128us (1/8 TU).
   */
@@ -95,18 +95,13 @@ index a7231ca..9f0f5f7 100644
  	REG_SET_BIT(ah, AR_STA_ID1, AR_STA_ID1_PWR_SAV);
 -	if (setChip) {
 -		struct ath9k_hw_capabilities *pCap = &ah->caps;
- 
+-
 -		if (!(pCap->hw_caps & ATH9K_HW_CAP_AUTOSLEEP)) {
 -			/* Set WakeOnInterrupt bit; clear ForceWake bit */
 -			REG_WRITE(ah, AR_RTC_FORCE_WAKE,
 -				  AR_RTC_FORCE_WAKE_ON_INT);
 -		} else {
-+	if (!(pCap->hw_caps & ATH9K_HW_CAP_AUTOSLEEP)) {
-+		/* Set WakeOnInterrupt bit; clear ForceWake bit */
-+		REG_WRITE(ah, AR_RTC_FORCE_WAKE,
-+			  AR_RTC_FORCE_WAKE_ON_INT);
-+	} else {
- 
+-
 -			/* When chip goes into network sleep, it could be waken
 -			 * up by MCI_INT interrupt caused by BT's HW messages
 -			 * (LNA_xxx, CONT_xxx) which chould be in a very fast
@@ -127,9 +122,15 @@ index a7231ca..9f0f5f7 100644
 -			 */
 -			REG_CLR_BIT(ah, AR_RTC_FORCE_WAKE,
 -				    AR_RTC_FORCE_WAKE_EN);
--
+ 
 -			if (AR_SREV_9462(ah))
 -				udelay(30);
++	if (!(pCap->hw_caps & ATH9K_HW_CAP_AUTOSLEEP)) {
++		/* Set WakeOnInterrupt bit; clear ForceWake bit */
++		REG_WRITE(ah, AR_RTC_FORCE_WAKE,
++			  AR_RTC_FORCE_WAKE_ON_INT);
++	} else {
++
 +		/* When chip goes into network sleep, it could be waken
 +		 * up by MCI_INT interrupt caused by BT's HW messages
 +		 * (LNA_xxx, CONT_xxx) which chould be in a very fast
@@ -156,7 +157,7 @@ index a7231ca..9f0f5f7 100644
  	}
  
  	/* Clear Bit 14 of AR_WA after putting chip into Net Sleep mode. */
-@@ -2094,7 +2091,7 @@ static void ath9k_set_power_network_sleep(struct ath_hw *ah, int setChip)
+@@ -2106,7 +2103,7 @@ static void ath9k_set_power_network_slee
  		REG_WRITE(ah, AR_WA, ah->WARegVal & ~AR_WA_D3_L1_DISABLE);
  }
  
@@ -165,7 +166,7 @@ index a7231ca..9f0f5f7 100644
  {
  	u32 val;
  	int i;
-@@ -2105,37 +2102,35 @@ static bool ath9k_hw_set_power_awake(struct ath_hw *ah, int setChip)
+@@ -2117,37 +2114,35 @@ static bool ath9k_hw_set_power_awake(str
  		udelay(10);
  	}
  
@@ -185,13 +186,14 @@ index a7231ca..9f0f5f7 100644
 -		if (AR_SREV_9100(ah))
 -			REG_SET_BIT(ah, AR_RTC_RESET,
 -				    AR_RTC_RESET_EN);
+-
 +		if (!AR_SREV_9300_20_OR_LATER(ah))
 +			ath9k_hw_init_pll(ah, NULL);
 +	}
 +	if (AR_SREV_9100(ah))
 +		REG_SET_BIT(ah, AR_RTC_RESET,
 +			    AR_RTC_RESET_EN);
- 
++
 +	REG_SET_BIT(ah, AR_RTC_FORCE_WAKE,
 +		    AR_RTC_FORCE_WAKE_EN);
 +	udelay(50);
@@ -228,7 +230,7 @@ index a7231ca..9f0f5f7 100644
  	}
  
  	REG_CLR_BIT(ah, AR_STA_ID1, AR_STA_ID1_PWR_SAV);
-@@ -2146,7 +2141,7 @@ static bool ath9k_hw_set_power_awake(struct ath_hw *ah, int setChip)
+@@ -2158,7 +2153,7 @@ static bool ath9k_hw_set_power_awake(str
  bool ath9k_hw_setpower(struct ath_hw *ah, enum ath9k_power_mode mode)
  {
  	struct ath_common *common = ath9k_hw_common(ah);
@@ -237,7 +239,7 @@ index a7231ca..9f0f5f7 100644
  	static const char *modes[] = {
  		"AWAKE",
  		"FULL-SLEEP",
-@@ -2162,17 +2157,17 @@ bool ath9k_hw_setpower(struct ath_hw *ah, enum ath9k_power_mode mode)
+@@ -2174,17 +2169,17 @@ bool ath9k_hw_setpower(struct ath_hw *ah
  
  	switch (mode) {
  	case ATH9K_PM_AWAKE:
@@ -258,6 +260,3 @@ index a7231ca..9f0f5f7 100644
  		break;
  	default:
  		ath_err(common, "Unknown power mode %u\n", mode);
--- 
-1.7.10.rc1.22.gf5241
-

@@ -19,11 +19,9 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  drivers/net/wireless/ath/ath9k/eeprom_def.c    |    4 ++--
  4 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c b/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c
-index dfb0441..f794828 100644
 --- a/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c
 +++ b/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c
-@@ -3412,11 +3412,11 @@ static u32 ath9k_hw_ar9003_dump_eeprom(struct ath_hw *ah, bool dump_base_hdr,
+@@ -3412,11 +3412,11 @@ static u32 ath9k_hw_ar9003_dump_eeprom(s
  	if (!dump_base_hdr) {
  		len += snprintf(buf + len, size - len,
  				"%20s :\n", "2GHz modal Header");
@@ -37,11 +35,9 @@ index dfb0441..f794828 100644
  						&eep->modalHeader5G);
  		goto out;
  	}
-diff --git a/drivers/net/wireless/ath/ath9k/eeprom_4k.c b/drivers/net/wireless/ath/ath9k/eeprom_4k.c
-index 4322ac8..a850f44 100644
 --- a/drivers/net/wireless/ath/ath9k/eeprom_4k.c
 +++ b/drivers/net/wireless/ath/ath9k/eeprom_4k.c
-@@ -135,7 +135,7 @@ static u32 ath9k_hw_4k_dump_eeprom(struct ath_hw *ah, bool dump_base_hdr,
+@@ -135,7 +135,7 @@ static u32 ath9k_hw_4k_dump_eeprom(struc
  	if (!dump_base_hdr) {
  		len += snprintf(buf + len, size - len,
  				"%20s :\n", "2GHz modal Header");
@@ -50,11 +46,9 @@ index 4322ac8..a850f44 100644
  						  &eep->modalHeader);
  		goto out;
  	}
-diff --git a/drivers/net/wireless/ath/ath9k/eeprom_9287.c b/drivers/net/wireless/ath/ath9k/eeprom_9287.c
-index aa61476..cd742fb 100644
 --- a/drivers/net/wireless/ath/ath9k/eeprom_9287.c
 +++ b/drivers/net/wireless/ath/ath9k/eeprom_9287.c
-@@ -132,7 +132,7 @@ static u32 ath9k_hw_ar9287_dump_eeprom(struct ath_hw *ah, bool dump_base_hdr,
+@@ -132,7 +132,7 @@ static u32 ath9k_hw_ar9287_dump_eeprom(s
  	if (!dump_base_hdr) {
  		len += snprintf(buf + len, size - len,
  				"%20s :\n", "2GHz modal Header");
@@ -63,11 +57,9 @@ index aa61476..cd742fb 100644
  						&eep->modalHeader);
  		goto out;
  	}
-diff --git a/drivers/net/wireless/ath/ath9k/eeprom_def.c b/drivers/net/wireless/ath/ath9k/eeprom_def.c
-index b5fba8b..56290f3 100644
 --- a/drivers/net/wireless/ath/ath9k/eeprom_def.c
 +++ b/drivers/net/wireless/ath/ath9k/eeprom_def.c
-@@ -211,11 +211,11 @@ static u32 ath9k_hw_def_dump_eeprom(struct ath_hw *ah, bool dump_base_hdr,
+@@ -211,11 +211,11 @@ static u32 ath9k_hw_def_dump_eeprom(stru
  	if (!dump_base_hdr) {
  		len += snprintf(buf + len, size - len,
  				"%20s :\n", "2GHz modal Header");
@@ -81,6 +73,3 @@ index b5fba8b..56290f3 100644
  						   &eep->modalHeader[1]);
  		goto out;
  	}
--- 
-1.7.10.rc1.22.gf5241
-

@@ -14,11 +14,9 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  drivers/net/wireless/ath/ath9k/mci.c        |   49 ++++++++++++---------------
  4 files changed, 27 insertions(+), 32 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/ar9003_mci.c b/drivers/net/wireless/ath/ath9k/ar9003_mci.c
-index 9a761a1..d6e90f5 100644
 --- a/drivers/net/wireless/ath/ath9k/ar9003_mci.c
 +++ b/drivers/net/wireless/ath/ath9k/ar9003_mci.c
-@@ -321,7 +321,7 @@ void ar9003_mci_set_full_sleep(struct ath_hw *ah)
+@@ -321,7 +321,7 @@ void ar9003_mci_set_full_sleep(struct at
  {
  	struct ath9k_hw_mci *mci = &ah->btcoex_hw.mci;
  
@@ -27,7 +25,7 @@ index 9a761a1..d6e90f5 100644
  	    (mci->bt_state != MCI_BT_SLEEP) &&
  	    !mci->halted_bt_gpm) {
  		ar9003_mci_send_coex_halt_bt_gpm(ah, true, true);
-@@ -484,7 +484,7 @@ static void ar9003_mci_sync_bt_state(struct ath_hw *ah)
+@@ -484,7 +484,7 @@ static void ar9003_mci_sync_bt_state(str
  	struct ath9k_hw_mci *mci = &ah->btcoex_hw.mci;
  	u32 cur_bt_state;
  
@@ -36,7 +34,7 @@ index 9a761a1..d6e90f5 100644
  
  	if (mci->bt_state != cur_bt_state)
  		mci->bt_state = cur_bt_state;
-@@ -1164,7 +1164,7 @@ void ar9003_mci_cleanup(struct ath_hw *ah)
+@@ -1164,7 +1164,7 @@ void ar9003_mci_cleanup(struct ath_hw *a
  }
  EXPORT_SYMBOL(ar9003_mci_cleanup);
  
@@ -45,8 +43,6 @@ index 9a761a1..d6e90f5 100644
  {
  	struct ath9k_hw_mci *mci = &ah->btcoex_hw.mci;
  	u32 value = 0;
-diff --git a/drivers/net/wireless/ath/ath9k/ar9003_mci.h b/drivers/net/wireless/ath/ath9k/ar9003_mci.h
-index a7c17e5..697a56c 100644
 --- a/drivers/net/wireless/ath/ath9k/ar9003_mci.h
 +++ b/drivers/net/wireless/ath/ath9k/ar9003_mci.h
 @@ -253,7 +253,7 @@ enum mci_gpm_coex_opcode {
@@ -58,11 +54,9 @@ index a7c17e5..697a56c 100644
  void ar9003_mci_setup(struct ath_hw *ah, u32 gpm_addr, void *gpm_buf,
  		      u16 len, u32 sched_addr);
  void ar9003_mci_cleanup(struct ath_hw *ah);
-diff --git a/drivers/net/wireless/ath/ath9k/gpio.c b/drivers/net/wireless/ath/ath9k/gpio.c
-index 00ff5ab..26032cb 100644
 --- a/drivers/net/wireless/ath/ath9k/gpio.c
 +++ b/drivers/net/wireless/ath/ath9k/gpio.c
-@@ -202,7 +202,7 @@ static void ath_btcoex_period_timer(unsigned long data)
+@@ -202,7 +202,7 @@ static void ath_btcoex_period_timer(unsi
  
  	btcoex->bt_wait_time += btcoex->btcoex_period;
  	if (btcoex->bt_wait_time > ATH_BTCOEX_RX_WAIT_TIME) {
@@ -71,11 +65,9 @@ index 00ff5ab..26032cb 100644
  		    (mci->num_pan || mci->num_other_acl))
  			ah->btcoex_hw.mci.stomp_ftp =
  				(sc->rx.num_pkts < ATH_BTCOEX_STOMP_FTP_THRESH);
-diff --git a/drivers/net/wireless/ath/ath9k/mci.c b/drivers/net/wireless/ath/ath9k/mci.c
-index dbc8e1d..61a68e8 100644
 --- a/drivers/net/wireless/ath/ath9k/mci.c
 +++ b/drivers/net/wireless/ath/ath9k/mci.c
-@@ -199,16 +199,16 @@ static void ath_mci_cal_msg(struct ath_softc *sc, u8 opcode, u8 *rx_payload)
+@@ -199,16 +199,16 @@ static void ath_mci_cal_msg(struct ath_s
  
  	switch (opcode) {
  	case MCI_GPM_BT_CAL_REQ:
@@ -96,7 +88,7 @@ index dbc8e1d..61a68e8 100644
  		break;
  	case MCI_GPM_BT_CAL_GRANT:
  		MCI_GPM_SET_CAL_TYPE(payload, MCI_GPM_WLAN_CAL_DONE);
-@@ -304,7 +304,7 @@ static void ath_mci_msg(struct ath_softc *sc, u8 opcode, u8 *rx_payload)
+@@ -304,7 +304,7 @@ static void ath_mci_msg(struct ath_softc
  
  	switch (opcode) {
  	case MCI_GPM_COEX_VERSION_QUERY:
@@ -199,6 +191,3 @@ index dbc8e1d..61a68e8 100644
  					value_dbm);
  		}
  
--- 
-1.7.10.rc1.22.gf5241
-

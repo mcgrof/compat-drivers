@@ -13,8 +13,6 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  drivers/net/wireless/ath/ath9k/ar9003_phy.h |   32 +++++++++++++++++----------
  1 file changed, 20 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/ar9003_phy.h b/drivers/net/wireless/ath/ath9k/ar9003_phy.h
-index 7268a48..ed662c3 100644
 --- a/drivers/net/wireless/ath/ath9k/ar9003_phy.h
 +++ b/drivers/net/wireless/ath/ath9k/ar9003_phy.h
 @@ -820,18 +820,26 @@
@@ -56,6 +54,3 @@ index 7268a48..ed662c3 100644
  #define AR_PHY_CHANNEL_STATUS_RX_CLEAR      0x00000004
  #define AR_PHY_RTT_CTRL_ENA_RADIO_RETENTION     0x00000001
  #define AR_PHY_RTT_CTRL_ENA_RADIO_RETENTION_S   0
--- 
-1.7.10.rc1.22.gf5241
-

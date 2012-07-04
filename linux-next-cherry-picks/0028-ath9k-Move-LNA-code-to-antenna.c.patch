@@ -16,8 +16,6 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  5 files changed, 786 insertions(+), 757 deletions(-)
  create mode 100644 drivers/net/wireless/ath/ath9k/antenna.c
 
-diff --git a/drivers/net/wireless/ath/ath9k/Makefile b/drivers/net/wireless/ath/ath9k/Makefile
-index 4d60fa8..9c41232 100644
 --- a/drivers/net/wireless/ath/ath9k/Makefile
 +++ b/drivers/net/wireless/ath/ath9k/Makefile
 @@ -4,7 +4,8 @@ ath9k-y +=	beacon.o \
@@ -29,10 +27,7 @@ index 4d60fa8..9c41232 100644
 +		antenna.o
  
  ath9k-$(CONFIG_ATH9K_BTCOEX_SUPPORT) += mci.o
- ath9k-$(CONFIG_ATH9K_RATE_CONTROL) += rc.o
-diff --git a/drivers/net/wireless/ath/ath9k/antenna.c b/drivers/net/wireless/ath/ath9k/antenna.c
-new file mode 100644
-index 0000000..bbcfeb3
+ ath9k-$(CONFIG_COMPAT_ATH9K_RATE_CONTROL) += rc.o
 --- /dev/null
 +++ b/drivers/net/wireless/ath/ath9k/antenna.c
 @@ -0,0 +1,776 @@
@@ -812,11 +807,9 @@ index 0000000..bbcfeb3
 +
 +	ath9k_hw_antdiv_comb_conf_set(ah, &div_ant_conf);
 +}
-diff --git a/drivers/net/wireless/ath/ath9k/ath9k.h b/drivers/net/wireless/ath/ath9k/ath9k.h
-index 2faa181..4c2ce45 100644
 --- a/drivers/net/wireless/ath/ath9k/ath9k.h
 +++ b/drivers/net/wireless/ath/ath9k/ath9k.h
-@@ -528,8 +528,10 @@ static inline void ath_deinit_leds(struct ath_softc *sc)
+@@ -529,8 +529,10 @@ static inline void ath_deinit_leds(struc
  }
  #endif
  
@@ -828,7 +821,7 @@ index 2faa181..4c2ce45 100644
  #define ATH_ANT_RX_CURRENT_SHIFT 4
  #define ATH_ANT_RX_MAIN_SHIFT 2
  #define ATH_ANT_RX_MASK 0x3
-@@ -582,6 +584,9 @@ struct ath_ant_comb {
+@@ -583,6 +585,9 @@ struct ath_ant_comb {
  	unsigned long scan_start_time;
  };
  
@@ -838,11 +831,9 @@ index 2faa181..4c2ce45 100644
  /********************/
  /* Main driver core */
  /********************/
-diff --git a/drivers/net/wireless/ath/ath9k/main.c b/drivers/net/wireless/ath/ath9k/main.c
-index b228aff..66f215c 100644
 --- a/drivers/net/wireless/ath/ath9k/main.c
 +++ b/drivers/net/wireless/ath/ath9k/main.c
-@@ -228,21 +228,8 @@ static bool ath_complete_reset(struct ath_softc *sc, bool start)
+@@ -228,21 +228,8 @@ static bool ath_complete_reset(struct at
  		ath_restart_work(sc);
  	}
  
@@ -866,8 +857,6 @@ index b228aff..66f215c 100644
  
  	ieee80211_wake_queues(sc->hw);
  
-diff --git a/drivers/net/wireless/ath/ath9k/recv.c b/drivers/net/wireless/ath/ath9k/recv.c
-index 611be4f..c2f5fd1 100644
 --- a/drivers/net/wireless/ath/ath9k/recv.c
 +++ b/drivers/net/wireless/ath/ath9k/recv.c
 @@ -20,43 +20,6 @@
@@ -914,7 +903,7 @@ index 611be4f..c2f5fd1 100644
  static inline bool ath9k_check_auto_sleep(struct ath_softc *sc)
  {
  	return sc->ps_enabled &&
-@@ -1067,709 +1030,6 @@ static void ath9k_rx_skb_postprocess(struct ath_common *common,
+@@ -1068,709 +1031,6 @@ static void ath9k_rx_skb_postprocess(str
  		rxs->flag &= ~RX_FLAG_DECRYPTED;
  }
  
@@ -1624,6 +1613,3 @@ index 611be4f..c2f5fd1 100644
  int ath_rx_tasklet(struct ath_softc *sc, int flush, bool hp)
  {
  	struct ath_buf *bf;
--- 
-1.7.10.rc1.22.gf5241
-

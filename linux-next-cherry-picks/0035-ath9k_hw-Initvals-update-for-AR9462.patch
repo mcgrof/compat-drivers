@@ -15,11 +15,9 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  drivers/net/wireless/ath/ath9k/ar9462_2p0_initvals.h |    1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/ath/ath9k/ar9462_2p0_initvals.h b/drivers/net/wireless/ath/ath9k/ar9462_2p0_initvals.h
-index a10ece0..4a93e15 100644
 --- a/drivers/net/wireless/ath/ath9k/ar9462_2p0_initvals.h
 +++ b/drivers/net/wireless/ath/ath9k/ar9462_2p0_initvals.h
-@@ -1007,6 +1007,7 @@ static const u32 ar9462_2p0_radio_core[][2] = {
+@@ -1007,6 +1007,7 @@ static const u32 ar9462_2p0_radio_core[]
  
  static const u32 ar9462_2p0_soc_preamble[][2] = {
  	/* Addr      allmodes  */
@@ -27,6 +25,3 @@ index a10ece0..4a93e15 100644
  	{0x00007020, 0x00000000},
  	{0x00007034, 0x00000002},
  	{0x00007038, 0x000004c2},
--- 
-1.7.10.rc1.22.gf5241
-

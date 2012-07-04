@@ -14,11 +14,9 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  drivers/net/wireless/ath/ath9k/reg.h        |    2 ++
  3 files changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/ar9003_phy.c b/drivers/net/wireless/ath/ath9k/ar9003_phy.c
-index 11abb97..d6baf69 100644
 --- a/drivers/net/wireless/ath/ath9k/ar9003_phy.c
 +++ b/drivers/net/wireless/ath/ath9k/ar9003_phy.c
-@@ -676,6 +676,10 @@ static int ar9003_hw_process_ini(struct ath_hw *ah,
+@@ -676,6 +676,10 @@ static int ar9003_hw_process_ini(struct
  	if (chan->channel == 2484)
  		ar9003_hw_prog_ini(ah, &ah->ini_japan2484, 1);
  
@@ -29,8 +27,6 @@ index 11abb97..d6baf69 100644
  	ah->modes_index = modesIndex;
  	ar9003_hw_override_ini(ah);
  	ar9003_hw_set_channel_regs(ah, chan);
-diff --git a/drivers/net/wireless/ath/ath9k/hw.h b/drivers/net/wireless/ath/ath9k/hw.h
-index 3740aab..03d5909 100644
 --- a/drivers/net/wireless/ath/ath9k/hw.h
 +++ b/drivers/net/wireless/ath/ath9k/hw.h
 @@ -824,7 +824,6 @@ struct ath_hw {
@@ -41,8 +37,6 @@ index 3740aab..03d5909 100644
  
  	struct ar5416IniArray iniMac[ATH_INI_NUM_SPLIT];
  	struct ar5416IniArray iniBB[ATH_INI_NUM_SPLIT];
-diff --git a/drivers/net/wireless/ath/ath9k/reg.h b/drivers/net/wireless/ath/ath9k/reg.h
-index 458f81b..560d6ef 100644
 --- a/drivers/net/wireless/ath/ath9k/reg.h
 +++ b/drivers/net/wireless/ath/ath9k/reg.h
 @@ -2211,5 +2211,7 @@ enum {
@@ -53,6 +47,3 @@ index 458f81b..560d6ef 100644
 +#define AR_GLB_SWREG_DISCONT_EN_BT_WLAN   0x3
  
  #endif
--- 
-1.7.10.rc1.22.gf5241
-

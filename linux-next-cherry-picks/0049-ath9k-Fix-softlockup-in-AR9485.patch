@@ -41,11 +41,9 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  drivers/net/wireless/ath/ath9k/link.c |    8 ++++++++
  1 file changed, 8 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath9k/link.c b/drivers/net/wireless/ath/ath9k/link.c
-index 0cc4c70..a105c94 100644
 --- a/drivers/net/wireless/ath/ath9k/link.c
 +++ b/drivers/net/wireless/ath/ath9k/link.c
-@@ -136,6 +136,14 @@ void ath_hw_pll_work(struct work_struct *work)
+@@ -136,6 +136,14 @@ void ath_hw_pll_work(struct work_struct
  	u32 pll_sqsum;
  	struct ath_softc *sc = container_of(work, struct ath_softc,
  					    hw_pll_work.work);
@@ -60,6 +58,3 @@ index 0cc4c70..a105c94 100644
  
  	ath9k_ps_wakeup(sc);
  	pll_sqsum = ar9003_get_pll_sqsum_dvc(sc->sc_ah);
--- 
-1.7.10.rc1.22.gf5241
-

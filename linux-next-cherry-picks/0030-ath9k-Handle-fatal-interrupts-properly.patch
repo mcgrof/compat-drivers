@@ -15,11 +15,9 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  drivers/net/wireless/ath/ath9k/main.c  |    7 ++++++-
  2 files changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/ath9k.h b/drivers/net/wireless/ath/ath9k/ath9k.h
-index ae43de1..02fc1c1 100644
 --- a/drivers/net/wireless/ath/ath9k/ath9k.h
 +++ b/drivers/net/wireless/ath/ath9k/ath9k.h
-@@ -611,6 +611,7 @@ enum sc_op_flags {
+@@ -612,6 +612,7 @@ enum sc_op_flags {
  	SC_OP_TSF_RESET,
  	SC_OP_ANI_RUN,
  	SC_OP_PRIM_STA_VIF,
@@ -27,11 +25,9 @@ index ae43de1..02fc1c1 100644
  };
  
  /* Powersave flags */
-diff --git a/drivers/net/wireless/ath/ath9k/main.c b/drivers/net/wireless/ath/ath9k/main.c
-index e4f7d0e..34d6f26 100644
 --- a/drivers/net/wireless/ath/ath9k/main.c
 +++ b/drivers/net/wireless/ath/ath9k/main.c
-@@ -218,6 +218,8 @@ static bool ath_complete_reset(struct ath_softc *sc, bool start)
+@@ -218,6 +218,8 @@ static bool ath_complete_reset(struct at
  
  	ath9k_cmn_update_txpow(ah, sc->curtxpow,
  			       sc->config.txpowlimit, &sc->curtxpow);
@@ -64,6 +60,3 @@ index e4f7d0e..34d6f26 100644
  	/*
  	 * Figure out the reason(s) for the interrupt.  Note
  	 * that the hal returns a pseudo-ISR that may include
--- 
-1.7.10.rc1.22.gf5241
-

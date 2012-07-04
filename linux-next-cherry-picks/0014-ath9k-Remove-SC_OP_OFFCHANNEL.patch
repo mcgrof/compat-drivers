@@ -15,11 +15,9 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  drivers/net/wireless/ath/ath9k/recv.c  |    4 ++--
  3 files changed, 11 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/ath9k.h b/drivers/net/wireless/ath/ath9k/ath9k.h
-index a277cf6..e204648 100644
 --- a/drivers/net/wireless/ath/ath9k/ath9k.h
 +++ b/drivers/net/wireless/ath/ath9k/ath9k.h
-@@ -586,13 +586,12 @@ struct ath_ant_comb {
+@@ -587,13 +587,12 @@ struct ath_ant_comb {
  
  #define SC_OP_INVALID                BIT(0)
  #define SC_OP_BEACONS                BIT(1)
@@ -39,11 +37,9 @@ index a277cf6..e204648 100644
  
  /* Powersave flags */
  #define PS_WAIT_FOR_BEACON        BIT(0)
-diff --git a/drivers/net/wireless/ath/ath9k/main.c b/drivers/net/wireless/ath/ath9k/main.c
-index 3809fc8..d739c8e 100644
 --- a/drivers/net/wireless/ath/ath9k/main.c
 +++ b/drivers/net/wireless/ath/ath9k/main.c
-@@ -152,7 +152,7 @@ void ath_start_ani(struct ath_common *common)
+@@ -152,7 +152,7 @@ void ath_start_ani(struct ath_common *co
  	if (!(sc->sc_flags & SC_OP_ANI_RUN))
  		return;
  
@@ -52,7 +48,7 @@ index 3809fc8..d739c8e 100644
  		return;
  
  	common->ani.longcal_timer = timestamp;
-@@ -282,7 +282,7 @@ static bool ath_complete_reset(struct ath_softc *sc, bool start)
+@@ -282,7 +282,7 @@ static bool ath_complete_reset(struct at
  	ath9k_hw_set_interrupts(ah);
  	ath9k_hw_enable_interrupts(ah);
  
@@ -61,7 +57,7 @@ index 3809fc8..d739c8e 100644
  		if (sc->sc_flags & SC_OP_BEACONS)
  			ath_set_beacon(sc);
  
-@@ -328,7 +328,7 @@ static int ath_reset_internal(struct ath_softc *sc, struct ath9k_channel *hchan,
+@@ -328,7 +328,7 @@ static int ath_reset_internal(struct ath
  
  	spin_lock_bh(&sc->sc_pcu_lock);
  
@@ -70,7 +66,7 @@ index 3809fc8..d739c8e 100644
  		fastcc = false;
  		caldata = &sc->caldata;
  	}
-@@ -1626,11 +1626,6 @@ static int ath9k_config(struct ieee80211_hw *hw, u32 changed)
+@@ -1617,11 +1617,6 @@ static int ath9k_config(struct ieee80211
  		if (ah->curchan)
  			old_pos = ah->curchan - &ah->channels[0];
  
@@ -82,11 +78,9 @@ index 3809fc8..d739c8e 100644
  		ath_dbg(common, CONFIG, "Set channel: %d MHz type: %d\n",
  			curchan->center_freq, conf->channel_type);
  
-diff --git a/drivers/net/wireless/ath/ath9k/recv.c b/drivers/net/wireless/ath/ath9k/recv.c
-index e1fcc68..18acdbc 100644
 --- a/drivers/net/wireless/ath/ath9k/recv.c
 +++ b/drivers/net/wireless/ath/ath9k/recv.c
-@@ -303,7 +303,7 @@ static void ath_edma_start_recv(struct ath_softc *sc)
+@@ -303,7 +303,7 @@ static void ath_edma_start_recv(struct a
  
  	ath_opmode_init(sc);
  
@@ -104,6 +98,3 @@ index e1fcc68..18acdbc 100644
  
  	spin_unlock_bh(&sc->rx.rxbuflock);
  
--- 
-1.7.10.rc1.22.gf5241
-

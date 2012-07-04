@@ -16,11 +16,9 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  drivers/net/wireless/ath/ath9k/hw.h           |    9 +++++++++
  4 files changed, 18 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/ar9003_calib.c b/drivers/net/wireless/ath/ath9k/ar9003_calib.c
-index 9fdd70f..f83a4a2 100644
 --- a/drivers/net/wireless/ath/ath9k/ar9003_calib.c
 +++ b/drivers/net/wireless/ath/ath9k/ar9003_calib.c
-@@ -901,7 +901,6 @@ static bool ar9003_hw_init_cal(struct ath_hw *ah,
+@@ -901,7 +901,6 @@ static bool ar9003_hw_init_cal(struct at
  	bool is_reusable = true, status = true;
  	bool run_rtt_cal = false, run_agc_cal;
  	bool rtt = !!(ah->caps.hw_caps & ATH9K_HW_CAP_RTT);
@@ -28,7 +26,7 @@ index 9fdd70f..f83a4a2 100644
  	u32 agc_ctrl = 0, agc_supp_cals = AR_PHY_AGC_CONTROL_OFFSET_CAL |
  					  AR_PHY_AGC_CONTROL_FLTR_CAL   |
  					  AR_PHY_AGC_CONTROL_PKDET_CAL;
-@@ -970,7 +969,7 @@ static bool ar9003_hw_init_cal(struct ath_hw *ah,
+@@ -970,7 +969,7 @@ static bool ar9003_hw_init_cal(struct at
  	} else if (caldata && !caldata->done_txiqcal_once)
  		run_agc_cal = true;
  
@@ -46,11 +44,9 @@ index 9fdd70f..f83a4a2 100644
  		ar9003_mci_init_cal_done(ah);
  
  	if (rtt && !run_rtt_cal) {
-diff --git a/drivers/net/wireless/ath/ath9k/ar9003_mci.h b/drivers/net/wireless/ath/ath9k/ar9003_mci.h
-index 4842f6c..652ab8c 100644
 --- a/drivers/net/wireless/ath/ath9k/ar9003_mci.h
 +++ b/drivers/net/wireless/ath/ath9k/ar9003_mci.h
-@@ -273,10 +273,6 @@ void ar9003_mci_get_interrupt(struct ath_hw *ah, u32 *raw_intr,
+@@ -273,10 +273,6 @@ void ar9003_mci_get_interrupt(struct ath
  
  #ifdef CONFIG_ATH9K_BTCOEX_SUPPORT
  
@@ -61,7 +57,7 @@ index 4842f6c..652ab8c 100644
  void ar9003_mci_stop_bt(struct ath_hw *ah, bool save_fullsleep);
  void ar9003_mci_init_cal_req(struct ath_hw *ah, bool *is_reusable);
  void ar9003_mci_init_cal_done(struct ath_hw *ah);
-@@ -292,10 +288,6 @@ void ar9003_mci_get_isr(struct ath_hw *ah, enum ath9k_int *masked);
+@@ -292,10 +288,6 @@ void ar9003_mci_get_isr(struct ath_hw *a
  
  #else
  
@@ -72,11 +68,9 @@ index 4842f6c..652ab8c 100644
  static inline void ar9003_mci_stop_bt(struct ath_hw *ah, bool save_fullsleep)
  {
  }
-diff --git a/drivers/net/wireless/ath/ath9k/hw.c b/drivers/net/wireless/ath/ath9k/hw.c
-index 42cf3c8..a7231ca 100644
 --- a/drivers/net/wireless/ath/ath9k/hw.c
 +++ b/drivers/net/wireless/ath/ath9k/hw.c
-@@ -1707,7 +1707,7 @@ static int ath9k_hw_do_fastcc(struct ath_hw *ah, struct ath9k_channel *chan)
+@@ -1719,7 +1719,7 @@ static int ath9k_hw_do_fastcc(struct ath
  	ath9k_hw_loadnf(ah, ah->curchan);
  	ath9k_hw_start_nfcal(ah, true);
  
@@ -85,7 +79,7 @@ index 42cf3c8..a7231ca 100644
  		ar9003_mci_2g5g_switch(ah, true);
  
  	if (AR_SREV_9271(ah))
-@@ -1728,10 +1728,9 @@ int ath9k_hw_reset(struct ath_hw *ah, struct ath9k_channel *chan,
+@@ -1740,10 +1740,9 @@ int ath9k_hw_reset(struct ath_hw *ah, st
  	u64 tsf = 0;
  	int i, r;
  	bool start_mci_reset = false;
@@ -97,7 +91,7 @@ index 42cf3c8..a7231ca 100644
  		start_mci_reset = ar9003_mci_start_reset(ah, chan);
  		if (start_mci_reset)
  			return 0;
-@@ -1760,7 +1759,7 @@ int ath9k_hw_reset(struct ath_hw *ah, struct ath9k_channel *chan,
+@@ -1772,7 +1771,7 @@ int ath9k_hw_reset(struct ath_hw *ah, st
  			return r;
  	}
  
@@ -106,7 +100,7 @@ index 42cf3c8..a7231ca 100644
  		ar9003_mci_stop_bt(ah, save_fullsleep);
  
  	saveDefAntenna = REG_READ(ah, AR_DEF_ANTENNA);
-@@ -1818,7 +1817,7 @@ int ath9k_hw_reset(struct ath_hw *ah, struct ath9k_channel *chan,
+@@ -1830,7 +1829,7 @@ int ath9k_hw_reset(struct ath_hw *ah, st
  	if (r)
  		return r;
  
@@ -115,7 +109,7 @@ index 42cf3c8..a7231ca 100644
  		ar9003_mci_reset(ah, false, IS_CHAN_2GHZ(chan), save_fullsleep);
  
  	/*
-@@ -1937,7 +1936,7 @@ int ath9k_hw_reset(struct ath_hw *ah, struct ath9k_channel *chan,
+@@ -1949,7 +1948,7 @@ int ath9k_hw_reset(struct ath_hw *ah, st
  	ath9k_hw_loadnf(ah, chan);
  	ath9k_hw_start_nfcal(ah, true);
  
@@ -124,7 +118,7 @@ index 42cf3c8..a7231ca 100644
  		return -EIO;
  
  	ENABLE_REGWRITE_BUFFER(ah);
-@@ -1982,7 +1981,7 @@ int ath9k_hw_reset(struct ath_hw *ah, struct ath9k_channel *chan,
+@@ -1994,7 +1993,7 @@ int ath9k_hw_reset(struct ath_hw *ah, st
  	if (ath9k_hw_btcoex_is_enabled(ah))
  		ath9k_hw_btcoex_enable(ah);
  
@@ -133,7 +127,7 @@ index 42cf3c8..a7231ca 100644
  		ar9003_mci_check_bt(ah);
  
  	if (AR_SREV_9300_20_OR_LATER(ah)) {
-@@ -2166,7 +2165,7 @@ bool ath9k_hw_setpower(struct ath_hw *ah, enum ath9k_power_mode mode)
+@@ -2178,7 +2177,7 @@ bool ath9k_hw_setpower(struct ath_hw *ah
  		status = ath9k_hw_set_power_awake(ah, setChip);
  		break;
  	case ATH9K_PM_FULL_SLEEP:
@@ -142,11 +136,9 @@ index 42cf3c8..a7231ca 100644
  			ar9003_mci_set_full_sleep(ah);
  
  		ath9k_set_power_sleep(ah, setChip);
-diff --git a/drivers/net/wireless/ath/ath9k/hw.h b/drivers/net/wireless/ath/ath9k/hw.h
-index b620c55..3740aab 100644
 --- a/drivers/net/wireless/ath/ath9k/hw.h
 +++ b/drivers/net/wireless/ath/ath9k/hw.h
-@@ -1037,6 +1037,11 @@ static inline bool ath9k_hw_btcoex_is_enabled(struct ath_hw *ah)
+@@ -1037,6 +1037,11 @@ static inline bool ath9k_hw_btcoex_is_en
  {
  	return ah->btcoex_hw.enabled;
  }
@@ -158,7 +150,7 @@ index b620c55..3740aab 100644
  void ath9k_hw_btcoex_enable(struct ath_hw *ah);
  static inline enum ath_btcoex_scheme
  ath9k_hw_get_btcoex_scheme(struct ath_hw *ah)
-@@ -1048,6 +1053,10 @@ static inline bool ath9k_hw_btcoex_is_enabled(struct ath_hw *ah)
+@@ -1048,6 +1053,10 @@ static inline bool ath9k_hw_btcoex_is_en
  {
  	return false;
  }
@@ -169,6 +161,3 @@ index b620c55..3740aab 100644
  static inline void ath9k_hw_btcoex_enable(struct ath_hw *ah)
  {
  }
--- 
-1.7.10.rc1.22.gf5241
-

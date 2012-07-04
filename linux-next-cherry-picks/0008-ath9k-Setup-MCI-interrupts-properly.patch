@@ -14,11 +14,9 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  drivers/net/wireless/ath/ath9k/mci.h  |   11 ++++++++++-
  3 files changed, 22 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/main.c b/drivers/net/wireless/ath/ath9k/main.c
-index cfbcc04..3809fc8 100644
 --- a/drivers/net/wireless/ath/ath9k/main.c
 +++ b/drivers/net/wireless/ath/ath9k/main.c
-@@ -1045,8 +1045,7 @@ static int ath9k_start(struct ieee80211_hw *hw)
+@@ -1054,8 +1054,7 @@ static int ath9k_start(struct ieee80211_
  	if (ah->caps.hw_caps & ATH9K_HW_CAP_HT)
  		ah->imask |= ATH9K_INT_CST;
  
@@ -28,8 +26,6 @@ index cfbcc04..3809fc8 100644
  
  	sc->sc_flags &= ~SC_OP_INVALID;
  	sc->sc_ah->is_monitoring = false;
-diff --git a/drivers/net/wireless/ath/ath9k/mci.c b/drivers/net/wireless/ath/ath9k/mci.c
-index 29fe52d..7b553f6 100644
 --- a/drivers/net/wireless/ath/ath9k/mci.c
 +++ b/drivers/net/wireless/ath/ath9k/mci.c
 @@ -538,3 +538,14 @@ void ath_mci_intr(struct ath_softc *sc)
@@ -47,11 +43,9 @@ index 29fe52d..7b553f6 100644
 +	if (sc->sc_ah->caps.hw_caps & ATH9K_HW_CAP_MCI)
 +		sc->sc_ah->imask |= ATH9K_INT_MCI;
 +}
-diff --git a/drivers/net/wireless/ath/ath9k/mci.h b/drivers/net/wireless/ath/ath9k/mci.h
-index c841444..fc14eea 100644
 --- a/drivers/net/wireless/ath/ath9k/mci.h
 +++ b/drivers/net/wireless/ath/ath9k/mci.h
-@@ -130,4 +130,13 @@ void ath_mci_flush_profile(struct ath_mci_profile *mci);
+@@ -130,4 +130,13 @@ void ath_mci_flush_profile(struct ath_mc
  int ath_mci_setup(struct ath_softc *sc);
  void ath_mci_cleanup(struct ath_softc *sc);
  void ath_mci_intr(struct ath_softc *sc);
@@ -66,6 +60,3 @@ index c841444..fc14eea 100644
 +#endif /* CONFIG_ATH9K_BTCOEX_SUPPORT */
 +
 +#endif /* MCI_H*/
--- 
-1.7.10.rc1.22.gf5241
-

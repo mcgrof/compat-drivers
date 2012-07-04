@@ -16,11 +16,9 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  drivers/net/wireless/ath/ath9k/main.c |  134 +++++++++++++++++++++++++++++++++
  1 file changed, 134 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath9k/main.c b/drivers/net/wireless/ath/ath9k/main.c
-index 4de4473..cfbcc04 100644
 --- a/drivers/net/wireless/ath/ath9k/main.c
 +++ b/drivers/net/wireless/ath/ath9k/main.c
-@@ -2389,6 +2389,134 @@ static int ath9k_get_antenna(struct ieee80211_hw *hw, u32 *tx_ant, u32 *rx_ant)
+@@ -2380,6 +2380,134 @@ static int ath9k_get_antenna(struct ieee
  	return 0;
  }
  
@@ -155,7 +153,7 @@ index 4de4473..cfbcc04 100644
  struct ieee80211_ops ath9k_ops = {
  	.tx 		    = ath9k_tx,
  	.start 		    = ath9k_start,
-@@ -2417,4 +2545,10 @@ struct ieee80211_ops ath9k_ops = {
+@@ -2408,4 +2536,10 @@ struct ieee80211_ops ath9k_ops = {
  	.get_stats	    = ath9k_get_stats,
  	.set_antenna	    = ath9k_set_antenna,
  	.get_antenna	    = ath9k_get_antenna,
@@ -166,6 +164,3 @@ index 4de4473..cfbcc04 100644
 +	.get_et_strings  = ath9k_get_et_strings,
 +#endif
  };
--- 
-1.7.10.rc1.22.gf5241
-
