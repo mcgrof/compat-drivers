@@ -145,7 +145,12 @@ if [[ $COMPAT_WIRELESS_BRANCH != $TARGET_KERNEL_RELEASE ]]; then
 	echo -e "You are on the compat-wireless ${GREEN}${COMPAT_WIRELESS_BRANCH}${NORMAL} but are "
 	echo -en "on the ${RED}${TARGET_KERNEL_RELEASE}${NORMAL} branch... "
 	echo -e "try changing to that first."
-	exit
+
+	read -p "Do you still want to continue (y/N)? "
+	if [[ "${REPLY}" != "y" ]]; then
+	    echo -e "Bailing out !"
+	    exit
+	fi
 fi
 
 
