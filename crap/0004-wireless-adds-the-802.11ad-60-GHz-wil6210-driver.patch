@@ -78,20 +78,15 @@ Signed-off-by: Luis R. Rodriguez <mcgrof@qca.qualcomm.com>
  create mode 100644 drivers/net/wireless/ath/wil6210/wmi.c
  create mode 100644 drivers/net/wireless/ath/wil6210/wmi.h
 
-diff --git a/drivers/net/wireless/ath/Kconfig b/drivers/net/wireless/ath/Kconfig
-index 0960224..623fb62 100644
 --- a/drivers/net/wireless/ath/Kconfig
 +++ b/drivers/net/wireless/ath/Kconfig
-@@ -26,5 +26,6 @@ source "drivers/net/wireless/ath/ath5k/Kconfig"
+@@ -26,5 +26,6 @@ source "drivers/net/wireless/ath/ath5k/K
  source "drivers/net/wireless/ath/ath9k/Kconfig"
  source "drivers/net/wireless/ath/carl9170/Kconfig"
  source "drivers/net/wireless/ath/ath6kl/Kconfig"
 +source "drivers/net/wireless/ath/wil6210/Kconfig"
  
  endif
-diff --git a/drivers/net/wireless/ath/wil6210/Makefile b/drivers/net/wireless/ath/wil6210/Makefile
-new file mode 100644
-index 0000000..f54d053
 --- /dev/null
 +++ b/drivers/net/wireless/ath/wil6210/Makefile
 @@ -0,0 +1,20 @@
@@ -115,9 +110,6 @@ index 0000000..f54d053
 +# Use Clear-On-Read
 +subdir-ccflags-y += -DWIL6210_ISR_COR=1
 +
-diff --git a/drivers/net/wireless/ath/wil6210/cfg80211.c b/drivers/net/wireless/ath/wil6210/cfg80211.c
-new file mode 100644
-index 0000000..50e6829
 --- /dev/null
 +++ b/drivers/net/wireless/ath/wil6210/cfg80211.c
 @@ -0,0 +1,615 @@
@@ -736,9 +728,6 @@ index 0000000..50e6829
 +	wiphy_free(wdev->wiphy);
 +	kfree(wdev);
 +}
-diff --git a/drivers/net/wireless/ath/wil6210/cfg80211.h b/drivers/net/wireless/ath/wil6210/cfg80211.h
-new file mode 100644
-index 0000000..c4f3740
 --- /dev/null
 +++ b/drivers/net/wireless/ath/wil6210/cfg80211.h
 @@ -0,0 +1,23 @@
@@ -765,9 +754,6 @@ index 0000000..c4f3740
 +void wil_wdev_free(struct wil6210_priv *wil);
 +
 +#endif /* __wil_CFG80211_H__ */
-diff --git a/drivers/net/wireless/ath/wil6210/debug.c b/drivers/net/wireless/ath/wil6210/debug.c
-new file mode 100644
-index 0000000..dc9934b
 --- /dev/null
 +++ b/drivers/net/wireless/ath/wil6210/debug.c
 @@ -0,0 +1,42 @@
@@ -813,9 +799,6 @@ index 0000000..dc9934b
 +{
 +	wmi_call(wil, &wmi_echo, WMI_ECHO_RSP_EVENTID, NULL, 0, 20);
 +}
-diff --git a/drivers/net/wireless/ath/wil6210/debugfs.c b/drivers/net/wireless/ath/wil6210/debugfs.c
-new file mode 100644
-index 0000000..94a54c6
 --- /dev/null
 +++ b/drivers/net/wireless/ath/wil6210/debugfs.c
 @@ -0,0 +1,458 @@
@@ -1277,9 +1260,6 @@ index 0000000..94a54c6
 +	debugfs_remove_recursive(wil->debug);
 +	wil->debug = NULL;
 +}
-diff --git a/drivers/net/wireless/ath/wil6210/ifc.sh b/drivers/net/wireless/ath/wil6210/ifc.sh
-new file mode 100755
-index 0000000..40dcc21
 --- /dev/null
 +++ b/drivers/net/wireless/ath/wil6210/ifc.sh
 @@ -0,0 +1,20 @@
@@ -1303,9 +1283,6 @@ index 0000000..40dcc21
 +	} ; fi
 +} ; done
 +
-diff --git a/drivers/net/wireless/ath/wil6210/interrupt.c b/drivers/net/wireless/ath/wil6210/interrupt.c
-new file mode 100644
-index 0000000..ae0d21f
 --- /dev/null
 +++ b/drivers/net/wireless/ath/wil6210/interrupt.c
 @@ -0,0 +1,324 @@
@@ -1633,9 +1610,6 @@ index 0000000..ae0d21f
 +	wil6210_disable_irq(wil);
 +	free_irq(irq, wil);
 +}
-diff --git a/drivers/net/wireless/ath/wil6210/main.c b/drivers/net/wireless/ath/wil6210/main.c
-new file mode 100644
-index 0000000..a56038f
 --- /dev/null
 +++ b/drivers/net/wireless/ath/wil6210/main.c
 @@ -0,0 +1,336 @@
@@ -1975,9 +1949,6 @@ index 0000000..a56038f
 +	return ret;
 +}
 +
-diff --git a/drivers/net/wireless/ath/wil6210/memdump.sh b/drivers/net/wireless/ath/wil6210/memdump.sh
-new file mode 100755
-index 0000000..5ad2ac3
 --- /dev/null
 +++ b/drivers/net/wireless/ath/wil6210/memdump.sh
 @@ -0,0 +1,9 @@
@@ -1990,9 +1961,6 @@ index 0000000..5ad2ac3
 +for f in fw_data fw_peri uc_data; do {
 +  cat $D/blob_${f} > ${P}${f}
 +} done
-diff --git a/drivers/net/wireless/ath/wil6210/netdev.c b/drivers/net/wireless/ath/wil6210/netdev.c
-new file mode 100644
-index 0000000..721753f
 --- /dev/null
 +++ b/drivers/net/wireless/ath/wil6210/netdev.c
 @@ -0,0 +1,166 @@
@@ -2162,9 +2130,6 @@ index 0000000..721753f
 +	struct net_device *ndev = wil_to_ndev(wil);
 +	unregister_netdev(ndev);
 +}
-diff --git a/drivers/net/wireless/ath/wil6210/pcie_bus.c b/drivers/net/wireless/ath/wil6210/pcie_bus.c
-new file mode 100644
-index 0000000..21d806b
 --- /dev/null
 +++ b/drivers/net/wireless/ath/wil6210/pcie_bus.c
 @@ -0,0 +1,239 @@
@@ -2407,9 +2372,6 @@ index 0000000..21d806b
 +MODULE_LICENSE("Dual BSD/GPL");
 +MODULE_AUTHOR("Qualcomm Atheros <wil6210@qualcomm.com>");
 +MODULE_DESCRIPTION("Driver for 60g WiFi WIL6210 card");
-diff --git a/drivers/net/wireless/ath/wil6210/read_dw.sh b/drivers/net/wireless/ath/wil6210/read_dw.sh
-new file mode 100755
-index 0000000..dd6a500
 --- /dev/null
 +++ b/drivers/net/wireless/ath/wil6210/read_dw.sh
 @@ -0,0 +1,7 @@
@@ -2420,9 +2382,6 @@ index 0000000..dd6a500
 +D=$(find /sys/kernel/debug/ieee80211/ -name wil6210)
 +echo $A > $D/mem_addr
 +cat $D/mem_val
-diff --git a/drivers/net/wireless/ath/wil6210/tools/Makefile b/drivers/net/wireless/ath/wil6210/tools/Makefile
-new file mode 100644
-index 0000000..5285614
 --- /dev/null
 +++ b/drivers/net/wireless/ath/wil6210/tools/Makefile
 @@ -0,0 +1,4 @@
@@ -2430,9 +2389,6 @@ index 0000000..5285614
 +
 +always := $(hostprogs-y)
 +
-diff --git a/drivers/net/wireless/ath/wil6210/tools/trace.c b/drivers/net/wireless/ath/wil6210/tools/trace.c
-new file mode 100644
-index 0000000..40d1cd6
 --- /dev/null
 +++ b/drivers/net/wireless/ath/wil6210/tools/trace.c
 @@ -0,0 +1,190 @@
@@ -2626,9 +2582,6 @@ index 0000000..40d1cd6
 +	}
 +	return 0;
 +}
-diff --git a/drivers/net/wireless/ath/wil6210/tools/vhex2bin.py b/drivers/net/wireless/ath/wil6210/tools/vhex2bin.py
-new file mode 100755
-index 0000000..20dc170
 --- /dev/null
 +++ b/drivers/net/wireless/ath/wil6210/tools/vhex2bin.py
 @@ -0,0 +1,17 @@
@@ -2650,9 +2603,6 @@ index 0000000..20dc170
 +  s = struct.pack("<I", x)
 +  sys.stdout.write(s)
 \ No newline at end of file
-diff --git a/drivers/net/wireless/ath/wil6210/trace.sh b/drivers/net/wireless/ath/wil6210/trace.sh
-new file mode 100755
-index 0000000..c9952bb
 --- /dev/null
 +++ b/drivers/net/wireless/ath/wil6210/trace.sh
 @@ -0,0 +1,4 @@
@@ -2660,9 +2610,6 @@ index 0000000..c9952bb
 +### where is wil6210 debugfs?
 +D=$(find /sys/kernel/debug/ieee80211/ -name wil6210)
 +exec tools/trace $D/blob_fw_peri
-diff --git a/drivers/net/wireless/ath/wil6210/txdesc.sh b/drivers/net/wireless/ath/wil6210/txdesc.sh
-new file mode 100755
-index 0000000..d224777
 --- /dev/null
 +++ b/drivers/net/wireless/ath/wil6210/txdesc.sh
 @@ -0,0 +1,8 @@
@@ -2674,9 +2621,6 @@ index 0000000..d224777
 +D=$(find /sys/kernel/debug/ieee80211/ -name wil6210)
 +echo $I > $D/txdesc_index
 +cat $D/txdesc
-diff --git a/drivers/net/wireless/ath/wil6210/txrx.c b/drivers/net/wireless/ath/wil6210/txrx.c
-new file mode 100644
-index 0000000..c8177f2
 --- /dev/null
 +++ b/drivers/net/wireless/ath/wil6210/txrx.c
 @@ -0,0 +1,871 @@
@@ -3551,9 +3495,6 @@ index 0000000..c8177f2
 +			netif_tx_wake_all_queues(wil_to_ndev(wil));
 +	}
 +}
-diff --git a/drivers/net/wireless/ath/wil6210/txrx.h b/drivers/net/wireless/ath/wil6210/txrx.h
-new file mode 100644
-index 0000000..5ec2951
 --- /dev/null
 +++ b/drivers/net/wireless/ath/wil6210/txrx.h
 @@ -0,0 +1,352 @@
@@ -3909,9 +3850,6 @@ index 0000000..5ec2951
 +}
 +
 +#endif /* WIL6210_TXRX_H */
-diff --git a/drivers/net/wireless/ath/wil6210/vrwatch.sh b/drivers/net/wireless/ath/wil6210/vrwatch.sh
-new file mode 100755
-index 0000000..8beb208
 --- /dev/null
 +++ b/drivers/net/wireless/ath/wil6210/vrwatch.sh
 @@ -0,0 +1,6 @@
@@ -3921,9 +3859,6 @@ index 0000000..8beb208
 +D=$(find /sys/kernel/debug/ieee80211/ -name wil6210)
 +exec watch -n 0.2 -d cat $D/vrings
 +
-diff --git a/drivers/net/wireless/ath/wil6210/wil6210.h b/drivers/net/wireless/ath/wil6210/wil6210.h
-new file mode 100644
-index 0000000..66fead6
 --- /dev/null
 +++ b/drivers/net/wireless/ath/wil6210/wil6210.h
 @@ -0,0 +1,234 @@
@@ -4161,9 +4096,6 @@ index 0000000..66fead6
 +int iftype_nl2wmi(enum nl80211_iftype type);
 +
 +#endif /* __WIL6210_H__ */
-diff --git a/drivers/net/wireless/ath/wil6210/wil6210_rgf.h b/drivers/net/wireless/ath/wil6210/wil6210_rgf.h
-new file mode 100644
-index 0000000..803ec83
 --- /dev/null
 +++ b/drivers/net/wireless/ath/wil6210/wil6210_rgf.h
 @@ -0,0 +1,93 @@
@@ -4260,9 +4192,6 @@ index 0000000..803ec83
 +#define ISR_MISC_MBOX_EVT BIT_DMA_EP_MISC_ICR_FW_INT1
 +
 +#endif /* WIL6210_RGF_H */
-diff --git a/drivers/net/wireless/ath/wil6210/wmi.c b/drivers/net/wireless/ath/wil6210/wmi.c
-new file mode 100644
-index 0000000..64efc82
 --- /dev/null
 +++ b/drivers/net/wireless/ath/wil6210/wmi.c
 @@ -0,0 +1,710 @@
@@ -4976,9 +4905,6 @@ index 0000000..64efc82
 +	if (rc == 0)
 +		wil_link_on(wil);
 +}
-diff --git a/drivers/net/wireless/ath/wil6210/wmi.h b/drivers/net/wireless/ath/wil6210/wmi.h
-new file mode 100644
-index 0000000..98c1a6f
 --- /dev/null
 +++ b/drivers/net/wireless/ath/wil6210/wmi.h
 @@ -0,0 +1,837 @@
@@ -5819,8 +5745,6 @@ index 0000000..98c1a6f
 +} __packed;
 +
 +#endif /* __WMI_H__ */
-diff --git a/drivers/net/wireless/ath/Makefile b/drivers/net/wireless/ath/Makefile
-index d716b74..b1af57b 100644
 --- a/drivers/net/wireless/ath/Makefile
 +++ b/drivers/net/wireless/ath/Makefile
 @@ -2,6 +2,7 @@ obj-$(CONFIG_ATH5K)		+= ath5k/
