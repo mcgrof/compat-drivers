@@ -122,17 +122,6 @@ Date:   Wed Nov 19 21:32:24 2008 -0800
  	priv->wireless_data.spy_data = &priv->ieee->spy_data;
  	net_dev->wireless_data = &priv->wireless_data;
  	net_dev->wireless_handlers = &ipw_wx_handler_def;
---- a/drivers/net/wireless/iwmc3200wifi/netdev.c
-+++ b/drivers/net/wireless/iwmc3200wifi/netdev.c
-@@ -130,7 +130,7 @@ void *iwm_if_alloc(int sizeof_bus, struc
- 		goto out_priv;
- 	}
- 
--	ndev->netdev_ops = &iwm_netdev_ops;
-+	netdev_attach_ops(ndev, &iwm_netdev_ops);
- 	ndev->ieee80211_ptr = wdev;
- 	SET_NETDEV_DEV(ndev, wiphy_dev(wdev->wiphy));
- 	wdev->netdev = ndev;
 --- a/drivers/net/wireless/libertas/main.c
 +++ b/drivers/net/wireless/libertas/main.c
 @@ -982,7 +982,7 @@ struct lbs_private *lbs_add_card(void *c

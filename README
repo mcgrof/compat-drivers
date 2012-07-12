@@ -130,7 +130,6 @@ ipw2200
 iwl3945
 iwlagn
 iwlcore
-iwmc3200wifi
 libertas
 libertas_cs
 libertas_sdio
