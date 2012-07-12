@@ -1,6 +1,6 @@
 --- a/drivers/net/wireless/ti/wl12xx/main.c
 +++ b/drivers/net/wireless/ti/wl12xx/main.c
-@@ -1663,16 +1663,20 @@ static int __devinit wl12xx_probe(struct
+@@ -1675,16 +1675,20 @@ static int __devinit wl12xx_probe(struct
  	return wlcore_probe(wl, pdev);
  }
  

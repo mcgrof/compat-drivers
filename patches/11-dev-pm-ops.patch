@@ -35,7 +35,7 @@ calls on compat code with only slight modifications.
  int __init bcma_host_pci_init(void)
 --- a/drivers/net/ethernet/atheros/atl1c/atl1c_main.c
 +++ b/drivers/net/ethernet/atheros/atl1c/atl1c_main.c
-@@ -2693,6 +2693,9 @@ static struct pci_error_handlers atl1c_e
+@@ -2679,6 +2679,9 @@ static struct pci_error_handlers atl1c_e
  
  static SIMPLE_DEV_PM_OPS(atl1c_pm_ops, atl1c_suspend, atl1c_resume);
  
@@ -45,7 +45,7 @@ calls on compat code with only slight modifications.
  static struct pci_driver atl1c_driver = {
  	.name     = atl1c_driver_name,
  	.id_table = atl1c_pci_tbl,
-@@ -2700,7 +2703,12 @@ static struct pci_driver atl1c_driver =
+@@ -2686,7 +2689,12 @@ static struct pci_driver atl1c_driver =
  	.remove   = __devexit_p(atl1c_remove),
  	.shutdown = atl1c_shutdown,
  	.err_handler = &atl1c_err_handler,
@@ -57,10 +57,10 @@ calls on compat code with only slight modifications.
 +#endif
  };
  
- /*
+ /**
 --- a/drivers/net/ethernet/atheros/atlx/atl1.c
 +++ b/drivers/net/ethernet/atheros/atlx/atl1.c
-@@ -2884,6 +2884,9 @@ static int atl1_resume(struct device *de
+@@ -2877,6 +2877,9 @@ static int atl1_resume(struct device *de
  	return 0;
  }
  
@@ -70,7 +70,7 @@ calls on compat code with only slight modifications.
  static SIMPLE_DEV_PM_OPS(atl1_pm_ops, atl1_suspend, atl1_resume);
  #define ATL1_PM_OPS	(&atl1_pm_ops)
  
-@@ -3155,7 +3158,12 @@ static struct pci_driver atl1_driver = {
+@@ -3148,7 +3151,12 @@ static struct pci_driver atl1_driver = {
  	.probe = atl1_probe,
  	.remove = __devexit_p(atl1_remove),
  	.shutdown = atl1_shutdown,
@@ -82,7 +82,7 @@ calls on compat code with only slight modifications.
 +#endif
  };
  
- /*
+ /**
 --- a/drivers/net/wireless/ath/ath5k/pci.c
 +++ b/drivers/net/wireless/ath/ath5k/pci.c
 @@ -326,6 +326,9 @@ static int ath5k_pci_resume(struct devic

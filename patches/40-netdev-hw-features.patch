@@ -48,7 +48,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  void atl1c_set_ethtool_ops(struct net_device *netdev)
 --- a/drivers/net/ethernet/atheros/atl1c/atl1c_main.c
 +++ b/drivers/net/ethernet/atheros/atl1c/atl1c_main.c
-@@ -492,6 +492,7 @@
+@@ -492,6 +492,7 @@ static void atl1c_set_rxbufsize(struct a
  		roundup(mtu + ETH_HLEN + ETH_FCS_LEN + VLAN_HLEN, 8) : AT_RX_BUF_SIZE;
  }
  
@@ -56,7 +56,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  static netdev_features_t atl1c_fix_features(struct net_device *netdev,
  	netdev_features_t features)
  {
-@@ -552,13 +553,25 @@
+@@ -552,13 +553,25 @@ static int atl1c_change_mtu(struct net_d
  		netdev->mtu = new_mtu;
  		adapter->hw.max_frame_size = new_mtu;
  		atl1c_set_rxbufsize(adapter, netdev);
@@ -82,7 +82,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  
  /*
   *  caller should hold mdio_lock
-@@ -2391,8 +2404,10 @@
+@@ -2391,8 +2404,10 @@ static const struct net_device_ops atl1c
  	.ndo_set_mac_address	= atl1c_set_mac_addr,
  	.ndo_set_rx_mode	= atl1c_set_multi,
  	.ndo_change_mtu		= atl1c_change_mtu,
@@ -93,7 +93,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  	.ndo_do_ioctl		= atl1c_ioctl,
  	.ndo_tx_timeout		= atl1c_tx_timeout,
  	.ndo_get_stats		= atl1c_get_stats,
-@@ -2411,6 +2426,7 @@
+@@ -2411,6 +2426,7 @@ static int atl1c_init_netdev(struct net_
  	atl1c_set_ethtool_ops(netdev);
  
  	/* TODO: add when ready */
@@ -101,7 +101,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  	netdev->hw_features =	NETIF_F_SG	   |
  				NETIF_F_HW_CSUM	   |
  				NETIF_F_HW_VLAN_RX |
-@@ -2418,6 +2434,14 @@
+@@ -2418,6 +2434,14 @@ static int atl1c_init_netdev(struct net_
  				NETIF_F_TSO6;
  	netdev->features =	netdev->hw_features |
  				NETIF_F_HW_VLAN_TX;
@@ -140,15 +140,15 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  static netdev_features_t atl1e_fix_features(struct net_device *netdev,
  	netdev_features_t features)
  {
-@@ -400,6 +401,7 @@ static int atl1e_set_features(struct net
- 
+@@ -432,6 +433,7 @@ static int atl1e_change_mtu(struct net_d
+ 	}
  	return 0;
  }
 +#endif /* (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,39)) */
  
  /*
-  * atl1e_change_mtu - Change the Maximum Transfer Unit
-@@ -1943,7 +1945,11 @@ void atl1e_down(struct atl1e_adapter *ad
+  *  caller should hold mdio_lock
+@@ -1929,7 +1931,11 @@ void atl1e_down(struct atl1e_adapter *ad
  	 * reschedule our watchdog timer */
  	set_bit(__AT_DOWN, &adapter->flags);
  
@@ -160,7 +160,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  
  	/* reset MAC to disable all RX/TX */
  	atl1e_reset_hw(&adapter->hw);
-@@ -2213,8 +2219,10 @@ static const struct net_device_ops atl1e
+@@ -2199,8 +2205,10 @@ static const struct net_device_ops atl1e
  	.ndo_set_rx_mode	= atl1e_set_multi,
  	.ndo_validate_addr	= eth_validate_addr,
  	.ndo_set_mac_address	= atl1e_set_mac_addr,
@@ -171,7 +171,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  	.ndo_change_mtu		= atl1e_change_mtu,
  	.ndo_do_ioctl		= atl1e_ioctl,
  	.ndo_tx_timeout		= atl1e_tx_timeout,
-@@ -2234,10 +2242,15 @@ static int atl1e_init_netdev(struct net_
+@@ -2220,10 +2228,15 @@ static int atl1e_init_netdev(struct net_
  	netdev->watchdog_timeo = AT_TX_WATCHDOG;
  	atl1e_set_ethtool_ops(netdev);
  
@@ -189,7 +189,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  }
 --- a/drivers/net/ethernet/atheros/atlx/atl1.c
 +++ b/drivers/net/ethernet/atheros/atlx/atl1.c
-@@ -2924,8 +2924,10 @@ static const struct net_device_ops atl1_
+@@ -2917,8 +2917,10 @@ static const struct net_device_ops atl1_
  	.ndo_validate_addr	= eth_validate_addr,
  	.ndo_set_mac_address	= atl1_set_mac,
  	.ndo_change_mtu		= atl1_change_mtu,
@@ -200,7 +200,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  	.ndo_do_ioctl		= atlx_ioctl,
  	.ndo_tx_timeout		= atlx_tx_timeout,
  #ifdef CONFIG_NET_POLL_CONTROLLER
-@@ -3036,11 +3038,13 @@ static int __devinit atl1_probe(struct p
+@@ -3029,11 +3031,13 @@ static int __devinit atl1_probe(struct p
  	netdev->features |= NETIF_F_SG;
  	netdev->features |= (NETIF_F_HW_VLAN_TX | NETIF_F_HW_VLAN_RX);
  
@@ -214,7 +214,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  
  	/*
  	 * patch for some L1 of old version,
-@@ -3653,6 +3657,14 @@ static int atl1_set_pauseparam(struct ne
+@@ -3646,6 +3650,14 @@ static int atl1_set_pauseparam(struct ne
  	return 0;
  }
  
@@ -229,7 +229,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  static void atl1_get_strings(struct net_device *netdev, u32 stringset,
  	u8 *data)
  {
-@@ -3725,4 +3737,10 @@ static const struct ethtool_ops atl1_eth
+@@ -3718,4 +3730,10 @@ static const struct ethtool_ops atl1_eth
  	.nway_reset		= atl1_nway_reset,
  	.get_ethtool_stats	= atl1_get_ethtool_stats,
  	.get_sset_count		= atl1_get_sset_count,
@@ -258,7 +258,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  
  static void atl2_intr_rx(struct atl2_adapter *adapter)
  {
-@@ -1336,8 +1338,10 @@ static const struct net_device_ops atl2_
+@@ -1322,8 +1324,10 @@ static const struct net_device_ops atl2_
  	.ndo_validate_addr	= eth_validate_addr,
  	.ndo_set_mac_address	= atl2_set_mac,
  	.ndo_change_mtu		= atl2_change_mtu,
@@ -269,7 +269,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  	.ndo_do_ioctl		= atl2_ioctl,
  	.ndo_tx_timeout		= atl2_tx_timeout,
  #ifdef CONFIG_NET_POLL_CONTROLLER
-@@ -1435,8 +1439,12 @@ static int __devinit atl2_probe(struct p
+@@ -1421,8 +1425,12 @@ static int __devinit atl2_probe(struct p
  
  	err = -EIO;
  
@@ -282,7 +282,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  
  	/* Init PHY as early as possible due to power saving issue  */
  	atl2_phy_init(&adapter->hw);
-@@ -1863,6 +1871,13 @@ static int atl2_set_settings(struct net_
+@@ -1849,6 +1857,13 @@ static int atl2_set_settings(struct net_
  	return 0;
  }
  
@@ -296,7 +296,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  static u32 atl2_get_msglevel(struct net_device *netdev)
  {
  	return 0;
-@@ -2132,6 +2147,14 @@ static const struct ethtool_ops atl2_eth
+@@ -2118,6 +2133,14 @@ static const struct ethtool_ops atl2_eth
  	.get_eeprom_len		= atl2_get_eeprom_len,
  	.get_eeprom		= atl2_get_eeprom,
  	.set_eeprom		= atl2_set_eeprom,
