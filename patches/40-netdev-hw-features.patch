@@ -142,14 +142,14 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  static netdev_features_t atl1e_fix_features(struct net_device *netdev,
  	netdev_features_t features)
  {
-@@ -432,6 +433,7 @@ static int atl1e_change_mtu(struct net_d
- 	}
+@@ -400,6 +401,7 @@ static int atl1e_set_features(struct net
+ 
  	return 0;
  }
 +#endif /* (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,39)) */
  
- /*
-  *  caller should hold mdio_lock
+ /**
+  * atl1e_change_mtu - Change the Maximum Transfer Unit
 @@ -1929,7 +1931,11 @@ void atl1e_down(struct atl1e_adapter *ad
  	 * reschedule our watchdog timer */
  	set_bit(__AT_DOWN, &adapter->flags);
