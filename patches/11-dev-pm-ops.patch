@@ -110,7 +110,7 @@ calls on compat code with only slight modifications.
  module_pci_driver(ath5k_pci_driver);
 --- a/drivers/net/wireless/ath/ath9k/pci.c
 +++ b/drivers/net/wireless/ath/ath9k/pci.c
-@@ -340,14 +340,10 @@ static int ath_pci_resume(struct device
+@@ -343,14 +343,10 @@ static int ath_pci_resume(struct device
  	return 0;
  }
  
@@ -129,7 +129,7 @@ calls on compat code with only slight modifications.
  
  #define ATH9K_PM_OPS	(&ath9k_pm_ops)
  
-@@ -365,7 +361,12 @@ static struct pci_driver ath_pci_driver
+@@ -368,7 +364,12 @@ static struct pci_driver ath_pci_driver
  	.id_table   = ath_pci_id_table,
  	.probe      = ath_pci_probe,
  	.remove     = ath_pci_remove,

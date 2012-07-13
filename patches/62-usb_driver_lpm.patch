@@ -192,7 +192,7 @@
  module_usb_driver(p54u_driver);
 --- a/drivers/net/wireless/rndis_wlan.c
 +++ b/drivers/net/wireless/rndis_wlan.c
-@@ -3755,7 +3755,9 @@ static struct usb_driver rndis_wlan_driv
+@@ -3756,7 +3756,9 @@ static struct usb_driver rndis_wlan_driv
  	.disconnect =	usbnet_disconnect,
  	.suspend =	usbnet_suspend,
  	.resume =	usbnet_resume,

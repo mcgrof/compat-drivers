@@ -71,7 +71,7 @@ Date:   Wed Nov 19 21:32:24 2008 -0800
  
 --- a/drivers/net/wireless/rndis_wlan.c
 +++ b/drivers/net/wireless/rndis_wlan.c
-@@ -3436,7 +3436,7 @@ static int rndis_wlan_bind(struct usbnet
+@@ -3437,7 +3437,7 @@ static int rndis_wlan_bind(struct usbnet
  	 * rndis_host wants to avoid all OID as much as possible
  	 * so do promisc/multicast handling in rndis_wlan.
  	 */
@@ -223,7 +223,7 @@ Date:   Wed Nov 19 21:32:24 2008 -0800
  	strncpy(netdev->name, pci_name(pdev), sizeof(netdev->name) - 1);
 --- a/net/mac80211/iface.c
 +++ b/net/mac80211/iface.c
-@@ -930,7 +930,7 @@ static void ieee80211_if_setup(struct ne
+@@ -940,7 +940,7 @@ static void ieee80211_if_setup(struct ne
  {
  	ether_setup(dev);
  	dev->priv_flags &= ~IFF_TX_SKB_SHARING;
@@ -232,7 +232,7 @@ Date:   Wed Nov 19 21:32:24 2008 -0800
  	dev->destructor = free_netdev;
  }
  
-@@ -1077,7 +1077,7 @@ static void ieee80211_setup_sdata(struct
+@@ -1087,7 +1087,7 @@ static void ieee80211_setup_sdata(struct
  	/* and set some type-dependent values */
  	sdata->vif.type = type;
  	sdata->vif.p2p = false;
@@ -241,7 +241,7 @@ Date:   Wed Nov 19 21:32:24 2008 -0800
  	sdata->wdev.iftype = type;
  
  	sdata->control_port_protocol = cpu_to_be16(ETH_P_PAE);
-@@ -1118,7 +1118,7 @@ static void ieee80211_setup_sdata(struct
+@@ -1128,7 +1128,7 @@ static void ieee80211_setup_sdata(struct
  		break;
  	case NL80211_IFTYPE_MONITOR:
  		sdata->dev->type = ARPHRD_IEEE80211_RADIOTAP;
