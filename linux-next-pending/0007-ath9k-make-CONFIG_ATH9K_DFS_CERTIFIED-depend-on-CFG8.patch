@@ -1,0 +1,32 @@
+From 881893e8981493460f3f7f5613eac69d5f1855ae Mon Sep 17 00:00:00 2001
+From: "Luis R. Rodriguez" <mcgrof@qca.qualcomm.com>
+Date: Wed, 20 Jun 2012 07:57:41 -0700
+Subject: [PATCH 7/7] ath9k: make CONFIG_ATH9K_DFS_CERTIFIED depend on
+ CFG80211_CERTIFICATION_ONUS
+
+Turns out every most standard Linux distributions enable
+CONFIG_EXPERT, so use the shiny new CFG80211_CERTIFICATION_ONUS
+which is meant by design to not be enabled by all Linux
+distributions.
+
+Signed-off-by: Luis R. Rodriguez <mcgrof@qca.qualcomm.com>
+---
+ drivers/net/wireless/ath/ath9k/Kconfig |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/ath/ath9k/Kconfig b/drivers/net/wireless/ath/ath9k/Kconfig
+index e507e78..c7aa664 100644
+--- a/drivers/net/wireless/ath/ath9k/Kconfig
++++ b/drivers/net/wireless/ath/ath9k/Kconfig
+@@ -64,7 +64,7 @@ config ATH9K_DEBUGFS
+ 
+ config ATH9K_DFS_CERTIFIED
+ 	bool "Atheros DFS support for certified platforms"
+-	depends on ATH9K && EXPERT
++	depends on ATH9K && CFG80211_CERTIFICATION_ONUS
+ 	default n
+ 	---help---
+ 	  This option enables DFS support for initiating radiation on
+-- 
+1.7.10.rc1.22.gf5241
+

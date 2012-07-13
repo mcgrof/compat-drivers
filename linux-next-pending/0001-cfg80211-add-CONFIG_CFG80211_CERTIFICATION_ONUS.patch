@@ -1,0 +1,60 @@
+From 9bea51b5e56a5a17cd63c90911f9bf79ad070782 Mon Sep 17 00:00:00 2001
+From: "Luis R. Rodriguez" <mcgrof@qca.qualcomm.com>
+Date: Wed, 20 Jun 2012 07:57:40 -0700
+Subject: [PATCH 1/7] cfg80211: add CONFIG_CFG80211_CERTIFICATION_ONUS
+
+This adds CONFIG_CFG80211_CERTIFICATION_ONUS which is to
+be used for features / code which require a bit of work on
+the system integrator's part to ensure that the system will
+still pass 802.11 regulatory certification. This option is
+also usable for researchers and experimenters looking to add
+code in the kernel without impacting compliant code.
+
+We'd use CONFIG_EXPERT alone but it seems that most standard
+Linux distributions are enabling CONFIG_EXPERT already. This
+allows us to define 802.11 specific kernel features under a
+flag that is intended by design to be disabled by standard
+Linux distributions, and only enabled by system integrators
+or distributions that have done work to ensure regulatory
+certification on the system with the enabled features.
+
+Signed-off-by: Luis R. Rodriguez <mcgrof@qca.qualcomm.com>
+---
+ net/wireless/Kconfig |   21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
+
+diff --git a/net/wireless/Kconfig b/net/wireless/Kconfig
+index 4d2b1ec..fe4adb1 100644
+--- a/net/wireless/Kconfig
++++ b/net/wireless/Kconfig
+@@ -74,6 +74,27 @@ config CFG80211_REG_DEBUG
+ 
+ 	  If unsure, say N.
+ 
++config CFG80211_CERTIFICATION_ONUS
++	bool "cfg80211 certification onus"
++	depends on CFG80211 && EXPERT
++	default n
++	---help---
++	  You should disable this option unless you are both capable
++	  and willing to ensure your system will remain regulatory
++	  compliant with the features available under this option.
++	  Some options may still be under heavy development and
++	  for whatever reason regulatory compliance has not or
++	  cannot yet be verified. Regulatory verification may at
++	  times only be possible until you have the final system
++	  in place.
++
++	  This option should only be enabled by system integrators
++	  or distributions that have done work necessary to ensure
++	  regulatory certification on the system with the enabled
++	  features. Alternatively you can enable this option if
++	  you are a wireless researcher and are working in a controlled
++	  and approved environment by your local regulatory agency.
++
+ config CFG80211_DEFAULT_PS
+ 	bool "enable powersave by default"
+ 	depends on CFG80211
+-- 
+1.7.10.rc1.22.gf5241
+

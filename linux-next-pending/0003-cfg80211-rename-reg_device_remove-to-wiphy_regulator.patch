@@ -1,0 +1,66 @@
+From 64c329ee5b9a7b1e278fcd67c96893b449df8f32 Mon Sep 17 00:00:00 2001
+From: "Luis R. Rodriguez" <mcgrof@qca.qualcomm.com>
+Date: Fri, 6 Jul 2012 15:14:38 -0700
+Subject: [PATCH 3/7] cfg80211: rename reg_device_remove() to
+ wiphy_regulatory_deregister()
+
+This makes it clearer what we're doing. This now makes a bit
+more sense given that regardless of the wiphy if the cell
+base station hint feature is supported we will be modifying the
+way the regulatory core behaves.
+
+Signed-off-by: Luis R. Rodriguez <mcgrof@qca.qualcomm.com>
+---
+ net/wireless/core.c |    8 +++++---
+ net/wireless/reg.c  |    2 +-
+ net/wireless/reg.h  |    2 +-
+ 3 files changed, 7 insertions(+), 5 deletions(-)
+
+diff --git a/net/wireless/core.c b/net/wireless/core.c
+index 4c11c7f..9a64b65 100644
+--- a/net/wireless/core.c
++++ b/net/wireless/core.c
+@@ -653,9 +653,11 @@ void wiphy_unregister(struct wiphy *wiphy)
+ 	/* nothing */
+ 	cfg80211_unlock_rdev(rdev);
+ 
+-	/* If this device got a regulatory hint tell core its
+-	 * free to listen now to a new shiny device regulatory hint */
+-	reg_device_remove(wiphy);
++	/*
++	 * If this device got a regulatory hint tell core its
++	 * free to listen now to a new shiny device regulatory hint
++	 */
++	wiphy_regulatory_deregister(wiphy);
+ 
+ 	cfg80211_rdev_list_generation++;
+ 	device_del(&rdev->wiphy.dev);
+diff --git a/net/wireless/reg.c b/net/wireless/reg.c
+index 05af62d..43b7750 100644
+--- a/net/wireless/reg.c
++++ b/net/wireless/reg.c
+@@ -2388,7 +2388,7 @@ void wiphy_regulatory_register(struct wiphy *wiphy)
+ }
+ 
+ /* Caller must hold cfg80211_mutex */
+-void reg_device_remove(struct wiphy *wiphy)
++void wiphy_regulatory_deregister(struct wiphy *wiphy)
+ {
+ 	struct wiphy *request_wiphy = NULL;
+ 
+diff --git a/net/wireless/reg.h b/net/wireless/reg.h
+index 519492f..f36b15f 100644
+--- a/net/wireless/reg.h
++++ b/net/wireless/reg.h
+@@ -27,7 +27,7 @@ int regulatory_hint_user(const char *alpha2,
+ 
+ int reg_device_uevent(struct device *dev, struct kobj_uevent_env *env);
+ void wiphy_regulatory_register(struct wiphy *wiphy);
+-void reg_device_remove(struct wiphy *wiphy);
++void wiphy_regulatory_deregister(struct wiphy *wiphy);
+ 
+ int __init regulatory_init(void);
+ void regulatory_exit(void);
+-- 
+1.7.10.rc1.22.gf5241
+
