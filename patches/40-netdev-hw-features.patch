@@ -56,7 +56,15 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  static netdev_features_t atl1c_fix_features(struct net_device *netdev,
  	netdev_features_t features)
  {
-@@ -552,13 +553,25 @@ static int atl1c_change_mtu(struct net_d
+@@ -520,6 +521,7 @@ static int atl1c_set_features(struct net
+ 
+ 	return 0;
+ }
++#endif /* (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,39)) */
+ 
+ /**
+  * atl1c_change_mtu - Change the Maximum Transfer Unit
+@@ -552,8 +554,19 @@ static int atl1c_change_mtu(struct net_d
  		netdev->mtu = new_mtu;
  		adapter->hw.max_frame_size = new_mtu;
  		atl1c_set_rxbufsize(adapter, netdev);
@@ -67,21 +75,15 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
 +		} else {
 +			adapter->netdev->features |= NETIF_F_TSO;
 +			adapter->netdev->features |= NETIF_F_TSO6;
-+               }
++		}
 +#endif /* (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,39)) */
  		atl1c_down(adapter);
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,39))
  		netdev_update_features(netdev);
-+#endif
++#endif /* (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,39)) */
  		atl1c_up(adapter);
  		clear_bit(__AT_RESETTING, &adapter->flags);
  	}
- 	return 0;
- }
-+#endif /* (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,39)) */
- 
- /*
-  *  caller should hold mdio_lock
 @@ -2391,8 +2404,10 @@ static const struct net_device_ops atl1c
  	.ndo_set_mac_address	= atl1c_set_mac_addr,
  	.ndo_set_rx_mode	= atl1c_set_multi,
