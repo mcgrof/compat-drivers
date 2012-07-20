@@ -1,7 +1,7 @@
 From 8fd9d059af12786341dec5a688e607bcdb372238 Mon Sep 17 00:00:00 2001
 From: Albert Pool <albertpool@solcon.nl>
 Date: Mon, 14 May 2012 18:08:32 +0200
-Subject: [PATCH 02/11] rt2800usb: 2001:3c17 is an RT3370 device
+Subject: [PATCH 02/13] rt2800usb: 2001:3c17 is an RT3370 device
 
 D-Link DWA-123 rev A1
 
@@ -10,7 +10,7 @@ Cc: <stable@vger.kernel.org>
 Acked-by: Gertjan van Wingerde <gwingerde@gmail.com>
 Signed-off-by: John W. Linville <linville@tuxdriver.com>
 ---
- drivers/net/wireless/rt2x00/rt2800usb.c | 3 ++-
+ drivers/net/wireless/rt2x00/rt2800usb.c |    3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/net/wireless/rt2x00/rt2800usb.c b/drivers/net/wireless/rt2x00/rt2800usb.c
@@ -35,5 +35,5 @@ index bf78317..20a5040 100644
  	{ USB_DEVICE(0x203d, 0x14a1) },
  	/* Gemtek */
 -- 
-1.7.11.1
+1.7.10.rc1.22.gf5241
 
