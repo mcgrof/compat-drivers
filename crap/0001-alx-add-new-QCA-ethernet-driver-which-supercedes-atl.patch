@@ -79,7 +79,7 @@ Signed-off-by: Luis R. Rodriguez <mcgrof@frijolero.org>
 
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -1301,6 +1301,17 @@ W:	http://atl1.sourceforge.net
+@@ -1290,6 +1290,17 @@ W:	http://atl1.sourceforge.net
  S:	Maintained
  F:	drivers/net/ethernet/atheros/
  
