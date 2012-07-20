@@ -174,7 +174,7 @@ calls on compat code with only slight modifications.
  static int __init
 --- a/drivers/net/wireless/iwlegacy/common.c
 +++ b/drivers/net/wireless/iwlegacy/common.c
-@@ -4909,15 +4909,17 @@ il_pci_resume(struct device *device)
+@@ -4907,15 +4907,17 @@ il_pci_resume(struct device *device)
  }
  EXPORT_SYMBOL(il_pci_resume);
  
