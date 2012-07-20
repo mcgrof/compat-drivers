@@ -3,7 +3,7 @@ here still, but for now we keep this here.
 
 --- a/drivers/bluetooth/hci_ldisc.c
 +++ b/drivers/bluetooth/hci_ldisc.c
-@@ -271,8 +271,13 @@ static int hci_uart_tty_open(struct tty_
+@@ -302,8 +302,13 @@ static int hci_uart_tty_open(struct tty_
  	/* FIXME: why is this needed. Note don't use ldisc_ref here as the
  	   open path is before the ldisc is referencable */
  
@@ -17,7 +17,7 @@ here still, but for now we keep this here.
  	tty_driver_flush_buffer(tty);
  
  	return 0;
-@@ -491,7 +496,11 @@ static int hci_uart_tty_ioctl(struct tty
+@@ -529,7 +534,11 @@ static int hci_uart_tty_ioctl(struct tty
  		return hu->hdev_flags;
  
  	default:
