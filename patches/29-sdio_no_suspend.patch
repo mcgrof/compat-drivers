@@ -171,7 +171,7 @@ suspend and resume that are not backported.
  	},
 --- a/drivers/bluetooth/btmrvl_sdio.c
 +++ b/drivers/bluetooth/btmrvl_sdio.c
-@@ -1046,6 +1046,7 @@ static void btmrvl_sdio_remove(struct sd
+@@ -1048,6 +1048,7 @@ static void btmrvl_sdio_remove(struct sd
  	}
  }
  
@@ -179,7 +179,7 @@ suspend and resume that are not backported.
  static int btmrvl_sdio_suspend(struct device *dev)
  {
  	struct sdio_func *func = dev_to_sdio_func(dev);
-@@ -1141,6 +1142,7 @@ static const struct dev_pm_ops btmrvl_sd
+@@ -1143,6 +1144,7 @@ static const struct dev_pm_ops btmrvl_sd
  	.suspend	= btmrvl_sdio_suspend,
  	.resume		= btmrvl_sdio_resume,
  };
@@ -187,7 +187,7 @@ suspend and resume that are not backported.
  
  static struct sdio_driver bt_mrvl_sdio = {
  	.name		= "btmrvl_sdio",
-@@ -1149,7 +1151,9 @@ static struct sdio_driver bt_mrvl_sdio =
+@@ -1151,7 +1153,9 @@ static struct sdio_driver bt_mrvl_sdio =
  	.remove		= btmrvl_sdio_remove,
  	.drv = {
  		.owner = THIS_MODULE,
