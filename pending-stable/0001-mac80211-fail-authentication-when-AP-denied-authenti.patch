@@ -1,7 +1,7 @@
 From dac211ec10d268b9d09000093a9fa2ac1773894f Mon Sep 17 00:00:00 2001
 From: Eliad Peller <eliad@wizery.com>
 Date: Sun, 13 May 2012 18:07:04 +0300
-Subject: [PATCH 01/13] mac80211: fail authentication when AP denied
+Subject: [PATCH 1/9] mac80211: fail authentication when AP denied
  authentication
 
 ieee80211_rx_mgmt_auth() doesn't handle denied authentication

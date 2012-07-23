@@ -1,7 +1,7 @@
 From 8fd9d059af12786341dec5a688e607bcdb372238 Mon Sep 17 00:00:00 2001
 From: Albert Pool <albertpool@solcon.nl>
 Date: Mon, 14 May 2012 18:08:32 +0200
-Subject: [PATCH 02/13] rt2800usb: 2001:3c17 is an RT3370 device
+Subject: [PATCH 2/9] rt2800usb: 2001:3c17 is an RT3370 device
 
 D-Link DWA-123 rev A1
 
