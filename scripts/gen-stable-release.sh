@@ -110,7 +110,7 @@ function check_for_updates()
 		git fetch
 		git reset --hard origin
 		;;
-	*) # Based on a stable 2.6.x.y release, lets just move to the target branch
+	*) # Based on a stable {2.6.x.y, 3.x.y} release, lets just move to the target branch
 	   # we'll only ask for object updates if and only if you asked us to with -f,
 	   # otherwise we eat up whatever you already have on your existing branch.
 		git checkout -f
@@ -121,7 +121,7 @@ function check_for_updates()
 	esac
 }
 
-# We will not update your linux-2.6-allstable git tree by default. You can force
+# We will not update your linux-stable git tree by default. You can force
 # an update by two methods:
 #
 # a) Specifying a different target branch
@@ -134,7 +134,7 @@ fi
 
 echo "On $ALL_STABLE_TREE: $TARGET_BRANCH"
 
-# At this point your linux-2.6-allstable tree should be up to date
+# At this point your linux-stable tree should be up to date
 # with the target kernel you want to use. Lets now make sure you are
 # on matching compat-drivers branch.
 

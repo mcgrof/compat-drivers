@@ -136,7 +136,7 @@ cat <<EOF
  * Automatically generated C config: don't edit
  * $DATE 
  * compat-drivers: $CREL
- * linux-2.6: $KREL
+ * linux: $KREL
  */
 #define COMPAT_RELEASE "$CREL"
 #define COMPAT_KERNEL_RELEASE "$KREL"
