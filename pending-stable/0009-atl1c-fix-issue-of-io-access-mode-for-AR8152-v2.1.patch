@@ -12,8 +12,8 @@ Cc: stable <stable@vger.kernel.org>
 Signed-off-by: xiong <xiong@qca.qualcomm.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 ---
- drivers/net/ethernet/atheros/atl1c/atl1c_hw.h   |    5 +++++
- drivers/net/ethernet/atheros/atl1c/atl1c_main.c |   16 +++++++++++++++-
+ drivers/net/ethernet/atheros/atl1c/atl1c_hw.h   |  5 +++++
+ drivers/net/ethernet/atheros/atl1c/atl1c_main.c | 16 +++++++++++++++-
  2 files changed, 20 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/net/ethernet/atheros/atl1c/atl1c_hw.h b/drivers/net/ethernet/atheros/atl1c/atl1c_hw.h
@@ -81,5 +81,5 @@ index 36d3783..1bf5bbf 100644
  	/* before link up, we assume hibernate is true */
  	hw->hibernate = true;
 -- 
-1.7.10.rc1.22.gf5241
+1.7.11.4
 

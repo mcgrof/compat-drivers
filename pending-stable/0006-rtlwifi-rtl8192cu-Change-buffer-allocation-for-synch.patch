@@ -16,8 +16,8 @@ Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
 Cc: Stable <stable@vger.kernel.org>
 Signed-off-by: John W. Linville <linville@tuxdriver.com>
 ---
- drivers/net/wireless/rtlwifi/usb.c  |   14 +++++++++++---
- drivers/net/wireless/rtlwifi/wifi.h |    1 +
+ drivers/net/wireless/rtlwifi/usb.c  | 14 +++++++++++---
+ drivers/net/wireless/rtlwifi/wifi.h |  1 +
  2 files changed, 12 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/net/wireless/rtlwifi/usb.c b/drivers/net/wireless/rtlwifi/usb.c
@@ -71,5 +71,5 @@ index bd816ae..cdaa21f 100644
  	/*Dual mac*/
  	spinlock_t cck_and_rw_pagea_lock;
 -- 
-1.7.10.rc1.22.gf5241
+1.7.11.4
 

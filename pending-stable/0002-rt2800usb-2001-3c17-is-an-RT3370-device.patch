@@ -10,7 +10,7 @@ Cc: <stable@vger.kernel.org>
 Acked-by: Gertjan van Wingerde <gwingerde@gmail.com>
 Signed-off-by: John W. Linville <linville@tuxdriver.com>
 ---
- drivers/net/wireless/rt2x00/rt2800usb.c |    3 ++-
+ drivers/net/wireless/rt2x00/rt2800usb.c | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/net/wireless/rt2x00/rt2800usb.c b/drivers/net/wireless/rt2x00/rt2800usb.c
@@ -35,5 +35,5 @@ index bf78317..20a5040 100644
  	{ USB_DEVICE(0x203d, 0x14a1) },
  	/* Gemtek */
 -- 
-1.7.10.rc1.22.gf5241
+1.7.11.4
 

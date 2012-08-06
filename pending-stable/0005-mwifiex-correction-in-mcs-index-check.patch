@@ -15,7 +15,7 @@ Signed-off-by: Amitkumar Karwar <akarwar@marvell.com>
 Signed-off-by: Bing Zhao <bzhao@marvell.com>
 Signed-off-by: John W. Linville <linville@tuxdriver.com>
 ---
- drivers/net/wireless/mwifiex/cfg80211.c |    4 ++--
+ drivers/net/wireless/mwifiex/cfg80211.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/net/wireless/mwifiex/cfg80211.c b/drivers/net/wireless/mwifiex/cfg80211.c
@@ -35,5 +35,5 @@ index 5c7fd18..76b5c0f 100644
  		sinfo->txrate.flags |= RATE_INFO_FLAGS_MCS;
  		/* 40MHz rate */
 -- 
-1.7.10.rc1.22.gf5241
+1.7.11.4
 
