@@ -10,6 +10,7 @@ ATH_MAKEFILE="drivers/net/wireless/ath/Makefile"
 ATH9K_MAKEFILE="drivers/net/wireless/ath/ath9k/Makefile"
 BRCM80211_MAKEFILE="drivers/net/wireless/brcm80211/Makefile"
 RT2X00_MAKEFILE="drivers/net/wireless/rt2x00/Makefile"
+TI_MAKEFILE="drivers/net/wireless/ti/Makefile"
 NET_WIRELESS_MAKEFILE="net/wireless/Makefile"
 EEPROM_MAKEFILE="drivers/misc/eeprom/Makefile"
 DRIVERS_NET_ATHEROS="drivers/net/ethernet/atheros/Makefile"
@@ -252,6 +253,12 @@ function select_ath9k_driver_ap
 	perl -i -ne 'print if ! /CONFIG_COMPAT_ATH9K_RATE_CONTROL/ ' $COMPAT_CONFIG_CW
 }
 
+function select_ti_drivers
+{
+	select_drivers CONFIG_WL_TI
+	select_drivers_from_makefile $TI_MAKEFILE $@
+}
+
 function select_brcm80211_driver 
 {
 	backup_file $BRCM80211_MAKEFILE
@@ -364,8 +371,7 @@ case $1 in
 		disable_lib80211
 		;;
 	ti)
-		select_drivers		CONFIG_WL1251 \
-					CONFIG_WL12XX
+		select_drivers		CONFIG_WL_TI
 		disable_staging
 		disable_var_01
 		;;
@@ -451,12 +457,17 @@ case $1 in
 		disable_var_02
 		;;
 	wl1251)
-		select_drivers		CONFIG_WL1251
+		select_ti_drivers	CONFIG_WL1251
 		disable_staging
 		disable_var_01
 		;;
 	wl12xx)
-		select_drivers		CONFIG_WL12XX
+		select_ti_drivers	CONFIG_WL12XX
+		disable_staging
+		disable_var_01
+		;;
+	wl18xx)
+		select_ti_drivers	CONFIG_WL18XX
 		disable_staging
 		disable_var_01
 		;;
