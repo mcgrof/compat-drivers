@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# This script checks the compat-wireless configuration file and if changes were made
+# This script checks the compat-drivers configuration file and if changes were made
 # regenerates the compat_autoconf header.
 
 # These variables are expected to be exported:
@@ -28,7 +28,7 @@ fi
 md5sum -c $CONFIG_CHECK 2> /dev/null 1>/dev/null
 
 if [ $? -ne 0 ]; then
-	echo "Changes to compat-wireless's configuration was detected, regenerating autoconf..."
+	echo "Changes to compat-drivers's configuration was detected, regenerating autoconf..."
 	gen_compat_autoconf
 fi
 

@@ -2,13 +2,13 @@
 # 
 # Copyright 2007, 2008, 2010	Luis R. Rodriguez <mcgrof@winlab.rutgers.edu>
 #
-# Use this to update compat-wireless to the latest
+# Use this to update compat-drivers to the latest
 # linux-next.git tree you have.
 #
 # Usage: you should have the latest pull of linux-next.git
 # git://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git
 # We assume you have it on your ~/linux-next/ directory. If you do,
-# just run this script from the compat-wireless directory.
+# just run this script from the compat-drivers directory.
 # You can specify where your GIT_TREE is by doing:
 #
 # export GIT_TREE=/home/mcgrof/linux-next/
@@ -443,7 +443,7 @@ cp -a $GIT_COMPAT_TREE/include/pcmcia/* include/pcmcia/
 cp -a $GIT_COMPAT_TREE/include/crypto/* include/crypto/
 rm -f $COMPAT/*.mod.c
 
-# files we suck in for compat-wireless
+# files we suck in for wireless drivers
 export WSTABLE="
         net/wireless/
         net/wireless/
@@ -561,7 +561,7 @@ patchRefresh() {
 ORIG_CODE=$(find ./ -type f -name  \*.[ch] |
 	egrep -v "^./compat/|include/linux/compat" |
 	xargs wc -l | tail -1 | awk '{print $1}')
-printf "\n${CYAN}compat-wireless code metrics${NORMAL}\n\n" > $CODE_METRICS
+printf "\n${CYAN}compat-drivers code metrics${NORMAL}\n\n" > $CODE_METRICS
 printf "${PURPLE}%10s${NORMAL} - Total upstream lines of code being pulled\n" $ORIG_CODE >> $CODE_METRICS
 
 for dir in $EXTRA_PATCHES; do
@@ -625,16 +625,16 @@ if [ -d ./.git ]; then
 
 	case $TREE_NAME in
 	"wireless-testing.git") # John's wireless-testing
-		echo -e "This is a ${RED}wireless-testing.git${NORMAL} compat-wireless release"
+		echo -e "This is a ${RED}wireless-testing.git${NORMAL} compat-drivers release"
 		;;
 	"linux-next.git") # The linux-next integration testing tree
-		echo -e "This is a ${RED}linux-next.git${NORMAL} compat-wireless release"
+		echo -e "This is a ${RED}linux-next.git${NORMAL} compat-drivers release"
 		;;
 	"linux-stable.git") # Greg's all stable tree
-		echo -e "This is a ${GREEN}linux-stable.git${NORMAL} compat-wireless release"
+		echo -e "This is a ${GREEN}linux-stable.git${NORMAL} compat-drivers release"
 		;;
 	"linux-2.6.git") # Linus' 2.6 tree
-		echo -e "This is a ${GREEN}linux-2.6.git${NORMAL} compat-wireless release"
+		echo -e "This is a ${GREEN}linux-2.6.git${NORMAL} compat-drivers release"
 		;;
 	*)
 		;;
@@ -644,7 +644,7 @@ if [ -d ./.git ]; then
 	echo -e "\nBase tree: ${GREEN}$(cat .compat_base_tree)${NORMAL}" >> $CODE_METRICS
 	echo -e "Base tree version: ${PURPLE}$(cat .compat_base_tree_version)${NORMAL}" >> $CODE_METRICS
 	echo -e "compat.git: ${CYAN}$(cat .compat_base)${NORMAL}" >> $CODE_METRICS
-	echo -e "compat-wireless release: ${YELLOW}$(cat .compat_version)${NORMAL}" >> $CODE_METRICS
+	echo -e "compat-drivers release: ${YELLOW}$(cat .compat_version)${NORMAL}" >> $CODE_METRICS
 
 fi
 

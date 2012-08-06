@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Copyright 2009  Luis R. Rodriguez <mcgrof@gmail.com>
 #
-# You can use this to make stable compat-wireless releases
+# You can use this to make stable compat-drivers releases
 #
 # The assumption is you have the linux-stable git tree on your $HOME
 # git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git
@@ -26,7 +26,7 @@ UNDERLINE="\033[02m"
 # Linus' tree as a remote and fetch those objects if you want to make an RC
 # release instead.
 ALL_STABLE_TREE="linux-stable"
-STAGING=/tmp/staging/compat-wireless/
+STAGING=/tmp/staging/compat-drivers/
 
 function usage()
 {
@@ -105,7 +105,7 @@ done
 function check_for_updates()
 {
 	case $TARGET_BRANCH in
-	"master") # Preparing a new stable compat-wireless release based on an RC kernel
+	"master") # Preparing a new stable compat-drivers release based on an RC kernel
 		git checkout -f
 		git fetch
 		git reset --hard origin
@@ -136,13 +136,13 @@ echo "On $ALL_STABLE_TREE: $TARGET_BRANCH"
 
 # At this point your linux-2.6-allstable tree should be up to date
 # with the target kernel you want to use. Lets now make sure you are
-# on matching compat-wireless branch.
+# on matching compat-drivers branch.
 
 # This is a super hack, but let me know if you figure out a cleaner way
 TARGET_KERNEL_RELEASE=$(make VERSION="linux-3" SUBLEVEL="" EXTRAVERSION=".y" kernelversion)
 
 if [[ $COMPAT_WIRELESS_BRANCH != $TARGET_KERNEL_RELEASE ]]; then
-	echo -e "You are on the compat-wireless ${GREEN}${COMPAT_WIRELESS_BRANCH}${NORMAL} but are "
+	echo -e "You are on the compat-drivers ${GREEN}${COMPAT_WIRELESS_BRANCH}${NORMAL} but are "
 	echo -en "on the ${RED}${TARGET_KERNEL_RELEASE}${NORMAL} branch... "
 	echo -e "try changing to that first."
 

@@ -14,9 +14,9 @@
 # ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 # OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-# The purpose of this script is to enable developers use compat-wireless
+# The purpose of this script is to enable developers use compat-drivers
 # backport work without having to carry code on their tree. This lets
-# developers synch to newer compat-wireless releases to gain more backport
+# developers synch to newer compat-drivers releases to gain more backport
 # work. If you use this throw the files into your .gitignore:
 #
 # compat/

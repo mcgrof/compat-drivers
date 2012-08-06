@@ -21,7 +21,7 @@ source .compat_copy
 UPDATE_SCRIPT="$COMPAT_SRC/scripts/refresh-compat"
 
 if [[ ! -d $COMPAT_SRC ]]; then
-	echo -e "You should have compat-wireless.git cloned and checked out under $COMPAT_SRC"
+	echo -e "You should have compat-drivers.git cloned and checked out under $COMPAT_SRC"
 	echo -e "The git tree: git://github.com/mcgrof/compat-wireless.git"
 	exit 1
 fi

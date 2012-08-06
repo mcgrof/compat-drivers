@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Copyright 2009        Luis R. Rodriguez <mcgrof@gmail.com>
 #
-# This script allows you to select your compat-wireless driver and
+# This script allows you to select your compat-drivers driver and
 # reduce compilation time.
 
 COMPAT_CONFIG_CW="config.mk"
@@ -70,8 +70,8 @@ function usage {
 	echo -e "\t${CYAN}atlxx${NORMAL} < ${PURPLE} atl1 atl2 atl1e alx${NORMAL}>"
 	echo -e "\t${CYAN}bt${NORMAL} < ${PURPLE} Linux bluetooth drivers ${NORMAL}>"
 
-	echo -e "Restoring compat-wireless:"
-	echo -e "\t${GREEN}restore${NORMAL}: you can use this option to restore compat-wireless to the original state"
+	echo -e "Restoring compat-drivers:"
+	echo -e "\t${GREEN}restore${NORMAL}: you can use this option to restore compat-drivers to the original state"
 }
 
 function backup_file {
@@ -287,7 +287,7 @@ if [ $# -ne 1 ]; then
 fi
 
 if [ ! -f .compat_version ]; then
-	echo "Must run $0 from the compat-wireless top level directory"
+	echo "Must run $0 from the compat-drivers top level directory"
 	exit
 fi
 

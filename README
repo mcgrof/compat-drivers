@@ -41,8 +41,8 @@ Versions
 --------
 
 There are two different versions of this package available. 
- * Version based on latest linux-next.git tree named compat-wireless-YYYY-MM-DD.tar.bz2
- * Version based on linux-2.6-stable.git tree named compat-wireless-2.6.CC.DD.tar.bz2
+ * Version based on latest linux-next.git tree named compat-drivers-YYYY-MM-DD.tar.bz2
+ * Version based on linux-stable.git tree named compat-drivers-{2.6.x, 3.x}.CC.DD.tar.bz2
 
 Both versions should work for every kernel > 2.6.24. The differences are the
 code they are containing. The version based on linux-next.git contains the
@@ -233,7 +233,7 @@ Building for external kernels
 ----------------------------------
 
 If you have a kernel you do not have installed but yet want to build the
-compat-wireless-2.6 drivers for it you can use this syntax:
+compat-drivers for it you can use this syntax:
 
 make KLIB=/home/mcgrof/kernels/linux-2.6.23.9 KLIB_BUILD=/home/mcgrof/kernels/linux-2.6.23.9
 
@@ -284,39 +284,39 @@ An extended and more up to date version can be found at:
 
 http://wireless.kernel.org/en/users/Download/hacking
 
-This section deals with development details of compat-wireless and the other
-trees it uses. If you want to make your own compat-wireless tarballs, or if you
-see something busted with compat-wireless or just want to add something new or
+This section deals with development details of compat-drivers and the other
+trees it uses. If you want to make your own compat-drivers tarballs, or if you
+see something busted with compat-drivers or just want to add something new or
 an enhancement this is the guide for you.
 
 Git trees you will need
 -----------------------
 
-compat-wireless backports both the bluetooth and 802.11 subsystems down to older
-kernels. To be able to synchronize backporting the latest and greatest the
+compat-drivers backports bluetooth, 802.11 and DRM subsystems down to older
+kernels. To be able to synchronize backporting the latest and greatest, the
 linux-next.git tree is used as its main source for kernel updates. General Linux
 kernel compatibility is addressed through a general kernel compatibility tree,
-compat.git. compat-wireless then has its own tree for specific wireless
+compat.git. compat-drivers then has its own tree for specific subsystem
 compatibility. You will then need to checkout three trees to start hacking on
-compat-wireless:
+compat-drivers:
 
 git://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git
 git://github.com/mcgrof/compat.git
 git://github.com/mcgrof/compat-wireless.git
 
-Linux next
+linux-next
 ----------
 
 The linux-next.git tree brings all subsystems being worked on for the next
-kernel release into one tree. So if the current rc kernel is 2.6.33-rc5, this
-means linux-next will have what people today are working on for the 2.6.34
+kernel release into one tree. So if the current rc kernel is 3.5-rc1, this
+means linux-next will have what people today are working on for the 3.6
 kernel release.
 
 compat.git
 ----------
 
 The compat git tree is a general kernel compatibility layer which can be shared
-amongst different compatibility projects, or drivers. compat-wireless is just
+amongst different compatibility projects, or drivers. compat-drivers is just
 one of the kernel compatibility projects using compat.git. compat.git builds a
 general compatibility module, compat, and any additional modules to let you get
 new general kernel updates from future kernels on your old kernels.
@@ -350,24 +350,24 @@ request_firmware_nowait(). The compat_firmware_class module registers its own
 sysfs subsystem and as such also gets udev events sent through a separate
 subsystem. Because of this a new udev rules file is required and provided.
 
-compat-wireless.git
+compat-drivers.git
 -------------------
 
-Anything that is not general kernel compatibility but instead specific to 802.11
-or bluetooth goes into compat-wireless.git. After you've cloned all three trees,
-linux-next.git, compat.git and compat-wireless.git you need to change into the
-compat-wireless directory and tell compat-wireless where you linux-next and
-compat.git trees are. You do this with environment variables GIT_TREE and
-GIT_COMPAT_TREE. You can do for example:
+Anything that is not general kernel compatibility but instead specific to
+subsystems like 802.11, bluetooth, or DRM goes into compat-drivers.git.
+After you've cloned all three trees linux-next.git, compat.git and compat-drivers.git
+you need to change into the compat-drivers directory and tell compat-drivers
+where your linux-next and compat.git trees are. You do this with environment
+variables GIT_TREE and GIT_COMPAT_TREE. You can do for example:
 
-export GIT_TREE=/home/user/wireless-testing/
-export GIT_COMPAT_TREE=/home/users/compat.git/
+export GIT_TREE=/home/mcgrof/linux-next
+export GIT_COMPAT_TREE=/home/mcgrof/compat
 
 Then you can update your local sources based on these linux-next.git and
 compat.git trees:
 
-scripts/admin-clean.sh   - Cleans the compat-wireless-2.6 tree
-scripts/admin-update.sh  - Updates compat-wireless-2.6 with your git tree
+scripts/admin-clean.sh   - Cleans the compat-drivers tree
+scripts/admin-update.sh  - Updates compat-drivers with your git trees
 scripts/admin-refresh.sh - Does the above two
 
 Adding new drivers
@@ -390,7 +390,7 @@ As another example, for bluetooth you will want to send them to Marcel
 Holtmann and cc the linux-bluetooth mailing list. If your patch touches on
 others areas of the kernel refer to the MAINTAINERS file on the kernel.
 
-For compat.git and compat-wireless.git please send patches against to:
+For compat.git and compat-drivers.git please send patches against to:
 
 To: Luis R. Rodriguez <mcgrof@kernel.org>
 CC: linux-wireless@vger.kernel.org, linux-bluetooth@vger.kernel.org
@@ -400,17 +400,10 @@ For patches for compat.git please use a subject like the following:
 
 Subject: [PATCH] compat: fix foo
 
-For compat-wireless.git please use a subject like the following:
+For 802.11 and bluetooth specific stuff please use a subject like the following:
 
 Subject: [PATCH] compat-wireless: fix foo
 
 Patches are preferred sent with a clear commit log entry, if unfamiliar with
 how to send patches please refer to
 http://wireless.kernel.org/en/developers/Documentation/git-guide.
-
-
-TODO
------
- * Dialog (make menuconfig) option for this package
- * Compatibility work for 2.6.18 --> 2.6.24
-

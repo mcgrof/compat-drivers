@@ -1,4 +1,4 @@
-compat-wireless pending-stable/ patches
+compat-drivers pending-stable/ patches
 =======================================
 
 Often right before the merge window we get a block on non

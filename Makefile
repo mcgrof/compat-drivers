@@ -66,7 +66,7 @@ export PWD :=	$(shell pwd)
 
 # The build will fail if there is any space in PWD.
 ifneq (,$(findstring  $() ,$(PWD)))
-$(error "The path to this compat-wireless directory has spaces in it." \
+$(error "The path to this compat-drivers directory has spaces in it." \
 	"Please put it somewhere where there is no space")
 endif
 
@@ -74,7 +74,7 @@ export CFLAGS += \
         -DCOMPAT_BASE="\"$(shell cat $(PWD)/.compat_base)\"" \
         -DCOMPAT_BASE_TREE="\"$(shell cat $(PWD)/.compat_base_tree)\"" \
         -DCOMPAT_BASE_TREE_VERSION="\"$(shell cat $(PWD)/.compat_base_tree_version)\"" \
-        -DCOMPAT_PROJECT="\"Compat-wireless\"" \
+        -DCOMPAT_PROJECT="\"Compat-drivers\"" \
         -DCOMPAT_VERSION="\"$(shell cat $(PWD)/.compat_version)\""
 
 # These exported as they are used by the scripts
@@ -103,7 +103,7 @@ bt: $(CREL_CHECK)
 # We use a CREL_CHECK variable which will depend on the environment used to
 # build. If the environment requirements change it forces a reconfiguration
 # check.  This means we force a new reconfiguration check if a the user gets a
-# new updates of compat-wireless or when the user updates the $(COMPAT_CONFIG)
+# new updates of compat-drivers or when the user updates the $(COMPAT_CONFIG)
 # file.
 # XXX: add kernel target to the CREL_CHECK mix, this would ensure we also
 # reconfigure and build again fresh if we detect a new target kernel is
@@ -152,8 +152,8 @@ install-modules: modules
 
 install-scripts:
 	@# All the scripts we can use
-	@mkdir -p $(DESTDIR)/usr/lib/compat-wireless/
-	@install scripts/modlib.sh	$(DESTDIR)/usr/lib/compat-wireless/
+	@mkdir -p $(DESTDIR)/usr/lib/compat-drivers/
+	@install scripts/modlib.sh	$(DESTDIR)/usr/lib/compat-drivers/
 	@install scripts/madwifi-unload	$(DESTDIR)/usr/sbin/
 	@# This is to allow switching between drivers without blacklisting
 	@install scripts/athenable	$(DESTDIR)/usr/sbin/

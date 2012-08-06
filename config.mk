@@ -17,8 +17,9 @@ else
 KERNEL_26SUBLEVEL := $(shell $(MAKE) -C $(KLIB_BUILD) kernelversion | sed -n 's/^2\.6\.\([0-9]\+\).*/\1/p')
 endif
 
+# FIXME: This lower limit is different (e.g. 3.0) for DRM stuff.
 ifdef CONFIG_COMPAT_KERNEL_2_6_24
-$(error "ERROR: compat-wireless by default supports kernels >= 2.6.24, try enabling only one driver though")
+$(error "ERROR: compat-drivers by default supports kernels >= 2.6.24, try enabling only one driver though")
 endif #CONFIG_COMPAT_KERNEL_2_6_24
 
 ifeq ($(CONFIG_CFG80211),y)
@@ -76,7 +77,7 @@ endif
 endif # build check
 endif # kernel Makefile check
 
-# These both are needed by compat-wireless || compat-bluetooth so enable them
+# These both are needed by 802.11 and bluetooth so enable
  export CONFIG_COMPAT_RFKILL=y
 
 ifeq ($(CONFIG_MAC80211),y)
@@ -165,7 +166,7 @@ endif #CONFIG_COMPAT_KERNEL_2_6_33
 export CONFIG_MAC80211_RC_DEFAULT=minstrel_ht
 export CONFIG_MAC80211_RC_DEFAULT_MINSTREL=y
 # export CONFIG_MAC80211_RC_DEFAULT_PID=y
-# This is the one used by our compat-wireless net/mac80211/rate.c
+# This is the one used by our compat-drivers net/mac80211/rate.c
 # in case you have and old kernel which is overriding this to pid.
 export CONFIG_COMPAT_MAC80211_RC_DEFAULT=minstrel_ht
 export CONFIG_MAC80211_RC_PID=y
@@ -228,8 +229,8 @@ endif #CONFIG_PCMCIA
 
 # We need CONFIG_WIRELESS_EXT for CONFIG_CFG80211_WEXT for every kernel 
 # version. The new way CONFIG_CFG80211_WEXT is called from the kernel 
-# does not work with compat-wireless because it calls some callback 
-# function on struct wiphy. This struct is shipped with compat-wireless 
+# does not work with compat-drivers because it calls some callback
+# function on struct wiphy. This struct is shipped with compat-drivers
 # and changes from kernel version to version. We are using the 
 # wireless_handlers attribute which will be activated by 
 # export CONFIG_WIRELESS_EXT. 
