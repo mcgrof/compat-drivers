@@ -1,7 +1,7 @@
 From fe020120cb863ba918c6d603345342a880272c4d Mon Sep 17 00:00:00 2001
 From: Amitkumar Karwar <akarwar@marvell.com>
 Date: Wed, 11 Jul 2012 18:12:57 -0700
-Subject: [PATCH 5/9] mwifiex: correction in mcs index check
+Subject: [PATCH 05/15] mwifiex: correction in mcs index check
 
 mwifiex driver supports 2x2 chips as well. Hence valid mcs values
 are 0 to 15. The check for mcs index is corrected in this patch.
@@ -15,7 +15,7 @@ Signed-off-by: Amitkumar Karwar <akarwar@marvell.com>
 Signed-off-by: Bing Zhao <bzhao@marvell.com>
 Signed-off-by: John W. Linville <linville@tuxdriver.com>
 ---
- drivers/net/wireless/mwifiex/cfg80211.c | 4 ++--
+ drivers/net/wireless/mwifiex/cfg80211.c |    4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/net/wireless/mwifiex/cfg80211.c b/drivers/net/wireless/mwifiex/cfg80211.c
@@ -35,5 +35,5 @@ index 5c7fd18..76b5c0f 100644
  		sinfo->txrate.flags |= RATE_INFO_FLAGS_MCS;
  		/* 40MHz rate */
 -- 
-1.7.11.4
+1.7.10.4
 

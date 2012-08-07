@@ -1,7 +1,7 @@
 From dac211ec10d268b9d09000093a9fa2ac1773894f Mon Sep 17 00:00:00 2001
 From: Eliad Peller <eliad@wizery.com>
 Date: Sun, 13 May 2012 18:07:04 +0300
-Subject: [PATCH 1/9] mac80211: fail authentication when AP denied
+Subject: [PATCH 01/15] mac80211: fail authentication when AP denied
  authentication
 
 ieee80211_rx_mgmt_auth() doesn't handle denied authentication
@@ -15,7 +15,7 @@ Acked-by: Johannes Berg <johannes@sipsolutions.net>
 Cc: stable@vger.kernel.org #3.4
 Signed-off-by: John W. Linville <linville@tuxdriver.com>
 ---
- net/mac80211/mlme.c | 4 ++--
+ net/mac80211/mlme.c |    4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
@@ -41,5 +41,5 @@ index 04c3063..a2f18b7 100644
  	ifmgd->auth_data->timeout = jiffies + IEEE80211_AUTH_WAIT_ASSOC;
  	run_again(ifmgd, ifmgd->auth_data->timeout);
 -- 
-1.7.11.4
+1.7.10.4
 

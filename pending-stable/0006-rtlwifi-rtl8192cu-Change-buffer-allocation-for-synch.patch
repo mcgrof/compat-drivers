@@ -1,7 +1,7 @@
 From 3ce4d85b76010525adedcc2555fa164bf706a2f3 Mon Sep 17 00:00:00 2001
 From: Larry Finger <Larry.Finger@lwfinger.net>
 Date: Wed, 11 Jul 2012 14:37:28 -0500
-Subject: [PATCH 6/9] rtlwifi: rtl8192cu: Change buffer allocation for
+Subject: [PATCH 06/15] rtlwifi: rtl8192cu: Change buffer allocation for
  synchronous reads
 
 In commit a7959c1, the USB part of rtlwifi was switched to convert
@@ -16,8 +16,8 @@ Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
 Cc: Stable <stable@vger.kernel.org>
 Signed-off-by: John W. Linville <linville@tuxdriver.com>
 ---
- drivers/net/wireless/rtlwifi/usb.c  | 14 +++++++++++---
- drivers/net/wireless/rtlwifi/wifi.h |  1 +
+ drivers/net/wireless/rtlwifi/usb.c  |   14 +++++++++++---
+ drivers/net/wireless/rtlwifi/wifi.h |    1 +
  2 files changed, 12 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/net/wireless/rtlwifi/usb.c b/drivers/net/wireless/rtlwifi/usb.c
@@ -71,5 +71,5 @@ index bd816ae..cdaa21f 100644
  	/*Dual mac*/
  	spinlock_t cck_and_rw_pagea_lock;
 -- 
-1.7.11.4
+1.7.10.4
 

@@ -1,7 +1,7 @@
 From 353d09c6ceedc1cb0c54fe5002c0ca80b6ee6e4f Mon Sep 17 00:00:00 2001
 From: Christian Lamparter <chunkeey@googlemail.com>
 Date: Sat, 7 Jul 2012 15:07:13 +0200
-Subject: [PATCH 4/9] mac80211: fix read outside array bounds
+Subject: [PATCH 04/15] mac80211: fix read outside array bounds
 
 ieee802_1d_to_ac is defined as a const int[8],
 but the tid parameter has a range from 0 to 15.
@@ -10,7 +10,7 @@ Cc: stable@vger.kernel.org
 Signed-off-by: Christian Lamparter <chunkeey@googlemail.com>
 Signed-off-by: John W. Linville <linville@tuxdriver.com>
 ---
- net/mac80211/tx.c | 2 +-
+ net/mac80211/tx.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
@@ -27,5 +27,5 @@ index e453212..85cf32d 100644
  	skb_set_mac_header(skb, 0);
  	skb_set_network_header(skb, 0);
 -- 
-1.7.11.4
+1.7.10.4
 

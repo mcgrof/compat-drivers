@@ -1,7 +1,7 @@
 From f1b00f4dab29b57bdf1bc03ef12020b280fd2a72 Mon Sep 17 00:00:00 2001
 From: Forest Bond <forest.bond@rapidrollout.com>
 Date: Fri, 13 Jul 2012 12:26:06 -0400
-Subject: [PATCH 7/9] rtlwifi: rtl8192de: Fix phy-based version calculation
+Subject: [PATCH 07/15] rtlwifi: rtl8192de: Fix phy-based version calculation
 
 Commit d83579e2a50ac68389e6b4c58b845c702cf37516 incorporated some
 changes from the vendor driver that made it newly important that the
@@ -22,7 +22,7 @@ Cc: Stable <stable@vger.kernel.org> [v3.2+]
 Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
 Signed-off-by: John W. Linville <linville@tuxdriver.com>
 ---
- drivers/net/wireless/rtlwifi/rtl8192de/phy.c | 6 +++---
+ drivers/net/wireless/rtlwifi/rtl8192de/phy.c |    6 +++---
  1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/net/wireless/rtlwifi/rtl8192de/phy.c b/drivers/net/wireless/rtlwifi/rtl8192de/phy.c
@@ -55,5 +55,5 @@ index 18380a7..4420312 100644
  		if (rtlhal->interfaceindex == 0) {
  			rtlhal->bandset = BAND_ON_5G;
 -- 
-1.7.11.4
+1.7.10.4
 

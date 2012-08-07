@@ -1,7 +1,7 @@
 From 097b0e1bf18a00195cd89bb13565ddbc9b0df942 Mon Sep 17 00:00:00 2001
 From: Johannes Berg <johannes.berg@intel.com>
 Date: Tue, 17 Jul 2012 17:12:29 +0200
-Subject: [PATCH 8/9] b43: fix crash with OpenFWWF
+Subject: [PATCH 08/15] b43: fix crash with OpenFWWF
 
 b43 with open firmware crashes mac80211 because
 it changes the number of queues at runtime which,
@@ -17,8 +17,8 @@ Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Cc: stable@vger.kernel.org (depends on commit a6f38ac3)
 Signed-off-by: John W. Linville <linville@tuxdriver.com>
 ---
- drivers/net/wireless/b43/b43.h  |  7 -------
- drivers/net/wireless/b43/main.c | 32 ++++++++++----------------------
+ drivers/net/wireless/b43/b43.h  |    7 -------
+ drivers/net/wireless/b43/main.c |   32 ++++++++++----------------------
  2 files changed, 10 insertions(+), 29 deletions(-)
 
 diff --git a/drivers/net/wireless/b43/b43.h b/drivers/net/wireless/b43/b43.h
@@ -126,5 +126,5 @@ index acd03a4..3e5cd8d 100644
  		ieee80211_unregister_hw(wl->hw);
  	}
 -- 
-1.7.11.4
+1.7.10.4
 
