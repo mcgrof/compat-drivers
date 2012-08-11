@@ -323,7 +323,7 @@ Signed-off-by: Luis R. Rodriguez <mcgrof@qca.qualcomm.com>
 +	return 0;
 +}
 +
-+static int wil_cfg80211_scan(struct wiphy *wiphy, struct net_device *ndev,
++static int wil_cfg80211_scan(struct wiphy *wiphy,
 +			     struct cfg80211_scan_request *request)
 +{
 +#if 0
@@ -601,7 +601,7 @@ Signed-off-by: Luis R. Rodriguez <mcgrof@qca.qualcomm.com>
 +	return 0;
 +}
 +
-+static int wil_mgmt_tx(struct wiphy *wiphy, struct net_device *ndev,
++static int wil_mgmt_tx(struct wiphy *wiphy, struct wireless_dev *wdev,
 +		struct ieee80211_channel *chan, bool offchan,
 +		enum nl80211_channel_type channel_type,
 +		bool channel_type_valid, unsigned int wait,
@@ -617,7 +617,7 @@ Signed-off-by: Luis R. Rodriguez <mcgrof@qca.qualcomm.com>
 +}
 +
 +static void wil_mgmt_frame_register(struct wiphy *wiphy,
-+		struct net_device *ndev, u16 frame_type, bool reg)
++		struct wireless_dev *wdev, u16 frame_type, bool reg)
 +{
 +	struct wil6210_priv *wil = wiphy_to_wil(wiphy);
 +	wil_info(wil, "%s()\n", __func__);
