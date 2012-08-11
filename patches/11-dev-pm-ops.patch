@@ -9,18 +9,17 @@ calls on compat code with only slight modifications.
 
 --- a/drivers/bcma/host_pci.c
 +++ b/drivers/bcma/host_pci.c
-@@ -258,6 +258,10 @@ static int bcma_host_pci_resume(struct d
+@@ -256,6 +256,9 @@ static int bcma_host_pci_resume(struct d
+ 	return bcma_bus_resume(bus);
+ }
  
- static SIMPLE_DEV_PM_OPS(bcma_pm_ops, bcma_host_pci_suspend,
- 			 bcma_host_pci_resume);
-+
 +compat_pci_suspend(bcma_host_pci_suspend)
 +compat_pci_resume(bcma_host_pci_resume)
 +
+ static SIMPLE_DEV_PM_OPS(bcma_pm_ops, bcma_host_pci_suspend,
+ 			 bcma_host_pci_resume);
  #define BCMA_PM_OPS	(&bcma_pm_ops)
- 
- #else /* CONFIG_PM */
-@@ -282,7 +286,12 @@ static struct pci_driver bcma_pci_bridge
+@@ -283,7 +286,12 @@ static struct pci_driver bcma_pci_bridge
  	.id_table = bcma_pci_bridge_tbl,
  	.probe = bcma_host_pci_probe,
  	.remove = __devexit_p(bcma_host_pci_remove),
@@ -35,16 +34,16 @@ calls on compat code with only slight modifications.
  int __init bcma_host_pci_init(void)
 --- a/drivers/net/ethernet/atheros/atl1c/atl1c_main.c
 +++ b/drivers/net/ethernet/atheros/atl1c/atl1c_main.c
-@@ -2693,6 +2693,9 @@ static struct pci_error_handlers atl1c_e
- 
- static SIMPLE_DEV_PM_OPS(atl1c_pm_ops, atl1c_suspend, atl1c_resume);
+@@ -2691,6 +2691,9 @@ static struct pci_error_handlers atl1c_e
+ 	.resume = atl1c_io_resume,
+ };
  
 +compat_pci_suspend(atl1c_suspend)
 +compat_pci_resume(atl1c_resume)
 +
+ static SIMPLE_DEV_PM_OPS(atl1c_pm_ops, atl1c_suspend, atl1c_resume);
+ 
  static struct pci_driver atl1c_driver = {
- 	.name     = atl1c_driver_name,
- 	.id_table = atl1c_pci_tbl,
 @@ -2700,7 +2703,12 @@ static struct pci_driver atl1c_driver =
  	.remove   = __devexit_p(atl1c_remove),
  	.shutdown = atl1c_shutdown,
@@ -110,7 +109,7 @@ calls on compat code with only slight modifications.
  module_pci_driver(ath5k_pci_driver);
 --- a/drivers/net/wireless/ath/ath9k/pci.c
 +++ b/drivers/net/wireless/ath/ath9k/pci.c
-@@ -343,14 +343,10 @@ static int ath_pci_resume(struct device
+@@ -344,14 +344,10 @@ static int ath_pci_resume(struct device
  	return 0;
  }
  
@@ -129,7 +128,7 @@ calls on compat code with only slight modifications.
  
  #define ATH9K_PM_OPS	(&ath9k_pm_ops)
  
-@@ -368,7 +364,12 @@ static struct pci_driver ath_pci_driver
+@@ -369,7 +365,12 @@ static struct pci_driver ath_pci_driver
  	.id_table   = ath_pci_id_table,
  	.probe      = ath_pci_probe,
  	.remove     = ath_pci_remove,
@@ -186,10 +185,10 @@ calls on compat code with only slight modifications.
 -	.poweroff = il_pci_suspend,
 -	.restore = il_pci_resume,
 -};
-+const SIMPLE_DEV_PM_OPS(il_pm_ops, il_pci_suspend, il_pci_resume);
-+
 +compat_pci_suspend(il_pci_suspend)
 +compat_pci_resume(il_pci_resume)
++
++SIMPLE_DEV_PM_OPS(il_pm_ops, il_pci_suspend, il_pci_resume);
 +
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
  EXPORT_SYMBOL(il_pm_ops);
@@ -202,13 +201,15 @@ calls on compat code with only slight modifications.
  
 --- a/drivers/net/wireless/iwlegacy/common.h
 +++ b/drivers/net/wireless/iwlegacy/common.h
-@@ -1847,7 +1847,12 @@ __le32 il_add_beacon_time(struct il_priv
+@@ -1847,7 +1847,14 @@ __le32 il_add_beacon_time(struct il_priv
  #ifdef CONFIG_PM
  int il_pci_suspend(struct device *device);
  int il_pci_resume(struct device *device);
 +#if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,29))
 +int il_pci_suspend_compat(struct pci_dev *pdev, pm_message_t state);
 +int il_pci_resume_compat(struct pci_dev *pdev);
++#elif (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,32))
++extern struct dev_pm_ops il_pm_ops;
 +#else
  extern const struct dev_pm_ops il_pm_ops;
 +#endif
@@ -217,16 +218,16 @@ calls on compat code with only slight modifications.
  
 --- a/drivers/net/wireless/iwlwifi/pcie/drv.c
 +++ b/drivers/net/wireless/iwlwifi/pcie/drv.c
-@@ -339,6 +339,9 @@ static int iwl_pci_resume(struct device
- 
- static SIMPLE_DEV_PM_OPS(iwl_dev_pm_ops, iwl_pci_suspend, iwl_pci_resume);
+@@ -337,6 +337,9 @@ static int iwl_pci_resume(struct device
+ 	return iwl_trans_resume(iwl_trans);
+ }
  
 +compat_pci_suspend(iwl_pci_suspend)
 +compat_pci_resume(iwl_pci_resume)
 +
- #define IWL_PM_OPS	(&iwl_dev_pm_ops)
+ static SIMPLE_DEV_PM_OPS(iwl_dev_pm_ops, iwl_pci_suspend, iwl_pci_resume);
  
- #else
+ #define IWL_PM_OPS	(&iwl_dev_pm_ops)
 @@ -361,7 +364,12 @@ static struct pci_driver iwl_pci_driver
  	.id_table = iwl_hw_card_ids,
  	.probe = iwl_pci_probe,
@@ -282,10 +283,10 @@ calls on compat code with only slight modifications.
 -	.poweroff = rtl_pci_suspend,
 -	.restore = rtl_pci_resume,
 -};
-+static const SIMPLE_DEV_PM_OPS(rtlwifi_pm_ops, rtl_pci_suspend, rtl_pci_resume);
-+
 +compat_pci_suspend(rtl_pci_suspend)
 +compat_pci_resume(rtl_pci_resume)
++
++static SIMPLE_DEV_PM_OPS(rtlwifi_pm_ops, rtl_pci_suspend, rtl_pci_resume);
  
  static struct pci_driver rtl92ce_driver = {
  	.name = KBUILD_MODNAME,
@@ -315,10 +316,10 @@ calls on compat code with only slight modifications.
 -	.poweroff = rtl_pci_suspend,
 -	.restore = rtl_pci_resume,
 -};
-+static const SIMPLE_DEV_PM_OPS(rtlwifi_pm_ops, rtl_pci_suspend, rtl_pci_resume);
-+
 +compat_pci_suspend(rtl_pci_suspend)
 +compat_pci_resume(rtl_pci_resume)
++
++static SIMPLE_DEV_PM_OPS(rtlwifi_pm_ops, rtl_pci_suspend, rtl_pci_resume);
  
  static struct pci_driver rtl92de_driver = {
  	.name = KBUILD_MODNAME,
@@ -348,10 +349,10 @@ calls on compat code with only slight modifications.
 -	.poweroff = rtl_pci_suspend,
 -	.restore = rtl_pci_resume,
 -};
-+static const SIMPLE_DEV_PM_OPS(rtlwifi_pm_ops, rtl_pci_suspend, rtl_pci_resume);
-+
 +compat_pci_suspend(rtl_pci_suspend)
 +compat_pci_resume(rtl_pci_resume)
++
++static SIMPLE_DEV_PM_OPS(rtlwifi_pm_ops, rtl_pci_suspend, rtl_pci_resume);
  
  static struct pci_driver rtl92se_driver = {
  	.name = KBUILD_MODNAME,
@@ -369,7 +370,7 @@ calls on compat code with only slight modifications.
  module_pci_driver(rtl92se_driver);
 --- a/drivers/net/wireless/p54/p54pci.c
 +++ b/drivers/net/wireless/p54/p54pci.c
-@@ -645,14 +645,10 @@ static int p54p_resume(struct device *de
+@@ -681,14 +681,10 @@ static int p54p_resume(struct device *de
  	return pci_set_power_state(pdev, PCI_D0);
  }
  
@@ -388,7 +389,7 @@ calls on compat code with only slight modifications.
  
  #define P54P_PM_OPS (&p54pci_pm_ops)
  #else
-@@ -664,7 +660,12 @@ static struct pci_driver p54p_driver = {
+@@ -700,7 +696,12 @@ static struct pci_driver p54p_driver = {
  	.id_table	= p54p_table,
  	.probe		= p54p_probe,
  	.remove		= __devexit_p(p54p_remove),
