@@ -13,7 +13,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
 
 --- a/drivers/net/ethernet/atheros/atl1c/atl1c_main.c
 +++ b/drivers/net/ethernet/atheros/atl1c/atl1c_main.c
-@@ -411,7 +411,11 @@ static void atl1c_set_multi(struct net_d
+@@ -410,7 +410,11 @@ static void atl1c_set_multi(struct net_d
  
  	/* comoute mc addresses' hash value ,and put it into hash table */
  	netdev_for_each_mc_addr(ha, netdev) {
