@@ -2,3 +2,4 @@ ath9k-Fix-softlockup-in-AR9485.patch
 ath9k-Add-PID-VID-support-for-AR1111.patch
 iwlwifi-disable-greenfield-transmissions-as-a-workar.patch
 mac80211-fail-authentication-when-AP-denied-authenti.patch
+rt2800usb-2001-3c17-is-an-RT3370-device.patch
