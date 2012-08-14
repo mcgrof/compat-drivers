@@ -11,12 +11,12 @@ calls on compat code with only slight modifications.
 +++ b/drivers/bcma/host_pci.c
 @@ -258,6 +258,10 @@ static int bcma_host_pci_resume(struct d
  
- static SIMPLE_DEV_PM_OPS(bcma_pm_ops, bcma_host_pci_suspend,
- 			 bcma_host_pci_resume);
 +
 +compat_pci_suspend(bcma_host_pci_suspend)
 +compat_pci_resume(bcma_host_pci_resume)
 +
+ static SIMPLE_DEV_PM_OPS(bcma_pm_ops, bcma_host_pci_suspend,
+ 			 bcma_host_pci_resume);
  #define BCMA_PM_OPS	(&bcma_pm_ops)
  
  #else /* CONFIG_PM */
@@ -37,11 +37,11 @@ calls on compat code with only slight modifications.
 +++ b/drivers/net/ethernet/atheros/atl1c/atl1c_main.c
 @@ -2708,6 +2708,9 @@ static struct pci_error_handlers atl1c_e
  
- static SIMPLE_DEV_PM_OPS(atl1c_pm_ops, atl1c_suspend, atl1c_resume);
- 
 +compat_pci_suspend(atl1c_suspend)
 +compat_pci_resume(atl1c_resume)
 +
+ static SIMPLE_DEV_PM_OPS(atl1c_pm_ops, atl1c_suspend, atl1c_resume);
+ 
  static struct pci_driver atl1c_driver = {
  	.name     = atl1c_driver_name,
  	.id_table = atl1c_pci_tbl,
@@ -186,10 +186,10 @@ calls on compat code with only slight modifications.
 -	.poweroff = il_pci_suspend,
 -	.restore = il_pci_resume,
 -};
-+const SIMPLE_DEV_PM_OPS(il_pm_ops, il_pci_suspend, il_pci_resume);
-+
 +compat_pci_suspend(il_pci_suspend)
 +compat_pci_resume(il_pci_resume)
++
++const SIMPLE_DEV_PM_OPS(il_pm_ops, il_pci_suspend, il_pci_resume);
 +
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
  EXPORT_SYMBOL(il_pm_ops);
@@ -219,11 +219,11 @@ calls on compat code with only slight modifications.
 +++ b/drivers/net/wireless/iwlwifi/iwl-pci.c
 @@ -338,6 +338,9 @@ static int iwl_pci_resume(struct device
  
- static SIMPLE_DEV_PM_OPS(iwl_dev_pm_ops, iwl_pci_suspend, iwl_pci_resume);
- 
 +compat_pci_suspend(iwl_pci_suspend)
 +compat_pci_resume(iwl_pci_resume)
 +
+ static SIMPLE_DEV_PM_OPS(iwl_dev_pm_ops, iwl_pci_suspend, iwl_pci_resume);
+ 
  #define IWL_PM_OPS	(&iwl_dev_pm_ops)
  
  #else
@@ -282,10 +282,10 @@ calls on compat code with only slight modifications.
 -	.poweroff = rtl_pci_suspend,
 -	.restore = rtl_pci_resume,
 -};
-+static const SIMPLE_DEV_PM_OPS(rtlwifi_pm_ops, rtl_pci_suspend, rtl_pci_resume);
-+
 +compat_pci_suspend(rtl_pci_suspend)
 +compat_pci_resume(rtl_pci_resume)
++
++static const SIMPLE_DEV_PM_OPS(rtlwifi_pm_ops, rtl_pci_suspend, rtl_pci_resume);
  
  static struct pci_driver rtl92ce_driver = {
  	.name = KBUILD_MODNAME,
@@ -315,10 +315,10 @@ calls on compat code with only slight modifications.
 -	.poweroff = rtl_pci_suspend,
 -	.restore = rtl_pci_resume,
 -};
-+static const SIMPLE_DEV_PM_OPS(rtlwifi_pm_ops, rtl_pci_suspend, rtl_pci_resume);
-+
 +compat_pci_suspend(rtl_pci_suspend)
 +compat_pci_resume(rtl_pci_resume)
++
++static const SIMPLE_DEV_PM_OPS(rtlwifi_pm_ops, rtl_pci_suspend, rtl_pci_resume);
  
  static struct pci_driver rtl92de_driver = {
  	.name = KBUILD_MODNAME,
@@ -348,10 +348,10 @@ calls on compat code with only slight modifications.
 -	.poweroff = rtl_pci_suspend,
 -	.restore = rtl_pci_resume,
 -};
-+static const SIMPLE_DEV_PM_OPS(rtlwifi_pm_ops, rtl_pci_suspend, rtl_pci_resume);
-+
 +compat_pci_suspend(rtl_pci_suspend)
 +compat_pci_resume(rtl_pci_resume)
++
++static const SIMPLE_DEV_PM_OPS(rtlwifi_pm_ops, rtl_pci_suspend, rtl_pci_resume);
  
  static struct pci_driver rtl92se_driver = {
  	.name = KBUILD_MODNAME,
