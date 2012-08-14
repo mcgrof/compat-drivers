@@ -47,7 +47,7 @@ PURPLE="\033[35m"
 CYAN="\033[36m"
 UNDERLINE="\033[02m"
 
-COMPAT_SRC="$HOME/devel/compat-wireless/"
+COMPAT_SRC="$HOME/devel/compat-drivers/"
 EXTRA_COPY=""
 
 if [[ -f .compat_copy ]]; then

@@ -12,14 +12,14 @@ Consider a kernel that has this code in net/wireless/wext-core.c:
 #endif
 
 If a kernel is compiled without CONFIG_WIRELESS_EXT then
-compat-wireless can't do wireless extensions against it.
+compat-drivers can't do wireless extensions against it.
 However, if the kernel is compiled with CONFIG_CFG80211_WEXT
 then it will try to get the wext handlers from struct wiphy.
 
 Now, struct wiphy in the base kernel and struct wiphy in
-compat-wireless don't match, so the kernel crashes!!
+compat-drivers don't match, so the kernel crashes!!
 
-To fix this, add lots of padding to compat-wireless's
+To fix this, add lots of padding to compat-drivers's
 struct wiphy so that the "wext" pointer is guaranteed
 to be NULL.
 

@@ -19,7 +19,7 @@ accepted.
 This patch can be removed once we get br_port_exists() accessible
 to drivers and not just private bridge code. If that patch doesn't
 get accepted upstream we'l have to carry this patch around for
-compat-wireless.
+compat-drivers.
 
 --- a/net/wireless/util.c
 +++ b/net/wireless/util.c

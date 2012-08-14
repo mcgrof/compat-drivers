@@ -14,7 +14,7 @@ struct from kernel 2.6.33 and 2.6.34 are incompatible and
 the kernel would dereference some wrong type in the struct
 and oops. The old interface is not affected by this. This
 will cause that CONFIG_CFG80211_WEXT still depends on
-CONFIG_WIRELESS_EXT in compat-wireless.
+CONFIG_WIRELESS_EXT in compat-drivers.
 
 --- a/net/wireless/core.c
 +++ b/net/wireless/core.c
