@@ -163,6 +163,24 @@ nagometer() {
 
 }
 
+# Copy each file in $1 into $2
+copyFiles() {
+	FILES=$1
+	TARGET=$2
+	for file in $FILES; do
+		echo "Copying $GIT_TREE/$TARGET/$file"
+		cp "$GIT_TREE/$TARGET/$file" $TARGET/
+	done
+}
+
+copyDirectories() {
+	DIRS=$1
+	for dir in $DIRS; do
+		echo "Copying $GIT_TREE/$dir/*.[ch]"
+		cp $GIT_TREE/$dir/{Kconfig,Makefile,*.[ch]} $dir/ &> /dev/null
+	done
+}
+
 # First check cmdline args to understand
 # which patches to apply and which release tag to set.
 #
