@@ -412,7 +412,6 @@ for i in $NET_DIRS; do
 	cp $GIT_TREE/net/$i/*.[ch] net/$i/
 	cp $GIT_TREE/net/$i/Makefile net/$i/
 	cp $GIT_TREE/net/$i/Kconfig net/$i/
-	rm -f net/$i/*.mod.c
 done
 
 cp $GIT_TREE/MAINTAINERS ./
@@ -427,7 +426,6 @@ for i in $NET_BT_DIRS; do
 	echo "Copying $GIT_TREE/net/$i/*.[ch]"
 	cp $GIT_TREE/net/$i/*.[ch] net/$i/
 	cp $GIT_TREE/net/$i/Makefile net/$i/
-	rm -f net/$i/*.mod.c
 done
 
 # Drivers in their own directory
@@ -448,7 +446,6 @@ for i in $DRIVERS; do
 	if [ -f $GIT_TREE/$i/Kconfig ]; then
 		cp $GIT_TREE/$i/Kconfig $i/
 	fi
-	rm -f $i/*.mod.c
 done
 
 # Staging drivers in their own directory
@@ -462,7 +459,6 @@ for i in $STAGING_DRIVERS; do
 	echo -e "Copying ${RED}STAGING${NORMAL} $GIT_TREE/$i/*.[ch]"
 	# staging drivers tend to have their own subdirs...
 	cp -a $GIT_TREE/$i drivers/staging/
-	rm -f $i/*.mod.c
 done
 
 for i in $DRIVERS_BT; do
@@ -470,7 +466,6 @@ for i in $DRIVERS_BT; do
 	echo "Copying $GIT_TREE/$i/*.[ch]"
 	cp $GIT_TREE/$i/*.[ch] $i/
 	cp $GIT_TREE/$i/Makefile $i/
-	rm -f $i/*.mod.c
 done
 
 # For rndis_wlan, we need a new rndis_host.ko, cdc_ether.ko and usbnet.ko
@@ -515,7 +510,9 @@ cp -a $GIT_COMPAT_TREE/include/net/* include/net/
 cp -a $GIT_COMPAT_TREE/include/trace/* include/trace/
 cp -a $GIT_COMPAT_TREE/include/pcmcia/* include/pcmcia/
 cp -a $GIT_COMPAT_TREE/include/crypto/* include/crypto/
-rm -f $COMPAT/*.mod.c
+
+# Clean up possible *.mod.c leftovers
+find -type f -name "*.mod.c" -exec rm -f {} \;
 
 # files we suck in for wireless drivers
 export WSTABLE="
