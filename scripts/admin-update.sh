@@ -422,6 +422,23 @@ DRIVERS_WLAN_FILES="adm8211.c
 		    mwl8k.c
 		    rndis_wlan.c"
 
+# DRM drivers
+DRIVERS_DRM="drivers/gpu/drm/ast
+	     drivers/gpu/drm/cirrus
+	     drivers/gpu/drm/gma500
+	     drivers/gpu/drm/i2c
+	     drivers/gpu/drm/i810
+	     drivers/gpu/drm/i915
+	     drivers/gpu/drm/mgag200
+	     drivers/gpu/drm/nouveau
+	     drivers/gpu/drm/radeon
+	     drivers/gpu/drm/ttm
+	     drivers/gpu/drm/via
+	     drivers/gpu/drm/vmwgfx"
+
+# UDL uses the new dma-buf API, let's disable this for now
+#DRIVERS="$DRIVERS drivers/gpu/drm/udl"
+
 rm -rf drivers/
 
 mkdir -p include/net/bluetooth \
@@ -435,13 +452,15 @@ mkdir -p include/net/bluetooth \
 	 drivers/misc/eeprom \
 	 drivers/net/usb \
 	 drivers/net/ethernet/broadcom \
+	 drivers/platform/x86 \
 	 drivers/ssb \
 	 drivers/staging \
 	 $NET_WLAN_DIRS \
 	 $NET_BT_DIRS \
 	 $DRIVERS_WLAN \
 	 $DRIVERS_ETH \
-	 $DRIVERS_BT
+	 $DRIVERS_BT \
+	 $DRIVERS_DRM
 
 if [[ "$ENABLE_NETWORK" == "1" ]]; then
 	# WLAN and bluetooth files
@@ -477,6 +496,27 @@ if [[ "$ENABLE_NETWORK" == "1" ]]; then
 	cp $GIT_TREE/$DIR/b44.[ch] drivers/net/ethernet/broadcom
 	# Not yet
 	echo "obj-\$(CONFIG_B44) += b44.o" > drivers/net/ethernet/broadcom/Makefile
+fi
+
+if [[ "$ENABLE_DRM" == "1" ]]; then
+	# DRM drivers
+	copyDirectories "$DRIVERS_DRM"
+
+	# Copy standalone drivers
+	echo "Copying $GIT_TREE/drivers/gpu/drm/*.[ch]"
+	cp $GIT_TREE/drivers/gpu/drm/{Makefile,*.[ch]} drivers/gpu/drm/
+
+	# Copy DRM headers
+	cp -a $GIT_TREE/include/drm include/
+
+	# drivers/gpu/drm/i915/intel_pm.c requires this
+	cp $GIT_TREE/drivers/platform/x86/intel_ips.h drivers/platform/x86
+
+	# Copy radeon reg_srcs for hostprogs
+	cp -a $GIT_TREE/drivers/gpu/drm/radeon/reg_srcs drivers/gpu/drm/radeon
+
+	# Finally get the DRM top-level makefile
+	cp $GIT_TREE/drivers/gpu/drm/Makefile drivers/gpu/drm
 fi
 
 # Staging drivers in their own directory
