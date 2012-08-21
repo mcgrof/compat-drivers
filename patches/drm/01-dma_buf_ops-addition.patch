@@ -1,0 +1,54 @@
+Assign vmap, vunmap and mmap fields in dma_buf_ops structs only
+if kernel version >= 3.5.0 as they are added in 3.5.
+
+Note that the dma-buf itself was added with 3.4. It is not available
+on kernels < 3.4.
+
+Index: compat-drm/drivers/gpu/drm/i915/i915_gem_dmabuf.c
+===================================================================
+--- compat-drm.orig/drivers/gpu/drm/i915/i915_gem_dmabuf.c
++++ compat-drm/drivers/gpu/drm/i915/i915_gem_dmabuf.c
+@@ -159,9 +159,11 @@ static const struct dma_buf_ops i915_dma
+ 	.kmap_atomic = i915_gem_dmabuf_kmap_atomic,
+ 	.kunmap = i915_gem_dmabuf_kunmap,
+ 	.kunmap_atomic = i915_gem_dmabuf_kunmap_atomic,
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,5,0))
+ 	.mmap = i915_gem_dmabuf_mmap,
+ 	.vmap = i915_gem_dmabuf_vmap,
+ 	.vunmap = i915_gem_dmabuf_vunmap,
++#endif
+ };
+ 
+ struct dma_buf *i915_gem_prime_export(struct drm_device *dev,
+Index: compat-drm/drivers/gpu/drm/nouveau/nouveau_prime.c
+===================================================================
+--- compat-drm.orig/drivers/gpu/drm/nouveau/nouveau_prime.c
++++ compat-drm/drivers/gpu/drm/nouveau/nouveau_prime.c
+@@ -111,9 +111,11 @@ static const struct dma_buf_ops nouveau_
+ 	.kmap_atomic = nouveau_gem_kmap_atomic,
+ 	.kunmap = nouveau_gem_kunmap,
+ 	.kunmap_atomic = nouveau_gem_kunmap_atomic,
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,5,0))
+ 	.mmap = nouveau_gem_prime_mmap,
+ 	.vmap = nouveau_gem_prime_vmap,
+ 	.vunmap = nouveau_gem_prime_vunmap,
++#endif
+ };
+ 
+ static int
+Index: compat-drm/drivers/gpu/drm/radeon/radeon_prime.c
+===================================================================
+--- compat-drm.orig/drivers/gpu/drm/radeon/radeon_prime.c
++++ compat-drm/drivers/gpu/drm/radeon/radeon_prime.c
+@@ -134,9 +134,11 @@ const static struct dma_buf_ops radeon_d
+ 	.kmap_atomic = radeon_gem_kmap_atomic,
+ 	.kunmap = radeon_gem_kunmap,
+ 	.kunmap_atomic = radeon_gem_kunmap_atomic,
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,5,0))
+ 	.mmap = radeon_gem_prime_mmap,
+ 	.vmap = radeon_gem_prime_vmap,
+ 	.vunmap = radeon_gem_prime_vunmap,
++#endif
+ };
+ 
+ static int radeon_prime_create(struct drm_device *dev,
