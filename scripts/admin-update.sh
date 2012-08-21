@@ -142,7 +142,7 @@ nagometer() {
 
 	let CHANGES=$ADD+$DEL
 
-	case $1 in
+	case `dirname $1` in
 	"patches")
 		brag_backport $ORIG_CODE $CHANGES $ADD $DEL
 		;;
@@ -203,6 +203,7 @@ copyDirectories() {
 # fetched in by default.
 ENABLE_NETWORK=1
 ENABLE_DRM=0
+SUBSYSTEMS=
 
 EXTRA_PATCHES="patches"
 REFRESH="n"
@@ -261,6 +262,15 @@ if [ $# -ge 1 ]; then
 		esac
 	done
 
+fi
+
+# SUBSYSTEMS is used to select which patches to apply
+if [[ "$ENABLE_NETWORK" == "1" ]]; then
+	SUBSYSTEMS="network"
+fi
+
+if [[ "$ENABLE_DRM" == "1" ]]; then
+	SUBSYSTEMS+=" drm"
 fi
 
 # User exported this variable
@@ -634,33 +644,38 @@ ORIG_CODE=$(find ./ -type f -name  \*.[ch] |
 printf "\n${CYAN}compat-drivers code metrics${NORMAL}\n\n" > $CODE_METRICS
 printf "${PURPLE}%10s${NORMAL} - Total upstream lines of code being pulled\n" $ORIG_CODE >> $CODE_METRICS
 
-for dir in $EXTRA_PATCHES; do
-	LAST_ELEM=$dir
-done
+for subsystem in $SUBSYSTEMS; do
 
-for dir in $EXTRA_PATCHES; do
-	if [[ ! -d $dir ]]; then
-		echo -e "${RED}Patches: $dir empty, skipping...${NORMAL}\n"
-		continue
-	fi
-	if [[ $LAST_ELEM = $dir && "$REFRESH" = y ]]; then
-		patchRefresh $dir
-	fi
-
-	FOUND=$(find $dir/ -maxdepth 1 -name \*.patch | wc -l)
-	if [ $FOUND -eq 0 ]; then
-		continue
-	fi
-	for i in $(ls -v $dir/*.patch); do
-		echo -e "${GREEN}Applying backport patch${NORMAL}: ${BLUE}$i${NORMAL}"
-		patch -p1 -N -t < $i
-		RET=$?
-		if [[ $RET -ne 0 ]]; then
-			echo -e "${RED}Patching $i failed${NORMAL}, update it"
-			exit $RET
-		fi
+	for dir in $EXTRA_PATCHES; do
+		LAST_ELEM=$dir
 	done
-	nagometer $dir $ORIG_CODE >> $CODE_METRICS
+
+	for dir in $EXTRA_PATCHES; do
+		PATCHDIR="$dir/$subsystem"
+		if [[ ! -d $PATCHDIR ]]; then
+			echo -e "${RED}Patches: $PATCHDIR empty, skipping...${NORMAL}"
+			continue
+		fi
+		if [[ $LAST_ELEM = $dir && "$REFRESH" = y ]]; then
+			patchRefresh $PATCHDIR
+		fi
+
+		FOUND=$(find $PATCHDIR/ -maxdepth 1 -name \*.patch | wc -l)
+		if [ $FOUND -eq 0 ]; then
+			continue
+		fi
+
+		for i in $(ls -v $PATCHDIR/*.patch); do
+			echo -e "${GREEN}Applying backport patch${NORMAL}: ${BLUE}$i${NORMAL}"
+			patch -p1 -N -t < $i
+			RET=$?
+			if [[ $RET -ne 0 ]]; then
+				echo -e "${RED}Patching $i failed${NORMAL}, update it"
+				exit $RET
+			fi
+		done
+		nagometer $PATCHDIR $ORIG_CODE >> $CODE_METRICS
+	done
 done
 
 DIR="$PWD"
