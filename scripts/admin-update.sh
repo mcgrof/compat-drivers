@@ -205,41 +205,44 @@ if [ $# -ge 1 ]; then
 		usage $0
 		exit
 	fi
-	if [[ $1 = "-h" || $1 = "--help" ]]; then
-		usage $0
-		exit
-	fi
 	while [ $# -ne 0 ]; do
-		if [[ "$1" = "-s" ]]; then
-			GET_STABLE_PENDING="y"
-			EXTRA_PATCHES="${EXTRA_PATCHES} pending-stable" 
-			EXTRA_PATCHES="${EXTRA_PATCHES} pending-stable/backports/"
-			POSTFIX_RELEASE_TAG="${POSTFIX_RELEASE_TAG}s"
-			shift; continue;
-		fi
-		if [[ "$1" = "-n" ]]; then
-			EXTRA_PATCHES="${EXTRA_PATCHES} linux-next-cherry-picks"
-			POSTFIX_RELEASE_TAG="${POSTFIX_RELEASE_TAG}n"
-			shift; continue;
-		fi
-		if [[ "$1" = "-p" ]]; then
-			EXTRA_PATCHES="${EXTRA_PATCHES} linux-next-pending"
-			POSTFIX_RELEASE_TAG="${POSTFIX_RELEASE_TAG}p"
-			shift; continue;
-		fi
-		if [[ "$1" = "-c" ]]; then
-			EXTRA_PATCHES="${EXTRA_PATCHES} crap"
-			POSTFIX_RELEASE_TAG="${POSTFIX_RELEASE_TAG}c"
-			shift; continue;
-		fi
-		if [[ "$1" = "refresh" ]]; then
-			REFRESH="y"
-			shift; continue;
-		fi
-
-		echo "Unexpected argument passed: $1"
-		usage $0
-		exit
+		case $1 in
+			"-s")
+				GET_STABLE_PENDING="y"
+				EXTRA_PATCHES="${EXTRA_PATCHES} pending-stable"
+				EXTRA_PATCHES="${EXTRA_PATCHES} pending-stable/backports/"
+				POSTFIX_RELEASE_TAG="${POSTFIX_RELEASE_TAG}s"
+				shift
+				;;
+			"-n")
+				EXTRA_PATCHES="${EXTRA_PATCHES} linux-next-cherry-picks"
+				POSTFIX_RELEASE_TAG="${POSTFIX_RELEASE_TAG}n"
+				shift
+				;;
+			"-p")
+				EXTRA_PATCHES="${EXTRA_PATCHES} linux-next-pending"
+				POSTFIX_RELEASE_TAG="${POSTFIX_RELEASE_TAG}p"
+				shift
+				;;
+			"-c")
+				EXTRA_PATCHES="${EXTRA_PATCHES} crap"
+				POSTFIX_RELEASE_TAG="${POSTFIX_RELEASE_TAG}c"
+				shift
+				;;
+			"refresh")
+				REFRESH="y"
+				shift
+				;;
+			"-h" | "--help")
+				usage $0
+				exit
+				;;
+			*)
+				echo "Unexpected argument passed: $1"
+				usage $0
+				exit
+				;;
+		esac
 	done
 
 fi
