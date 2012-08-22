@@ -128,7 +128,7 @@
  
  	return bluecard_config(link);
  }
-@@ -876,15 +924,30 @@ static int bluecard_config(struct pcmcia
+@@ -873,15 +921,30 @@ static int bluecard_config(struct pcmcia
  	bluecard_info_t *info = link->priv;
  	int i, n;
  
@@ -159,7 +159,7 @@
  		if (i == 0)
  			break;
  	}
-@@ -892,9 +955,15 @@ static int bluecard_config(struct pcmcia
+@@ -889,9 +952,15 @@ static int bluecard_config(struct pcmcia
  	if (i != 0)
  		goto failed;
  
@@ -175,7 +175,7 @@
  
  	i = pcmcia_enable_device(link);
  	if (i != 0)
-@@ -932,7 +1001,13 @@ MODULE_DEVICE_TABLE(pcmcia, bluecard_ids
+@@ -929,7 +998,13 @@ MODULE_DEVICE_TABLE(pcmcia, bluecard_ids
  
  static struct pcmcia_driver bluecard_driver = {
  	.owner		= THIS_MODULE,
@@ -267,15 +267,15 @@
  
  	return bt3c_config(link);
  }
-@@ -660,6 +695,7 @@ static void bt3c_detach(struct pcmcia_de
- 	kfree(info);
+@@ -657,6 +692,7 @@ static void bt3c_detach(struct pcmcia_de
+ 	bt3c_release(link);
  }
  
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,37))
  static int bt3c_check_config(struct pcmcia_device *p_dev, void *priv_data)
  {
  	int *try = priv_data;
-@@ -698,6 +734,63 @@ static int bt3c_check_config_notpicky(st
+@@ -695,6 +731,63 @@ static int bt3c_check_config_notpicky(st
  	}
  	return -ENODEV;
  }
@@ -339,7 +339,7 @@
  
  static int bt3c_config(struct pcmcia_device *link)
  {
-@@ -721,9 +814,15 @@ static int bt3c_config(struct pcmcia_dev
+@@ -718,9 +811,15 @@ static int bt3c_config(struct pcmcia_dev
  	goto failed;
  
  found_port:
@@ -355,7 +355,7 @@
  
  	i = pcmcia_enable_device(link);
  	if (i != 0)
-@@ -758,7 +857,13 @@ MODULE_DEVICE_TABLE(pcmcia, bt3c_ids);
+@@ -755,7 +854,13 @@ MODULE_DEVICE_TABLE(pcmcia, bt3c_ids);
  
  static struct pcmcia_driver bt3c_driver = {
  	.owner		= THIS_MODULE,
@@ -471,15 +471,15 @@
  
  	return btuart_config(link);
  }
-@@ -589,6 +632,7 @@ static void btuart_detach(struct pcmcia_
- 	kfree(info);
+@@ -586,6 +629,7 @@ static void btuart_detach(struct pcmcia_
+ 	btuart_release(link);
  }
  
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,37))
  static int btuart_check_config(struct pcmcia_device *p_dev, void *priv_data)
  {
  	int *try = priv_data;
-@@ -627,6 +671,63 @@ static int btuart_check_config_notpicky(
+@@ -624,6 +668,63 @@ static int btuart_check_config_notpicky(
  	}
  	return -ENODEV;
  }
@@ -543,7 +543,7 @@
  
  static int btuart_config(struct pcmcia_device *link)
  {
-@@ -650,9 +751,15 @@ static int btuart_config(struct pcmcia_d
+@@ -647,9 +748,15 @@ static int btuart_config(struct pcmcia_d
  	goto failed;
  
  found_port:
@@ -559,7 +559,7 @@
  
  	i = pcmcia_enable_device(link);
  	if (i != 0)
-@@ -686,7 +793,13 @@ MODULE_DEVICE_TABLE(pcmcia, btuart_ids);
+@@ -683,7 +790,13 @@ MODULE_DEVICE_TABLE(pcmcia, btuart_ids);
  
  static struct pcmcia_driver btuart_driver = {
  	.owner		= THIS_MODULE,
@@ -674,15 +674,15 @@
  
  	return dtl1_config(link);
  }
-@@ -572,6 +614,7 @@ static void dtl1_detach(struct pcmcia_de
- 	kfree(info);
+@@ -571,6 +613,7 @@ static void dtl1_detach(struct pcmcia_de
+ 	pcmcia_disable_device(link);
  }
  
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,37))
  static int dtl1_confcheck(struct pcmcia_device *p_dev, void *priv_data)
  {
  	if ((p_dev->resource[1]->end) || (p_dev->resource[1]->end < 8))
-@@ -582,6 +625,29 @@ static int dtl1_confcheck(struct pcmcia_
+@@ -581,6 +624,29 @@ static int dtl1_confcheck(struct pcmcia_
  
  	return pcmcia_request_io(p_dev);
  }
@@ -712,7 +712,7 @@
  
  static int dtl1_config(struct pcmcia_device *link)
  {
-@@ -589,14 +655,24 @@ static int dtl1_config(struct pcmcia_dev
+@@ -588,14 +654,24 @@ static int dtl1_config(struct pcmcia_dev
  	int ret;
  
  	/* Look for a generic full-sized window */
@@ -737,7 +737,7 @@
  
  	ret = pcmcia_enable_device(link);
  	if (ret)
-@@ -624,7 +700,13 @@ MODULE_DEVICE_TABLE(pcmcia, dtl1_ids);
+@@ -623,7 +699,13 @@ MODULE_DEVICE_TABLE(pcmcia, dtl1_ids);
  
  static struct pcmcia_driver dtl1_driver = {
  	.owner		= THIS_MODULE,

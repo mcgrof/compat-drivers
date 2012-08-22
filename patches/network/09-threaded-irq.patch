@@ -6,7 +6,7 @@ thread in process context as well.
 
 --- a/drivers/net/wireless/b43/main.c
 +++ b/drivers/net/wireless/b43/main.c
-@@ -4206,8 +4206,13 @@ redo:
+@@ -4212,8 +4212,13 @@ redo:
  	if (b43_bus_host_is_sdio(dev->dev)) {
  		b43_sdio_free_irq(dev);
  	} else {
@@ -20,7 +20,7 @@ thread in process context as well.
  	}
  	mutex_lock(&wl->mutex);
  	dev = wl->current_dev;
-@@ -4249,9 +4254,17 @@ static int b43_wireless_core_start(struc
+@@ -4255,9 +4260,17 @@ static int b43_wireless_core_start(struc
  			goto out;
  		}
  	} else {
@@ -38,7 +38,7 @@ thread in process context as well.
  		if (err) {
  			b43err(dev->wl, "Cannot request IRQ-%d\n",
  			       dev->dev->irq);
-@@ -5045,6 +5058,10 @@ static int b43_setup_bands(struct b43_wl
+@@ -5080,6 +5093,10 @@ static int b43_setup_bands(struct b43_wl
  
  static void b43_wireless_core_detach(struct b43_wldev *dev)
  {
@@ -51,7 +51,7 @@ thread in process context as well.
  	b43_release_firmware(dev);
 --- a/drivers/net/wireless/b43/b43.h
 +++ b/drivers/net/wireless/b43/b43.h
-@@ -855,6 +855,9 @@ struct b43_wldev {
+@@ -859,6 +859,9 @@ struct b43_wldev {
  	unsigned int tx_count;
  	unsigned int rx_count;
  #endif
@@ -63,7 +63,7 @@ thread in process context as well.
  /* Data structure for the WLAN parts (802.11 cores) of the b43 chip. */
 --- a/drivers/net/wireless/ti/wlcore/main.c
 +++ b/drivers/net/wireless/ti/wlcore/main.c
-@@ -5538,14 +5538,25 @@ int __devinit wlcore_probe(struct wl1271
+@@ -5540,14 +5540,25 @@ int __devinit wlcore_probe(struct wl1271
  
  	platform_set_drvdata(pdev, wl);
  
@@ -89,7 +89,7 @@ thread in process context as well.
  	if (ret < 0) {
  		wl1271_error("request_irq() failed: %d", ret);
  		goto out_free_hw;
-@@ -5619,7 +5630,11 @@ out_unreg:
+@@ -5621,7 +5632,11 @@ out_unreg:
  	wl1271_unregister_hw(wl);
  
  out_irq:
@@ -101,7 +101,7 @@ thread in process context as well.
  
  out_free_hw:
  	wlcore_free_hw(wl);
-@@ -5638,7 +5653,12 @@ int __devexit wlcore_remove(struct platf
+@@ -5640,7 +5655,12 @@ int __devexit wlcore_remove(struct platf
  		disable_irq_wake(wl->irq);
  	}
  	wl1271_unregister_hw(wl);

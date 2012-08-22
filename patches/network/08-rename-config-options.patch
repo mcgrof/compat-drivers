@@ -126,7 +126,7 @@ CONFIG_BT_HIDP does not build with older kernel versions.
  
 --- a/drivers/net/wireless/ath/ath9k/rc.h
 +++ b/drivers/net/wireless/ath/ath9k/rc.h
-@@ -219,7 +219,7 @@ struct ath_rate_priv {
+@@ -215,7 +215,7 @@ struct ath_rate_priv {
  	struct ath_rc_stats rcstats[RATE_TABLE_SIZE];
  };
  
@@ -156,7 +156,7 @@ CONFIG_BT_HIDP does not build with older kernel versions.
  #else
 --- a/net/bluetooth/rfcomm/sock.c
 +++ b/net/bluetooth/rfcomm/sock.c
-@@ -860,7 +860,7 @@ static int rfcomm_sock_ioctl(struct sock
+@@ -862,7 +862,7 @@ static int rfcomm_sock_ioctl(struct sock
  	err = bt_sock_ioctl(sock, cmd, arg);
  
  	if (err == -ENOIOCTLCMD) {

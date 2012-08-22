@@ -8,9 +8,9 @@ compile warning.
 
 --- a/net/wireless/core.c
 +++ b/net/wireless/core.c
-@@ -745,9 +745,11 @@ static void wdev_cleanup_work(struct wor
- 	dev_put(wdev->netdev);
+@@ -794,9 +794,11 @@ void cfg80211_unregister_wdev(struct wir
  }
+ EXPORT_SYMBOL(cfg80211_unregister_wdev);
  
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,32))
  static struct device_type wiphy_type = {

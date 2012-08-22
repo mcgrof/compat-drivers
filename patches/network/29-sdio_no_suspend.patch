@@ -52,7 +52,7 @@ suspend and resume that are not backported.
  static int __init ath6kl_sdio_init(void)
 --- a/drivers/net/wireless/libertas/if_sdio.c
 +++ b/drivers/net/wireless/libertas/if_sdio.c
-@@ -1319,6 +1319,7 @@ static void if_sdio_remove(struct sdio_f
+@@ -1320,6 +1320,7 @@ static void if_sdio_remove(struct sdio_f
  	lbs_deb_leave(LBS_DEB_SDIO);
  }
  
@@ -60,7 +60,7 @@ suspend and resume that are not backported.
  static int if_sdio_suspend(struct device *dev)
  {
  	struct sdio_func *func = dev_to_sdio_func(dev);
-@@ -1372,15 +1373,18 @@ static const struct dev_pm_ops if_sdio_p
+@@ -1373,15 +1374,18 @@ static const struct dev_pm_ops if_sdio_p
  	.suspend	= if_sdio_suspend,
  	.resume		= if_sdio_resume,
  };
@@ -171,7 +171,7 @@ suspend and resume that are not backported.
  	},
 --- a/drivers/bluetooth/btmrvl_sdio.c
 +++ b/drivers/bluetooth/btmrvl_sdio.c
-@@ -1052,6 +1052,7 @@ static void btmrvl_sdio_remove(struct sd
+@@ -1045,6 +1045,7 @@ static void btmrvl_sdio_remove(struct sd
  	}
  }
  
@@ -179,7 +179,7 @@ suspend and resume that are not backported.
  static int btmrvl_sdio_suspend(struct device *dev)
  {
  	struct sdio_func *func = dev_to_sdio_func(dev);
-@@ -1147,6 +1148,7 @@ static const struct dev_pm_ops btmrvl_sd
+@@ -1140,6 +1141,7 @@ static const struct dev_pm_ops btmrvl_sd
  	.suspend	= btmrvl_sdio_suspend,
  	.resume		= btmrvl_sdio_resume,
  };
@@ -187,7 +187,7 @@ suspend and resume that are not backported.
  
  static struct sdio_driver bt_mrvl_sdio = {
  	.name		= "btmrvl_sdio",
-@@ -1155,7 +1157,9 @@ static struct sdio_driver bt_mrvl_sdio =
+@@ -1148,7 +1150,9 @@ static struct sdio_driver bt_mrvl_sdio =
  	.remove		= btmrvl_sdio_remove,
  	.drv = {
  		.owner = THIS_MODULE,

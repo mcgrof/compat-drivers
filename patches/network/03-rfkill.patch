@@ -44,7 +44,7 @@ This would do the policing from within mac80211.
  obj-$(CONFIG_RFKILL_GPIO)	+= rfkill-gpio.o
 --- a/net/rfkill/input.c
 +++ b/net/rfkill/input.c
-@@ -233,7 +233,7 @@ static int rfkill_connect(struct input_h
+@@ -232,7 +232,7 @@ static int rfkill_connect(struct input_h
  
  	handle->dev = dev;
  	handle->handler = handler;

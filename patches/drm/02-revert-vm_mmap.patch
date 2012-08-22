@@ -3,11 +3,9 @@ those changes for versions older than that.
 
 These can't be backported as they rely on non-exported symbols.
 
-Index: compat-drm/drivers/gpu/drm/drm_bufs.c
-===================================================================
---- compat-drm.orig/drivers/gpu/drm/drm_bufs.c
-+++ compat-drm/drivers/gpu/drm/drm_bufs.c
-@@ -1553,6 +1553,20 @@ int drm_mapbufs(struct drm_device *dev,
+--- a/drivers/gpu/drm/drm_bufs.c
++++ b/drivers/gpu/drm/drm_bufs.c
+@@ -1541,6 +1541,20 @@ int drm_mapbufs(struct drm_device *dev,
  				retcode = -EINVAL;
  				goto done;
  			}
@@ -28,7 +26,7 @@ Index: compat-drm/drivers/gpu/drm/drm_bufs.c
  			virtual = vm_mmap(file_priv->filp, 0, map->size,
  					  PROT_READ | PROT_WRITE,
  					  MAP_SHARED,
-@@ -1561,6 +1575,7 @@ int drm_mapbufs(struct drm_device *dev,
+@@ -1549,6 +1563,7 @@ int drm_mapbufs(struct drm_device *dev,
  			virtual = vm_mmap(file_priv->filp, 0, dma->byte_count,
  					  PROT_READ | PROT_WRITE,
  					  MAP_SHARED, 0);
@@ -36,10 +34,8 @@ Index: compat-drm/drivers/gpu/drm/drm_bufs.c
  		}
  		if (virtual > -1024UL) {
  			/* Real error */
-Index: compat-drm/drivers/gpu/drm/i810/i810_dma.c
-===================================================================
---- compat-drm.orig/drivers/gpu/drm/i810/i810_dma.c
-+++ compat-drm/drivers/gpu/drm/i810/i810_dma.c
+--- a/drivers/gpu/drm/i810/i810_dma.c
++++ b/drivers/gpu/drm/i810/i810_dma.c
 @@ -133,9 +133,17 @@ static int i810_map_buffer(struct drm_bu
  	old_fops = file_priv->filp->f_op;
  	file_priv->filp->f_op = &i810_buffer_fops;
@@ -75,11 +71,9 @@ Index: compat-drm/drivers/gpu/drm/i810/i810_dma.c
  	buf_priv->currently_mapped = I810_BUF_UNMAPPED;
  	buf_priv->virtual = NULL;
  
-Index: compat-drm/drivers/gpu/drm/i915/i915_gem.c
-===================================================================
---- compat-drm.orig/drivers/gpu/drm/i915/i915_gem.c
-+++ compat-drm/drivers/gpu/drm/i915/i915_gem.c
-@@ -1045,10 +1045,17 @@ i915_gem_mmap_ioctl(struct drm_device *d
+--- a/drivers/gpu/drm/i915/i915_gem.c
++++ b/drivers/gpu/drm/i915/i915_gem.c
+@@ -1054,10 +1054,17 @@ i915_gem_mmap_ioctl(struct drm_device *d
  		drm_gem_object_unreference_unlocked(obj);
  		return -EINVAL;
  	}
