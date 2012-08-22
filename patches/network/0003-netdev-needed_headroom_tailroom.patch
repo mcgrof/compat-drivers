@@ -4,22 +4,22 @@ could be used.
 
 --- a/net/mac80211/iface.c
 +++ b/net/mac80211/iface.c
-@@ -1419,6 +1419,7 @@ int ieee80211_if_add(struct ieee80211_lo
- 		return -ENOMEM;
- 	dev_net_set(ndev, wiphy_net(local->hw.wiphy));
+@@ -1461,6 +1461,7 @@ int ieee80211_if_add(struct ieee80211_lo
+ 			return -ENOMEM;
+ 		dev_net_set(ndev, wiphy_net(local->hw.wiphy));
  
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,26))
- 	ndev->needed_headroom = local->tx_headroom +
- 				4*6 /* four MAC addresses */
- 				+ 2 + 2 + 2 + 2 /* ctl, dur, seq, qos */
-@@ -1427,6 +1428,7 @@ int ieee80211_if_add(struct ieee80211_lo
- 				- ETH_HLEN /* ethernet hard_header_len */
- 				+ IEEE80211_ENCRYPT_HEADROOM;
- 	ndev->needed_tailroom = IEEE80211_ENCRYPT_TAILROOM;
+ 		ndev->needed_headroom = local->tx_headroom +
+ 					4*6 /* four MAC addresses */
+ 					+ 2 + 2 + 2 + 2 /* ctl, dur, seq, qos */
+@@ -1469,6 +1470,7 @@ int ieee80211_if_add(struct ieee80211_lo
+ 					- ETH_HLEN /* ethernet hard_header_len */
+ 					+ IEEE80211_ENCRYPT_HEADROOM;
+ 		ndev->needed_tailroom = IEEE80211_ENCRYPT_TAILROOM;
 +#endif
  
- 	ret = dev_alloc_name(ndev, ndev->name);
- 	if (ret < 0)
+ 		ret = dev_alloc_name(ndev, ndev->name);
+ 		if (ret < 0) {
 --- a/drivers/net/wireless/orinoco/main.c
 +++ b/drivers/net/wireless/orinoco/main.c
 @@ -2285,7 +2285,11 @@ int orinoco_if_add(struct orinoco_privat
