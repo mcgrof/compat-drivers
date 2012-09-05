@@ -1,12 +1,16 @@
 Assign vmap, vunmap and mmap fields in dma_buf_ops structs only
-if kernel version >= 3.5.0 as they are added in 3.5.
+if kernel version >= 3.5.0 as they are added in 3.5. The begin_cpu_access
+was added as of the original dma-buf code via 3.4.
+
+mcgrof@frijol ~/linux-next (git::master)$ git describe --contains fc13020e086bfedf2afb95c91c026d5af1f80107
+v3.4-rc1~57^2~3
 
 Note that the dma-buf itself was added with 3.4. It is not available
-on kernels < 3.4.
+on kernels < 3.4. 
 
 --- a/drivers/gpu/drm/i915/i915_gem_dmabuf.c
 +++ b/drivers/gpu/drm/i915/i915_gem_dmabuf.c
-@@ -159,9 +159,11 @@ static const struct dma_buf_ops i915_dma
+@@ -173,10 +173,14 @@ static const struct dma_buf_ops i915_dma
  	.kmap_atomic = i915_gem_dmabuf_kmap_atomic,
  	.kunmap = i915_gem_dmabuf_kunmap,
  	.kunmap_atomic = i915_gem_dmabuf_kunmap_atomic,
@@ -14,6 +18,9 @@ on kernels < 3.4.
  	.mmap = i915_gem_dmabuf_mmap,
  	.vmap = i915_gem_dmabuf_vmap,
  	.vunmap = i915_gem_dmabuf_vunmap,
++#endif
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,4,0))
+ 	.begin_cpu_access = i915_gem_begin_cpu_access,
 +#endif
  };
  
