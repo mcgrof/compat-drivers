@@ -8,7 +8,7 @@ compile warning.
 
 --- a/net/wireless/core.c
 +++ b/net/wireless/core.c
-@@ -743,9 +743,11 @@ static void wdev_cleanup_work(struct wor
+@@ -745,9 +745,11 @@ static void wdev_cleanup_work(struct wor
  	dev_put(wdev->netdev);
  }
  
@@ -18,8 +18,8 @@ compile warning.
  };
 +#endif
  
- static struct ieee80211_channel *
- cfg80211_get_any_chan(struct cfg80211_registered_device *rdev)
+ void cfg80211_update_iface_num(struct cfg80211_registered_device *rdev,
+ 			       enum nl80211_iftype iftype, int num)
 --- a/net/bluetooth/bnep/core.c
 +++ b/net/bluetooth/bnep/core.c
 @@ -528,9 +528,11 @@ static struct device *bnep_get_device(st

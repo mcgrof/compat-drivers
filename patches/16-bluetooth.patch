@@ -3,7 +3,7 @@ here still, but for now we keep this here.
 
 --- a/drivers/bluetooth/hci_ldisc.c
 +++ b/drivers/bluetooth/hci_ldisc.c
-@@ -271,8 +271,13 @@ static int hci_uart_tty_open(struct tty_
+@@ -302,8 +302,13 @@ static int hci_uart_tty_open(struct tty_
  	/* FIXME: why is this needed. Note don't use ldisc_ref here as the
  	   open path is before the ldisc is referencable */
  
@@ -17,7 +17,7 @@ here still, but for now we keep this here.
  	tty_driver_flush_buffer(tty);
  
  	return 0;
-@@ -491,7 +496,11 @@ static int hci_uart_tty_ioctl(struct tty
+@@ -529,7 +534,11 @@ static int hci_uart_tty_ioctl(struct tty
  		return hu->hdev_flags;
  
  	default:
@@ -84,7 +84,7 @@ here still, but for now we keep this here.
  	wake_up_process(session->task);
 --- a/net/bluetooth/hci_sock.c
 +++ b/net/bluetooth/hci_sock.c
-@@ -883,8 +883,13 @@ drop:
+@@ -884,8 +884,13 @@ drop:
  	goto done;
  }
  
@@ -98,7 +98,7 @@ here still, but for now we keep this here.
  {
  	struct hci_ufilter uf = { .opcode = 0 };
  	struct sock *sk = sock->sk;
-@@ -1057,8 +1062,12 @@ static struct proto hci_sk_proto = {
+@@ -1059,8 +1064,12 @@ static struct proto hci_sk_proto = {
  	.obj_size	= sizeof(struct hci_pinfo)
  };
  
@@ -385,7 +385,7 @@ here still, but for now we keep this here.
  {
  	struct sock *sk;
  
-@@ -661,7 +666,11 @@ static int rfcomm_sock_setsockopt_old(st
+@@ -662,7 +667,11 @@ static int rfcomm_sock_setsockopt_old(st
  	return err;
  }
  
@@ -462,7 +462,7 @@ here still, but for now we keep this here.
  	struct rfcomm_dlc *dlc = dev->dlc;
 --- a/net/bluetooth/sco.c
 +++ b/net/bluetooth/sco.c
-@@ -423,8 +423,12 @@ static struct sock *sco_sock_alloc(struc
+@@ -432,8 +432,12 @@ static struct sock *sco_sock_alloc(struc
  	return sk;
  }
  
@@ -475,7 +475,7 @@ here still, but for now we keep this here.
  {
  	struct sock *sk;
  
-@@ -653,7 +657,11 @@ static int sco_sock_sendmsg(struct kiocb
+@@ -662,7 +666,11 @@ static int sco_sock_sendmsg(struct kiocb
  	return err;
  }
  
@@ -534,7 +534,7 @@ here still, but for now we keep this here.
  
 --- a/net/bluetooth/l2cap_sock.c
 +++ b/net/bluetooth/l2cap_sock.c
-@@ -559,7 +559,14 @@ static int l2cap_sock_setsockopt_old(str
+@@ -560,7 +560,14 @@ static int l2cap_sock_setsockopt_old(str
  	return err;
  }
  
@@ -549,7 +549,7 @@ here still, but for now we keep this here.
  {
  	struct sock *sk = sock->sk;
  	struct l2cap_chan *chan = l2cap_pi(sk)->chan;
-@@ -1187,8 +1194,12 @@ static struct sock *l2cap_sock_alloc(str
+@@ -1188,8 +1195,12 @@ static struct sock *l2cap_sock_alloc(str
  	return sk;
  }
  
@@ -562,7 +562,7 @@ here still, but for now we keep this here.
  {
  	struct sock *sk;
  
-@@ -1200,7 +1211,11 @@ static int l2cap_sock_create(struct net
+@@ -1201,7 +1212,11 @@ static int l2cap_sock_create(struct net
  			sock->type != SOCK_DGRAM && sock->type != SOCK_RAW)
  		return -ESOCKTNOSUPPORT;
  

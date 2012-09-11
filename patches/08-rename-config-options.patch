@@ -115,7 +115,7 @@ CONFIG_BT_HIDP does not build with older kernel versions.
  ath9k-$(CONFIG_ATH9K_DEBUGFS) += debug.o
 --- a/drivers/net/wireless/ath/ath9k/init.c
 +++ b/drivers/net/wireless/ath/ath9k/init.c
-@@ -749,7 +749,7 @@ void ath9k_set_hw_capab(struct ath_softc
+@@ -750,7 +750,7 @@ void ath9k_set_hw_capab(struct ath_softc
  	sc->ant_rx = hw->wiphy->available_antennas_rx;
  	sc->ant_tx = hw->wiphy->available_antennas_tx;
  
@@ -156,7 +156,7 @@ CONFIG_BT_HIDP does not build with older kernel versions.
  #else
 --- a/net/bluetooth/rfcomm/sock.c
 +++ b/net/bluetooth/rfcomm/sock.c
-@@ -860,7 +860,7 @@ static int rfcomm_sock_ioctl(struct sock
+@@ -862,7 +862,7 @@ static int rfcomm_sock_ioctl(struct sock
  	err = bt_sock_ioctl(sock, cmd, arg);
  
  	if (err == -ENOIOCTLCMD) {
