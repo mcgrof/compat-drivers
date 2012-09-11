@@ -21,6 +21,7 @@ RED="\033[31m"
 PURPLE="\033[35m"
 CYAN="\033[36m"
 UNDERLINE="\033[02m"
+GIT_STABLE_URL="git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git"
 
 # Note that this tree may not have the latest RC stuff, so you should also add
 # Linus' tree as a remote and fetch those objects if you want to make an RC
@@ -47,7 +48,21 @@ function usage()
 UPDATE_ARGS=""
 POSTFIX_RELEASE_TAG="-"
 
-export GIT_TREE=$HOME/$ALL_STABLE_TREE
+if [ -z $GIT_TREE ]; then
+	export GIT_TREE=$HOME/$ALL_STABLE_TREE
+	if [ ! -d $GIT_TREE ]; then
+		echo "Please tell me where your linux-stable git tree is."
+		echo "You can do this by exporting its location as follows:"
+		echo
+		echo "  export GIT_TREE=/home/$USER/linux-stable/"
+		echo
+		echo "If you do not have one you can clone the repository:"
+		echo "  git clone $GIT_STABLE_URL"
+		exit 1
+	fi
+else
+	echo "You said to use git tree at: $GIT_TREE for linux-stable"
+fi
 COMPAT_WIRELESS_DIR=$(pwd)
 COMPAT_WIRELESS_BRANCH=$(git branch | grep \* | awk '{print $2}')
 
