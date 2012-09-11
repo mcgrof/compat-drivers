@@ -14,7 +14,7 @@ USB opt soft_unbid was added as of 2.6.27.
  
 --- a/drivers/net/wireless/ath/ath9k/hif_usb.c
 +++ b/drivers/net/wireless/ath/ath9k/hif_usb.c
-@@ -1357,7 +1357,9 @@ static struct usb_driver ath9k_hif_usb_d
+@@ -1368,7 +1368,9 @@ static struct usb_driver ath9k_hif_usb_d
  	.reset_resume = ath9k_hif_usb_resume,
  #endif
  	.id_table = ath9k_hif_usb_ids,

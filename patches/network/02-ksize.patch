@@ -12,7 +12,7 @@ of the situation.
 
 --- a/drivers/net/wireless/orinoco/wext.c
 +++ b/drivers/net/wireless/orinoco/wext.c
-@@ -30,8 +30,22 @@ static int orinoco_set_key(struct orinoc
+@@ -31,8 +31,22 @@ static int orinoco_set_key(struct orinoc
  			   enum orinoco_alg alg, const u8 *key, int key_len,
  			   const u8 *seq, int seq_len)
  {

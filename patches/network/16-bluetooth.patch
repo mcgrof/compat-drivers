@@ -27,7 +27,7 @@ here still, but for now we keep this here.
 +		err = n_tty_ioctl(tty, file, cmd, arg);
 +#endif
  		break;
- 	};
+ 	}
  
 --- a/net/bluetooth/af_bluetooth.c
 +++ b/net/bluetooth/af_bluetooth.c
