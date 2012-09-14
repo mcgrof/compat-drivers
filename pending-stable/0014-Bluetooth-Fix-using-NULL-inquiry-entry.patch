@@ -1,0 +1,33 @@
+From c810089c27e48b816181b454fcc493d19fdbc2ba Mon Sep 17 00:00:00 2001
+From: Ram Malovany <ramm@ti.com>
+Date: Thu, 19 Jul 2012 10:26:09 +0300
+Subject: [PATCH 14/24] Bluetooth: Fix using NULL inquiry entry
+
+If entry wasn't found in the hci_inquiry_cache_lookup_resolve do not
+resolve the name.This will fix a kernel crash when trying to use NULL
+pointer.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Ram Malovany <ramm@ti.com>
+Signed-off-by: Gustavo Padovan <gustavo.padovan@collabora.co.uk>
+---
+ net/bluetooth/hci_event.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
+index 248632c..b64cfa2 100644
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -1365,6 +1365,9 @@ static bool hci_resolve_next_name(struct hci_dev *hdev)
+ 		return false;
+ 
+ 	e = hci_inquiry_cache_lookup_resolve(hdev, BDADDR_ANY, NAME_NEEDED);
++	if (!e)
++		return false;
++
+ 	if (hci_resolve_name(hdev, e) == 0) {
+ 		e->name_state = NAME_PENDING;
+ 		return true;
+-- 
+1.7.11.4
+

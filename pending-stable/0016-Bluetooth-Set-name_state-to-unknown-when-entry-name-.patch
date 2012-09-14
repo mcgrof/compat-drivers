@@ -1,0 +1,32 @@
+From c3e7c0d90b14a3e7ac091d24cef09efb516d587b Mon Sep 17 00:00:00 2001
+From: Ram Malovany <ramm@ti.com>
+Date: Thu, 19 Jul 2012 10:26:11 +0300
+Subject: [PATCH 16/24] Bluetooth: Set name_state to unknown when entry name
+ is empty
+
+When the name of the given entry is empty , the state needs to be
+updated accordingly.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Ram Malovany <ramm@ti.com>
+Signed-off-by: Gustavo Padovan <gustavo.padovan@collabora.co.uk>
+---
+ net/bluetooth/hci_event.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
+index fe9a3d6..715d7e3 100644
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -1408,6 +1408,8 @@ static void hci_check_pending_name(struct hci_dev *hdev, struct hci_conn *conn,
+ 		e->name_state = NAME_KNOWN;
+ 		mgmt_remote_name(hdev, bdaddr, ACL_LINK, 0x00,
+ 				 e->data.rssi, name, name_len);
++	} else {
++		e->name_state = NAME_NOT_KNOWN;
+ 	}
+ 
+ 	if (hci_resolve_next_name(hdev))
+-- 
+1.7.11.4
+

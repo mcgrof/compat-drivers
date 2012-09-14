@@ -9,3 +9,9 @@ rtlwifi-rtl8192cu-Change-buffer-allocation-for-synch.patch
 rtlwifi-rtl8192de-Fix-phy-based-version-calculation.patch
 b43-fix-crash-with-OpenFWWF.patch
 atl1c-fix-issue-of-io-access-mode-for-AR8152-v2.1.patch
+wireless-reg-restore-previous-behaviour-of-chan-max_.patch
+mac80211-cancel-mesh-path-timer.patch
+cfg80211-process-pending-events-when-unregistering-n.patch
+rt61pci-fix-NULL-pointer-dereference-in-config_lna_g.patch
+iwlwifi-fix-flow-handler-debug-code.patch
+iwlwifi-protect-SRAM-debugfs.patch
