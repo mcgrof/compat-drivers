@@ -1,9 +1,28 @@
+This patch takes one hunk from 3e2ea543286dc2a4df46633a2ab6fda5f1a98cf3
+to avoid creating possible regressions based on the other changes.
+
 From 4a74a46a0628d8187dc310f0f90aea950ea84a7b Mon Sep 17 00:00:00 2001
 From: Bala Shanmugam <bkamatch@qca.qualcomm.com>
 Date: Fri, 14 Sep 2012 20:10:36 +0530
 Subject: [PATCH] ath9k_hw: add macros for CH1 & CH2
 
+Fix compilation by including only one hunk from this patch:
+
+commit 3e2ea543286dc2a4df46633a2ab6fda5f1a98cf3
+Author: Felix Fietkau <nbd@openwrt.org>
+Date:   Sun Jul 15 19:53:39 2012 +0200
+
+    ath9k_hw: apply XLNA bias settings from EEPROM
+
+    Signed-off-by: Felix Fietkau <nbd@openwrt.org>
+    Signed-off-by: John W. Linville <linville@tuxdriver.com>
+
+So based on what I think you described you only want these two hunks
+from that patch... to avoid regressions possibly caused by Felix'
+other changes.
+
 Signed-off-by: Bala Shanmugam <bkamatch@qca.qualcomm.com>
+Signed-off-by: Luis R. Rodriguez <mcgrof@do-not-panic.com>
 ---
  drivers/net/wireless/ath/ath9k/ar9003_phy.h | 2 ++
  1 file changed, 2 insertions(+)
