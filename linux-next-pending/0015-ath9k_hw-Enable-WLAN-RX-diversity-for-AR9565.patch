@@ -1,0 +1,21 @@
+From 58b8ed332215e0dbc79a68277db29e305d6764fa Mon Sep 17 00:00:00 2001
+From: Sujith Manoharan <c_manoha@qca.qualcomm.com>
+Date: Wed, 12 Sep 2012 10:44:10 +0530
+Subject: [PATCH] ath9k_hw: Enable WLAN RX diversity for AR9565
+
+Signed-off-by: Sujith Manoharan <c_manoha@qca.qualcomm.com>
+---
+ drivers/net/wireless/ath/ath9k/hw.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--- a/drivers/net/wireless/ath/ath9k/hw.c
++++ b/drivers/net/wireless/ath/ath9k/hw.c
+@@ -2543,7 +2543,7 @@ int ath9k_hw_fill_cap_info(struct ath_hw
+ 	}
+ 
+ 
+-	if (AR_SREV_9330(ah) || AR_SREV_9485(ah)) {
++	if (AR_SREV_9330(ah) || AR_SREV_9485(ah) || AR_SREV_9565(ah)) {
+ 		ant_div_ctl1 = ah->eep_ops->get_eeprom(ah, EEP_ANT_DIV_CTL1);
+ 		/*
+ 		 * enable the diversity-combining algorithm only when
