@@ -34,7 +34,7 @@ calls on compat code with only slight modifications.
  int __init bcma_host_pci_init(void)
 --- a/drivers/net/ethernet/atheros/atl1c/atl1c_main.c
 +++ b/drivers/net/ethernet/atheros/atl1c/atl1c_main.c
-@@ -2691,6 +2691,9 @@ static struct pci_error_handlers atl1c_e
+@@ -2691,6 +2691,9 @@ static const struct pci_error_handlers a
  	.resume = atl1c_io_resume,
  };
  
@@ -109,7 +109,7 @@ calls on compat code with only slight modifications.
  module_pci_driver(ath5k_pci_driver);
 --- a/drivers/net/wireless/ath/ath9k/pci.c
 +++ b/drivers/net/wireless/ath/ath9k/pci.c
-@@ -336,14 +336,10 @@ static int ath_pci_resume(struct device
+@@ -337,14 +337,10 @@ static int ath_pci_resume(struct device
  	return 0;
  }
  
@@ -128,7 +128,7 @@ calls on compat code with only slight modifications.
  
  #define ATH9K_PM_OPS	(&ath9k_pm_ops)
  
-@@ -361,7 +357,12 @@ static struct pci_driver ath_pci_driver
+@@ -362,7 +358,12 @@ static struct pci_driver ath_pci_driver
  	.id_table   = ath_pci_id_table,
  	.probe      = ath_pci_probe,
  	.remove     = ath_pci_remove,
@@ -263,7 +263,7 @@ calls on compat code with only slight modifications.
  
 --- a/drivers/net/wireless/rtlwifi/rtl8192ce/sw.c
 +++ b/drivers/net/wireless/rtlwifi/rtl8192ce/sw.c
-@@ -372,21 +372,22 @@ MODULE_PARM_DESC(swlps, "Set to 1 to use
+@@ -374,21 +374,22 @@ MODULE_PARM_DESC(swlps, "Set to 1 to use
  MODULE_PARM_DESC(fwlps, "Set to 1 to use FW control power save (default 1)\n");
  MODULE_PARM_DESC(debug, "Set debug level (0-5) (default 0)");
  

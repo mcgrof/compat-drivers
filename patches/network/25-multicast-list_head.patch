@@ -435,7 +435,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  			      size_t fw_name_len, u32 *hw_ver);
 --- a/drivers/net/wireless/p54/main.c
 +++ b/drivers/net/wireless/p54/main.c
-@@ -363,11 +363,18 @@ out:
+@@ -364,11 +364,18 @@ out:
  	return ret;
  }
  
@@ -454,7 +454,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  	int i;
  
  	BUILD_BUG_ON(ARRAY_SIZE(priv->mc_maclist) !=
-@@ -377,12 +384,23 @@ static u64 p54_prepare_multicast(struct
+@@ -378,12 +385,23 @@ static u64 p54_prepare_multicast(struct
  	 * Otherwise the firmware will drop it and ARP will no longer work.
  	 */
  	i = 1;

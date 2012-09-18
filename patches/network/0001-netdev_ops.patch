@@ -71,7 +71,7 @@ Date:   Wed Nov 19 21:32:24 2008 -0800
  
 --- a/drivers/net/wireless/rndis_wlan.c
 +++ b/drivers/net/wireless/rndis_wlan.c
-@@ -3439,7 +3439,7 @@ static int rndis_wlan_bind(struct usbnet
+@@ -3436,7 +3436,7 @@ static int rndis_wlan_bind(struct usbnet
  	 * rndis_host wants to avoid all OID as much as possible
  	 * so do promisc/multicast handling in rndis_wlan.
  	 */
@@ -124,7 +124,7 @@ Date:   Wed Nov 19 21:32:24 2008 -0800
  	net_dev->wireless_handlers = &ipw_wx_handler_def;
 --- a/drivers/net/wireless/libertas/main.c
 +++ b/drivers/net/wireless/libertas/main.c
-@@ -991,7 +991,7 @@ struct lbs_private *lbs_add_card(void *c
+@@ -993,7 +993,7 @@ struct lbs_private *lbs_add_card(void *c
  	wdev->netdev = dev;
  	priv->dev = dev;
  
@@ -157,7 +157,7 @@ Date:   Wed Nov 19 21:32:24 2008 -0800
  	dev->tx_queue_len = 0;
 --- a/drivers/net/wireless/mwifiex/main.c
 +++ b/drivers/net/wireless/mwifiex/main.c
-@@ -639,7 +639,7 @@ static const struct net_device_ops mwifi
+@@ -638,7 +638,7 @@ static const struct net_device_ops mwifi
  void mwifiex_init_priv_params(struct mwifiex_private *priv,
  						struct net_device *dev)
  {
