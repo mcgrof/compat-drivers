@@ -156,7 +156,9 @@ echo "On $ALL_STABLE_TREE: $TARGET_BRANCH"
 # This is a super hack, but let me know if you figure out a cleaner way
 TARGET_KERNEL_RELEASE=$(make VERSION="linux-3" SUBLEVEL="" EXTRAVERSION=".y" kernelversion)
 
-if [[ $COMPAT_WIRELESS_BRANCH != $TARGET_KERNEL_RELEASE ]]; then
+BASE_TREE=$(basename $GIT_TREE)
+
+if [[ $COMPAT_WIRELESS_BRANCH != $TARGET_KERNEL_RELEASE && $BASE_TREE != "linux-next" ]]; then
 	echo -e "You are on the compat-drivers ${GREEN}${COMPAT_WIRELESS_BRANCH}${NORMAL} but are "
 	echo -en "on the ${RED}${TARGET_KERNEL_RELEASE}${NORMAL} branch... "
 	echo -e "try changing to that first."
@@ -170,7 +172,13 @@ fi
 
 
 cd $COMPAT_WIRELESS_DIR
-RELEASE=$(git describe --abbrev=0 | sed -e 's/v//g')
+
+if [[ $COMPAT_WIRELESS_BRANCH != "master" ]]; then
+	RELEASE=$(git describe --abbrev=0 | sed -e 's/v//g')
+else
+	RELEASE=$(git describe --abbrev=0)
+fi
+
 if [[ $POSTFIX_RELEASE_TAG != "-" ]]; then
 	RELEASE="${RELEASE}${POSTFIX_RELEASE_TAG}"
 fi
@@ -193,12 +201,18 @@ find ./ -type f -name *.rej  | xargs rm -f
 
 cd $STAGING/
 
-echo "Creating $RELEASE_TAR ..."
-tar -jcf $RELEASE_TAR $RELEASE/
+echo "Creating ${RELEASE}.tar ..."
+tar -cf ${RELEASE}.tar $RELEASE/
+gpg --armor --detach-sign ${RELEASE}.tar
+
+# XXX: Add this for daily / stable release:
+# kup put ${RELEASE}.tar ${RELEASE}.tar.asc /pub/linux/kernel/projects/backports/2012/09/18/
+# kup put ${RELEASE}.tar ${RELEASE}.tar.asc /pub/linux/kernel/projects/backports/2012/09/18/
 
 echo
-echo "Compat-wireles release: $RELEASE"
-echo "Size: $(du -h $RELEASE_TAR)"
-echo "sha1sum: $(sha1sum $RELEASE_TAR)"
+echo "compat-drivers release: $RELEASE"
+echo "Size: $(du -h ${RELEASE}.tar)"
+echo "sha1sum: $(sha1sum ${RELEASE}.tar)"
 echo
-echo "Release: ${STAGING}$RELEASE_TAR"
+echo "Release:           ${STAGING}${RELEASE}.tar"
+echo "Release signature: ${STAGING}${RELEASE}.tar.asc"
