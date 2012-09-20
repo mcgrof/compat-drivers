@@ -203,16 +203,21 @@ cd $STAGING/
 
 echo "Creating ${RELEASE}.tar ..."
 tar -cf ${RELEASE}.tar $RELEASE/
+bzip2 -9 ${RELEASE}.tar
+
+# kup allows us to upload a compressed archive but wants us
+# to sign the tarball alone, it will uncompress the
+# compressed tarball, verify the tarball and then re-compress
+# the tarball.
 gpg --armor --detach-sign ${RELEASE}.tar
 
 # XXX: Add this for daily / stable release:
-# kup put ${RELEASE}.tar ${RELEASE}.tar.asc /pub/linux/kernel/projects/backports/2012/09/18/
-# kup put ${RELEASE}.tar ${RELEASE}.tar.asc /pub/linux/kernel/projects/backports/2012/09/18/
+# kup put ${RELEASE}.tar.bz2 ${RELEASE}.tar.asc /pub/linux/kernel/projects/backports/2012/09/18/
 
 echo
 echo "compat-drivers release: $RELEASE"
-echo "Size: $(du -h ${RELEASE}.tar)"
-echo "sha1sum: $(sha1sum ${RELEASE}.tar)"
+echo "Size: $(du -h ${RELEASE_TAR})"
+echo "sha1sum: $(sha1sum ${RELEASE_TAR})"
 echo
-echo "Release:           ${STAGING}${RELEASE}.tar"
+echo "Release:           ${STAGING}${RELEASE_TAR}"
 echo "Release signature: ${STAGING}${RELEASE}.tar.asc"
