@@ -63,8 +63,8 @@ if [ -z $GIT_TREE ]; then
 else
 	echo "You said to use git tree at: $GIT_TREE for linux-stable"
 fi
-COMPAT_WIRELESS_DIR=$(pwd)
-COMPAT_WIRELESS_BRANCH=$(git branch | grep \* | awk '{print $2}')
+COMPAT_DRIVERS_DIR=$(pwd)
+COMPAT_DRIVERS_BRANCH=$(git branch | grep \* | awk '{print $2}')
 
 cd $GIT_TREE
 # --abbrev=0 on branch should work but I guess it doesn't on some releases
@@ -158,8 +158,8 @@ TARGET_KERNEL_RELEASE=$(make VERSION="linux-3" SUBLEVEL="" EXTRAVERSION=".y" ker
 
 BASE_TREE=$(basename $GIT_TREE)
 
-if [[ $COMPAT_WIRELESS_BRANCH != $TARGET_KERNEL_RELEASE && $BASE_TREE != "linux-next" ]]; then
-	echo -e "You are on the compat-drivers ${GREEN}${COMPAT_WIRELESS_BRANCH}${NORMAL} but are "
+if [[ $COMPAT_DRIVERS_BRANCH != $TARGET_KERNEL_RELEASE && $BASE_TREE != "linux-next" ]]; then
+	echo -e "You are on the compat-drivers ${GREEN}${COMPAT_DRIVERS_BRANCH}${NORMAL} but are "
 	echo -en "on the ${RED}${TARGET_KERNEL_RELEASE}${NORMAL} branch... "
 	echo -e "try changing to that first."
 
@@ -171,9 +171,9 @@ if [[ $COMPAT_WIRELESS_BRANCH != $TARGET_KERNEL_RELEASE && $BASE_TREE != "linux-
 fi
 
 
-cd $COMPAT_WIRELESS_DIR
+cd $COMPAT_DRIVERS_DIR
 
-if [[ $COMPAT_WIRELESS_BRANCH != "master" ]]; then
+if [[ $COMPAT_DRIVERS_BRANCH != "master" ]]; then
 	RELEASE=$(git describe --abbrev=0 | sed -e 's/v//g')
 else
 	RELEASE=$(git describe --abbrev=0)
@@ -186,7 +186,7 @@ RELEASE_TAR="$RELEASE.tar.bz2"
 
 rm -rf $STAGING
 mkdir -p $STAGING
-cp -a $COMPAT_WIRELESS_DIR $STAGING/$RELEASE
+cp -a $COMPAT_DRIVERS_DIR $STAGING/$RELEASE
 cd $STAGING/$RELEASE
 
 ./scripts/admin-update.sh $UPDATE_ARGS
