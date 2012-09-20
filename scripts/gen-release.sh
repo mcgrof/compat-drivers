@@ -174,7 +174,7 @@ cd $STAGING/
 
 echo "Creating ${RELEASE}.tar ..."
 tar -cf ${RELEASE}.tar $RELEASE/
-bzip2 -9 ${RELEASE}.tar
+bzip2 -k -9 ${RELEASE}.tar
 
 # kup allows us to upload a compressed archive but wants us
 # to sign the tarball alone, it will uncompress the
