@@ -239,8 +239,8 @@ if [[ "$BASE_TREE" = "linux-next" ]]; then
 
 
 	kup mkdir ${KORG_BACKPORT}/${YEAR} > /dev/null 2>&1
-	kup mkdir ${KORG_BACKPORT}/${YEAR}/${MONTH}/ > /dev/null 2>&1
-	kup mkdir ${KORG_BACKPORT}/${YEAR}/${MONTH}/${DAY}/ > /dev/null 2>&1
+	kup mkdir ${KORG_BACKPORT}/${YEAR}/${MONTH} > /dev/null 2>&1
+	kup mkdir ${KORG_BACKPORT}/${YEAR}/${MONTH}/${DAY} > /dev/null 2>&1
 
 	kup ls ${KORG_BACKPORT}/${YEAR}/${MONTH}/${DAY}/ | grep ${RELEASE}.tar.bz2 > /dev/null 2>&1
 	if [[ $? -eq 0 ]]; then
