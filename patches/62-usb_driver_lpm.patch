@@ -216,7 +216,7 @@
  module_usb_driver(rt2500usb_driver);
 --- a/drivers/net/wireless/rt2x00/rt2800usb.c
 +++ b/drivers/net/wireless/rt2x00/rt2800usb.c
-@@ -1303,7 +1303,9 @@ static struct usb_driver rt2800usb_drive
+@@ -1304,7 +1304,9 @@ static struct usb_driver rt2800usb_drive
  	.disconnect	= rt2x00usb_disconnect,
  	.suspend	= rt2x00usb_suspend,
  	.resume		= rt2x00usb_resume,
