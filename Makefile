@@ -154,6 +154,7 @@ install-scripts:
 	@# All the scripts we can use
 	@mkdir -p $(DESTDIR)/usr/lib/compat-drivers/
 	@install scripts/modlib.sh	$(DESTDIR)/usr/lib/compat-drivers/
+	@install scripts/git-paranoia	$(DESTDIR)/usr/sbin/
 	@install scripts/madwifi-unload	$(DESTDIR)/usr/sbin/
 	@# This is to allow switching between drivers without blacklisting
 	@install scripts/athenable	$(DESTDIR)/usr/sbin/

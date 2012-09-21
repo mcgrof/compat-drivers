@@ -39,6 +39,13 @@ NEXT_TREE="linux-next"
 
 STAGING=/tmp/staging/compat-drivers/
 
+GIT_DIRS="$GIT_DIRS $HOME/compat/"
+GIT_DIRS="$GIT_DIRS $HOME/devel/compat-drivers/"
+GIT_DIRS="$GIT_DIRS $HOME/linux-next/"
+GIT_DIRS="$GIT_DIRS $HOME/linux-stable/"
+
+export GIT_DIRS="$GIT_DIRS"
+
 function usage()
 {
 	echo -e "Usage:"
@@ -47,7 +54,7 @@ function usage()
 	echo -e "or"
 	echo -e "export GIT_TREE=${HOME}/linux-next/"
 	echo -e ""
-	echo -e "${GREEN}$1${NORMAL} ${BLUE}[ -s | -n | -p | -c ]${NORMAL}"
+	echo -e "${GREEN}$1${NORMAL} ${BLUE}[ -s | -n | -p | -c | -u ]${NORMAL}"
 	echo
 	echo Examples usages:
 	echo
@@ -62,6 +69,7 @@ function usage()
 
 UPDATE_ARGS=""
 POSTFIX_RELEASE_TAG="-"
+USE_KUP=""
 
 if [ -z $GIT_TREE ]; then
 	export GIT_TREE=$HOME/$NEXT_TREE
@@ -80,6 +88,7 @@ if [ -z $GIT_TREE ]; then
 	fi
 else
 	echo "You said to use git tree at: $GIT_TREE"
+	GIT_DIRS="$GIT_DIRS $GIT_TREE"
 fi
 
 COMPAT_DRIVERS_DIR=$(pwd)
@@ -94,6 +103,7 @@ EXISTING_BRANCH=$(git branch | grep \* | awk '{print $2}')
 # You can override the target branch by specifying an argument
 # to this script.
 TARGET_BRANCH="$EXISTING_BRANCH"
+TARGET_TAG="$(git describe)"
 
 while [ $# -ne 0 ]; do
 	if [[ "$1" = "-s" ]]; then
@@ -114,6 +124,11 @@ while [ $# -ne 0 ]; do
 	if [[ "$1" = "-c" ]]; then
 		UPDATE_ARGS="${UPDATE_ARGS} $1"
 		POSTFIX_RELEASE_TAG="${POSTFIX_RELEASE_TAG}c"
+		shift; continue;
+	fi
+
+	if [[ "$1" = "-u" ]]; then
+		USE_KUP="1"
 		shift; continue;
 	fi
 
@@ -160,6 +175,26 @@ mkdir -p $STAGING
 cp -a $COMPAT_DRIVERS_DIR $STAGING/$RELEASE
 cd $STAGING/$RELEASE
 
+# Only use interactive paranoia for non-signed / uploaded to kernel.org releases
+PARANOIA=""
+if [[ "$USE_KUP" != "1" ]]; then
+	PARANOIA="-i"
+fi
+./scripts/git-paranoia $PARANOIA
+if [[ $? -ne 0 ]]; then
+	if [[ "$PARANOIA" != "-i" ]]; then
+		echo -e "Given that this is a targeted ${CYAN}kernel.org${NORMAL} release we are bailing."
+		exit 1
+	fi
+	echo
+	echo -e "Detected some tree content is not yet ${RED}GPG signed${NORMAL}..."
+	read -p "Do you still want to continue (y/N)? "
+	if [[ "${REPLY}" != "y" ]]; then
+	    echo -e "Bailing out !"
+	    exit 1
+	fi
+fi
+
 ./scripts/admin-update.sh $UPDATE_ARGS
 rm -rf $STAGING/$RELEASE/.git
 
@@ -182,9 +217,6 @@ bzip2 -k -9 ${RELEASE}.tar
 # the tarball.
 gpg --armor --detach-sign ${RELEASE}.tar
 
-# XXX: Add this for daily / stable release:
-# kup put ${RELEASE}.tar.bz2 ${RELEASE}.tar.asc /pub/linux/kernel/projects/backports/2012/09/18/
-
 echo
 echo "compat-drivers release: $RELEASE"
 echo "Size: $(du -h ${RELEASE_TAR})"
@@ -192,3 +224,30 @@ echo "sha1sum: $(sha1sum ${RELEASE_TAR})"
 echo
 echo "Release:           ${STAGING}${RELEASE_TAR}"
 echo "Release signature: ${STAGING}${RELEASE}.tar.asc"
+
+if [[ "$USE_KUP" != "1" ]]; then
+	exit 0
+fi
+
+# Where we dump backport releases onto kernel.org
+KORG_BACKPORT="/pub/linux/kernel/projects/backports/"
+
+if [[ "$BASE_TREE" = "linux-next" ]]; then
+	YEAR=$(echo $TARGET_TAG | awk -F "-" '{print $2}' | cut -c 1-4)
+	MONTH=$(echo $TARGET_TAG | awk -F "-" '{print $2}' | cut -c 5-6)
+	DAY=$(echo $TARGET_TAG | awk -F "-" '{print $2}' | cut -c 7-8)
+
+
+	kup mkdir ${KORG_BACKPORT}/${YEAR} > /dev/null 2>&1
+	kup mkdir ${KORG_BACKPORT}/${YEAR}/${MONTH}/ > /dev/null 2>&1
+	kup mkdir ${KORG_BACKPORT}/${YEAR}/${MONTH}/${DAY}/ > /dev/null 2>&1
+
+	kup ls ${KORG_BACKPORT}/${YEAR}/${MONTH}/${DAY}/ | grep ${RELEASE}.tar.bz2 > /dev/null 2>&1
+	if [[ $? -eq 0 ]]; then
+		echo -e "File ${KORG_BACKPORT}/${YEAR}/${MONTH}/${DAY}/${BLUE}${RELEASE}.tar.bz2${NORMAL} already exists"
+	fi
+
+	kup put ${RELEASE}.tar.bz2 ${RELEASE}.tar.asc ${KORG_BACKPORT}/${YEAR}/${MONTH}/${DAY}/
+else
+	echo XXX
+fi
