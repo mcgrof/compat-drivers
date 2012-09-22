@@ -137,6 +137,70 @@ index 05d4b83..8e1ab59 100644
  int mgmt_auth_failed(struct hci_dev *hdev, bdaddr_t *bdaddr, u8 link_type,
  		     u8 addr_type, u8 status)
  {
--- 
-1.7.10.4
-
+diff --git a/include/net/bluetooth/hci.h b/include/net/bluetooth/hci.h
+index 0f28f70..76b2b6b 100644
+--- a/include/net/bluetooth/hci.h
++++ b/include/net/bluetooth/hci.h
+@@ -1249,6 +1249,24 @@ struct hci_ev_simple_pair_complete {
+ 	bdaddr_t bdaddr;
+ } __packed;
+ 
++#define HCI_EV_USER_PASSKEY_NOTIFY	0x3b
++struct hci_ev_user_passkey_notify {
++	bdaddr_t	bdaddr;
++	__le32		passkey;
++} __packed;
++
++#define HCI_KEYPRESS_STARTED		0
++#define HCI_KEYPRESS_ENTERED		1
++#define HCI_KEYPRESS_ERASED		2
++#define HCI_KEYPRESS_CLEARED		3
++#define HCI_KEYPRESS_COMPLETED		4
++
++#define HCI_EV_KEYPRESS_NOTIFY		0x3c
++struct hci_ev_keypress_notify {
++	bdaddr_t	bdaddr;
++	__u8		type;
++} __packed;
++
+ #define HCI_EV_REMOTE_HOST_FEATURES	0x3d
+ struct hci_ev_remote_host_features {
+ 	bdaddr_t bdaddr;
+diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
+index 6a3337e..e7d4546 100644
+--- a/include/net/bluetooth/hci_core.h
++++ b/include/net/bluetooth/hci_core.h
+@@ -303,6 +303,8 @@ struct hci_conn {
+ 	__u8		pin_length;
+ 	__u8		enc_key_size;
+ 	__u8		io_capability;
++	__u32		passkey_notify;
++	__u8		passkey_entered;
+ 	__u16		disc_timeout;
+ 	unsigned long	flags;
+ 
+@@ -1022,6 +1024,9 @@ int mgmt_user_passkey_reply_complete(struct hci_dev *hdev, bdaddr_t *bdaddr,
+ 				     u8 link_type, u8 addr_type, u8 status);
+ int mgmt_user_passkey_neg_reply_complete(struct hci_dev *hdev, bdaddr_t *bdaddr,
+ 					 u8 link_type, u8 addr_type, u8 status);
++int mgmt_user_passkey_notify(struct hci_dev *hdev, bdaddr_t *bdaddr,
++			     u8 link_type, u8 addr_type, u32 passkey,
++			     u8 entered);
+ int mgmt_auth_failed(struct hci_dev *hdev, bdaddr_t *bdaddr, u8 link_type,
+ 		     u8 addr_type, u8 status);
+ int mgmt_auth_enable_complete(struct hci_dev *hdev, u8 status);
+diff --git a/include/net/bluetooth/mgmt.h b/include/net/bluetooth/mgmt.h
+index 1b48eff..22980a7 100644
+--- a/include/net/bluetooth/mgmt.h
++++ b/include/net/bluetooth/mgmt.h
+@@ -478,3 +478,10 @@ struct mgmt_ev_device_unblocked {
+ struct mgmt_ev_device_unpaired {
+ 	struct mgmt_addr_info addr;
+ } __packed;
++
++#define MGMT_EV_PASSKEY_NOTIFY		0x0017
++struct mgmt_ev_passkey_notify {
++	struct mgmt_addr_info addr;
++	__le32	passkey;
++	__u8	entered;
++} __packed;
