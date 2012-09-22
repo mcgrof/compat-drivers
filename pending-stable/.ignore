@@ -15,3 +15,13 @@ cfg80211-process-pending-events-when-unregistering-n.patch
 rt61pci-fix-NULL-pointer-dereference-in-config_lna_g.patch
 iwlwifi-fix-flow-handler-debug-code.patch
 iwlwifi-protect-SRAM-debugfs.patch
+Bluetooth-Fix-legacy-pairing-with-some-devices.patch
+Bluetooth-Fix-using-NULL-inquiry-entry.patch
+Bluetooth-Fix-using-a-NULL-inquiry-cache-entry.patch
+Bluetooth-Set-name_state-to-unknown-when-entry-name-.patch
+ath9k-stop-btcoex-on-device-suspend.patch
+USB-p54usb-remove-__devinit-from-the-struct-usb_devi.patch
+USB-rtl8187-remove-__devinit-from-the-struct-usb_dev.patch
+brcmfmac-Fix-big-endian-host-configuration-data.patch
+iwlwifi-don-t-double-free-the-interrupt-in-failure-p.patch
+Bluetooth-mgmt-Implement-support-for-passkey-notific.patch
