@@ -460,6 +460,9 @@ export WSTABLE="
         include/net/cfg80211.h
 	include/net/mac80211.h
         include/net/regulatory.h
+	include/net/bluetooth/hci.h
+	include/net/bluetooth/hci_core.h
+	include/net/bluetooth/mgmt.h
         include/net/cfg80211.h"
 
 # Stable pending, if -n was passed
