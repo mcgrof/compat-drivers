@@ -2,7 +2,7 @@ Remove drivers that we do not want to build from gpu/drm/Makefile
 
 --- a/drivers/gpu/drm/Makefile
 +++ b/drivers/gpu/drm/Makefile
-@@ -28,21 +28,14 @@ CFLAGS_drm_trace_points.o := -I$(src)
+@@ -30,22 +30,15 @@ CFLAGS_drm_trace_points.o := -I$(src)
  obj-$(CONFIG_DRM)	+= drm.o
  obj-$(CONFIG_DRM_USB)   += drm_usb.o
  obj-$(CONFIG_DRM_TTM)	+= ttm/
@@ -23,4 +23,5 @@ Remove drivers that we do not want to build from gpu/drm/Makefile
  obj-$(CONFIG_DRM_GMA500) += gma500/
 -obj-$(CONFIG_DRM_UDL) += udl/
  obj-$(CONFIG_DRM_AST) += ast/
+ obj-$(CONFIG_DRM_SHMOBILE) +=shmobile/
  obj-y			+= i2c/

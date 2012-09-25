@@ -36,7 +36,7 @@ These can't be backported as they rely on non-exported symbols.
  			/* Real error */
 --- a/drivers/gpu/drm/i810/i810_dma.c
 +++ b/drivers/gpu/drm/i810/i810_dma.c
-@@ -133,9 +133,17 @@ static int i810_map_buffer(struct drm_bu
+@@ -136,9 +136,17 @@ static int i810_map_buffer(struct drm_bu
  	old_fops = file_priv->filp->f_op;
  	file_priv->filp->f_op = &i810_buffer_fops;
  	dev_priv->mmap_buffer = buf;
@@ -54,7 +54,7 @@ These can't be backported as they rely on non-exported symbols.
  	dev_priv->mmap_buffer = NULL;
  	file_priv->filp->f_op = old_fops;
  	if (IS_ERR(buf_priv->virtual)) {
-@@ -156,9 +164,15 @@ static int i810_unmap_buffer(struct drm_
+@@ -159,9 +167,15 @@ static int i810_unmap_buffer(struct drm_
  	if (buf_priv->currently_mapped != I810_BUF_MAPPED)
  		return -EINVAL;
  
