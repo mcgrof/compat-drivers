@@ -202,7 +202,7 @@ copyDirectories() {
 # compatibility with compat-wireless, wlan/bt/eth drivers are
 # fetched in by default.
 ENABLE_NETWORK=1
-ENABLE_DRM=0
+ENABLE_DRM=1
 SUBSYSTEMS=
 
 EXTRA_PATCHES="patches"
@@ -244,6 +244,7 @@ if [ $# -ge 1 ]; then
 				;;
 			"network")
 				ENABLE_NETWORK=1
+				ENABLE_DRM=0
 				shift
 				;;
 			"drm")

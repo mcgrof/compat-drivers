@@ -41,6 +41,8 @@ SUPPORTED_80211_DRIVERS="ath5k ath9k ath9k_ap ath9k_htc carl9170 ath6kl wil6210 
 # what if you update b44 but not b43? It will bust.
 SUPPORTED_ETH_DRIVERS="atl1 atl2 atl1e atl1c alx"
 
+SUPPORTED_DRM_DRIVERS="i915"
+
 function usage {
 	echo -e "${GREEN}Usage${NORMAL}: ${BOLD}$0${NORMAL} [ ${PURPLE}<driver-name>${NORMAL} | ${CYAN}<driver-group-name>${NORMAL} | ${GREEN}restore${NORMAL} ]"
 
@@ -53,6 +55,11 @@ function usage {
 	echo
 	echo -e "Supported Ethernet drivers:"
 	for i in $SUPPORTED_ETH_DRIVERS; do
+		echo -e "\t${PURPLE}${i}${NORMAL}"
+	done
+
+	echo -e "Supported DRM drivers:"
+	for i in $SUPPORTED_DRM_DRIVERS; do
 		echo -e "\t${PURPLE}${i}${NORMAL}"
 	done
 
@@ -69,6 +76,9 @@ function usage {
 	echo -e "\nSupported group drivers: Bluetooth & Ethernet:"
 	echo -e "\t${CYAN}atlxx${NORMAL} < ${PURPLE} atl1 atl2 atl1e alx${NORMAL}>"
 	echo -e "\t${CYAN}bt${NORMAL} < ${PURPLE} Linux bluetooth drivers ${NORMAL}>"
+
+	echo -e "\nSupported group drivers: DRM:"
+	echo -e "\t${CYAN}drm${NORMAL} < ${PURPLE} i915${NORMAL}>"
 
 	echo -e "Restoring compat-drivers:"
 	echo -e "\t${GREEN}restore${NORMAL}: you can use this option to restore compat-drivers to the original state"
@@ -231,6 +241,18 @@ function disable_update-initramfs
 {
 	backup_file Makefile
 	perl -i -ne 'print if ! /update-initramfs/' Makefile
+}
+
+function enable_only_drm {
+	backup_file Makefile
+	disable_ethernet
+	disable_staging
+	disable_usbnet
+	disable_var_03
+	disable_bt
+	# rfkill may be needed if you enable b44 as you may have b43
+	disable_rfkill
+	disable_80211
 }
 
 function select_ath_driver 
@@ -509,6 +531,12 @@ case $1 in
 		disable_ethernet
 		disable_staging
 		disable_80211
+		;;
+	i915)
+		enable_only_drm
+		;;
+	drm)
+		enable_only_drm
 		;;
 	*)
 		echo "Unsupported driver"

@@ -40,6 +40,7 @@ NOSTDINC_FLAGS := \
 obj-y := compat/
 
 obj-$(CONFIG_COMPAT_RFKILL) += net/rfkill/
+obj-$(CONFIG_COMPAT_VIDEO_MODULES) += drivers/gpu/drm/
 
 ifeq ($(BT),)
 obj-$(CONFIG_COMPAT_WIRELESS) += net/wireless/ net/mac80211/

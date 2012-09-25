@@ -17,7 +17,6 @@ else
 KERNEL_26SUBLEVEL := $(shell $(MAKE) -C $(KLIB_BUILD) kernelversion | sed -n 's/^2\.6\.\([0-9]\+\).*/\1/p')
 endif
 
-# FIXME: This lower limit is different (e.g. 3.0) for DRM stuff.
 ifdef CONFIG_COMPAT_KERNEL_2_6_24
 $(error "ERROR: compat-drivers by default supports kernels >= 2.6.24, try enabling only one driver though")
 endif #CONFIG_COMPAT_KERNEL_2_6_24
@@ -697,3 +696,11 @@ endif #CONFIG_LEDS_TRIGGERS
 export CONFIG_RFKILL_BACKPORT_INPUT=y
 endif #CONFIG_COMPAT_KERNEL_2_6_31
 
+# compilation has been tested down to 3.0 but run time
+# tests have only started on 3.2.
+ifndef CONFIG_COMPAT_KERNEL_3_2
+export CONFIG_COMPAT_VIDEO_MODULES=y
+export CONFIG_COMPAT_DRM=m
+export CONFIG_COMPAT_DRM_I915=m
+export CONFIG_COMPAT_DRM_KMS_HELPER=m
+endif #CONFIG_COMPAT_KERNEL_3_2
