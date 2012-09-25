@@ -293,7 +293,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  }
 --- a/drivers/net/wireless/mwifiex/sta_ioctl.c
 +++ b/drivers/net/wireless/mwifiex/sta_ioctl.c
-@@ -40,7 +40,11 @@ int mwifiex_copy_mcast_addr(struct mwifi
+@@ -43,7 +43,11 @@ int mwifiex_copy_mcast_addr(struct mwifi
  	struct netdev_hw_addr *ha;
  
  	netdev_for_each_mc_addr(ha, dev)
@@ -651,7 +651,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  	}
 --- a/include/net/mac80211.h
 +++ b/include/net/mac80211.h
-@@ -2335,7 +2335,11 @@ struct ieee80211_ops {
+@@ -2343,7 +2343,11 @@ struct ieee80211_ops {
  				 u32 changed);
  
  	u64 (*prepare_multicast)(struct ieee80211_hw *hw,
@@ -712,7 +712,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  
 --- a/net/mac80211/ieee80211_i.h
 +++ b/net/mac80211/ieee80211_i.h
-@@ -865,7 +865,12 @@ struct ieee80211_local {
+@@ -868,7 +868,12 @@ struct ieee80211_local {
  	struct work_struct recalc_smps;
  
  	/* aggregated multicast list */
@@ -741,7 +741,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  		spin_unlock_bh(&local->filter_lock);
  		netif_addr_unlock_bh(sdata->dev);
  
-@@ -890,7 +895,12 @@ static void ieee80211_set_multicast_list
+@@ -899,7 +904,12 @@ static void ieee80211_set_multicast_list
  		sdata->flags ^= IEEE80211_SDATA_PROMISC;
  	}
  	spin_lock_bh(&local->filter_lock);
@@ -768,7 +768,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  	spin_unlock_bh(&local->filter_lock);
  
  	/* be a bit nasty */
-@@ -620,9 +624,11 @@ struct ieee80211_hw *ieee80211_alloc_hw(
+@@ -616,9 +620,11 @@ struct ieee80211_hw *ieee80211_alloc_hw(
  	wiphy->ht_capa_mod_mask = &mac80211_ht_capa_mod_mask;
  
  	INIT_LIST_HEAD(&local->interfaces);
