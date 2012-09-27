@@ -1,12 +1,13 @@
-From c288389223d0a72577c3b266de1ee1d32ecb6c84 Mon Sep 17 00:00:00 2001
-From: "Manoharan, Rajkumar" <rmanohar@qca.qualcomm.com>
-Date: Wed, 12 Sep 2012 13:29:24 +0000
+From 7a03414686d8e01c660bf69df22cafcfd2753626 Mon Sep 17 00:00:00 2001
+From: Rajkumar Manoharan <rmanohar@qca.qualcomm.com>
+Date: Wed, 12 Sep 2012 18:59:24 +0530
 Subject: [PATCH] ath9k: fix queuing MCI work twice
 
 Right now MCI work is being queued twice by profile and status
 updation. Queue MCI work once when it is needed.
 
 Signed-off-by: Rajkumar Manoharan <rmanohar@qca.qualcomm.com>
+Signed-off-by: John W. Linville <linville@tuxdriver.com>
 ---
  drivers/net/wireless/ath/ath9k/mci.c | 30 +++++++++++++++++-------------
  1 file changed, 17 insertions(+), 13 deletions(-)

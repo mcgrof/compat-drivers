@@ -1,12 +1,13 @@
-From 5a11a1181c98f473eb19a96c4078891495562768 Mon Sep 17 00:00:00 2001
-From: Sujith Manoharan <c_manoha@qca.qualcomm.com>
-Date: Wed, 12 Sep 2012 09:50:46 +0530
+From d85ed4196ebb065906eacfdc4b1cec824a3799dd Mon Sep 17 00:00:00 2001
+From: Sujith Manoharan <c_manoha@qualcomm.com>
+Date: Sun, 16 Sep 2012 08:05:40 +0530
 Subject: [PATCH] ath9k: Remove redundant variable assignment
 
 Set main_gaintb and alt_gaintb once instead of zero'ing them
 in every case.
 
 Signed-off-by: Sujith Manoharan <c_manoha@qca.qualcomm.com>
+Signed-off-by: John W. Linville <linville@tuxdriver.com>
 ---
  drivers/net/wireless/ath/ath9k/antenna.c | 51 ++------------------------------
  1 file changed, 3 insertions(+), 48 deletions(-)

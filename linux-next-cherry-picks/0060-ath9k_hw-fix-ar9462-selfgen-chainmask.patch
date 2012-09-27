@@ -1,6 +1,6 @@
-From 7d0a5ba513d0b3119b887c6cedb67d35ae5ffa24 Mon Sep 17 00:00:00 2001
-From: "Manoharan, Rajkumar" <rmanohar@qca.qualcomm.com>
-Date: Wed, 12 Sep 2012 13:29:20 +0000
+From bfbee42793a564762d2681d88dc19f4c2d8ee6fd Mon Sep 17 00:00:00 2001
+From: Rajkumar Manoharan <rmanohar@qca.qualcomm.com>
+Date: Wed, 12 Sep 2012 18:59:20 +0530
 Subject: [PATCH] ath9k_hw: fix ar9462 selfgen chainmask
 
 When the 9462 is operating in 2G mode and MCI is enabled then
@@ -8,6 +8,7 @@ reduce the selfgen chain mask to chain 1. Otherwise poor performance
 was reported at short range at Rx side when COEX is enabled.
 
 Signed-off-by: Rajkumar Manoharan <rmanohar@qca.qualcomm.com>
+Signed-off-by: John W. Linville <linville@tuxdriver.com>
 ---
  drivers/net/wireless/ath/ath9k/ar9003_mci.c | 1 +
  drivers/net/wireless/ath/ath9k/ar9003_phy.c | 3 ---

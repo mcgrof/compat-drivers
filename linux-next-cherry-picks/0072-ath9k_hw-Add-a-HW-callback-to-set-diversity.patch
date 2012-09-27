@@ -1,12 +1,13 @@
-From f6acda9e9f2f0ac6f8ca6a1f91c373b18f49edca Mon Sep 17 00:00:00 2001
-From: Sujith Manoharan <c_manoha@qca.qualcomm.com>
-Date: Fri, 14 Sep 2012 10:19:26 +0530
+From 362cd03fd828af38327fb448416c07a7c7a8e3cb Mon Sep 17 00:00:00 2001
+From: Sujith Manoharan <c_manoha@qualcomm.com>
+Date: Sun, 16 Sep 2012 08:06:36 +0530
 Subject: [PATCH] ath9k_hw: Add a HW callback to set diversity
 
 This patch adds a new callback to handle WLAN RX diversity for
 AR9565.
 
 Signed-off-by: Sujith Manoharan <c_manoha@qca.qualcomm.com>
+Signed-off-by: John W. Linville <linville@tuxdriver.com>
 ---
  drivers/net/wireless/ath/ath9k/ar9003_eeprom.c | 10 +++++
  drivers/net/wireless/ath/ath9k/ar9003_phy.c    | 60 ++++++++++++++++++++++++++
@@ -18,7 +19,7 @@ Signed-off-by: Sujith Manoharan <c_manoha@qca.qualcomm.com>
 
 --- a/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c
 +++ b/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c
-@@ -3629,6 +3629,16 @@ static void ar9003_hw_ant_ctrl_apply(str
+@@ -3633,6 +3633,16 @@ static void ar9003_hw_ant_ctrl_apply(str
  		/* enable_lnadiv */
  		regval &= (~AR_PHY_ANT_DIV_LNADIV);
  		regval |= ((value >> 6) & 0x1) << AR_PHY_ANT_DIV_LNADIV_S;
@@ -194,7 +195,7 @@ Signed-off-by: Sujith Manoharan <c_manoha@qca.qualcomm.com>
  EXPORT_SYMBOL(ath9k_hw_reset);
 --- a/drivers/net/wireless/ath/ath9k/hw.h
 +++ b/drivers/net/wireless/ath/ath9k/hw.h
-@@ -687,7 +687,7 @@ struct ath_hw_ops {
+@@ -686,7 +686,7 @@ struct ath_hw_ops {
  			struct ath_hw_antcomb_conf *antconf);
  	void (*antdiv_comb_conf_set)(struct ath_hw *ah,
  			struct ath_hw_antcomb_conf *antconf);
@@ -203,7 +204,7 @@ Signed-off-by: Sujith Manoharan <c_manoha@qca.qualcomm.com>
  };
  
  struct ath_nf_limits {
-@@ -731,6 +731,7 @@ struct ath_hw {
+@@ -730,6 +730,7 @@ struct ath_hw {
  	bool aspm_enabled;
  	bool is_monitoring;
  	bool need_an_top2_fixup;

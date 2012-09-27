@@ -1,12 +1,13 @@
-From ce52066d32a154921baea678d2886e8b495f55dc Mon Sep 17 00:00:00 2001
-From: "Manoharan, Rajkumar" <rmanohar@qca.qualcomm.com>
-Date: Wed, 12 Sep 2012 13:29:22 +0000
+From 9e62817b9faee8d286580673b8eafb05e778ec1d Mon Sep 17 00:00:00 2001
+From: Rajkumar Manoharan <rmanohar@qca.qualcomm.com>
+Date: Wed, 12 Sep 2012 18:59:22 +0530
 Subject: [PATCH] ath9k: move coex param updation within mci work
 
 Update all coex parameters in sigle place. So that we can avoid
 redoing the same operation in mutiple places and it eases debugging.
 
 Signed-off-by: Rajkumar Manoharan <rmanohar@qca.qualcomm.com>
+Signed-off-by: John W. Linville <linville@tuxdriver.com>
 ---
  drivers/net/wireless/ath/ath9k/mci.c | 20 +++++++++-----------
  1 file changed, 9 insertions(+), 11 deletions(-)

@@ -1,9 +1,10 @@
-From f2bc9be90f6818009e16ce8c65665c4f7331272e Mon Sep 17 00:00:00 2001
-From: Sujith Manoharan <c_manoha@qca.qualcomm.com>
-Date: Fri, 14 Sep 2012 11:50:22 +0530
+From e09f2dc73c5c4927cbc55d9c29bef4209c2d866d Mon Sep 17 00:00:00 2001
+From: Sujith Manoharan <c_manoha@qualcomm.com>
+Date: Sun, 16 Sep 2012 08:06:56 +0530
 Subject: [PATCH] ath9k: Add a module parameter to enable diversity
 
 Signed-off-by: Sujith Manoharan <c_manoha@qca.qualcomm.com>
+Signed-off-by: John W. Linville <linville@tuxdriver.com>
 ---
  drivers/net/wireless/ath/ath.h           |  1 +
  drivers/net/wireless/ath/ath9k/antenna.c |  4 ++++

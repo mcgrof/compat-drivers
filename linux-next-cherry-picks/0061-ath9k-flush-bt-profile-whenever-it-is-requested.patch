@@ -1,6 +1,6 @@
-From 124cd270cecfefaa4150a9b889dd5d74affbf9c5 Mon Sep 17 00:00:00 2001
-From: "Manoharan, Rajkumar" <rmanohar@qca.qualcomm.com>
-Date: Wed, 12 Sep 2012 13:29:21 +0000
+From d92bb98f0c13f711bb04f447f7e19da0163eded2 Mon Sep 17 00:00:00 2001
+From: Rajkumar Manoharan <rmanohar@qca.qualcomm.com>
+Date: Wed, 12 Sep 2012 18:59:21 +0530
 Subject: [PATCH] ath9k: flush bt profile whenever it is requested
 
 Before processing BT profiles or status messages, check whether
@@ -10,6 +10,7 @@ flush the profiles when MCI is recovering from broken rx. After
 flushing BT profiles, query BT topology to refetch them.
 
 Signed-off-by: Rajkumar Manoharan <rmanohar@qca.qualcomm.com>
+Signed-off-by: John W. Linville <linville@tuxdriver.com>
 ---
  drivers/net/wireless/ath/ath9k/ar9003_mci.c |  4 ++++
  drivers/net/wireless/ath/ath9k/ar9003_mci.h |  4 +++-

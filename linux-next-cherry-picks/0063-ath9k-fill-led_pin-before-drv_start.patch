@@ -1,6 +1,6 @@
-From be7ca23abe8efbf955c731e4326b8046046adeee Mon Sep 17 00:00:00 2001
-From: "Manoharan, Rajkumar" <rmanohar@qca.qualcomm.com>
-Date: Wed, 12 Sep 2012 13:29:23 +0000
+From 8f176a3a16d124285cecd6c53b70689eb3b9ba36 Mon Sep 17 00:00:00 2001
+From: Rajkumar Manoharan <rmanohar@qca.qualcomm.com>
+Date: Wed, 12 Sep 2012 18:59:23 +0530
 Subject: [PATCH] ath9k: fill led_pin before drv_start
 
 Ensure that led pin is filled and set to OFF before starting
@@ -10,6 +10,7 @@ OFF on driver load when the interface is UP. This patch splits the
 led init and fills the led pin before register hw.
 
 Signed-off-by: Rajkumar Manoharan <rmanohar@qca.qualcomm.com>
+Signed-off-by: John W. Linville <linville@tuxdriver.com>
 ---
  drivers/net/wireless/ath/ath9k/ath9k.h |  4 ++++
  drivers/net/wireless/ath/ath9k/gpio.c  | 44 +++++++++++++++++++---------------

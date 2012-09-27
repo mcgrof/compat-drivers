@@ -1,12 +1,13 @@
-From 9cb4cd6d3ea2c1400cbd371b9af7651c6d8a484a Mon Sep 17 00:00:00 2001
-From: Sujith Manoharan <c_manoha@qca.qualcomm.com>
-Date: Wed, 12 Sep 2012 14:47:40 +0530
+From 215999f38017e8e26791fafc60631b4099ee04ea Mon Sep 17 00:00:00 2001
+From: Sujith Manoharan <c_manoha@qualcomm.com>
+Date: Wed, 12 Sep 2012 14:59:58 +0530
 Subject: [PATCH] ath9k: Enable SGI correctly
 
 Set the driver specific SGI flag based on the station's
 HT capabilities, otherwise rate control uses the wrong rate.
 
 Signed-off-by: Sujith Manoharan <c_manoha@qca.qualcomm.com>
+Signed-off-by: John W. Linville <linville@tuxdriver.com>
 ---
  drivers/net/wireless/ath/ath9k/rc.c | 11 +++++++----
  1 file changed, 7 insertions(+), 4 deletions(-)

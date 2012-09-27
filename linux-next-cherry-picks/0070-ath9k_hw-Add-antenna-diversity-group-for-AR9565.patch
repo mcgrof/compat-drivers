@@ -1,9 +1,10 @@
-From b05e2d65d397b36b22a2dc9080d5c8305c503140 Mon Sep 17 00:00:00 2001
-From: Sujith Manoharan <c_manoha@qca.qualcomm.com>
-Date: Tue, 11 Sep 2012 09:25:40 +0530
+From 5317c9c3e9258b326c076d372e2eabf565d9a462 Mon Sep 17 00:00:00 2001
+From: Sujith Manoharan <c_manoha@qualcomm.com>
+Date: Sun, 16 Sep 2012 08:06:08 +0530
 Subject: [PATCH] ath9k_hw: Add antenna diversity group for AR9565
 
 Signed-off-by: Sujith Manoharan <c_manoha@qca.qualcomm.com>
+Signed-off-by: John W. Linville <linville@tuxdriver.com>
 ---
  drivers/net/wireless/ath/ath9k/antenna.c    | 62 +++++++++++++++++++++++++++++
  drivers/net/wireless/ath/ath9k/ar9003_phy.c |  3 ++

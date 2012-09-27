@@ -1,9 +1,10 @@
-From 26dfde87c3d2396aa0d0850419c517c9d2c1079b Mon Sep 17 00:00:00 2001
-From: Sujith Manoharan <c_manoha@qca.qualcomm.com>
-Date: Wed, 12 Sep 2012 10:14:40 +0530
+From 9b460d77e715b5b774ff927a1925b80b483283b1 Mon Sep 17 00:00:00 2001
+From: Sujith Manoharan <c_manoha@qualcomm.com>
+Date: Sun, 16 Sep 2012 08:05:54 +0530
 Subject: [PATCH] ath9k: Remove a couple of unused variables
 
 Signed-off-by: Sujith Manoharan <c_manoha@qca.qualcomm.com>
+Signed-off-by: John W. Linville <linville@tuxdriver.com>
 ---
  drivers/net/wireless/ath/ath9k/ath9k.h | 2 --
  1 file changed, 2 deletions(-)
