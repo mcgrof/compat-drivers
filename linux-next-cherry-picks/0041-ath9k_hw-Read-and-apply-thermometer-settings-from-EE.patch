@@ -12,7 +12,7 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
 
 --- a/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c
 +++ b/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c
-@@ -3977,6 +3977,44 @@ static void ar9003_hw_xlna_bias_strength
+@@ -3981,6 +3981,44 @@ static void ar9003_hw_xlna_bias_strength
  		      bias & 0x3);
  }
  
@@ -57,7 +57,7 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  static void ath9k_hw_ar9300_set_board_values(struct ath_hw *ah,
  					     struct ath9k_channel *chan)
  {
-@@ -3992,6 +4030,7 @@ static void ath9k_hw_ar9300_set_board_va
+@@ -3996,6 +4034,7 @@ static void ath9k_hw_ar9300_set_board_va
  		ar9003_hw_internal_regulator_apply(ah);
  	ar9003_hw_apply_tuning_caps(ah);
  	ar9003_hw_txend_to_xpa_off_apply(ah, is2ghz);
@@ -67,7 +67,7 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  static void ath9k_hw_ar9300_set_addac(struct ath_hw *ah,
 --- a/drivers/net/wireless/ath/ath9k/ar9003_phy.h
 +++ b/drivers/net/wireless/ath/ath9k/ar9003_phy.h
-@@ -877,6 +877,8 @@
+@@ -881,6 +881,8 @@
  
  #define AR_PHY_65NM_CH0_RXTX4_THERM_ON          0x10000000
  #define AR_PHY_65NM_CH0_RXTX4_THERM_ON_S        28

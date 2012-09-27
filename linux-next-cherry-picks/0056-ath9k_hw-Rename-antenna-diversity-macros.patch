@@ -16,7 +16,7 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
 
 --- a/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c
 +++ b/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c
-@@ -3627,19 +3627,16 @@ static void ar9003_hw_ant_ctrl_apply(str
+@@ -3631,19 +3631,16 @@ static void ar9003_hw_ant_ctrl_apply(str
  		regval &= (~AR_ANT_DIV_CTRL_ALL);
  		regval |= (value & 0x3f) << AR_ANT_DIV_CTRL_ALL_S;
  		/* enable_lnadiv */
@@ -40,7 +40,7 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  		/* check whether antenna diversity is enabled */
  		if ((ant_div_ctl1 >> 0x6) == 0x3) {
  			regval = REG_READ(ah, AR_PHY_MC_GAIN_CTRL);
-@@ -3647,15 +3644,15 @@ static void ar9003_hw_ant_ctrl_apply(str
+@@ -3651,15 +3648,15 @@ static void ar9003_hw_ant_ctrl_apply(str
  			 * clear bits 25-30 main_lnaconf, alt_lnaconf,
  			 * main_tb, alt_tb
  			 */

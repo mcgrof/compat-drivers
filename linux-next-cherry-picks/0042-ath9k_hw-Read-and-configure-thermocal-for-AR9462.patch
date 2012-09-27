@@ -15,7 +15,7 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
 
 --- a/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c
 +++ b/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c
-@@ -4015,6 +4015,24 @@ static void ar9003_hw_thermometer_apply(
+@@ -4019,6 +4019,24 @@ static void ar9003_hw_thermometer_apply(
  	}
  }
  
@@ -40,7 +40,7 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
  static void ath9k_hw_ar9300_set_board_values(struct ath_hw *ah,
  					     struct ath9k_channel *chan)
  {
-@@ -4031,6 +4049,7 @@ static void ath9k_hw_ar9300_set_board_va
+@@ -4035,6 +4053,7 @@ static void ath9k_hw_ar9300_set_board_va
  	ar9003_hw_apply_tuning_caps(ah);
  	ar9003_hw_txend_to_xpa_off_apply(ah, is2ghz);
  	ar9003_hw_thermometer_apply(ah);

@@ -13,7 +13,7 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
 
 --- a/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c
 +++ b/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c
-@@ -4901,84 +4901,79 @@ static void ar9003_hw_set_power_per_rate
+@@ -4905,84 +4905,79 @@ static void ar9003_hw_set_power_per_rate
  				i, cfgCtl, pCtlMode[ctlMode], ctlIndex[i],
  				chan->channel);
  

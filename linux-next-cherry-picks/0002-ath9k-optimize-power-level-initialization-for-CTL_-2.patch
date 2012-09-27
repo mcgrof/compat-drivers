@@ -16,7 +16,7 @@ Signed-off-by: John W. Linville <linville@tuxdriver.com>
 
 --- a/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c
 +++ b/drivers/net/wireless/ath/ath9k/ar9003_eeprom.c
-@@ -4963,16 +4963,10 @@ static void ar9003_hw_set_power_per_rate
+@@ -4967,16 +4967,10 @@ static void ar9003_hw_set_power_per_rate
  			case CTL_5GHT20:
  			case CTL_2GHT20:
  				for (i = ALL_TARGET_HT20_0_8_16;
