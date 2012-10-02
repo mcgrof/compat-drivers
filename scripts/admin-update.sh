@@ -323,7 +323,8 @@ INCLUDE_NET_BT="hci_core.h
 		mgmt.h
 		sco.h
 		smp.h
-		a2mp.h"
+		a2mp.h
+		amp.h"
 
 # Required wlan headers from include/linux
 INCLUDE_LINUX_WLAN="ieee80211.h
@@ -577,6 +578,7 @@ export WSTABLE="
 	include/linux/rfkill.h
 	include/net/mac80211.h
 	include/net/regulatory.h
+	include/net/bluetooth/amp.h
 	include/net/bluetooth/hci.h
 	include/net/bluetooth/hci_core.h
 	include/net/bluetooth/mgmt.h
