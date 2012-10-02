@@ -282,7 +282,7 @@ this one should other drivers / subsystem need this change.
  
  	return 0;
  }
-@@ -8855,8 +8855,8 @@ static int nl80211_netlink_notify(struct
+@@ -8889,8 +8889,8 @@ static int nl80211_netlink_notify(struct
  
  	list_for_each_entry_rcu(rdev, &cfg80211_rdev_list, list) {
  		list_for_each_entry_rcu(wdev, &rdev->wdev_list, list)

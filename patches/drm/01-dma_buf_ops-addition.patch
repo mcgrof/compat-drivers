@@ -10,7 +10,7 @@ on kernels < 3.4.
 
 --- a/drivers/gpu/drm/i915/i915_gem_dmabuf.c
 +++ b/drivers/gpu/drm/i915/i915_gem_dmabuf.c
-@@ -173,10 +173,14 @@ static const struct dma_buf_ops i915_dma
+@@ -215,10 +215,14 @@ static const struct dma_buf_ops i915_dma
  	.kmap_atomic = i915_gem_dmabuf_kmap_atomic,
  	.kunmap = i915_gem_dmabuf_kunmap,
  	.kunmap_atomic = i915_gem_dmabuf_kunmap_atomic,

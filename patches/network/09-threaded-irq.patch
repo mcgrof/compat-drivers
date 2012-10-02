@@ -63,9 +63,9 @@ thread in process context as well.
  /* Data structure for the WLAN parts (802.11 cores) of the b43 chip. */
 --- a/drivers/net/wireless/ti/wlcore/main.c
 +++ b/drivers/net/wireless/ti/wlcore/main.c
-@@ -5540,14 +5540,25 @@ int __devinit wlcore_probe(struct wl1271
- 
- 	platform_set_drvdata(pdev, wl);
+@@ -5567,14 +5567,25 @@ static void wlcore_nvs_cb(const struct f
+ 	wl->set_power = pdata->set_power;
+ 	wl->if_ops = pdata->ops;
  
 +#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,32)
 +	irqflags = IRQF_TRIGGER_RISING;
@@ -88,8 +88,8 @@ thread in process context as well.
 +#endif
  	if (ret < 0) {
  		wl1271_error("request_irq() failed: %d", ret);
- 		goto out_free_hw;
-@@ -5621,7 +5632,11 @@ out_unreg:
+ 		goto out_free_nvs;
+@@ -5649,7 +5660,11 @@ out_unreg:
  	wl1271_unregister_hw(wl);
  
  out_irq:
@@ -99,9 +99,9 @@ thread in process context as well.
  	free_irq(wl->irq, wl);
 +#endif
  
- out_free_hw:
- 	wlcore_free_hw(wl);
-@@ -5640,7 +5655,12 @@ int __devexit wlcore_remove(struct platf
+ out_free_nvs:
+ 	kfree(wl->nvs);
+@@ -5695,7 +5710,12 @@ int __devexit wlcore_remove(struct platf
  		disable_irq_wake(wl->irq);
  	}
  	wl1271_unregister_hw(wl);
@@ -116,8 +116,8 @@ thread in process context as well.
  	return 0;
 --- a/drivers/net/wireless/ti/wlcore/wlcore.h
 +++ b/drivers/net/wireless/ti/wlcore/wlcore.h
-@@ -141,7 +141,9 @@ struct wl1271_stats {
- struct wl1271 {
+@@ -149,7 +149,9 @@ struct wl1271 {
+ 	bool initialized;
  	struct ieee80211_hw *hw;
  	bool mac80211_registered;
 -
@@ -125,5 +125,5 @@ thread in process context as well.
 +	struct compat_threaded_irq irq_compat;
 +#endif
  	struct device *dev;
+ 	struct platform_device *pdev;
  
- 	void *if_priv;

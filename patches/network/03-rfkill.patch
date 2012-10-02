@@ -55,7 +55,7 @@ This would do the policing from within mac80211.
  	error = input_register_handle(handle);
 --- a/net/rfkill/core.c
 +++ b/net/rfkill/core.c
-@@ -820,7 +820,7 @@ static int rfkill_resume(struct device *
+@@ -826,7 +826,7 @@ static int rfkill_resume(struct device *
  }
  
  static struct class rfkill_class = {

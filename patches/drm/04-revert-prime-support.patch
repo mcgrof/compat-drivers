@@ -17,7 +17,7 @@ not < 3.3.0.
  	DRM_IOCTL_DEF(DRM_IOCTL_PRIME_FD_TO_HANDLE, drm_prime_fd_to_handle_ioctl, DRM_AUTH|DRM_UNLOCKED),
 +#endif
  
- 	DRM_IOCTL_DEF(DRM_IOCTL_MODE_GETPLANERESOURCES, drm_mode_getplane_res, DRM_MASTER|DRM_CONTROL_ALLOW|DRM_UNLOCKED),
+ 	DRM_IOCTL_DEF(DRM_IOCTL_MODE_GETPLANERESOURCES, drm_mode_getplane_res, DRM_CONTROL_ALLOW|DRM_UNLOCKED),
  	DRM_IOCTL_DEF(DRM_IOCTL_MODE_GETCRTC, drm_mode_getcrtc, DRM_CONTROL_ALLOW|DRM_UNLOCKED),
 --- a/drivers/gpu/drm/drm_fops.c
 +++ b/drivers/gpu/drm/drm_fops.c
@@ -347,7 +347,7 @@ not < 3.3.0.
  #include "drmP.h"
  #include "i915_drv.h"
  #include <linux/dma-buf.h>
-@@ -249,3 +250,4 @@ fail_detach:
+@@ -302,3 +303,4 @@ fail_detach:
  	dma_buf_detach(dma_buf, attach);
  	return ERR_PTR(ret);
  }

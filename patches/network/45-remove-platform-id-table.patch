@@ -1,7 +1,7 @@
 --- a/drivers/net/wireless/ti/wl12xx/main.c
 +++ b/drivers/net/wireless/ti/wl12xx/main.c
-@@ -1698,16 +1698,20 @@ static int __devinit wl12xx_probe(struct
- 	return wlcore_probe(wl, pdev);
+@@ -1725,16 +1725,20 @@ out:
+ 	return ret;
  }
  
 +#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,30)

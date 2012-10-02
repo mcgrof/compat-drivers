@@ -4,7 +4,7 @@ on older kernels.
 
 --- a/drivers/net/wireless/mwifiex/init.c
 +++ b/drivers/net/wireless/mwifiex/init.c
-@@ -373,8 +373,10 @@ void mwifiex_set_trans_start(struct net_
+@@ -374,8 +374,10 @@ void mwifiex_set_trans_start(struct net_
  {
  	int i;
  
