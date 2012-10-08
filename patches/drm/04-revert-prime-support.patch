@@ -45,19 +45,17 @@ not < 3.3.0.
  	kfree(file_priv);
 --- a/drivers/gpu/drm/drm_gem.c
 +++ b/drivers/gpu/drm/drm_gem.c
-@@ -35,7 +35,11 @@
+@@ -35,7 +35,9 @@
  #include <linux/mman.h>
  #include <linux/pagemap.h>
  #include <linux/shmem_fs.h>
-+
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,4,0))
  #include <linux/dma-buf.h>
 +#endif
-+
- #include "drmP.h"
+ #include <drm/drmP.h>
  
  /** @file drm_gem.c
-@@ -204,6 +208,7 @@ EXPORT_SYMBOL(drm_gem_object_alloc);
+@@ -204,6 +206,7 @@ EXPORT_SYMBOL(drm_gem_object_alloc);
  static void
  drm_gem_remove_prime_handles(struct drm_gem_object *obj, struct drm_file *filp)
  {
@@ -65,7 +63,7 @@ not < 3.3.0.
  	if (obj->import_attach) {
  		drm_prime_remove_imported_buf_handle(&filp->prime,
  				obj->import_attach->dmabuf);
-@@ -212,6 +217,7 @@ drm_gem_remove_prime_handles(struct drm_
+@@ -212,6 +215,7 @@ drm_gem_remove_prime_handles(struct drm_
  		drm_prime_remove_imported_buf_handle(&filp->prime,
  				obj->export_dma_buf);
  	}
@@ -91,15 +89,15 @@ not < 3.3.0.
 +#endif /* (LINUX_VERSION_CODE >= KERNEL_VERSION(3,4,0)) */
 --- a/drivers/gpu/drm/nouveau/nouveau_prime.c
 +++ b/drivers/gpu/drm/nouveau/nouveau_prime.c
-@@ -22,6 +22,7 @@
-  * Authors: Dave Airlie
-  */
+@@ -24,6 +24,7 @@
+ 
+ #include <linux/dma-buf.h>
  
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,4,0))
- #include "drmP.h"
- #include "drm.h"
+ #include <drm/drmP.h>
  
-@@ -230,4 +231,4 @@ fail_detach:
+ #include "nouveau_drm.h"
+@@ -228,4 +229,4 @@ fail_detach:
  	dma_buf_detach(dma_buf, attach);
  	return ERR_PTR(ret);
  }
@@ -107,16 +105,15 @@ not < 3.3.0.
 +#endif /* (LINUX_VERSION_CODE >= KERNEL_VERSION(3,4,0)) */
 --- a/drivers/gpu/drm/radeon/radeon_prime.c
 +++ b/drivers/gpu/drm/radeon/radeon_prime.c
-@@ -23,6 +23,8 @@
+@@ -23,6 +23,7 @@
   *
   * Authors: Alex Deucher
   */
-+
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,4,0))
- #include "drmP.h"
- #include "drm.h"
+ #include <drm/drmP.h>
  
-@@ -226,3 +228,4 @@ fail_detach:
+ #include "radeon.h"
+@@ -225,3 +226,4 @@ fail_detach:
  	dma_buf_detach(dma_buf, attach);
  	return ERR_PTR(ret);
  }
@@ -237,9 +234,9 @@ not < 3.3.0.
  
  	dev_priv = nouveau_bdev(ttm->bdev);
  	dev = dev_priv->dev;
---- a/drivers/gpu/drm/nouveau/nouveau_drv.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_drv.c
-@@ -419,7 +419,10 @@ static struct drm_driver driver = {
+--- a/drivers/gpu/drm/nouveau/nouveau_drm.c
++++ b/drivers/gpu/drm/nouveau/nouveau_drm.c
+@@ -581,7 +581,10 @@ driver = {
  	.driver_features =
  		DRIVER_USE_AGP | DRIVER_PCI_DMA | DRIVER_SG |
  		DRIVER_HAVE_IRQ | DRIVER_IRQ_SHARED | DRIVER_GEM |
@@ -248,10 +245,10 @@ not < 3.3.0.
 +		DRIVER_PRIME |
 +#endif
 +		DRIVER_MODESET,
- 	.load = nouveau_load,
- 	.firstopen = nouveau_firstopen,
- 	.lastclose = nouveau_lastclose,
-@@ -441,10 +444,12 @@ static struct drm_driver driver = {
+ 
+ 	.load = nouveau_drm_load,
+ 	.unload = nouveau_drm_unload,
+@@ -602,10 +605,12 @@ driver = {
  	.ioctls = nouveau_ioctls,
  	.fops = &nouveau_driver_fops,
  
@@ -266,17 +263,17 @@ not < 3.3.0.
  	.gem_free_object = nouveau_gem_object_del,
 --- a/drivers/gpu/drm/nouveau/nouveau_gem.c
 +++ b/drivers/gpu/drm/nouveau/nouveau_gem.c
-@@ -23,7 +23,9 @@
-  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+@@ -24,7 +24,9 @@
   *
   */
+ 
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,4,0))
  #include <linux/dma-buf.h>
 +#endif
- #include "drmP.h"
- #include "drm.h"
  
-@@ -55,8 +57,10 @@ nouveau_gem_object_del(struct drm_gem_ob
+ #include <subdev/fb.h>
+ 
+@@ -57,8 +59,10 @@ nouveau_gem_object_del(struct drm_gem_ob
  		nouveau_bo_unpin(nvbo);
  	}
  
@@ -344,7 +341,7 @@ not < 3.3.0.
   *	Dave Airlie <airlied@redhat.com>
   */
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,4,0))
- #include "drmP.h"
+ #include <drm/drmP.h>
  #include "i915_drv.h"
  #include <linux/dma-buf.h>
 @@ -302,3 +303,4 @@ fail_detach:
