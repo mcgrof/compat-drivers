@@ -29,11 +29,13 @@ CYAN="\033[36m"
 UNDERLINE="\033[02m"
 
 INTERACTIVE="0"
+RUN_CLEAN="0"
 
 function usage()
 {
 	echo -e "Usage: ${GREEN}$1${NORMAL} ${BLUE}[ -i ]${NORMAL}"
 	echo -e "-i\tInteractive, allows user to override paranoia"
+	echo -e "-c\tRuns git clean -x -d for you. Not for the faint of heart"
 	echo
 	echo -e "Example usage:"
 	echo
@@ -53,6 +55,10 @@ function __git_paranoia()
 
                 cd $i;
 
+		if [[ "$RUN_CLEAN" = "1" ]]; then
+				git clean -x -d -f
+		fi
+
                 printf "Verifying ${BLUE}%15s\t${CYAN}%40s\t" $(basename $i) $(git describe)
                 git tag -v $(git describe --dirty) > /dev/null 2>&1
                 if [[ $? -ne 0 || $(git status -s | wc -l) -ne 0 ]]; then
@@ -61,9 +67,14 @@ function __git_paranoia()
 			# but we also want *no* unepxected content on the releases! If you have
 			# any files that do not belong into the git tree, nuke them, we won't do it
 			# for you!
-			if [[ $(git status -s | wc -l) -ne 0 ]]; then
-				echo -e "Not commited content:"
+			if [[ $(git status -s | wc -l) -ne 0 || $(git clean -x -d -n | wc -l) -ne 0 ]]; then
+				echo -e "Detected some content which likely should not be released."
+				echo -e "In order to fix either run 'git clean -x -d -f' yourself or"
+				echo -e "run '$0 -c'"
+				echo -e ""
+				echo -e "Not commited content: (run: git clean -x -d -f to fix)"
 				git status -s
+				git clean -x -d -n | sed 's|^Would|Should|g'
 			fi
 			return 1
                 else
@@ -83,6 +94,10 @@ fi
 while [ $# -ne 0 ]; do
 	if [[ "$1" = "-i" ]]; then
 		INTERACTIVE="1"
+                shift; continue;
+        fi
+	if [[ "$1" = "-c" ]]; then
+		RUN_CLEAN="1"
                 shift; continue;
         fi
         echo -e "Unexpected argument passed: ${RED}${1}${NORMAL}"
