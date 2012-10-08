@@ -176,9 +176,14 @@ cp -a $COMPAT_DRIVERS_DIR $STAGING/$RELEASE
 cd $STAGING/$RELEASE
 
 # Only use interactive paranoia for non-signed / uploaded to kernel.org releases
+# If using kup note that we will from now on always be forcing a super clean
+# release and will simply use git clean to help use remove all detected content
+# that should not be on your local git tree as after a checkout.
 PARANOIA=""
 if [[ "$USE_KUP" != "1" ]]; then
 	PARANOIA="-i"
+else
+	PARANOIA="-c"
 fi
 ./scripts/git-paranoia $PARANOIA
 if [[ $? -ne 0 ]]; then
