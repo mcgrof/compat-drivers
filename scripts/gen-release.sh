@@ -55,6 +55,13 @@ function usage()
 	echo -e "export GIT_TREE=${HOME}/linux-next/"
 	echo -e ""
 	echo -e "${GREEN}$1${NORMAL} ${BLUE}[ -s | -n | -p | -c | -u ]${NORMAL}"
+	echo -e ""
+	echo -e "-s apply ${BLUE}pending-stable/${NORMAL}             patches"
+	echo -e "-n apply ${BLUE}linux-next-cherry-picks/${NORMAL}    patches"
+	echo -e "-p apply ${BLUE}linux-next-pending/${NORMAL}         patches"
+	echo -e "-c apply ${BLUE}crap/${NORMAL}                       patches"
+	echo -e ""
+	echo -e "-u upload to kernel.org"
 	echo
 	echo Examples usages:
 	echo
