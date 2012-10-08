@@ -14,9 +14,9 @@ Patch adapted from compat-wireless tree.
  #define pr_fmt(fmt) "[TTM] " fmt
  
 +#include <linux/printk.h>
- #include "ttm/ttm_module.h"
- #include "ttm/ttm_bo_driver.h"
- #include "ttm/ttm_page_alloc.h"
+ #include <drm/ttm/ttm_module.h>
+ #include <drm/ttm/ttm_bo_driver.h>
+ #include <drm/ttm/ttm_page_alloc.h>
 --- a/drivers/gpu/drm/ttm/ttm_bo.c
 +++ b/drivers/gpu/drm/ttm/ttm_bo.c
 @@ -28,11 +28,13 @@
@@ -26,9 +26,9 @@ Patch adapted from compat-wireless tree.
 +#undef pr_fmt
  #define pr_fmt(fmt) "[TTM] " fmt
  
- #include "ttm/ttm_module.h"
- #include "ttm/ttm_bo_driver.h"
- #include "ttm/ttm_placement.h"
+ #include <drm/ttm/ttm_module.h>
+ #include <drm/ttm/ttm_bo_driver.h>
+ #include <drm/ttm/ttm_placement.h>
 +#include <linux/printk.h>
  #include <linux/jiffies.h>
  #include <linux/slab.h>
@@ -55,9 +55,9 @@ Patch adapted from compat-wireless tree.
 +#undef pr_fmt
  #define pr_fmt(fmt) "[TTM] " fmt
  
- #include "ttm/ttm_memory.h"
- #include "ttm/ttm_module.h"
- #include "ttm/ttm_page_alloc.h"
+ #include <drm/ttm/ttm_memory.h>
+ #include <drm/ttm/ttm_module.h>
+ #include <drm/ttm/ttm_page_alloc.h>
 +#include <linux/printk.h>
  #include <linux/spinlock.h>
  #include <linux/sched.h>
@@ -71,8 +71,8 @@ Patch adapted from compat-wireless tree.
 +#undef pr_fmt
  #define pr_fmt(fmt) "[TTM] " fmt
  
- #include "ttm/ttm_object.h"
- #include "ttm/ttm_module.h"
+ #include <drm/ttm/ttm_object.h>
+ #include <drm/ttm/ttm_module.h>
 +#include <linux/printk.h>
  #include <linux/list.h>
  #include <linux/spinlock.h>
