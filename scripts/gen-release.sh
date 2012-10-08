@@ -54,13 +54,14 @@ function usage()
 	echo -e "or"
 	echo -e "export GIT_TREE=${HOME}/linux-next/"
 	echo -e ""
-	echo -e "${GREEN}$1${NORMAL} ${BLUE}[ -s | -n | -p | -c | -u ]${NORMAL}"
+	echo -e "${GREEN}$1${NORMAL} ${BLUE}[ -s | -n | -p | -c | -u | -k ]${NORMAL}"
 	echo -e ""
 	echo -e "-s apply ${BLUE}pending-stable/${NORMAL}             patches"
 	echo -e "-n apply ${BLUE}linux-next-cherry-picks/${NORMAL}    patches"
 	echo -e "-p apply ${BLUE}linux-next-pending/${NORMAL}         patches"
 	echo -e "-c apply ${BLUE}crap/${NORMAL}                       patches"
 	echo -e ""
+	echo -e "-k run ${GREEN}git clean -x -d -f${NORMAL} for you, ${RED}not for the faint of heart${NORMAL}"
 	echo -e "-u upload to kernel.org"
 	echo
 	echo Examples usages:
@@ -77,6 +78,7 @@ function usage()
 UPDATE_ARGS=""
 POSTFIX_RELEASE_TAG="-"
 USE_KUP=""
+FORCE_CLEAN=""
 
 if [ -z $GIT_TREE ]; then
 	export GIT_TREE=$HOME/$NEXT_TREE
@@ -139,6 +141,11 @@ while [ $# -ne 0 ]; do
 		shift; continue;
 	fi
 
+	if [[ "$1" = "-k" ]]; then
+		FORCE_CLEAN="1"
+		shift; continue;
+	fi
+
 	echo -e "Unexpected argument passed: ${RED}${1}${NORMAL}"
 	usage $0
 	exit
@@ -192,6 +199,11 @@ if [[ "$USE_KUP" != "1" ]]; then
 else
 	PARANOIA="-c"
 fi
+
+if [[ "$FORCE_CLEAN" = "1" ]]; then
+	PARANOIA="$PARANOIA -c"
+fi
+
 ./scripts/git-paranoia $PARANOIA
 if [[ $? -ne 0 ]]; then
 	if [[ "$PARANOIA" != "-i" ]]; then
@@ -200,6 +212,11 @@ if [[ $? -ne 0 ]]; then
 	fi
 	echo
 	echo -e "Detected some tree content is not yet ${RED}GPG signed${NORMAL}..."
+	echo -e "Consider ${CYAN}baling out${NORMAL} and ${RED}carefully${NORMAL} reading the"
+	echo -e "implications of running ${GREEN}$0 -k${NORMAL} instead."
+	echo -e "If you make a release right now you may be included files"
+	echo -e "or code into the release you perhaps did not want to."
+	echo -e ""
 	read -p "Do you still want to continue (y/N)? "
 	if [[ "${REPLY}" != "y" ]]; then
 	    echo -e "Bailing out !"
