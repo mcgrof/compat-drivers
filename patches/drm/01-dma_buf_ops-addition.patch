@@ -27,7 +27,7 @@ on kernels < 3.4.
  struct dma_buf *i915_gem_prime_export(struct drm_device *dev,
 --- a/drivers/gpu/drm/nouveau/nouveau_prime.c
 +++ b/drivers/gpu/drm/nouveau/nouveau_prime.c
-@@ -134,9 +134,11 @@ static const struct dma_buf_ops nouveau_
+@@ -132,9 +132,11 @@ static const struct dma_buf_ops nouveau_
  	.kmap_atomic = nouveau_gem_kmap_atomic,
  	.kunmap = nouveau_gem_kunmap,
  	.kunmap_atomic = nouveau_gem_kunmap_atomic,
@@ -41,7 +41,7 @@ on kernels < 3.4.
  static int
 --- a/drivers/gpu/drm/radeon/radeon_prime.c
 +++ b/drivers/gpu/drm/radeon/radeon_prime.c
-@@ -134,9 +134,11 @@ const static struct dma_buf_ops radeon_d
+@@ -133,9 +133,11 @@ const static struct dma_buf_ops radeon_d
  	.kmap_atomic = radeon_gem_kmap_atomic,
  	.kunmap = radeon_gem_kunmap,
  	.kunmap_atomic = radeon_gem_kunmap_atomic,

@@ -36,7 +36,7 @@ These can't be backported as they rely on non-exported symbols.
  			/* Real error */
 --- a/drivers/gpu/drm/i810/i810_dma.c
 +++ b/drivers/gpu/drm/i810/i810_dma.c
-@@ -136,9 +136,17 @@ static int i810_map_buffer(struct drm_bu
+@@ -135,9 +135,17 @@ static int i810_map_buffer(struct drm_bu
  	old_fops = file_priv->filp->f_op;
  	file_priv->filp->f_op = &i810_buffer_fops;
  	dev_priv->mmap_buffer = buf;
@@ -54,7 +54,7 @@ These can't be backported as they rely on non-exported symbols.
  	dev_priv->mmap_buffer = NULL;
  	file_priv->filp->f_op = old_fops;
  	if (IS_ERR(buf_priv->virtual)) {
-@@ -159,9 +167,15 @@ static int i810_unmap_buffer(struct drm_
+@@ -158,9 +166,15 @@ static int i810_unmap_buffer(struct drm_
  	if (buf_priv->currently_mapped != I810_BUF_MAPPED)
  		return -EINVAL;
  
@@ -73,7 +73,7 @@ These can't be backported as they rely on non-exported symbols.
  
 --- a/drivers/gpu/drm/i915/i915_gem.c
 +++ b/drivers/gpu/drm/i915/i915_gem.c
-@@ -1296,10 +1296,17 @@ i915_gem_mmap_ioctl(struct drm_device *d
+@@ -1295,10 +1295,17 @@ i915_gem_mmap_ioctl(struct drm_device *d
  		drm_gem_object_unreference_unlocked(obj);
  		return -EINVAL;
  	}
