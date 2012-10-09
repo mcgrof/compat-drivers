@@ -206,8 +206,9 @@ fi
 
 ./scripts/git-paranoia $PARANOIA
 if [[ $? -ne 0 ]]; then
-	if [[ "$PARANOIA" != "-i" ]]; then
-		echo -e "Given that this is a targeted ${CYAN}kernel.org${NORMAL} release we are bailing."
+	if [[ "$USE_KUP" = "1" ]]; then
+		echo -e "Given that this is a targeted ${CYAN}kernel.org${NORMAL}"
+		echo -e "release we are bailing."
 		exit 1
 	fi
 	echo
