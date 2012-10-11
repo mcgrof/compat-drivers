@@ -179,7 +179,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  	return ((u64)(mfilt[1]) << 32) | mfilt[0];
 --- a/drivers/net/wireless/ath/carl9170/main.c
 +++ b/drivers/net/wireless/ath/carl9170/main.c
-@@ -899,17 +899,35 @@ out:
+@@ -898,17 +898,35 @@ out:
  	return err;
  }
  
