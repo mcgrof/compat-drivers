@@ -474,6 +474,9 @@ mkdir -p include/net/bluetooth \
 	 $DRIVERS_BT \
 	 $DRIVERS_DRM
 
+echo "Copying $GIT_TREE/include/uapi/"
+cp -a $GIT_TREE/include/uapi/ include/
+
 if [[ "$ENABLE_NETWORK" == "1" ]]; then
 	# WLAN and bluetooth files
 	copyFiles "$INCLUDE_LINUX_WLAN"			"include/linux"
