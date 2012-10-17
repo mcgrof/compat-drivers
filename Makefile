@@ -33,6 +33,7 @@ include $(COMPAT_CONFIG_CW)
 
 NOSTDINC_FLAGS := \
 	-I$(M)/include/ \
+	-I$(M)/include/uapi \
 	-I$(M)/include/drm \
 	-include $(M)/include/linux/compat-2.6.h \
 	$(CFLAGS)

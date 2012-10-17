@@ -328,7 +328,6 @@ INCLUDE_NET_BT="hci_core.h
 
 # Required wlan headers from include/linux
 INCLUDE_LINUX_WLAN="ieee80211.h
-		    nl80211.h
 		    pci_ids.h
 		    eeprom_93cx6.h
 		    ath9k_platform.h
@@ -347,6 +346,9 @@ RNDIS_REQUIREMENTS="Makefile
 
 # For libertas driver
 INCLUDE_LINUX_LIBERTAS_WLAN="libertas_spi.h"
+
+# Required wlan headers from include/uapi/linux
+INCLUDE_UAPI_LINUX_WLAN="nl80211.h"
 
 # 802.11 related headers
 INCLUDE_NET="cfg80211.h
@@ -460,6 +462,8 @@ mkdir -p include/net/bluetooth \
 	 include/trace \
 	 include/pcmcia \
 	 include/crypto \
+	 include/uapi \
+	 include/uapi/linux \
 	 drivers/bcma \
 	 drivers/misc/eeprom \
 	 drivers/net/usb \
@@ -474,12 +478,11 @@ mkdir -p include/net/bluetooth \
 	 $DRIVERS_BT \
 	 $DRIVERS_DRM
 
-echo "Copying $GIT_TREE/include/uapi/"
-cp -a $GIT_TREE/include/uapi/ include/
 
 if [[ "$ENABLE_NETWORK" == "1" ]]; then
 	# WLAN and bluetooth files
 	copyFiles "$INCLUDE_LINUX_WLAN"			"include/linux"
+	copyFiles "$INCLUDE_UAPI_LINUX_WLAN"		"include/uapi/linux"
 	copyFiles "$INCLUDE_NET"			"include/net"
 	copyFiles "$INCLUDE_NET_BT" 			"include/net/bluetooth"
 	copyFiles "$INCLUDE_LINUX_USB_WLAN"		"include/linux/usb"
@@ -523,6 +526,9 @@ if [[ "$ENABLE_DRM" == "1" ]]; then
 
 	# Copy DRM headers
 	cp -a $GIT_TREE/include/drm include/
+
+	# Copy UAPI DRM headers
+	cp -a $GIT_TREE/include/uapi/drm include/uapi/
 
 	# drivers/gpu/drm/i915/intel_pm.c requires this
 	cp $GIT_TREE/drivers/platform/x86/intel_ips.h drivers/platform/x86
@@ -577,7 +583,7 @@ export WSTABLE="
 	drivers/net/ethernet/atheros/atl1c/
 	drivers/net/ethernet/atheros/atl1e/
 	drivers/net/ethernet/atheros/atlx/
-	include/linux/nl80211.h
+	include/uapi/linux/nl80211.h
 	include/linux/rfkill.h
 	include/net/mac80211.h
 	include/net/regulatory.h
