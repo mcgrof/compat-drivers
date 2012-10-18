@@ -583,6 +583,7 @@ export WSTABLE="
 	drivers/net/ethernet/atheros/atl1c/
 	drivers/net/ethernet/atheros/atl1e/
 	drivers/net/ethernet/atheros/atlx/
+	include/uapi/drm
 	include/uapi/linux/nl80211.h
 	include/linux/rfkill.h
 	include/net/mac80211.h
