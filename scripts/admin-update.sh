@@ -348,7 +348,8 @@ RNDIS_REQUIREMENTS="Makefile
 INCLUDE_LINUX_LIBERTAS_WLAN="libertas_spi.h"
 
 # Required wlan headers from include/uapi/linux
-INCLUDE_UAPI_LINUX_WLAN="nl80211.h"
+INCLUDE_UAPI_LINUX_WLAN="nl80211.h
+			 rfkill.h"
 
 # 802.11 related headers
 INCLUDE_NET="cfg80211.h
@@ -498,6 +499,7 @@ if [[ "$ENABLE_NETWORK" == "1" ]]; then
 	cp -a $GIT_TREE/include/linux/ssb include/linux/
 	cp -a $GIT_TREE/include/linux/bcma include/linux/
 	cp -a $GIT_TREE/include/linux/rfkill.h include/linux/rfkill_backport.h
+	mv include/uapi/linux/rfkill.h include/uapi/linux/rfkill_backport.h
 
 	# Misc
 	cp $GIT_TREE/drivers/misc/eeprom/{Makefile,eeprom_93cx6.c} drivers/misc/eeprom/
@@ -584,6 +586,7 @@ export WSTABLE="
 	drivers/net/ethernet/atheros/atlx/
 	include/uapi/drm
 	include/uapi/linux/nl80211.h
+	include/uapi/linux/rfkill.h
 	include/linux/rfkill.h
 	include/net/mac80211.h
 	include/net/regulatory.h
