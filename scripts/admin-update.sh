@@ -420,8 +420,7 @@ STAGING_DRIVERS=""
 DRIVERS_ETH="drivers/net/ethernet/atheros
 	     drivers/net/ethernet/atheros/atl1c
 	     drivers/net/ethernet/atheros/atl1e
-	     drivers/net/ethernet/atheros/atlx
-	     drivers/net/ethernet/atheros/alx"
+	     drivers/net/ethernet/atheros/atlx"
 
 # Bluetooth drivers
 DRIVERS_BT="drivers/bluetooth"
