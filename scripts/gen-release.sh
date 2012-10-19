@@ -174,7 +174,7 @@ fi
 cd $COMPAT_DRIVERS_DIR
 
 if [[ $COMPAT_DRIVERS_BRANCH != "master" ]]; then
-	RELEASE=$(git describe --abbrev=0 | sed -e 's/v//g')
+	RELEASE=$(git describe --abbrev=0 | sed -e 's|\(v\)\([0-9]\)|\2|')
 else
 	RELEASE=$(git describe --abbrev=0)
 fi
