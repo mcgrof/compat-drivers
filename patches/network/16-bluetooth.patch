@@ -534,21 +534,22 @@ here still, but for now we keep this here.
  
 --- a/net/bluetooth/l2cap_sock.c
 +++ b/net/bluetooth/l2cap_sock.c
-@@ -573,8 +573,13 @@ static int l2cap_sock_setsockopt_old(str
+@@ -565,7 +565,14 @@ static int l2cap_sock_setsockopt_old(str
  	return err;
  }
  
++
 +#if (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,31))
- static int l2cap_sock_setsockopt(struct socket *sock, int level, int optname,
- 				 char __user *optval, unsigned int optlen)
+ static int l2cap_sock_setsockopt(struct socket *sock, int level, int optname, char __user *optval, unsigned int optlen)
 +#else
-+static int l2cap_sock_setsockopt(struct socket *sock, int level, int optname,
-+				 char __user *optval, int optlen)
++static int l2cap_sock_setsockopt(struct socket *sock, int level, int optname, char __user *optval, int optlen)
 +#endif
++
++
  {
  	struct sock *sk = sock->sk;
  	struct l2cap_chan *chan = l2cap_pi(sk)->chan;
-@@ -1220,8 +1225,12 @@ static struct sock *l2cap_sock_alloc(str
+@@ -1196,8 +1203,12 @@ static struct sock *l2cap_sock_alloc(str
  	return sk;
  }
  
@@ -561,8 +562,8 @@ here still, but for now we keep this here.
  {
  	struct sock *sk;
  
-@@ -1233,7 +1242,11 @@ static int l2cap_sock_create(struct net
- 	    sock->type != SOCK_DGRAM && sock->type != SOCK_RAW)
+@@ -1209,7 +1220,11 @@ static int l2cap_sock_create(struct net
+ 			sock->type != SOCK_DGRAM && sock->type != SOCK_RAW)
  		return -ESOCKTNOSUPPORT;
  
 +#if (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,32))
