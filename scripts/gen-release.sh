@@ -173,7 +173,8 @@ if [[ $COMPAT_DRIVERS_BRANCH != $TARGET_KERNEL_RELEASE && $BASE_TREE != "linux-n
 fi
 
 cd $COMPAT_DRIVERS_DIR
-CHANGELOG_FILE=$(git describe)
+CHANGELOG_FILE="ChangeLog-$(git describe| sed -e 's|compat-drivers-||')"
+
 
 if [[ $COMPAT_DRIVERS_BRANCH != "master" ]]; then
 	RELEASE=$(git describe --abbrev=0 | sed -e 's|\(v\)\([0-9]\)|\2|')
