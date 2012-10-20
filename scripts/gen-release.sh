@@ -278,6 +278,19 @@ if [[ "$BASE_TREE" = "linux-next" ]]; then
 	fi
 
 	kup put ${RELEASE}.tar.bz2 ${RELEASE}.tar.asc ${KORG_BACKPORT}/${YEAR}/${MONTH}/${DAY}/
+elif [[ "$BASE_TREE" = "linux-stable" ]]; then
+	TARGET_STABLE="${KORG_BACKPORT}/stable/${TARGET_TAG}"
+
+	kup mkdir ${KORG_BACKPORT}/stable > /dev/null 2>&1
+	kup mkdir ${TARGET_STABLE} > /dev/null 2>&1
+
+	kup ls ${TARGET_STABLE} | grep ${RELEASE}.tar.bz2 > /dev/null 2>&1
+	if [[ $? -eq 0 ]]; then
+		echo -e "File ${TARGET_STABLE}/${RELEASE}.tar.bz2${NORMAL} already exists"
+	fi
+
+	kup put ${RELEASE}.tar.bz2 ${RELEASE}.tar.asc ${TARGET_STABLE}
 else
-	echo XXX
+	echo "Unsupported release type: $BASE_TREE"
+	exit 1
 fi
