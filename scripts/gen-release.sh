@@ -298,7 +298,7 @@ elif [[ "$BASE_TREE" = "linux-stable" ]]; then
 	$STAGING/${RELEASE}/scripts/genlog-${GENLOG_TARGET}
 
 	gpg --armor --detach-sign $CHANGELOG_FILE
-	kup put ${CHANGELOG_FILE} ${CHANGELOG_FILE}.asc
+	kup put ${CHANGELOG_FILE} ${CHANGELOG_FILE}.asc ${TARGET_STABLE}/
 else
 	echo "Unsupported release type: $BASE_TREE"
 	exit 1
