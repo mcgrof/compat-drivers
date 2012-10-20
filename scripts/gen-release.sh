@@ -289,7 +289,7 @@ elif [[ "$BASE_TREE" = "linux-stable" ]]; then
 		echo -e "File ${TARGET_STABLE}/${RELEASE}.tar.bz2${NORMAL} already exists"
 	fi
 
-	kup put ${RELEASE}.tar.bz2 ${RELEASE}.tar.asc ${TARGET_STABLE}
+	kup put ${RELEASE}.tar.bz2 ${RELEASE}.tar.asc ${TARGET_STABLE}/
 else
 	echo "Unsupported release type: $BASE_TREE"
 	exit 1
