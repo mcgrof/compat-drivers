@@ -158,6 +158,7 @@ echo "On ${BASE_TREE}: $TARGET_BRANCH"
 # Lets now make sure you are on matching compat-drivers branch.
 # This is a super hack, but let me know if you figure out a cleaner way
 TARGET_KERNEL_RELEASE=$(make VERSION="linux-3" SUBLEVEL="" EXTRAVERSION=".y" kernelversion)
+GENLOG_TARGET=$(make VERSION="3" SUBLEVEL="" EXTRAVERSION="" kernelversion)
 
 if [[ $COMPAT_DRIVERS_BRANCH != $TARGET_KERNEL_RELEASE && $BASE_TREE != "linux-next" ]]; then
 	echo -e "You are on the compat-drivers ${GREEN}${COMPAT_DRIVERS_BRANCH}${NORMAL} but are "
@@ -172,6 +173,7 @@ if [[ $COMPAT_DRIVERS_BRANCH != $TARGET_KERNEL_RELEASE && $BASE_TREE != "linux-n
 fi
 
 cd $COMPAT_DRIVERS_DIR
+CHANGELOG_FILE=$(git describe)
 
 if [[ $COMPAT_DRIVERS_BRANCH != "master" ]]; then
 	RELEASE=$(git describe --abbrev=0 | sed -e 's|\(v\)\([0-9]\)|\2|')
@@ -290,6 +292,12 @@ elif [[ "$BASE_TREE" = "linux-stable" ]]; then
 	fi
 
 	kup put ${RELEASE}.tar.bz2 ${RELEASE}.tar.asc ${TARGET_STABLE}/
+
+	cd $GIT_TREE
+	$STAGING/${RELEASE}/scripts/genlog-${GENLOG_TARGET}
+
+	gpg --armor --detach-sign $CHANGELOG_FILE
+	kup put ${CHANGELOG_FILE} ${CHANGELOG_FILE}.asc
 else
 	echo "Unsupported release type: $BASE_TREE"
 	exit 1
