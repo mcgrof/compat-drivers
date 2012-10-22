@@ -75,3 +75,14 @@
  sil164-y := sil164_drv.o
 -obj-$(CONFIG_DRM_I2C_SIL164) += sil164.o
 +obj-$(CONFIG_COMPAT_DRM_I2C_SIL164) += sil164.o
+--- a/drivers/gpu/drm/drm_crtc_helper.c
++++ b/drivers/gpu/drm/drm_crtc_helper.c
+@@ -119,7 +119,7 @@ int drm_helper_probe_single_connector_mo
+ 		goto prune;
+ 	}
+ 
+-#ifdef CONFIG_DRM_LOAD_EDID_FIRMWARE
++#ifdef CONFIG_COMPAT_DRM_LOAD_EDID_FIRMWARE
+ 	count = drm_load_edid_firmware(connector);
+ 	if (count == 0)
+ #endif
