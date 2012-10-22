@@ -666,6 +666,8 @@ printf "${PURPLE}%10s${NORMAL} - Total upstream lines of code being pulled\n" $O
 
 for subsystem in $SUBSYSTEMS; do
 
+	printf "\n   ${YELLOW}$subsystem${NORMAL}\n   ----------------------------------------\n" >> $CODE_METRICS
+
 	for dir in $EXTRA_PATCHES; do
 		LAST_ELEM=$dir
 	done
