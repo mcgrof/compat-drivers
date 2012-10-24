@@ -539,6 +539,8 @@ if [[ "$ENABLE_DRM" == "1" ]]; then
 
 	# Finally get the DRM top-level makefile
 	cp $GIT_TREE/drivers/gpu/drm/Makefile drivers/gpu/drm
+else
+	touch drivers/gpu/drm/Makefile
 fi
 
 # Staging drivers in their own directory
