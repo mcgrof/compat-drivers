@@ -15,7 +15,7 @@ only the wireless stuff.
 -obj-$(CONFIG_EEPROM_DIGSY_MTC_CFG) += digsy_mtc_eeprom.o
 --- a/drivers/net/usb/Makefile
 +++ b/drivers/net/usb/Makefile
-@@ -2,33 +2,6 @@
+@@ -2,34 +2,7 @@
  # Makefile for USB Network drivers
  #
  
@@ -48,7 +48,8 @@ only the wireless stuff.
 -obj-$(CONFIG_USB_NET_CDC_NCM)	+= cdc_ncm.o
 -obj-$(CONFIG_USB_VL600)		+= lg-vl600.o
 -obj-$(CONFIG_USB_NET_QMI_WWAN)	+= qmi_wwan.o
--
+-obj-$(CONFIG_USB_NET_CDC_MBIM)	+= cdc_mbim.o
+ 
 --- a/drivers/net/wireless/Makefile
 +++ b/drivers/net/wireless/Makefile
 @@ -7,18 +7,8 @@ obj-$(CONFIG_IPW2200) += ipw2x00/
@@ -96,5 +97,5 @@ only the wireless stuff.
 -obj-$(CONFIG_WEXT_PRIV) += wext-priv.o
 -
  cfg80211-y += core.o sysfs.o radiotap.o util.o reg.o scan.o nl80211.o
- cfg80211-y += mlme.o ibss.o sme.o chan.o ethtool.o mesh.o ap.o
+ cfg80211-y += mlme.o ibss.o sme.o chan.o ethtool.o mesh.o ap.o trace.o
  cfg80211-$(CONFIG_CFG80211_DEBUGFS) += debugfs.o

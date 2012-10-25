@@ -6,7 +6,7 @@ proc_fops: convert drivers/isdn/ to seq_file
 @@ -21,8 +21,10 @@
  */
  
- #include <linux/module.h>
+ #include <linux/export.h>
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,34))
  #include <linux/proc_fs.h>
  #include <linux/seq_file.h>

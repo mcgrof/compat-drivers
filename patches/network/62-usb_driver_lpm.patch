@@ -108,7 +108,7 @@
  static int ath6kl_usb_init(void)
 --- a/drivers/net/wireless/ath/ath9k/hif_usb.c
 +++ b/drivers/net/wireless/ath/ath9k/hif_usb.c
-@@ -1372,7 +1372,9 @@ static struct usb_driver ath9k_hif_usb_d
+@@ -1373,7 +1373,9 @@ static struct usb_driver ath9k_hif_usb_d
  #if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,27))
  	.soft_unbind = 1,
  #endif
@@ -120,7 +120,7 @@
  int ath9k_hif_usb_init(void)
 --- a/drivers/net/wireless/ath/carl9170/usb.c
 +++ b/drivers/net/wireless/ath/carl9170/usb.c
-@@ -1159,7 +1159,9 @@ static struct usb_driver carl9170_driver
+@@ -1166,7 +1166,9 @@ static struct usb_driver carl9170_driver
  	.resume = carl9170_usb_resume,
  	.reset_resume = carl9170_usb_resume,
  #endif /* CONFIG_PM */
@@ -168,7 +168,7 @@
  module_usb_driver(if_usb_driver);
 --- a/drivers/net/wireless/orinoco/orinoco_usb.c
 +++ b/drivers/net/wireless/orinoco/orinoco_usb.c
-@@ -1752,7 +1752,9 @@ static struct usb_driver orinoco_driver
+@@ -1751,7 +1751,9 @@ static struct usb_driver orinoco_driver
  	.probe = ezusb_probe,
  	.disconnect = ezusb_disconnect,
  	.id_table = ezusb_table,
@@ -204,10 +204,10 @@
  module_usb_driver(rndis_wlan_driver);
 --- a/drivers/net/wireless/rt2x00/rt2500usb.c
 +++ b/drivers/net/wireless/rt2x00/rt2500usb.c
-@@ -1988,7 +1988,9 @@ static struct usb_driver rt2500usb_drive
- 	.disconnect	= rt2x00usb_disconnect,
+@@ -1989,7 +1989,9 @@ static struct usb_driver rt2500usb_drive
  	.suspend	= rt2x00usb_suspend,
  	.resume		= rt2x00usb_resume,
+ 	.reset_resume	= rt2x00usb_resume,
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,5,0))
  	.disable_hub_initiated_lpm = 1,
 +#endif
@@ -216,10 +216,10 @@
  module_usb_driver(rt2500usb_driver);
 --- a/drivers/net/wireless/rt2x00/rt2800usb.c
 +++ b/drivers/net/wireless/rt2x00/rt2800usb.c
-@@ -1282,7 +1282,9 @@ static struct usb_driver rt2800usb_drive
- 	.disconnect	= rt2x00usb_disconnect,
+@@ -1283,7 +1283,9 @@ static struct usb_driver rt2800usb_drive
  	.suspend	= rt2x00usb_suspend,
  	.resume		= rt2x00usb_resume,
+ 	.reset_resume	= rt2x00usb_resume,
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,5,0))
  	.disable_hub_initiated_lpm = 1,
 +#endif
@@ -228,10 +228,10 @@
  module_usb_driver(rt2800usb_driver);
 --- a/drivers/net/wireless/rt2x00/rt73usb.c
 +++ b/drivers/net/wireless/rt2x00/rt73usb.c
-@@ -2535,7 +2535,9 @@ static struct usb_driver rt73usb_driver
- 	.disconnect	= rt2x00usb_disconnect,
+@@ -2536,7 +2536,9 @@ static struct usb_driver rt73usb_driver
  	.suspend	= rt2x00usb_suspend,
  	.resume		= rt2x00usb_resume,
+ 	.reset_resume	= rt2x00usb_resume,
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,5,0))
  	.disable_hub_initiated_lpm = 1,
 +#endif
