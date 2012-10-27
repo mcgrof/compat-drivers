@@ -537,6 +537,9 @@ if [[ "$ENABLE_DRM" == "1" ]]; then
 	# Copy radeon reg_srcs for hostprogs
 	cp -a $GIT_TREE/drivers/gpu/drm/radeon/reg_srcs drivers/gpu/drm/radeon
 
+	# Copy core/ from nouveau/ (Introduced after new code rewrite in 3.7)
+	cp -a $GIT_TREE/drivers/gpu/drm/nouveau/core drivers/gpu/drm/nouveau
+
 	# Finally get the DRM top-level makefile
 	cp $GIT_TREE/drivers/gpu/drm/Makefile drivers/gpu/drm
 else
