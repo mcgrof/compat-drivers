@@ -57,13 +57,19 @@ function define_config {
 		echo "#define $VAR 1"
 		echo "#endif /* $VAR */ "
 		;;
-	*) # Assume string
-		# XXX: add better checks to make sure what was on
-		# the right was indeed a string
+	[0-9]*)
+		# Leave integers as is
+		echo "#ifndef $VAR"
+		echo "#define $VAR $VALUE"
+		echo "#endif /* $VAR */ "
+		;;
+	*)
+		# Escape every other thing with double quotes
 		echo "#ifndef $VAR"
 		echo "#define $VAR \"$VALUE\""
 		echo "#endif /* $VAR */ "
 		;;
+
 	esac
 }
 
