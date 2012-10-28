@@ -6,6 +6,7 @@ down to older kernels. It currently backports 3 subsystems:
   * Ethernet
   * Wireless
   * Bluetooth
+  * GPU
 
 This package provides the latest Linux kernel subsystem enhancements
 for kernels 2.6.24 and above. It is technically possible to support
