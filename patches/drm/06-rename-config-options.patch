@@ -107,3 +107,23 @@
  	count = drm_load_edid_firmware(connector);
  	if (count == 0)
  #endif
+--- a/drivers/gpu/drm/radeon/radeon_drv.c	2012-10-28 19:17:02.738091628 +0200
++++ b/drivers/gpu/drm/radeon/radeon_drv.c	2012-10-28 19:17:27.429558561 +0200
+@@ -226,7 +226,7 @@
+ 	radeon_PCI_IDS
+ };
+ 
+-#if defined(CONFIG_DRM_RADEON_KMS)
++#if defined(CONFIG_COMPAT_DRM_RADEON_KMS)
+ MODULE_DEVICE_TABLE(pci, pciidlist);
+ #endif
+ 
+@@ -431,7 +431,7 @@
+ #endif
+ 	/* if enabled by default */
+ 	if (radeon_modeset == -1) {
+-#ifdef CONFIG_DRM_RADEON_KMS
++#ifdef CONFIG_COMPAT_DRM_RADEON_KMS
+ 		DRM_INFO("radeon defaulting to kernel modesetting.\n");
+ 		radeon_modeset = 1;
+ #else
