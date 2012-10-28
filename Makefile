@@ -96,6 +96,7 @@ all: modules
 $(COMPAT_CONFIG): ;
 
 modules: $(CREL_CHECK)
+	+@./scripts/check_config.sh
 	$(MAKE) -C $(KLIB_BUILD) M=$(PWD) modules
 	@touch $@
 
