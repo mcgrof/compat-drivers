@@ -75,6 +75,27 @@
  sil164-y := sil164_drv.o
 -obj-$(CONFIG_DRM_I2C_SIL164) += sil164.o
 +obj-$(CONFIG_COMPAT_DRM_I2C_SIL164) += sil164.o
+--- a/drivers/gpu/drm/nouveau/Makefile
++++ b/drivers/gpu/drm/nouveau/Makefile
+@@ -187,6 +187,6 @@ nouveau-y += nouveau_mem.o
+ # other random bits
+ nouveau-$(CONFIG_COMPAT) += nouveau_ioc32.o
+ nouveau-$(CONFIG_ACPI) += nouveau_acpi.o
+-nouveau-$(CONFIG_DRM_NOUVEAU_BACKLIGHT) += nouveau_backlight.o
++nouveau-$(CONFIG_COMPAT_DRM_NOUVEAU_BACKLIGHT) += nouveau_backlight.o
+ 
+ obj-$(CONFIG_DRM_NOUVEAU)+= nouveau.o
+--- a/drivers/gpu/drm/nouveau/nouveau_display.h	2012-10-28 17:57:24.844141245 +0200
++++ b/drivers/gpu/drm/nouveau/nouveau_display.h	2012-10-28 17:57:41.408834396 +0200
+@@ -76,7 +76,7 @@
+ 
+ void nouveau_hdmi_mode_set(struct drm_encoder *, struct drm_display_mode *);
+ 
+-#ifdef CONFIG_DRM_NOUVEAU_BACKLIGHT
++#ifdef CONFIG_COMPAT_DRM_NOUVEAU_BACKLIGHT
+ extern int nouveau_backlight_init(struct drm_device *);
+ extern void nouveau_backlight_exit(struct drm_device *);
+ #else
 --- a/drivers/gpu/drm/drm_crtc_helper.c
 +++ b/drivers/gpu/drm/drm_crtc_helper.c
 @@ -119,7 +119,7 @@ int drm_helper_probe_single_connector_mo
