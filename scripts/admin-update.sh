@@ -374,6 +374,7 @@ NET_BT_DIRS="net/bluetooth
 # Drivers that have their own directory
 DRIVERS_WLAN="drivers/net/wireless/ath
 	      drivers/net/wireless/ath/carl9170
+	      drivers/net/wireless/ath/ar5523
 	      drivers/net/wireless/ath/ath5k
 	      drivers/net/wireless/ath/ath6kl
 	      drivers/net/wireless/ath/ath9k
