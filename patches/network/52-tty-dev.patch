@@ -19,7 +19,7 @@ Date:   Fri Feb 11 17:19:26 2011 -0600
 
 --- a/drivers/bluetooth/hci_ldisc.c
 +++ b/drivers/bluetooth/hci_ldisc.c
-@@ -426,7 +426,10 @@ static int hci_uart_register_dev(struct
+@@ -421,7 +421,10 @@ static int hci_uart_register_dev(struct
  	hdev->close = hci_uart_close;
  	hdev->flush = hci_uart_flush;
  	hdev->send  = hci_uart_send_frame;

@@ -3,7 +3,7 @@ here still, but for now we keep this here.
 
 --- a/drivers/bluetooth/hci_ldisc.c
 +++ b/drivers/bluetooth/hci_ldisc.c
-@@ -302,8 +302,13 @@ static int hci_uart_tty_open(struct tty_
+@@ -297,8 +297,13 @@ static int hci_uart_tty_open(struct tty_
  	/* FIXME: why is this needed. Note don't use ldisc_ref here as the
  	   open path is before the ldisc is referencable */
  
@@ -17,7 +17,7 @@ here still, but for now we keep this here.
  	tty_driver_flush_buffer(tty);
  
  	return 0;
-@@ -529,7 +534,11 @@ static int hci_uart_tty_ioctl(struct tty
+@@ -524,7 +529,11 @@ static int hci_uart_tty_ioctl(struct tty
  		return hu->hdev_flags;
  
  	default:
@@ -548,7 +548,7 @@ here still, but for now we keep this here.
  {
  	struct sock *sk = sock->sk;
  	struct l2cap_chan *chan = l2cap_pi(sk)->chan;
-@@ -1220,8 +1225,12 @@ static struct sock *l2cap_sock_alloc(str
+@@ -1225,8 +1230,12 @@ static struct sock *l2cap_sock_alloc(str
  	return sk;
  }
  
@@ -561,7 +561,7 @@ here still, but for now we keep this here.
  {
  	struct sock *sk;
  
-@@ -1233,7 +1242,11 @@ static int l2cap_sock_create(struct net
+@@ -1238,7 +1247,11 @@ static int l2cap_sock_create(struct net
  	    sock->type != SOCK_DGRAM && sock->type != SOCK_RAW)
  		return -ESOCKTNOSUPPORT;
  

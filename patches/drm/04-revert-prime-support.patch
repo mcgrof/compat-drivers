@@ -198,7 +198,7 @@ not < 3.3.0.
  #if __OS_HAS_AGP
 --- a/drivers/gpu/drm/nouveau/nouveau_bo.c
 +++ b/drivers/gpu/drm/nouveau/nouveau_bo.c
-@@ -1352,11 +1352,14 @@ nouveau_ttm_tt_populate(struct ttm_tt *t
+@@ -1354,11 +1354,14 @@ nouveau_ttm_tt_populate(struct ttm_tt *t
  	struct drm_device *dev;
  	unsigned i;
  	int r;
@@ -213,7 +213,7 @@ not < 3.3.0.
  	if (slave && ttm->sg) {
  		/* make userspace faulting work */
  		drm_prime_sg_to_page_addr_arrays(ttm->sg, ttm->pages,
-@@ -1364,6 +1367,7 @@ nouveau_ttm_tt_populate(struct ttm_tt *t
+@@ -1366,6 +1369,7 @@ nouveau_ttm_tt_populate(struct ttm_tt *t
  		ttm->state = tt_unbound;
  		return 0;
  	}
@@ -221,7 +221,7 @@ not < 3.3.0.
  
  	drm = nouveau_bdev(ttm->bdev);
  	dev = drm->dev;
-@@ -1411,10 +1415,12 @@ nouveau_ttm_tt_unpopulate(struct ttm_tt
+@@ -1413,10 +1417,12 @@ nouveau_ttm_tt_unpopulate(struct ttm_tt
  	struct nouveau_drm *drm;
  	struct drm_device *dev;
  	unsigned i;
@@ -286,7 +286,7 @@ not < 3.3.0.
  
 --- a/drivers/gpu/drm/i915/i915_drv.c
 +++ b/drivers/gpu/drm/i915/i915_drv.c
-@@ -954,7 +954,11 @@ static struct drm_driver driver = {
+@@ -967,7 +967,11 @@ static struct drm_driver driver = {
  	 */
  	.driver_features =
  	    DRIVER_USE_AGP | DRIVER_REQUIRE_AGP | /* DRIVER_USE_MTRR |*/
@@ -298,7 +298,7 @@ not < 3.3.0.
  	.load = i915_driver_load,
  	.unload = i915_driver_unload,
  	.open = i915_driver_open,
-@@ -977,10 +981,12 @@ static struct drm_driver driver = {
+@@ -990,10 +994,12 @@ static struct drm_driver driver = {
  	.gem_free_object = i915_gem_free_object,
  	.gem_vm_ops = &i915_gem_vm_ops,
  
@@ -323,7 +323,7 @@ not < 3.3.0.
  
  static void i915_gem_object_flush_gtt_write_domain(struct drm_i915_gem_object *obj);
  static void i915_gem_object_flush_cpu_write_domain(struct drm_i915_gem_object *obj);
-@@ -3772,8 +3774,10 @@ void i915_gem_free_object(struct drm_gem
+@@ -3776,8 +3778,10 @@ void i915_gem_free_object(struct drm_gem
  
  	BUG_ON(obj->pages);
  

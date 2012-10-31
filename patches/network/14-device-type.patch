@@ -8,7 +8,7 @@ compile warning.
 
 --- a/net/wireless/core.c
 +++ b/net/wireless/core.c
-@@ -794,9 +794,11 @@ void cfg80211_unregister_wdev(struct wir
+@@ -796,9 +796,11 @@ void cfg80211_unregister_wdev(struct wir
  }
  EXPORT_SYMBOL(cfg80211_unregister_wdev);
  
@@ -36,7 +36,7 @@ compile warning.
  {
 --- a/drivers/net/usb/usbnet.c
 +++ b/drivers/net/usb/usbnet.c
-@@ -1334,13 +1334,17 @@ static const struct net_device_ops usbne
+@@ -1337,13 +1337,17 @@ static const struct net_device_ops usbne
  
  // precondition: never called in_interrupt
  

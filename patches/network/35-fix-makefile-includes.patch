@@ -61,7 +61,7 @@ path the make process will search in the kernel tree for the headers.
  	utils.o
 --- a/net/wireless/Makefile
 +++ b/net/wireless/Makefile
-@@ -18,6 +18,6 @@ cfg80211-$(CONFIG_CFG80211_INTERNAL_REGD
+@@ -20,6 +20,6 @@ CFLAGS_trace.o := -I$(src)
  ccflags-y += -D__CHECK_ENDIAN__
  
  $(obj)/regdb.c: $(src)/db.txt $(src)/genregdb.awk
