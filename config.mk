@@ -260,7 +260,6 @@ export CONFIG_ATH9K_HW=m
 export CONFIG_ATH9K_COMMON=m
 # export CONFIG_ATH9K_DEBUGFS=y
 # export CONFIG_ATH9K_AHB=y
-# export CONFIG_ATH9K_PKTLOG=y
 
 # Disable this to get minstrel as default, we leave the ath9k
 # rate control algorithm as the default for now as that is also
