@@ -558,6 +558,8 @@ export CONFIG_BT_ATH3K=m
 
 export CONFIG_RTL8192CU=m
 
+export CONFIG_MWIFIEX_USB=m
+
 endif #CONFIG_USB end of USB driver list
 
 ifdef CONFIG_SPI_MASTER
