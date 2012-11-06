@@ -1,7 +1,7 @@
-From 9f477777f199e21ecdeea4df1244f55495827ffe Mon Sep 17 00:00:00 2001
+From 7d47884f306afd1d0215133685f451aaafe3ca7a Mon Sep 17 00:00:00 2001
 From: Rajkumar Manoharan <rmanohar@qca.qualcomm.com>
 Date: Mon, 15 Oct 2012 15:29:46 +0530
-Subject: [PATCH 02/11] ath9k_hw: Fix selfgen chainmask for 9565
+Subject: [PATCH 101/110] ath9k_hw: Fix selfgen chainmask for 9565
 
 Self generated MCI messages is configured to use chain 1. As
 ar9565 is 1x1 solution, It can not use Chain 1. Hence fix
@@ -9,13 +9,16 @@ Chain 1 for ar9462 alone. Not doing so, could affect WLAN
 connectivity in ar9565 as LNA sharing is not informed by BT.
 
 Signed-off-by: Rajkumar Manoharan <rmanohar@qca.qualcomm.com>
+Signed-off-by: John W. Linville <linville@tuxdriver.com>
 ---
  drivers/net/wireless/ath/ath9k/ar9003_mci.c |    4 +++-
  1 files changed, 3 insertions(+), 1 deletions(-)
 
+diff --git a/drivers/net/wireless/ath/ath9k/ar9003_mci.c b/drivers/net/wireless/ath/ath9k/ar9003_mci.c
+index 9fa6d22..6fbd376 100644
 --- a/drivers/net/wireless/ath/ath9k/ar9003_mci.c
 +++ b/drivers/net/wireless/ath/ath9k/ar9003_mci.c
-@@ -1031,7 +1031,9 @@ void ar9003_mci_2g5g_switch(struct ath_h
+@@ -1043,7 +1043,9 @@ void ar9003_mci_2g5g_switch(struct ath_hw *ah, bool force)
  
  		if (!(mci->config & ATH_MCI_CONFIG_DISABLE_OSLA))
  			ar9003_mci_osla_setup(ah, true);
@@ -26,3 +29,6 @@ Signed-off-by: Rajkumar Manoharan <rmanohar@qca.qualcomm.com>
  	} else {
  		ar9003_mci_send_lna_take(ah, true);
  		udelay(5);
+-- 
+1.7.4.1
+

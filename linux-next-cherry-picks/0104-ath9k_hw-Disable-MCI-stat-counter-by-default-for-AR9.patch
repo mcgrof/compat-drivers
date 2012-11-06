@@ -1,17 +1,20 @@
-From 7b608d7a012d967f08e8500c3e38b94d28daa4c6 Mon Sep 17 00:00:00 2001
+From e9f9fd8cdc5fcb718e2ce778cb5e0eea27e2fdc8 Mon Sep 17 00:00:00 2001
 From: Rajkumar Manoharan <rmanohar@qca.qualcomm.com>
 Date: Mon, 15 Oct 2012 15:29:49 +0530
-Subject: [PATCH 05/11] ath9k_hw: Disable MCI stat counter by default for AR9565
+Subject: [PATCH 104/110] ath9k_hw: Disable MCI stat counter by default for AR9565
 
 Signed-off-by: Rajkumar Manoharan <rmanohar@qca.qualcomm.com>
+Signed-off-by: John W. Linville <linville@tuxdriver.com>
 ---
  drivers/net/wireless/ath/ath9k/ar9003_mci.c |    3 +++
  drivers/net/wireless/ath/ath9k/reg.h        |    3 +++
  2 files changed, 6 insertions(+), 0 deletions(-)
 
+diff --git a/drivers/net/wireless/ath/ath9k/ar9003_mci.c b/drivers/net/wireless/ath/ath9k/ar9003_mci.c
+index c46d8f1..87d9c34 100644
 --- a/drivers/net/wireless/ath/ath9k/ar9003_mci.c
 +++ b/drivers/net/wireless/ath/ath9k/ar9003_mci.c
-@@ -926,6 +926,9 @@ int ar9003_mci_reset(struct ath_hw *ah,
+@@ -938,6 +938,9 @@ int ar9003_mci_reset(struct ath_hw *ah, bool en_int, bool is_2g,
  	mci->ready = true;
  	ar9003_mci_prep_interface(ah);
  
@@ -21,6 +24,8 @@ Signed-off-by: Rajkumar Manoharan <rmanohar@qca.qualcomm.com>
  	if (en_int)
  		ar9003_mci_enable_interrupt(ah);
  
+diff --git a/drivers/net/wireless/ath/ath9k/reg.h b/drivers/net/wireless/ath/ath9k/reg.h
+index c7a9ea7..8f40dba 100644
 --- a/drivers/net/wireless/ath/ath9k/reg.h
 +++ b/drivers/net/wireless/ath/ath9k/reg.h
 @@ -2363,5 +2363,8 @@ enum {
@@ -32,3 +37,6 @@ Signed-off-by: Rajkumar Manoharan <rmanohar@qca.qualcomm.com>
 +#define AR_MCI_DBG_CNT_CTRL_ENABLE_S   0
  
  #endif
+-- 
+1.7.4.1
+

@@ -1,7 +1,7 @@
-From 2b175a64f5daa777c6509542e38a48dd15f8e1b4 Mon Sep 17 00:00:00 2001
+From 7bf7a71e0f7ad69358d01f2a7ba7faa9428db90b Mon Sep 17 00:00:00 2001
 From: Rajkumar Manoharan <rmanohar@qca.qualcomm.com>
 Date: Mon, 15 Oct 2012 15:29:55 +0530
-Subject: [PATCH 11/11] ath9k: Add new BT profile info A2DP_Voice
+Subject: [PATCH 110/110] ath9k: Add new BT profile info A2DP_Voice
 
 When the BT connection is initiated by headset, it's possible that headset
 requests to make one A2DP and one Voice connection over the same link.
@@ -9,11 +9,14 @@ BT firmware will send a new profile A2DP_Voice in this case. So WLAN
 has to take care of this new profile for tuning BTCOEX parameters.
 
 Signed-off-by: Rajkumar Manoharan <rmanohar@qca.qualcomm.com>
+Signed-off-by: John W. Linville <linville@tuxdriver.com>
 ---
  drivers/net/wireless/ath/ath9k/ar9003_mci.h |    1 +
  drivers/net/wireless/ath/ath9k/mci.h        |    2 ++
  2 files changed, 3 insertions(+), 0 deletions(-)
 
+diff --git a/drivers/net/wireless/ath/ath9k/ar9003_mci.h b/drivers/net/wireless/ath/ath9k/ar9003_mci.h
+index 3e51f54..66d7ab9 100644
 --- a/drivers/net/wireless/ath/ath9k/ar9003_mci.h
 +++ b/drivers/net/wireless/ath/ath9k/ar9003_mci.h
 @@ -126,6 +126,7 @@ enum ath_mci_gpm_coex_profile_type {
@@ -24,9 +27,11 @@ Signed-off-by: Rajkumar Manoharan <rmanohar@qca.qualcomm.com>
  	MCI_GPM_COEX_PROFILE_MAX
  };
  
+diff --git a/drivers/net/wireless/ath/ath9k/mci.h b/drivers/net/wireless/ath/ath9k/mci.h
+index e5f170a..0695883 100644
 --- a/drivers/net/wireless/ath/ath9k/mci.h
 +++ b/drivers/net/wireless/ath/ath9k/mci.h
-@@ -49,6 +49,7 @@
+@@ -70,6 +70,7 @@
  			_mci->num_pan++;	 \
  			break;			 \
  		case MCI_GPM_COEX_PROFILE_VOICE: \
@@ -34,7 +39,7 @@ Signed-off-by: Rajkumar Manoharan <rmanohar@qca.qualcomm.com>
  			_mci->num_sco++;	 \
  			break;			 \
  		default:			 \
-@@ -73,6 +74,7 @@
+@@ -94,6 +95,7 @@
  			_mci->num_pan--;	 \
  			break;			 \
  		case MCI_GPM_COEX_PROFILE_VOICE: \
@@ -42,3 +47,6 @@ Signed-off-by: Rajkumar Manoharan <rmanohar@qca.qualcomm.com>
  			_mci->num_sco--;	 \
  			break;			 \
  		default:			 \
+-- 
+1.7.4.1
+
