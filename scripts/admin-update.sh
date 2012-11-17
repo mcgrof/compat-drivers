@@ -405,6 +405,7 @@ DRIVERS_WLAN="drivers/net/wireless/ath
 	      drivers/net/wireless/rtlwifi/rtl8192cu
 	      drivers/net/wireless/rtlwifi/rtl8192se
 	      drivers/net/wireless/rtlwifi/rtl8192de
+	      drivers/net/wireless/rtlwifi/rtl8723ae
 	      drivers/net/wireless/libertas_tf
 	      drivers/net/wireless/ipw2x00
 	      drivers/net/wireless/ti
