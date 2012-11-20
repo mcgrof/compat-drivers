@@ -21,7 +21,7 @@ not < 3.3.0.
  	DRM_IOCTL_DEF(DRM_IOCTL_MODE_GETCRTC, drm_mode_getcrtc, DRM_CONTROL_ALLOW|DRM_UNLOCKED),
 --- a/drivers/gpu/drm/drm_fops.c
 +++ b/drivers/gpu/drm/drm_fops.c
-@@ -267,8 +267,10 @@ static int drm_open_helper(struct inode
+@@ -283,8 +283,10 @@ static int drm_open_helper(struct inode
  	if (dev->driver->driver_features & DRIVER_GEM)
  		drm_gem_open(dev, priv);
  
@@ -32,7 +32,7 @@ not < 3.3.0.
  
  	if (dev->driver->open) {
  		ret = dev->driver->open(dev, priv);
-@@ -521,8 +523,10 @@ int drm_release(struct inode *inode, str
+@@ -537,8 +539,10 @@ int drm_release(struct inode *inode, str
  	if (dev->driver->postclose)
  		dev->driver->postclose(dev, file_priv);
  
@@ -236,7 +236,7 @@ not < 3.3.0.
  	dev = drm->dev;
 --- a/drivers/gpu/drm/nouveau/nouveau_drm.c
 +++ b/drivers/gpu/drm/nouveau/nouveau_drm.c
-@@ -581,7 +581,10 @@ driver = {
+@@ -589,7 +589,10 @@ driver = {
  	.driver_features =
  		DRIVER_USE_AGP | DRIVER_PCI_DMA | DRIVER_SG |
  		DRIVER_HAVE_IRQ | DRIVER_IRQ_SHARED | DRIVER_GEM |
@@ -248,7 +248,7 @@ not < 3.3.0.
  
  	.load = nouveau_drm_load,
  	.unload = nouveau_drm_unload,
-@@ -602,10 +605,12 @@ driver = {
+@@ -610,10 +613,12 @@ driver = {
  	.ioctls = nouveau_ioctls,
  	.fops = &nouveau_driver_fops,
  
@@ -286,7 +286,7 @@ not < 3.3.0.
  
 --- a/drivers/gpu/drm/i915/i915_drv.c
 +++ b/drivers/gpu/drm/i915/i915_drv.c
-@@ -954,7 +954,11 @@ static struct drm_driver driver = {
+@@ -967,7 +967,11 @@ static struct drm_driver driver = {
  	 */
  	.driver_features =
  	    DRIVER_USE_AGP | DRIVER_REQUIRE_AGP | /* DRIVER_USE_MTRR |*/
@@ -298,7 +298,7 @@ not < 3.3.0.
  	.load = i915_driver_load,
  	.unload = i915_driver_unload,
  	.open = i915_driver_open,
-@@ -977,10 +981,12 @@ static struct drm_driver driver = {
+@@ -990,10 +994,12 @@ static struct drm_driver driver = {
  	.gem_free_object = i915_gem_free_object,
  	.gem_vm_ops = &i915_gem_vm_ops,
  
@@ -323,7 +323,7 @@ not < 3.3.0.
  
  static void i915_gem_object_flush_gtt_write_domain(struct drm_i915_gem_object *obj);
  static void i915_gem_object_flush_cpu_write_domain(struct drm_i915_gem_object *obj);
-@@ -3773,8 +3775,10 @@ void i915_gem_free_object(struct drm_gem
+@@ -3776,8 +3778,10 @@ void i915_gem_free_object(struct drm_gem
  
  	BUG_ON(obj->pages);
  
