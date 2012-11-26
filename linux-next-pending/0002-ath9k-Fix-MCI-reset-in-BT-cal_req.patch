@@ -1,0 +1,95 @@
+From 21aac28c0e8a762395364bf99b939cba120f58e8 Mon Sep 17 00:00:00 2001
+From: Rajkumar Manoharan <rmanohar@qca.qualcomm.com>
+Date: Fri, 16 Nov 2012 19:18:01 +0530
+Subject: [PATCH 1/2] ath9k: Fix MCI reset in BT cal_req
+
+This patch reverts the commit "ath9k_hw: Wait BT calibration to complete"
+and bail out from MCI interrupt routine for chip reset. The above commit
+stalls the WLAN TCP traffic while bringing up and down the BT interface
+iteratively. Fixing this properly by queueing up chip reset and bailing
+out properly from tasklet routine.
+
+Signed-off-by: Rajkumar Manoharan <rmanohar@qca.qualcomm.com>
+---
+ drivers/net/wireless/ath/ath9k/ar9003_mci.c |  1 -
+ drivers/net/wireless/ath/ath9k/debug.c      |  3 +++
+ drivers/net/wireless/ath/ath9k/debug.h      |  1 +
+ drivers/net/wireless/ath/ath9k/mci.c        | 21 +++------------------
+ 4 files changed, 7 insertions(+), 19 deletions(-)
+
+--- a/drivers/net/wireless/ath/ath9k/ar9003_mci.c
++++ b/drivers/net/wireless/ath/ath9k/ar9003_mci.c
+@@ -714,7 +714,6 @@ bool ar9003_mci_start_reset(struct ath_h
+ 
+ 	return true;
+ }
+-EXPORT_SYMBOL(ar9003_mci_start_reset);
+ 
+ int ar9003_mci_end_reset(struct ath_hw *ah, struct ath9k_channel *chan,
+ 			 struct ath9k_hw_cal_data *caldata)
+--- a/drivers/net/wireless/ath/ath9k/debug.c
++++ b/drivers/net/wireless/ath/ath9k/debug.c
+@@ -837,6 +837,9 @@ static ssize_t read_file_reset(struct fi
+ 	len += snprintf(buf + len, sizeof(buf) - len,
+ 			"%17s: %2d\n", "PLL RX Hang",
+ 			sc->debug.stats.reset[RESET_TYPE_PLL_HANG]);
++	len += snprintf(buf + len, sizeof(buf) - len,
++			"%17s: %2d\n", "MCI Reset",
++			sc->debug.stats.reset[RESET_TYPE_MCI]);
+ 
+ 	if (len > sizeof(buf))
+ 		len = sizeof(buf);
+--- a/drivers/net/wireless/ath/ath9k/debug.h
++++ b/drivers/net/wireless/ath/ath9k/debug.h
+@@ -41,6 +41,7 @@ enum ath_reset_type {
+ 	RESET_TYPE_PLL_HANG,
+ 	RESET_TYPE_MAC_HANG,
+ 	RESET_TYPE_BEACON_STUCK,
++	RESET_TYPE_MCI,
+ 	__RESET_TYPE_MAX
+ };
+ 
+--- a/drivers/net/wireless/ath/ath9k/mci.c
++++ b/drivers/net/wireless/ath/ath9k/mci.c
+@@ -207,23 +207,6 @@ skip_tuning:
+ 	ath9k_btcoex_timer_resume(sc);
+ }
+ 
+-static void ath_mci_wait_btcal_done(struct ath_softc *sc)
+-{
+-	struct ath_hw *ah = sc->sc_ah;
+-
+-	/* Stop tx & rx */
+-	ieee80211_stop_queues(sc->hw);
+-	ath_stoprecv(sc);
+-	ath_drain_all_txq(sc, false);
+-
+-	/* Wait for cal done */
+-	ar9003_mci_start_reset(ah, ah->curchan);
+-
+-	/* Resume tx & rx */
+-	ath_startrecv(sc);
+-	ieee80211_wake_queues(sc->hw);
+-}
+-
+ static void ath_mci_cal_msg(struct ath_softc *sc, u8 opcode, u8 *rx_payload)
+ {
+ 	struct ath_hw *ah = sc->sc_ah;
+@@ -235,7 +218,7 @@ static void ath_mci_cal_msg(struct ath_s
+ 	case MCI_GPM_BT_CAL_REQ:
+ 		if (mci_hw->bt_state == MCI_BT_AWAKE) {
+ 			mci_hw->bt_state = MCI_BT_CAL_START;
+-			ath_mci_wait_btcal_done(sc);
++			ath9k_queue_reset(sc, RESET_TYPE_MCI);
+ 		}
+ 		ath_dbg(common, MCI, "MCI State : %d\n", mci_hw->bt_state);
+ 		break;
+@@ -578,6 +561,8 @@ void ath_mci_intr(struct ath_softc *sc)
+ 		mci_int_rxmsg &= ~AR_MCI_INTERRUPT_RX_MSG_GPM;
+ 
+ 		while (more_data == MCI_GPM_MORE) {
++			if (test_bit(SC_OP_HW_RESET, &sc->sc_flags))
++				return;
+ 
+ 			pgpm = mci->gpm_buf.bf_addr;
+ 			offset = ar9003_mci_get_next_gpm_offset(ah, false,
