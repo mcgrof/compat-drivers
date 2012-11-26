@@ -14,7 +14,7 @@ Signed-off-by: Felix Fietkau <nbd@openwrt.org>
 
 --- a/drivers/net/wireless/ath/ath9k/ar9003_phy.h
 +++ b/drivers/net/wireless/ath/ath9k/ar9003_phy.h
-@@ -332,9 +332,9 @@
+@@ -344,9 +344,9 @@
  #define AR_PHY_CCA_MAX_GOOD_VAL_9300_2GHZ     -95
  #define AR_PHY_CCA_MAX_GOOD_VAL_9300_5GHZ     -100
  
