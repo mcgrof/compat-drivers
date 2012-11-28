@@ -229,20 +229,6 @@ compiler warnings. This is going to be sent upstream.
  #include <linux/etherdevice.h>
  #include <linux/sched.h>
  #include <linux/firmware.h>
---- a/drivers/net/wireless/brcm80211/brcmsmac/dma.c
-+++ b/drivers/net/wireless/brcm80211/brcmsmac/dma.c
-@@ -13,9 +13,10 @@
-  * OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
-  * CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
-  */
--
-+#undef pr_fmt
- #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
- 
-+#include <linux/printk.h>
- #include <linux/slab.h>
- #include <linux/delay.h>
- #include <linux/pci.h>
 --- a/drivers/net/wireless/brcm80211/brcmsmac/main.c
 +++ b/drivers/net/wireless/brcm80211/brcmsmac/main.c
 @@ -14,8 +14,10 @@
@@ -294,7 +280,7 @@ compiler warnings. This is going to be sent upstream.
 +#include <linux/printk.h>
  #include <linux/types.h>
  #include <linux/netdevice.h>
- #include <linux/sched.h>
+ 
 --- a/drivers/net/wireless/brcm80211/brcmfmac/bcmsdh.c
 +++ b/drivers/net/wireless/brcm80211/brcmfmac/bcmsdh.c
 @@ -15,8 +15,10 @@
@@ -317,12 +303,12 @@ compiler warnings. This is going to be sent upstream.
 +#undef pr_fmt
  #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
  
- #include <linux/init.h>
  #include <linux/kernel.h>
+ #include <linux/etherdevice.h>
 +#include <linux/printk.h>
- #include <linux/kthread.h>
- #include <linux/slab.h>
- #include <linux/skbuff.h>
+ #include <linux/module.h>
+ #include <net/cfg80211.h>
+ #include <net/rtnetlink.h>
 --- a/drivers/net/wireless/brcm80211/brcmfmac/dhd_common.c
 +++ b/drivers/net/wireless/brcm80211/brcmfmac/dhd_common.c
 @@ -14,9 +14,11 @@
@@ -335,8 +321,8 @@ compiler warnings. This is going to be sent upstream.
  #include <linux/kernel.h>
 +#include <linux/printk.h>
  #include <linux/string.h>
- #include <linux/sched.h>
  #include <linux/netdevice.h>
+ #include <brcmu_wifi.h>
 --- a/drivers/net/wireless/brcm80211/brcmfmac/sdio_chip.c
 +++ b/drivers/net/wireless/brcm80211/brcmfmac/sdio_chip.c
 @@ -15,8 +15,10 @@
@@ -361,9 +347,9 @@ compiler warnings. This is going to be sent upstream.
  
  #include <linux/kernel.h>
 +#include <linux/printk.h>
- #include <linux/if_arp.h>
- #include <linux/sched.h>
- #include <linux/kthread.h>
+ #include <linux/etherdevice.h>
+ #include <net/cfg80211.h>
+ #include <net/netlink.h>
 --- a/drivers/net/wireless/brcm80211/brcmfmac/dhd_sdio.c
 +++ b/drivers/net/wireless/brcm80211/brcmfmac/dhd_sdio.c
 @@ -14,6 +14,7 @@

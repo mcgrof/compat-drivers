@@ -4,6 +4,20 @@ during build.
 
 Patch adapted from compat-wireless tree.
 
+--- a/drivers/gpu/drm/drm_fb_helper.c
++++ b/drivers/gpu/drm/drm_fb_helper.c
+@@ -27,9 +27,11 @@
+  *      Dave Airlie <airlied@linux.ie>
+  *      Jesse Barnes <jesse.barnes@intel.com>
+  */
++#undef pr_fmt
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+ 
+ #include <linux/kernel.h>
++#include <linux/printk.h>
+ #include <linux/sysrq.h>
+ #include <linux/slab.h>
+ #include <linux/fb.h>
 --- a/drivers/gpu/drm/ttm/ttm_agp_backend.c
 +++ b/drivers/gpu/drm/ttm/ttm_agp_backend.c
 @@ -29,8 +29,10 @@

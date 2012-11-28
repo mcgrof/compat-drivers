@@ -1,6 +1,6 @@
 --- a/drivers/gpu/drm/Makefile
 +++ b/drivers/gpu/drm/Makefile
-@@ -15,37 +15,37 @@ drm-y       :=	drm_auth.o drm_buffer.o d
+@@ -15,38 +15,38 @@ drm-y       :=	drm_auth.o drm_buffer.o d
  		drm_trace_points.o drm_global.o drm_prime.o
  
  drm-$(CONFIG_COMPAT) += drm_ioc32.o
@@ -9,7 +9,7 @@
  
  drm-usb-y   := drm_usb.o
  
- drm_kms_helper-y := drm_fb_helper.o drm_crtc_helper.o drm_dp_i2c_helper.o
+ drm_kms_helper-y := drm_fb_helper.o drm_crtc_helper.o drm_dp_helper.o
 -drm_kms_helper-$(CONFIG_DRM_LOAD_EDID_FIRMWARE) += drm_edid_load.o
 -drm_kms_helper-$(CONFIG_DRM_KMS_CMA_HELPER) += drm_fb_cma_helper.o
 +drm_kms_helper-$(CONFIG_COMPAT_DRM_LOAD_EDID_FIRMWARE) += drm_edid_load.o
@@ -41,6 +41,7 @@
 -obj-$(CONFIG_DRM_UDL) += udl/
 -obj-$(CONFIG_DRM_AST) += ast/
 -obj-$(CONFIG_DRM_SHMOBILE) +=shmobile/
+-obj-$(CONFIG_DRM_TEGRA) += tegra/
 +obj-$(CONFIG_COMPAT_DRM)	+= drm.o
 +obj-$(CONFIG_COMPAT_DRM_USB)   += drm_usb.o
 +obj-$(CONFIG_COMPAT_DRM_TTM)	+= ttm/
@@ -62,6 +63,7 @@
 +obj-$(CONFIG_COMPAT_DRM_UDL) += udl/
 +obj-$(CONFIG_COMPAT_DRM_AST) += ast/
 +obj-$(CONFIG_COMPAT_DRM_SHMOBILE) +=shmobile/
++obj-$(CONFIG_COMPAT_DRM_TEGRA) += tegra/
  obj-y			+= i2c/
 --- a/drivers/gpu/drm/ast/Makefile
 +++ b/drivers/gpu/drm/ast/Makefile
@@ -82,7 +84,7 @@
 +obj-$(CONFIG_COMPAT_DRM_CIRRUS_QEMU) += cirrus.o
 --- a/drivers/gpu/drm/drm_crtc_helper.c
 +++ b/drivers/gpu/drm/drm_crtc_helper.c
-@@ -119,7 +119,7 @@ int drm_helper_probe_single_connector_mo
+@@ -142,7 +142,7 @@ int drm_helper_probe_single_connector_mo
  		goto prune;
  	}
  
@@ -180,7 +182,7 @@
  MODULE_DEVICE_TABLE(pci, pciidlist);
  #endif
  
-@@ -431,7 +431,7 @@ static int __init radeon_init(void)
+@@ -440,7 +440,7 @@ static int __init radeon_init(void)
  #endif
  	/* if enabled by default */
  	if (radeon_modeset == -1) {
@@ -207,9 +209,9 @@
 +obj-$(CONFIG_COMPAT_DRM_VIA)	+=via.o
 --- a/drivers/gpu/drm/vmwgfx/Makefile
 +++ b/drivers/gpu/drm/vmwgfx/Makefile
-@@ -7,4 +7,4 @@ vmwgfx-y := vmwgfx_execbuf.o vmwgfx_gmr.
- 	    vmwgfx_overlay.o vmwgfx_marker.o vmwgfx_gmrid_manager.o \
- 	    vmwgfx_fence.o vmwgfx_dmabuf.o vmwgfx_scrn.o
+@@ -8,4 +8,4 @@ vmwgfx-y := vmwgfx_execbuf.o vmwgfx_gmr.
+ 	    vmwgfx_fence.o vmwgfx_dmabuf.o vmwgfx_scrn.o vmwgfx_context.o \
+ 	    vmwgfx_surface.o
  
 -obj-$(CONFIG_DRM_VMWGFX) := vmwgfx.o
 +obj-$(CONFIG_COMPAT_DRM_VMWGFX) := vmwgfx.o
