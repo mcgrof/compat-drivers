@@ -4,7 +4,7 @@ than 3.1.
 
 --- a/drivers/gpu/drm/i915/intel_opregion.c
 +++ b/drivers/gpu/drm/i915/intel_opregion.c
-@@ -305,6 +305,9 @@ static int intel_opregion_video_event(st
+@@ -307,6 +307,9 @@ static int intel_opregion_video_event(st
  	struct acpi_bus_event *event = data;
  	int ret = NOTIFY_OK;
  

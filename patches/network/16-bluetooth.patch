@@ -462,7 +462,7 @@ here still, but for now we keep this here.
  	struct rfcomm_dlc *dlc = dev->dlc;
 --- a/net/bluetooth/sco.c
 +++ b/net/bluetooth/sco.c
-@@ -432,8 +432,12 @@ static struct sock *sco_sock_alloc(struc
+@@ -433,8 +433,12 @@ static struct sock *sco_sock_alloc(struc
  	return sk;
  }
  
@@ -475,8 +475,8 @@ here still, but for now we keep this here.
  {
  	struct sock *sk;
  
-@@ -662,7 +666,11 @@ static int sco_sock_sendmsg(struct kiocb
- 	return err;
+@@ -685,7 +689,11 @@ static int sco_sock_recvmsg(struct kiocb
+ 	return bt_sock_recvmsg(iocb, sock, msg, len, flags);
  }
  
 +#if (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,31))

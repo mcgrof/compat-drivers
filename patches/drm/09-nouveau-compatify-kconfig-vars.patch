@@ -1,10 +1,8 @@
 Rename CONFIG_NOUVEAU_DEBUG and CONFIG_NOUVEAU_DEBUG_DEFAULT to
 CONFIG_COMPAT_*.
 
-Index: compat-drivers/drivers/gpu/drm/nouveau/core/core/option.c
-===================================================================
---- compat-drivers.orig/drivers/gpu/drm/nouveau/core/core/option.c
-+++ compat-drivers/drivers/gpu/drm/nouveau/core/core/option.c
+--- a/drivers/gpu/drm/nouveau/core/core/option.c
++++ b/drivers/gpu/drm/nouveau/core/core/option.c
 @@ -86,7 +86,7 @@ nouveau_boolopt(const char *optstr, cons
  int
  nouveau_dbgopt(const char *optstr, const char *sub)
@@ -14,10 +12,8 @@ Index: compat-drivers/drivers/gpu/drm/nouveau/core/core/option.c
  
  	while (optstr) {
  		int len = strcspn(optstr, ",=");
-Index: compat-drivers/drivers/gpu/drm/nouveau/core/include/core/client.h
-===================================================================
---- compat-drivers.orig/drivers/gpu/drm/nouveau/core/include/core/client.h
-+++ compat-drivers/drivers/gpu/drm/nouveau/core/include/core/client.h
+--- a/drivers/gpu/drm/nouveau/core/include/core/client.h
++++ b/drivers/gpu/drm/nouveau/core/include/core/client.h
 @@ -15,7 +15,7 @@ struct nouveau_client {
  static inline struct nouveau_client *
  nv_client(void *obj)
@@ -27,10 +23,8 @@ Index: compat-drivers/drivers/gpu/drm/nouveau/core/include/core/client.h
  	if (unlikely(!nv_iclass(obj, NV_CLIENT_CLASS)))
  		nv_assert("BAD CAST -> NvClient, %08x", nv_hclass(obj));
  #endif
-Index: compat-drivers/drivers/gpu/drm/nouveau/core/include/core/device.h
-===================================================================
---- compat-drivers.orig/drivers/gpu/drm/nouveau/core/include/core/device.h
-+++ compat-drivers/drivers/gpu/drm/nouveau/core/include/core/device.h
+--- a/drivers/gpu/drm/nouveau/core/include/core/device.h
++++ b/drivers/gpu/drm/nouveau/core/include/core/device.h
 @@ -96,7 +96,7 @@ nv_device(void *obj)
  	if (device->parent)
  		device = device->parent;
@@ -40,10 +34,8 @@ Index: compat-drivers/drivers/gpu/drm/nouveau/core/include/core/device.h
  	if (unlikely(!nv_iclass(device, NV_SUBDEV_CLASS) ||
  		     (nv_hclass(device) & 0xff) != NVDEV_SUBDEV_DEVICE)) {
  		nv_assert("BAD CAST -> NvDevice, 0x%08x 0x%08x",
-Index: compat-drivers/drivers/gpu/drm/nouveau/core/include/core/engctx.h
-===================================================================
---- compat-drivers.orig/drivers/gpu/drm/nouveau/core/include/core/engctx.h
-+++ compat-drivers/drivers/gpu/drm/nouveau/core/include/core/engctx.h
+--- a/drivers/gpu/drm/nouveau/core/include/core/engctx.h
++++ b/drivers/gpu/drm/nouveau/core/include/core/engctx.h
 @@ -20,7 +20,7 @@ struct nouveau_engctx {
  static inline struct nouveau_engctx *
  nv_engctx(void *obj)
@@ -53,10 +45,8 @@ Index: compat-drivers/drivers/gpu/drm/nouveau/core/include/core/engctx.h
  	if (unlikely(!nv_iclass(obj, NV_ENGCTX_CLASS)))
  		nv_assert("BAD CAST -> NvEngCtx, %08x", nv_hclass(obj));
  #endif
-Index: compat-drivers/drivers/gpu/drm/nouveau/core/include/core/engine.h
-===================================================================
---- compat-drivers.orig/drivers/gpu/drm/nouveau/core/include/core/engine.h
-+++ compat-drivers/drivers/gpu/drm/nouveau/core/include/core/engine.h
+--- a/drivers/gpu/drm/nouveau/core/include/core/engine.h
++++ b/drivers/gpu/drm/nouveau/core/include/core/engine.h
 @@ -22,7 +22,7 @@ struct nouveau_engine {
  static inline struct nouveau_engine *
  nv_engine(void *obj)
@@ -66,10 +56,8 @@ Index: compat-drivers/drivers/gpu/drm/nouveau/core/include/core/engine.h
  	if (unlikely(!nv_iclass(obj, NV_ENGINE_CLASS)))
  		nv_assert("BAD CAST -> NvEngine, %08x", nv_hclass(obj));
  #endif
-Index: compat-drivers/drivers/gpu/drm/nouveau/core/include/core/gpuobj.h
-===================================================================
---- compat-drivers.orig/drivers/gpu/drm/nouveau/core/include/core/gpuobj.h
-+++ compat-drivers/drivers/gpu/drm/nouveau/core/include/core/gpuobj.h
+--- a/drivers/gpu/drm/nouveau/core/include/core/gpuobj.h
++++ b/drivers/gpu/drm/nouveau/core/include/core/gpuobj.h
 @@ -27,7 +27,7 @@ struct nouveau_gpuobj {
  static inline struct nouveau_gpuobj *
  nv_gpuobj(void *obj)
@@ -79,10 +67,8 @@ Index: compat-drivers/drivers/gpu/drm/nouveau/core/include/core/gpuobj.h
  	if (unlikely(!nv_iclass(obj, NV_GPUOBJ_CLASS)))
  		nv_assert("BAD CAST -> NvGpuObj, %08x", nv_hclass(obj));
  #endif
-Index: compat-drivers/drivers/gpu/drm/nouveau/core/include/core/namedb.h
-===================================================================
---- compat-drivers.orig/drivers/gpu/drm/nouveau/core/include/core/namedb.h
-+++ compat-drivers/drivers/gpu/drm/nouveau/core/include/core/namedb.h
+--- a/drivers/gpu/drm/nouveau/core/include/core/namedb.h
++++ b/drivers/gpu/drm/nouveau/core/include/core/namedb.h
 @@ -14,7 +14,7 @@ struct nouveau_namedb {
  static inline struct nouveau_namedb *
  nv_namedb(void *obj)
@@ -92,10 +78,8 @@ Index: compat-drivers/drivers/gpu/drm/nouveau/core/include/core/namedb.h
  	if (unlikely(!nv_iclass(obj, NV_NAMEDB_CLASS)))
  		nv_assert("BAD CAST -> NvNameDB, %08x", nv_hclass(obj));
  #endif
-Index: compat-drivers/drivers/gpu/drm/nouveau/core/include/core/object.h
-===================================================================
---- compat-drivers.orig/drivers/gpu/drm/nouveau/core/include/core/object.h
-+++ compat-drivers/drivers/gpu/drm/nouveau/core/include/core/object.h
+--- a/drivers/gpu/drm/nouveau/core/include/core/object.h
++++ b/drivers/gpu/drm/nouveau/core/include/core/object.h
 @@ -20,7 +20,7 @@ struct nouveau_object {
  	struct nouveau_object *engine;
  	atomic_t refcount;
@@ -114,10 +98,8 @@ Index: compat-drivers/drivers/gpu/drm/nouveau/core/include/core/object.h
  	if (likely(obj)) {
  		struct nouveau_object *object = obj;
  		if (unlikely(object->_magic != NOUVEAU_OBJECT_MAGIC))
-Index: compat-drivers/drivers/gpu/drm/nouveau/core/include/core/parent.h
-===================================================================
---- compat-drivers.orig/drivers/gpu/drm/nouveau/core/include/core/parent.h
-+++ compat-drivers/drivers/gpu/drm/nouveau/core/include/core/parent.h
+--- a/drivers/gpu/drm/nouveau/core/include/core/parent.h
++++ b/drivers/gpu/drm/nouveau/core/include/core/parent.h
 @@ -29,7 +29,7 @@ struct nouveau_parent {
  static inline struct nouveau_parent *
  nv_parent(void *obj)
@@ -127,10 +109,8 @@ Index: compat-drivers/drivers/gpu/drm/nouveau/core/include/core/parent.h
  	if (unlikely(!(nv_iclass(obj, NV_PARENT_CLASS))))
  		nv_assert("BAD CAST -> NvParent, %08x", nv_hclass(obj));
  #endif
-Index: compat-drivers/drivers/gpu/drm/nouveau/core/include/core/printk.h
-===================================================================
---- compat-drivers.orig/drivers/gpu/drm/nouveau/core/include/core/printk.h
-+++ compat-drivers/drivers/gpu/drm/nouveau/core/include/core/printk.h
+--- a/drivers/gpu/drm/nouveau/core/include/core/printk.h
++++ b/drivers/gpu/drm/nouveau/core/include/core/printk.h
 @@ -18,7 +18,7 @@ struct nouveau_object;
  void nv_printk_(struct nouveau_object *, const char *, int, const char *, ...);
  
@@ -149,10 +129,8 @@ Index: compat-drivers/drivers/gpu/drm/nouveau/core/include/core/printk.h
  		nv_printk_(NULL, NV_PRINTK_FATAL, NV_DBG_FATAL, f "\n", ##a);  \
  	BUG_ON(1);                                                             \
  } while(0)
-Index: compat-drivers/drivers/gpu/drm/nouveau/core/include/core/subdev.h
-===================================================================
---- compat-drivers.orig/drivers/gpu/drm/nouveau/core/include/core/subdev.h
-+++ compat-drivers/drivers/gpu/drm/nouveau/core/include/core/subdev.h
+--- a/drivers/gpu/drm/nouveau/core/include/core/subdev.h
++++ b/drivers/gpu/drm/nouveau/core/include/core/subdev.h
 @@ -20,7 +20,7 @@ struct nouveau_subdev {
  static inline struct nouveau_subdev *
  nv_subdev(void *obj)
@@ -162,10 +140,8 @@ Index: compat-drivers/drivers/gpu/drm/nouveau/core/include/core/subdev.h
  	if (unlikely(!nv_iclass(obj, NV_SUBDEV_CLASS)))
  		nv_assert("BAD CAST -> NvSubDev, %08x", nv_hclass(obj));
  #endif
-Index: compat-drivers/drivers/gpu/drm/nouveau/core/include/subdev/instmem.h
-===================================================================
---- compat-drivers.orig/drivers/gpu/drm/nouveau/core/include/subdev/instmem.h
-+++ compat-drivers/drivers/gpu/drm/nouveau/core/include/subdev/instmem.h
+--- a/drivers/gpu/drm/nouveau/core/include/subdev/instmem.h
++++ b/drivers/gpu/drm/nouveau/core/include/subdev/instmem.h
 @@ -16,7 +16,7 @@ struct nouveau_instobj {
  static inline struct nouveau_instobj *
  nv_memobj(void *obj)

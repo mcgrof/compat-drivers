@@ -1,10 +1,8 @@
 acpi_get_table_with_size() was exported with kernels >= 3.6. Revert the
 size checking for kernels < 3.6.
 
-Index: compat-drivers/drivers/gpu/drm/radeon/radeon_bios.c
-===================================================================
---- compat-drivers.orig/drivers/gpu/drm/radeon/radeon_bios.c
-+++ compat-drivers/drivers/gpu/drm/radeon/radeon_bios.c
+--- a/drivers/gpu/drm/radeon/radeon_bios.c
++++ b/drivers/gpu/drm/radeon/radeon_bios.c
 @@ -554,12 +554,21 @@ static bool radeon_acpi_vfct_bios(struct
  {
  	bool ret = false;
