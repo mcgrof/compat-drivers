@@ -51,7 +51,7 @@ patchRefresh() {
 			echo -e "${RED}No patches found in $1${NORMAL}"
 			break;
 		fi
-		echo -e "${GREEN}Refresh backport patch${NORMAL}: ${BLUE}$i${NORMAL}"
+		echo -e "${GREEN}Refresh backport patch${NORMAL}: ${BLUE}${1}/$(basename $i)${NORMAL}"
 		quilt import $i
 		quilt push -f
 		RET=$?
