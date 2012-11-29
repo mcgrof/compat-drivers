@@ -690,7 +690,7 @@ for subsystem in $SUBSYSTEMS; do
 			echo -e "${RED}Patches: $PATCHDIR empty, skipping...${NORMAL}"
 			continue
 		fi
-		if [[ $LAST_ELEM = $dir && "$REFRESH" = y ]]; then
+		if [[ "$REFRESH" = y ]]; then
 			patchRefresh $PATCHDIR
 		fi
 
