@@ -77,6 +77,12 @@ while [ $# -ne 0 ]; do
 			$0 $args | ./scripts/skip-colors | tee -a $LOG
 		done
 
+		REL_DIR="/tmp/rels/"
+		mkdir -p $REL_DIR
+		for rel in $(find /tmp/staging* -type f -name \*.tar.bz2); do
+			cp $rel $REL_DIR
+		done
+
 		exit
 	fi
 	if [[ "$1" = "-s" ]]; then
