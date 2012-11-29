@@ -26,7 +26,7 @@ UNDERLINE="\033[02m"
 # Linus' tree as a remote and fetch those objects if you want to make an RC
 # release instead.
 ALL_STABLE_TREE="linux-stable"
-STAGING=/tmp/staging/compat-wireless/
+STAGING=/tmp/staging${REL_TYPE}/compat-wireless/
 
 function usage()
 {
@@ -67,6 +67,18 @@ TARGET_BRANCH="$EXISTING_BRANCH"
 FORCE_UPDATE="no"
 
 while [ $# -ne 0 ]; do
+	if [[ "$1" = "--all" ]]; then
+		LOG="/tmp/rel-log.txt"
+
+		cd $COMPAT_WIRELESS_DIR
+		$0 | ./scripts/skip-colors | tee $LOG
+		for args in "-s" "-s -n" "-s -n -p" "-s -n -p -c"; do
+			export REL_TYPE="-$(echo $args | sed -e 's/\s*-//g')"
+			$0 $args | ./scripts/skip-colors | tee -a $LOG
+		done
+
+		exit
+	fi
 	if [[ "$1" = "-s" ]]; then
 		UPDATE_ARGS="${UPDATE_ARGS} $1"
 		POSTFIX_RELEASE_TAG="${POSTFIX_RELEASE_TAG}s"
