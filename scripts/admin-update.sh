@@ -66,7 +66,6 @@ patchRefresh() {
 	done
 	quilt pop -a
 
-	cp patches.orig/README $1/README
 	rm -rf patches.orig .pc $1/series
 }
 
