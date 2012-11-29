@@ -699,7 +699,7 @@ for subsystem in $SUBSYSTEMS; do
 			continue
 		fi
 
-		for i in $(ls -v $PATCHDIR/*.patch); do
+		for i in $(ls $PATCHDIR/*.patch); do
 			echo -e "${GREEN}Applying backport patch${NORMAL}: ${BLUE}$i${NORMAL}"
 			patch -p1 -N -t < $i
 			RET=$?
