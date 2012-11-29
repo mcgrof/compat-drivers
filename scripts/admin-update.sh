@@ -36,6 +36,14 @@ GIT_COMPAT_URL="git://github.com/mcgrof/compat.git"
 
 # Refresh patches using quilt
 patchRefresh() {
+	if [ -d .pc ] ; then
+		OLD_PATCH_DIR=$(cat .pc/.quilt_patches)
+		if [ "$OLD_PATCH_DIR" != "$1" ] ; then
+			echo "found old quilt run for ${OLD_PATCH_DIR}, will skip it for ${1}"
+			return;
+		fi
+	fi
+
 	if [ -d patches.orig ] ; then
 		rm -rf .pc patches/series
 	else
