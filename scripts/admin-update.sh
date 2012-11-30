@@ -150,19 +150,19 @@ nagometer() {
 	let CHANGES=$ADD+$DEL
 
 	case `dirname $1` in
-	"patches")
+	"patches/collateral-evolutions")
 		brag_backport $ORIG_CODE $CHANGES $ADD $DEL
 		;;
-	"pending-stable")
+	"patches/pending-stable")
 		nag_pending_stable $ORIG_CODE $CHANGES $ADD $DEL
 		;;
-	"linux-next-cherry-picks")
+	"patches/linux-next-cherry-picks")
 		nag_next_cherry_pick $ORIG_CODE $CHANGES $ADD $DEL
 		;;
-	"linux-next-pending")
+	"patches/linux-next-pending")
 		nag_pending $ORIG_CODE $CHANGES $ADD $DEL
 		;;
-	"crap")
+	"patches/crap")
 		nag_crap $ORIG_CODE $CHANGES $ADD $DEL
 		;;
 	*)
@@ -212,7 +212,7 @@ ENABLE_NETWORK=1
 ENABLE_DRM=1
 SUBSYSTEMS=
 
-EXTRA_PATCHES="patches"
+EXTRA_PATCHES="patches/collateral-evolutions"
 REFRESH="n"
 GET_STABLE_PENDING="n"
 POSTFIX_RELEASE_TAG=""
@@ -225,23 +225,23 @@ if [ $# -ge 1 ]; then
 		case $1 in
 			"-s")
 				GET_STABLE_PENDING="y"
-				EXTRA_PATCHES="${EXTRA_PATCHES} pending-stable"
-				EXTRA_PATCHES="${EXTRA_PATCHES} pending-stable/backports/"
+				EXTRA_PATCHES="${EXTRA_PATCHES} patches/pending-stable"
+				EXTRA_PATCHES="${EXTRA_PATCHES} patches/pending-stable/backports/"
 				POSTFIX_RELEASE_TAG="${POSTFIX_RELEASE_TAG}s"
 				shift
 				;;
 			"-n")
-				EXTRA_PATCHES="${EXTRA_PATCHES} linux-next-cherry-picks"
+				EXTRA_PATCHES="${EXTRA_PATCHES} patches/linux-next-cherry-picks"
 				POSTFIX_RELEASE_TAG="${POSTFIX_RELEASE_TAG}n"
 				shift
 				;;
 			"-p")
-				EXTRA_PATCHES="${EXTRA_PATCHES} linux-next-pending"
+				EXTRA_PATCHES="${EXTRA_PATCHES} patches/linux-next-pending"
 				POSTFIX_RELEASE_TAG="${POSTFIX_RELEASE_TAG}p"
 				shift
 				;;
 			"-c")
-				EXTRA_PATCHES="${EXTRA_PATCHES} crap"
+				EXTRA_PATCHES="${EXTRA_PATCHES} patches/crap"
 				POSTFIX_RELEASE_TAG="${POSTFIX_RELEASE_TAG}c"
 				shift
 				;;
