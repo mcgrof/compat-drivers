@@ -84,7 +84,7 @@ for i in $COPY ; do
 	if [[ -f ${COMPAT_SRC}${i} ]]; then
 		DIR=$(dirname $i)
 		if [[ ! -d $DIR ]]; then
-			mkdir $DIR
+			mkdir -p $DIR
 		fi
 
 		if [[ -x ${COMPAT_SRC}${i} ]]; then
