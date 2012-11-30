@@ -81,7 +81,7 @@ patchRefresh() {
 # usage() function
 ###
 usage() {
-	printf "Usage: $0 [refresh] [ --help | -h | -s | -n | -p | -c ] [subsystems]
+	printf "Usage: $0 [refresh] [ --help | -h | -s | -n | -p | -c [ -u ] [subsystems]
        where subsystems can be network, drm or both. Network is enabled by default.\n\n"
 
 	printf "${GREEN}%10s${NORMAL} - Update all your patch offsets using quilt\n" "refresh"
@@ -89,6 +89,7 @@ usage() {
 	printf "${GREEN}%10s${NORMAL} - Apply the patches from linux-next-cherry-picks directory\n" "-n"
 	printf "${GREEN}%10s${NORMAL} - Apply the patches from linux-next-pending directory\n" "-p"
 	printf "${GREEN}%10s${NORMAL} - Apply the patches from crap directory\n" "-c"
+	printf "${GREEN}%10s${NORMAL} - Apply the patches from unified directory\n" "-u"
 }
 
 ###
@@ -137,6 +138,13 @@ nag_crap() {
 	printf "${RED}%10s${NORMAL} - %% of crap code\n" $(perl -e 'printf("%.4f", 100 * '$2' / '$1');')
 }
 
+nag_unified() {
+	printf "${RED}%10s${NORMAL} - Unified driver backport changes required to backport\n" $2
+	printf "${RED}%10s${NORMAL} - Unified driver backport additions required\n" $3
+	printf "${RED}%10s${NORMAL} - Unified driver backport deletions required\n" $4
+	printf "${RED}%10s${NORMAL} - %% of unified backport code\n" $(perl -e 'printf("%.4f", 100 * '$2' / '$1');')
+}
+
 nagometer() {
 	CHANGES=0
 
@@ -164,6 +172,9 @@ nagometer() {
 		;;
 	"patches/crap")
 		nag_crap $ORIG_CODE $CHANGES $ADD $DEL
+		;;
+	"patches/unified-drivers")
+		nag_unified $ORIG_CODE $CHANGES $ADD $DEL
 		;;
 	*)
 		;;
@@ -198,7 +209,9 @@ copyDirectories() {
 # 	n: Include linux-next-cherry-picks/ patches	(-n)
 # 	p: Include linux-next-pending/ patches		(-p)
 # 	c: Include crap/ patches			(-c)
-# Note that the patches under patches/{subsystem} are applied by default.
+# 	u: Include unified-drivers/ patches		(-u)
+# Note that the patches under patches/collateral-evolutions/{subsystem}
+# are applied by default.
 #
 # If "refresh" is given as a cmdline argument, the script
 # uses quilt to refresh the patches. This is useful if patches
@@ -210,7 +223,9 @@ copyDirectories() {
 # fetched in by default.
 ENABLE_NETWORK=1
 ENABLE_DRM=1
+ENABLE_UNIFIED=0
 SUBSYSTEMS=
+UNIFIED_DRIVERS=
 
 EXTRA_PATCHES="patches/collateral-evolutions"
 REFRESH="n"
@@ -243,6 +258,12 @@ if [ $# -ge 1 ]; then
 			"-c")
 				EXTRA_PATCHES="${EXTRA_PATCHES} patches/crap"
 				POSTFIX_RELEASE_TAG="${POSTFIX_RELEASE_TAG}c"
+				shift
+				;;
+			"-u")
+				EXTRA_PATCHES="${EXTRA_PATCHES} patches/unified-drivers"
+				POSTFIX_RELEASE_TAG="${POSTFIX_RELEASE_TAG}u"
+				ENABLE_UNIFIED=1
 				shift
 				;;
 			"refresh")
@@ -565,6 +586,91 @@ for i in $STAGING_DRIVERS; do
 	# staging drivers tend to have their own subdirs...
 	cp -a $GIT_TREE/$i drivers/staging/
 done
+
+UNIFIED_DRIVERS+="alx"
+
+unified_driver_git_tree() {
+	case $1 in
+	"alx")
+		echo "git://github.com/mcgrof/alx.git"
+		;;
+	*)
+		;;
+	esac
+}
+
+unified_driver_linux_next_target() {
+	case $1 in
+	"alx")
+		echo "drivers/net/ethernet/atheros/alx"
+		;;
+	*)
+		;;
+	esac
+}
+
+unified_driver_get_linux_src() {
+	case $1 in
+	"alx")
+		make -C $DRV_SRC/ clean
+		make -C $DRV_SRC/ linux-src
+
+		TARGET_NEXT_DIR="$(unified_driver_linux_next_target $i)"
+
+		rm -rf $TARGET_NEXT_DIR
+		cp -a $DRV_SRC/target/linux/src $TARGET_NEXT_DIR
+		;;
+	*)
+		echo "Unsupported unified driver: $1"
+		exit
+		;;
+	esac
+}
+
+if [[ "$ENABLE_UNIFIED" == "1" ]]; then
+	if [ -z $UNIFIED_SRC ]; then
+		UNIFIED_SRC="$HOME/unified"
+		if [ ! -d $UNIFIED_SRC ]; then
+			echo "The directory $UNIFIED_SRC does not exist"
+			echo
+			echo "Please tell me where your unified drivers are located"
+			echo "You can do this by exporting its location as follows:"
+			echo
+			echo "  export UNIFIED_SRC=$HOME/unified"
+			echo
+			echo "If you have never downloaded unified driver code you"
+			echo "can simply re-run this script by first creating an"
+			echo "empty directory for on $HOME/unified, the script"
+			echo "will then tell you what trees to clone. The unified"
+			echo "drivers that we support in compat-drivers adhear to"
+			echo "a policy explained in unified/README.md"
+			exit 1
+		fi
+	else
+		if [ ! -d $UNIFIED_SRC ]; then
+			echo "The directory $UNIFIED_SRC does not exist"
+			exit
+		fi
+	fi
+
+	for i in $UNIFIED_DRIVERS; do
+		DRV_SRC="$UNIFIED_SRC/$i"
+
+		if [ ! -d $DRV_SRC ]; then
+			echo -e "$DRV_SRC does not exist. You can clone this tree from:"
+			echo
+			unified_driver_git_tree $i
+			echo
+			echo "You should clone this into $UNIFIED_SRC directory or"
+			echo "later specify where you put it using the UNIFIED_SRC"
+			echo "environment variable"
+			exit 1
+		fi
+
+		unified_driver_get_linux_src $i
+	done
+fi
+
 
 # Finally copy MAINTAINERS file
 cp $GIT_TREE/MAINTAINERS ./

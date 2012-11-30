@@ -39,7 +39,7 @@ SUPPORTED_80211_DRIVERS="ath5k ath9k ath9k_ap ath9k_htc carl9170 ath6kl b43 zd12
 
 # b43 needs some more work for driver-select, the SSB stuff, plus
 # what if you update b44 but not b43? It will bust.
-SUPPORTED_ETH_DRIVERS="atl1 atl2 atl1e atl1c"
+SUPPORTED_ETH_DRIVERS="atl1 atl2 atl1e atl1c alx"
 
 SUPPORTED_DRM_DRIVERS="i915"
 
@@ -74,7 +74,7 @@ function usage {
 	echo -e "\t${CYAN}ti${NORMAL} < ${PURPLE} wl1251 wl12xx (SPI and SDIO)${NORMAL}>"
 	
 	echo -e "\nSupported group drivers: Bluetooth & Ethernet:"
-	echo -e "\t${CYAN}atlxx${NORMAL} < ${PURPLE} atl1 atl2 atl1e${NORMAL}>"
+	echo -e "\t${CYAN}atlxx${NORMAL} < ${PURPLE} atl1 atl2 atl1e alx${NORMAL}>"
 	echo -e "\t${CYAN}bt${NORMAL} < ${PURPLE} Linux bluetooth drivers ${NORMAL}>"
 
 	echo -e "\nSupported group drivers: DRM:"
@@ -507,6 +507,11 @@ case $1 in
 		enable_only_ethernet
 		disable_b44
 		echo -e "obj-\$(CONFIG_ATL1C) += atl1c/" > $DRIVERS_NET_ATHEROS
+		;;
+	alx)
+		enable_only_ethernet
+		disable_b44
+		echo -e "obj-\$(CONFIG_ALX) += alx/" > $DRIVERS_NET_ATHEROS
 		;;
 	atlxx)
 		select_drivers		CONFIG_ATL1 CONFIG_ATL2 CONFIG_ATL1E CONFIG_ALX
