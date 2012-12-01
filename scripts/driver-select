@@ -183,6 +183,10 @@ function disable_80211 {
 	perl -i -ne 'print if ! /CONFIG_COMPAT_WIRELESS/' Makefile
 }
 
+function disable_drm {
+	perl -i -ne 'print if ! /CONFIG_COMPAT_VIDEO_MODULES/' Makefile
+}
+
 function disable_bt_usb_ethernet {
 	backup_file Makefile
 	disable_usbnet
@@ -205,6 +209,7 @@ function enable_only_ethernet {
 	disable_usbnet
 	disable_var_03
 	disable_bt
+	disable_drm
 	# rfkill may be needed if you enable b44 as you may have b43
 	disable_rfkill
 	disable_80211
