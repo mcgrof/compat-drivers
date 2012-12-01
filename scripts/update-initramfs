@@ -16,7 +16,13 @@ dir=/boot/
 
 case $LSB_RED_ID in
 "Ubuntu")
-	echo "Updating Ubuntu's initramfs for $ver under $dir ..."
+	echo "Updating ${LSB_RED_ID}'s initramfs for $ver under $dir ..."
+	mkinitramfs -o $dir/initrd.img-$ver $ver
+	echo "Will now run update-grub to ensure grub will find the new initramfs ..."
+	update-grub
+	;;
+"Debian")
+	echo "Updating ${LSB_RED_ID}'s initramfs for $ver under $dir ..."
 	mkinitramfs -o $dir/initrd.img-$ver $ver
 	echo "Will now run update-grub to ensure grub will find the new initramfs ..."
 	update-grub
