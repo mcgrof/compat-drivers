@@ -81,10 +81,11 @@ patchRefresh() {
 # usage() function
 ###
 usage() {
-	printf "Usage: $0 [refresh] [ --help | -h | -s | -n | -p | -c [ -u ] [subsystems]
+	printf "Usage: $0 [refresh] [ --help | -h | -b | -s | -n | -p | -c [ -u ] [subsystems]
        where subsystems can be network, drm or both. Network is enabled by default.\n\n"
 
 	printf "${GREEN}%10s${NORMAL} - Update all your patch offsets using quilt\n" "refresh"
+	printf "${GREEN}%10s${NORMAL} - Only copy over compat code, do not copy driver code\n" "-b"
 	printf "${GREEN}%10s${NORMAL} - Get and apply pending-stable/ fixes purging old files there\n" "-s"
 	printf "${GREEN}%10s${NORMAL} - Apply the patches from linux-next-cherry-picks directory\n" "-n"
 	printf "${GREEN}%10s${NORMAL} - Apply the patches from linux-next-pending directory\n" "-p"
@@ -231,76 +232,6 @@ EXTRA_PATCHES="patches/collateral-evolutions"
 REFRESH="n"
 GET_STABLE_PENDING="n"
 POSTFIX_RELEASE_TAG=""
-if [ $# -ge 1 ]; then
-	if [ $# -gt 6 ]; then
-		usage $0
-		exit
-	fi
-	while [ $# -ne 0 ]; do
-		case $1 in
-			"-s")
-				GET_STABLE_PENDING="y"
-				EXTRA_PATCHES="${EXTRA_PATCHES} patches/pending-stable"
-				EXTRA_PATCHES="${EXTRA_PATCHES} patches/pending-stable/backports/"
-				POSTFIX_RELEASE_TAG="${POSTFIX_RELEASE_TAG}s"
-				shift
-				;;
-			"-n")
-				EXTRA_PATCHES="${EXTRA_PATCHES} patches/linux-next-cherry-picks"
-				POSTFIX_RELEASE_TAG="${POSTFIX_RELEASE_TAG}n"
-				shift
-				;;
-			"-p")
-				EXTRA_PATCHES="${EXTRA_PATCHES} patches/linux-next-pending"
-				POSTFIX_RELEASE_TAG="${POSTFIX_RELEASE_TAG}p"
-				shift
-				;;
-			"-c")
-				EXTRA_PATCHES="${EXTRA_PATCHES} patches/crap"
-				POSTFIX_RELEASE_TAG="${POSTFIX_RELEASE_TAG}c"
-				shift
-				;;
-			"-u")
-				EXTRA_PATCHES="${EXTRA_PATCHES} patches/unified-drivers"
-				POSTFIX_RELEASE_TAG="${POSTFIX_RELEASE_TAG}u"
-				ENABLE_UNIFIED=1
-				shift
-				;;
-			"refresh")
-				REFRESH="y"
-				shift
-				;;
-			"network")
-				ENABLE_NETWORK=1
-				ENABLE_DRM=0
-				shift
-				;;
-			"drm")
-				ENABLE_DRM=1
-				shift
-				;;
-			"-h" | "--help")
-				usage $0
-				exit
-				;;
-			*)
-				echo "Unexpected argument passed: $1"
-				usage $0
-				exit
-				;;
-		esac
-	done
-
-fi
-
-# SUBSYSTEMS is used to select which patches to apply
-if [[ "$ENABLE_NETWORK" == "1" ]]; then
-	SUBSYSTEMS="network"
-fi
-
-if [[ "$ENABLE_DRM" == "1" ]]; then
-	SUBSYSTEMS+=" drm"
-fi
 
 # User exported this variable
 if [ -z $GIT_TREE ]; then
@@ -484,6 +415,7 @@ DRIVERS_DRM="drivers/gpu/drm/ast
 #DRIVERS="$DRIVERS drivers/gpu/drm/udl"
 
 rm -rf drivers/
+rm -f code-metrics.txt
 
 mkdir -p include/net/bluetooth \
 	 include/linux/usb \
@@ -508,6 +440,166 @@ mkdir -p include/net/bluetooth \
 	 $DRIVERS_BT \
 	 $DRIVERS_DRM
 
+
+
+function refresh_compat()
+{
+	# Compat stuff
+	COMPAT="compat"
+	mkdir -p $COMPAT
+	echo "Copying $GIT_COMPAT_TREE/ files..."
+	cp $GIT_COMPAT_TREE/compat/*.[ch] $COMPAT/
+	cp $GIT_COMPAT_TREE/compat/Makefile $COMPAT/
+	cp -a $GIT_COMPAT_TREE/udev .
+	cp -a $GIT_COMPAT_TREE/scripts $COMPAT/
+	cp $GIT_COMPAT_TREE/bin/ckmake $COMPAT/
+	cp -a $GIT_COMPAT_TREE/include/linux/* include/linux/
+	cp -a $GIT_COMPAT_TREE/include/net/* include/net/
+	cp -a $GIT_COMPAT_TREE/include/trace/* include/trace/
+	cp -a $GIT_COMPAT_TREE/include/pcmcia/* include/pcmcia/
+	cp -a $GIT_COMPAT_TREE/include/crypto/* include/crypto/
+}
+
+function gen_compat_labels()
+{
+
+	DIR="$PWD"
+	cd $GIT_TREE
+	GIT_DESCRIBE=$(git describe)
+	GIT_BRANCH=$(git branch --no-color |sed -n 's/^\* //p')
+	GIT_BRANCH=${GIT_BRANCH:-master}
+	GIT_REMOTE=$(git config branch.${GIT_BRANCH}.remote)
+	GIT_REMOTE=${GIT_REMOTE:-origin}
+	GIT_REMOTE_URL=$(git config remote.${GIT_REMOTE}.url)
+	GIT_REMOTE_URL=${GIT_REMOTE_URL:-unknown}
+
+	cd $GIT_COMPAT_TREE
+	git describe > $DIR/.compat_base
+	cd $DIR
+
+	echo -e "${GREEN}Updated${NORMAL} from local tree: ${BLUE}${GIT_TREE}${NORMAL}"
+	echo -e "Origin remote URL: ${CYAN}${GIT_REMOTE_URL}${NORMAL}"
+	cd $DIR
+	if [ -d ./.git ]; then
+		if [[ ${POSTFIX_RELEASE_TAG} != "" ]]; then
+			echo -e "$(git describe)-${POSTFIX_RELEASE_TAG}" > .compat_version
+		else
+			echo -e "$(git describe)" > .compat_version
+		fi
+
+		cd $GIT_TREE
+		TREE_NAME=${GIT_REMOTE_URL##*/}
+
+		echo $TREE_NAME > $DIR/.compat_base_tree
+		echo $GIT_DESCRIBE > $DIR/.compat_base_tree_version
+
+		case $TREE_NAME in
+		"wireless-testing.git") # John's wireless-testing
+			echo -e "This is a ${RED}wireless-testing.git${NORMAL} compat-drivers release"
+			;;
+		"linux-next.git") # The linux-next integration testing tree
+			echo -e "This is a ${RED}linux-next.git${NORMAL} compat-drivers release"
+			;;
+		"linux-stable.git") # Greg's all stable tree
+			echo -e "This is a ${GREEN}linux-stable.git${NORMAL} compat-drivers release"
+			;;
+		"linux-2.6.git") # Linus' 2.6 tree
+			echo -e "This is a ${GREEN}linux-2.6.git${NORMAL} compat-drivers release"
+			;;
+		*)
+			;;
+		esac
+
+		cd $DIR
+		echo -e "\nBase tree: ${GREEN}$(cat .compat_base_tree)${NORMAL}" >> $CODE_METRICS
+		echo -e "Base tree version: ${PURPLE}$(cat .compat_base_tree_version)${NORMAL}" >> $CODE_METRICS
+		echo -e "compat.git: ${CYAN}$(cat .compat_base)${NORMAL}" >> $CODE_METRICS
+		echo -e "compat-drivers release: ${YELLOW}$(cat .compat_version)${NORMAL}" >> $CODE_METRICS
+
+	fi
+
+
+	echo -e "Code metrics archive: ${GREEN}http://bit.ly/H6BTF7${NORMAL}" >> $CODE_METRICS
+
+	cat $CODE_METRICS
+}
+
+
+if [ $# -ge 1 ]; then
+	if [ $# -gt 6 ]; then
+		usage $0
+		exit
+	fi
+	while [ $# -ne 0 ]; do
+		case $1 in
+			"-b")
+				refresh_compat
+				gen_compat_labels
+				exit
+				;;
+			"-s")
+				GET_STABLE_PENDING="y"
+				EXTRA_PATCHES="${EXTRA_PATCHES} patches/pending-stable"
+				EXTRA_PATCHES="${EXTRA_PATCHES} patches/pending-stable/backports/"
+				POSTFIX_RELEASE_TAG="${POSTFIX_RELEASE_TAG}s"
+				shift
+				;;
+			"-n")
+				EXTRA_PATCHES="${EXTRA_PATCHES} patches/linux-next-cherry-picks"
+				POSTFIX_RELEASE_TAG="${POSTFIX_RELEASE_TAG}n"
+				shift
+				;;
+			"-p")
+				EXTRA_PATCHES="${EXTRA_PATCHES} patches/linux-next-pending"
+				POSTFIX_RELEASE_TAG="${POSTFIX_RELEASE_TAG}p"
+				shift
+				;;
+			"-c")
+				EXTRA_PATCHES="${EXTRA_PATCHES} patches/crap"
+				POSTFIX_RELEASE_TAG="${POSTFIX_RELEASE_TAG}c"
+				shift
+				;;
+			"-u")
+				EXTRA_PATCHES="${EXTRA_PATCHES} patches/unified-drivers"
+				POSTFIX_RELEASE_TAG="${POSTFIX_RELEASE_TAG}u"
+				ENABLE_UNIFIED=1
+				shift
+				;;
+			"refresh")
+				REFRESH="y"
+				shift
+				;;
+			"network")
+				ENABLE_NETWORK=1
+				ENABLE_DRM=0
+				shift
+				;;
+			"drm")
+				ENABLE_DRM=1
+				shift
+				;;
+			"-h" | "--help")
+				usage $0
+				exit
+				;;
+			*)
+				echo "Unexpected argument passed: $1"
+				usage $0
+				exit
+				;;
+		esac
+	done
+
+fi
+
+# SUBSYSTEMS is used to select which patches to apply
+if [[ "$ENABLE_NETWORK" == "1" ]]; then
+	SUBSYSTEMS="network"
+fi
+
+if [[ "$ENABLE_DRM" == "1" ]]; then
+	SUBSYSTEMS+=" drm"
+fi
 
 if [[ "$ENABLE_NETWORK" == "1" ]]; then
 	# WLAN and bluetooth files
@@ -675,20 +767,7 @@ fi
 # Finally copy MAINTAINERS file
 cp $GIT_TREE/MAINTAINERS ./
 
-# Compat stuff
-COMPAT="compat"
-mkdir -p $COMPAT
-echo "Copying $GIT_COMPAT_TREE/ files..."
-cp $GIT_COMPAT_TREE/compat/*.[ch] $COMPAT/
-cp $GIT_COMPAT_TREE/compat/Makefile $COMPAT/
-cp -a $GIT_COMPAT_TREE/udev .
-cp -a $GIT_COMPAT_TREE/scripts $COMPAT/
-cp $GIT_COMPAT_TREE/bin/ckmake $COMPAT/
-cp -a $GIT_COMPAT_TREE/include/linux/* include/linux/
-cp -a $GIT_COMPAT_TREE/include/net/* include/net/
-cp -a $GIT_COMPAT_TREE/include/trace/* include/trace/
-cp -a $GIT_COMPAT_TREE/include/pcmcia/* include/pcmcia/
-cp -a $GIT_COMPAT_TREE/include/crypto/* include/crypto/
+refresh_compat
 
 # Clean up possible *.mod.c leftovers
 find -type f -name "*.mod.c" -exec rm -f {} \;
@@ -818,64 +897,7 @@ for subsystem in $SUBSYSTEMS; do
 	done
 done
 
-DIR="$PWD"
-cd $GIT_TREE
-GIT_DESCRIBE=$(git describe)
-GIT_BRANCH=$(git branch --no-color |sed -n 's/^\* //p')
-GIT_BRANCH=${GIT_BRANCH:-master}
-GIT_REMOTE=$(git config branch.${GIT_BRANCH}.remote)
-GIT_REMOTE=${GIT_REMOTE:-origin}
-GIT_REMOTE_URL=$(git config remote.${GIT_REMOTE}.url)
-GIT_REMOTE_URL=${GIT_REMOTE_URL:-unknown}
-
-cd $GIT_COMPAT_TREE
-git describe > $DIR/.compat_base
-cd $DIR
-
-echo -e "${GREEN}Updated${NORMAL} from local tree: ${BLUE}${GIT_TREE}${NORMAL}"
-echo -e "Origin remote URL: ${CYAN}${GIT_REMOTE_URL}${NORMAL}"
-cd $DIR
-if [ -d ./.git ]; then
-	if [[ ${POSTFIX_RELEASE_TAG} != "" ]]; then
-		echo -e "$(git describe)-${POSTFIX_RELEASE_TAG}" > .compat_version
-	else
-		echo -e "$(git describe)" > .compat_version
-	fi
-
-	cd $GIT_TREE
-	TREE_NAME=${GIT_REMOTE_URL##*/}
-
-	echo $TREE_NAME > $DIR/.compat_base_tree
-	echo $GIT_DESCRIBE > $DIR/.compat_base_tree_version
-
-	case $TREE_NAME in
-	"wireless-testing.git") # John's wireless-testing
-		echo -e "This is a ${RED}wireless-testing.git${NORMAL} compat-drivers release"
-		;;
-	"linux-next.git") # The linux-next integration testing tree
-		echo -e "This is a ${RED}linux-next.git${NORMAL} compat-drivers release"
-		;;
-	"linux-stable.git") # Greg's all stable tree
-		echo -e "This is a ${GREEN}linux-stable.git${NORMAL} compat-drivers release"
-		;;
-	"linux-2.6.git") # Linus' 2.6 tree
-		echo -e "This is a ${GREEN}linux-2.6.git${NORMAL} compat-drivers release"
-		;;
-	*)
-		;;
-	esac
-
-	cd $DIR
-	echo -e "\nBase tree: ${GREEN}$(cat .compat_base_tree)${NORMAL}" >> $CODE_METRICS
-	echo -e "Base tree version: ${PURPLE}$(cat .compat_base_tree_version)${NORMAL}" >> $CODE_METRICS
-	echo -e "compat.git: ${CYAN}$(cat .compat_base)${NORMAL}" >> $CODE_METRICS
-	echo -e "compat-drivers release: ${YELLOW}$(cat .compat_version)${NORMAL}" >> $CODE_METRICS
-
-fi
-
-
-echo -e "Code metrics archive: ${GREEN}http://bit.ly/H6BTF7${NORMAL}" >> $CODE_METRICS
-
-cat $CODE_METRICS
+refresh_compat
+gen_compat_labels
 
 ./scripts/driver-select restore

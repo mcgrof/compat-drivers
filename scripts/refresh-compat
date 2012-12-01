@@ -75,6 +75,12 @@ COPY="$COPY $EXTRA_COPY"
 REFRESH_LOCAL="scripts/refresh-compat-local"
 REFRESH_TARGET="refresh-compat"
 
+WORK_DIR="$(pwd)"
+cd ${COMPAT_SRC}
+# Only copy the base files
+./scripts/admin-update.sh -b
+cd ${WORK_DIR}
+
 for i in $COPY ; do
 	if [[ -d ${COMPAT_SRC}${i} ]]; then
 		echo -e "Copying ${BLUE}${i}${NORMAL} ..."
