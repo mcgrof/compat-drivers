@@ -6,4 +6,4 @@ Once upstream this will not be required.
  obj-$(CONFIG_ATL2) += atlx/
  obj-$(CONFIG_ATL1E) += atl1e/
  obj-$(CONFIG_ATL1C) += atl1c/
-+obj-$(CONFIG_ATLX) += alx/
++obj-$(CONFIG_ALX) += alx/
