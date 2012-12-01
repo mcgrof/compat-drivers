@@ -40,19 +40,29 @@ NOSTDINC_FLAGS := \
 
 obj-y := compat/
 
+obj-$(CONFIG_COMPAT_RFKILL) += net/rfkill/
+obj-$(CONFIG_COMPAT_VIDEO_MODULES) += drivers/gpu/drm/
 
 ifeq ($(BT),)
+obj-$(CONFIG_COMPAT_WIRELESS) += net/wireless/ net/mac80211/
+obj-$(CONFIG_COMPAT_WIRELESS_MODULES) += drivers/net/wireless/
 
+obj-$(CONFIG_COMPAT_NET_USB_MODULES) += drivers/net/usb/
 
 obj-$(CONFIG_COMPAT_NETWORK_MODULES) += drivers/net/ethernet/atheros/
 obj-$(CONFIG_COMPAT_NETWORK_MODULES) += drivers/net/ethernet/broadcom/
 
+obj-$(CONFIG_COMPAT_VAR_MODULES) += drivers/ssb/
+obj-$(CONFIG_COMPAT_VAR_MODULES) += drivers/bcma/
+obj-$(CONFIG_COMPAT_VAR_MODULES) += drivers/misc/eeprom/
 
 ifeq ($(CONFIG_STAGING_EXCLUDE_BUILD),)
 endif
 
 endif
 
+obj-$(CONFIG_COMPAT_BLUETOOTH) += net/bluetooth/
+obj-$(CONFIG_COMPAT_BLUETOOTH_MODULES) += drivers/bluetooth/
 
 else
 
