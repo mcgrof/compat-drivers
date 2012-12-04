@@ -413,6 +413,9 @@ export CONFIG_ATL1E=m
 ifndef CONFIG_COMPAT_KERNEL_2_6_28
 export CONFIG_ATL1C=m
 export CONFIG_ALX=m
+# If MDIO is needed for another driver feel free to
+# make it not depend on 2.6.28
+export CONFIG_COMPAT_MDIO=m
 endif #CONFIG_COMPAT_KERNEL_2_6_28
 
 ifdef CONFIG_WIRELESS_EXT

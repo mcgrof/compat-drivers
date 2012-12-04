@@ -384,6 +384,9 @@ DRIVERS_ETH="drivers/net/ethernet/atheros
 	     drivers/net/ethernet/atheros/atl1e
 	     drivers/net/ethernet/atheros/atlx"
 
+# Ethernet drivers that have their own file alone
+DRIVERS_ETH_FILES="mdio.c"
+
 # Bluetooth drivers
 DRIVERS_BT="drivers/bluetooth"
 
@@ -612,11 +615,18 @@ if [[ "$ENABLE_NETWORK" == "1" ]]; then
 	copyFiles "$DRIVERS_WLAN_FILES"			"drivers/net/wireless"
 	copyFiles "$RNDIS_REQUIREMENTS"			"drivers/net/usb"
 
+	# Ethernet
+	copyFiles "$DRIVERS_ETH_FILES"			"drivers/net/"
+	echo "compat_mdio-y                      += mdio.o" > drivers/net/Makefile
+	echo "obj-\$(CONFIG_COMPAT_MDIO)          += compat_mdio.o" >> drivers/net/Makefile
+	copyDirectories "$DRIVERS_ETH"
+	cp $GIT_TREE/include/linux/mdio.h include/linux/
+	cp $GIT_TREE/include/uapi/linux/mdio.h include/uapi/linux/
+
 	copyDirectories "$NET_WLAN_DIRS"
 	copyDirectories "$NET_BT_DIRS"
 	copyDirectories "$DRIVERS_BT"
 	copyDirectories "$DRIVERS_WLAN"
-	copyDirectories "$DRIVERS_ETH"
 
 	cp -a $GIT_TREE/include/linux/ssb include/linux/
 	cp -a $GIT_TREE/include/linux/bcma include/linux/
