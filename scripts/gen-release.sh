@@ -54,15 +54,16 @@ function usage()
 	echo -e "or"
 	echo -e "export GIT_TREE=${HOME}/linux-next/"
 	echo -e ""
-	echo -e "${GREEN}$1${NORMAL} ${BLUE}[ -s | -n | -p | -c | -u | -k ]${NORMAL}"
+	echo -e "${GREEN}$1${NORMAL} ${BLUE}[ -s | -n | -p | -c | -r | -k ]${NORMAL}"
 	echo -e ""
 	echo -e "-s apply ${BLUE}pending-stable/${NORMAL}             patches"
 	echo -e "-n apply ${BLUE}linux-next-cherry-picks/${NORMAL}    patches"
 	echo -e "-p apply ${BLUE}linux-next-pending/${NORMAL}         patches"
 	echo -e "-c apply ${BLUE}crap/${NORMAL}                       patches"
+	echo -e "-u apply ${BLUE}unified-drivers/${NORMAL}	      patches"
 	echo -e ""
 	echo -e "-k run ${GREEN}git clean -x -d -f${NORMAL} for you, ${RED}not for the faint of heart${NORMAL}"
-	echo -e "-u upload to kernel.org"
+	echo -e "-r release to kernel.org"
 	echo
 	echo Examples usages:
 	echo
@@ -135,8 +136,13 @@ while [ $# -ne 0 ]; do
 		POSTFIX_RELEASE_TAG="${POSTFIX_RELEASE_TAG}c"
 		shift; continue;
 	fi
-
 	if [[ "$1" = "-u" ]]; then
+		UPDATE_ARGS="${UPDATE_ARGS} $1"
+		POSTFIX_RELEASE_TAG="${POSTFIX_RELEASE_TAG}u"
+		shift; continue;
+	fi
+
+	if [[ "$1" = "-r" ]]; then
 		USE_KUP="1"
 		shift; continue;
 	fi
