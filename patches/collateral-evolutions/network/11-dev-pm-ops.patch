@@ -97,7 +97,7 @@ calls on compat code with only slight modifications.
 @@ -337,7 +340,12 @@ static struct pci_driver ath5k_pci_drive
  	.id_table	= ath5k_pci_id_table,
  	.probe		= ath5k_pci_probe,
- 	.remove		= __devexit_p(ath5k_pci_remove),
+ 	.remove		= ath5k_pci_remove,
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
  	.driver.pm	= ATH5K_PM_OPS,
 +#elif defined(CONFIG_PM_SLEEP)
@@ -137,7 +137,7 @@ calls on compat code with only slight modifications.
 @@ -3885,7 +3885,12 @@ static struct pci_driver il3945_driver =
  	.id_table = il3945_hw_card_ids,
  	.probe = il3945_pci_probe,
- 	.remove = __devexit_p(il3945_pci_remove),
+ 	.remove = il3945_pci_remove,
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
  	.driver.pm = IL_LEGACY_PM_OPS,
 +#elif defined(CONFIG_PM)
@@ -152,7 +152,7 @@ calls on compat code with only slight modifications.
 @@ -6773,7 +6773,12 @@ static struct pci_driver il4965_driver =
  	.id_table = il4965_hw_card_ids,
  	.probe = il4965_pci_probe,
- 	.remove = __devexit_p(il4965_pci_remove),
+ 	.remove = il4965_pci_remove,
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
  	.driver.pm = IL_LEGACY_PM_OPS,
 +#elif defined(CONFIG_PM)
@@ -214,7 +214,7 @@ calls on compat code with only slight modifications.
 @@ -353,7 +356,12 @@ static struct pci_driver iwl_pci_driver
  	.id_table = iwl_hw_card_ids,
  	.probe = iwl_pci_probe,
- 	.remove = __devexit_p(iwl_pci_remove),
+ 	.remove = iwl_pci_remove,
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
  	.driver.pm = IWL_PM_OPS,
 +#elif defined(CONFIG_PM)
@@ -367,7 +367,7 @@ calls on compat code with only slight modifications.
 @@ -693,7 +696,12 @@ static struct pci_driver p54p_driver = {
  	.id_table	= p54p_table,
  	.probe		= p54p_probe,
- 	.remove		= __devexit_p(p54p_remove),
+ 	.remove		= p54p_remove,
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
  	.driver.pm	= P54P_PM_OPS,
 +#elif defined(CONFIG_PM)
