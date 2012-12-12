@@ -291,7 +291,8 @@ INCLUDE_LINUX_WLAN="ieee80211.h
 		    eeprom_93cx6.h
 		    ath9k_platform.h
 		    wl12xx.h
-		    rndis.h"
+		    rndis.h
+		    bcm47xx_wdt.h"
 
 # For rndis_wext
 INCLUDE_LINUX_USB_WLAN="usbnet.h
