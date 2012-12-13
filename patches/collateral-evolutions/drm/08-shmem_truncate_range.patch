@@ -27,7 +27,7 @@ Date:   Mon Jun 27 16:18:19 2011 -0700
 
 --- a/drivers/gpu/drm/i915/i915_gem.c
 +++ b/drivers/gpu/drm/i915/i915_gem.c
-@@ -1650,7 +1650,14 @@ i915_gem_object_truncate(struct drm_i915
+@@ -1639,7 +1639,14 @@ i915_gem_object_truncate(struct drm_i915
  	 * backing pages, *now*.
  	 */
  	inode = obj->base.filp->f_path.dentry->d_inode;

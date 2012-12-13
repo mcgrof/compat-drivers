@@ -97,7 +97,7 @@ not < 3.3.0.
  #include <drm/drmP.h>
  
  #include "nouveau_drm.h"
-@@ -228,4 +229,4 @@ fail_detach:
+@@ -224,4 +225,4 @@ fail_detach:
  	dma_buf_detach(dma_buf, attach);
  	return ERR_PTR(ret);
  }
@@ -236,7 +236,7 @@ not < 3.3.0.
  	dev = drm->dev;
 --- a/drivers/gpu/drm/nouveau/nouveau_drm.c
 +++ b/drivers/gpu/drm/nouveau/nouveau_drm.c
-@@ -591,7 +591,10 @@ driver = {
+@@ -622,7 +622,10 @@ driver = {
  	.driver_features =
  		DRIVER_USE_AGP | DRIVER_PCI_DMA | DRIVER_SG |
  		DRIVER_HAVE_IRQ | DRIVER_IRQ_SHARED | DRIVER_GEM |
@@ -248,7 +248,7 @@ not < 3.3.0.
  
  	.load = nouveau_drm_load,
  	.unload = nouveau_drm_unload,
-@@ -612,10 +615,12 @@ driver = {
+@@ -643,10 +646,12 @@ driver = {
  	.ioctls = nouveau_ioctls,
  	.fops = &nouveau_driver_fops,
  
@@ -323,7 +323,7 @@ not < 3.3.0.
  
  static void i915_gem_object_flush_gtt_write_domain(struct drm_i915_gem_object *obj);
  static void i915_gem_object_flush_cpu_write_domain(struct drm_i915_gem_object *obj);
-@@ -3778,8 +3780,10 @@ void i915_gem_free_object(struct drm_gem
+@@ -3773,8 +3775,10 @@ void i915_gem_free_object(struct drm_gem
  
  	BUG_ON(obj->pages);
  

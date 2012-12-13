@@ -754,7 +754,7 @@
 --- a/drivers/net/wireless/b43/pcmcia.c
 +++ b/drivers/net/wireless/b43/pcmcia.c
 @@ -63,6 +63,9 @@ static int b43_pcmcia_resume(struct pcmc
- static int __devinit b43_pcmcia_probe(struct pcmcia_device *dev)
+ static int b43_pcmcia_probe(struct pcmcia_device *dev)
  {
  	struct ssb_bus *ssb;
 +#if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,37))
@@ -763,7 +763,7 @@
  	int err = -ENOMEM;
  	int res = 0;
  
-@@ -72,6 +75,7 @@ static int __devinit b43_pcmcia_probe(st
+@@ -72,6 +75,7 @@ static int b43_pcmcia_probe(struct pcmci
  
  	err = -ENODEV;
  
@@ -771,7 +771,7 @@
  	dev->config_flags |= CONF_ENABLE_IRQ;
  
  	dev->resource[2]->flags |=  WIN_ENABLE | WIN_DATA_WIDTH_16 |
-@@ -79,21 +83,46 @@ static int __devinit b43_pcmcia_probe(st
+@@ -79,21 +83,46 @@ static int b43_pcmcia_probe(struct pcmci
  	dev->resource[2]->start = 0;
  	dev->resource[2]->end = SSB_CORE_SIZE;
  	res = pcmcia_request_window(dev, dev->resource[2], 250);
@@ -819,7 +819,7 @@
  	if (err)
  		goto err_disable;
  	dev->priv = ssb;
-@@ -122,7 +151,13 @@ static void __devexit b43_pcmcia_remove(
+@@ -122,7 +151,13 @@ static void b43_pcmcia_remove(struct pcm
  
  static struct pcmcia_driver b43_pcmcia_driver = {
  	.owner		= THIS_MODULE,
@@ -832,7 +832,7 @@
 +#endif
  	.id_table	= b43_pcmcia_tbl,
  	.probe		= b43_pcmcia_probe,
- 	.remove		= __devexit_p(b43_pcmcia_remove),
+ 	.remove		= b43_pcmcia_remove,
 --- a/drivers/net/wireless/libertas/if_cs.c
 +++ b/drivers/net/wireless/libertas/if_cs.c
 @@ -757,7 +757,11 @@ static void if_cs_prog_firmware(struct l
@@ -1400,7 +1400,7 @@
  	.suspend	= spectrum_cs_suspend,
 --- a/drivers/ssb/main.c
 +++ b/drivers/ssb/main.c
-@@ -504,7 +504,11 @@ static int ssb_devices_register(struct s
+@@ -510,7 +510,11 @@ static int ssb_devices_register(struct s
  			break;
  		case SSB_BUSTYPE_PCMCIA:
  #ifdef CONFIG_SSB_PCMCIAHOST

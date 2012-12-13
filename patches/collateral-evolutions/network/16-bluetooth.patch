@@ -271,8 +271,8 @@ here still, but for now we keep this here.
 +#endif
  	hid->hid_output_raw_report = hidp_output_raw_report;
  
- 	return 0;
-@@ -953,6 +1036,7 @@ fault:
+ 	/* True if device is blacklisted in drivers/hid/hid-core.c */
+@@ -960,6 +1043,7 @@ fault:
  
  	return err;
  }
@@ -280,7 +280,7 @@ here still, but for now we keep this here.
  
  int hidp_add_connection(struct hidp_connadd_req *req, struct socket *ctrl_sock, struct socket *intr_sock)
  {
-@@ -968,6 +1052,39 @@ int hidp_add_connection(struct hidp_conn
+@@ -975,6 +1059,39 @@ int hidp_add_connection(struct hidp_conn
  
  	BT_DBG("rd_data %p rd_size %d", req->rd_data, req->rd_size);
  
@@ -320,15 +320,15 @@ here still, but for now we keep this here.
  	down_write(&hidp_session_sem);
  
  	s = __hidp_get_session(&bt_sk(ctrl_sock->sk)->dst);
-@@ -1015,6 +1132,7 @@ int hidp_add_connection(struct hidp_conn
+@@ -1022,6 +1139,7 @@ int hidp_add_connection(struct hidp_conn
  
  	__hidp_link_session(session);
  
 +#if (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,27))
  	if (req->rd_size > 0) {
  		err = hidp_setup_hid(session, req);
- 		if (err)
-@@ -1026,6 +1144,16 @@ int hidp_add_connection(struct hidp_conn
+ 		if (err && err != -ENODEV)
+@@ -1033,6 +1151,16 @@ int hidp_add_connection(struct hidp_conn
  		if (err < 0)
  			goto purge;
  	}
@@ -345,7 +345,7 @@ here still, but for now we keep this here.
  
  	hidp_set_timer(session);
  
-@@ -1084,6 +1212,7 @@ unlink:
+@@ -1091,6 +1219,7 @@ unlink:
  		session->input = NULL;
  	}
  
@@ -353,7 +353,7 @@ here still, but for now we keep this here.
  	if (session->hid) {
  		hid_destroy_device(session->hid);
  		session->hid = NULL;
-@@ -1097,10 +1226,15 @@ purge:
+@@ -1104,10 +1233,15 @@ purge:
  
  	skb_queue_purge(&session->ctrl_transmit);
  	skb_queue_purge(&session->intr_transmit);
@@ -462,7 +462,7 @@ here still, but for now we keep this here.
  	struct rfcomm_dlc *dlc = dev->dlc;
 --- a/net/bluetooth/sco.c
 +++ b/net/bluetooth/sco.c
-@@ -433,8 +433,12 @@ static struct sock *sco_sock_alloc(struc
+@@ -424,8 +424,12 @@ static struct sock *sco_sock_alloc(struc
  	return sk;
  }
  
@@ -475,7 +475,7 @@ here still, but for now we keep this here.
  {
  	struct sock *sk;
  
-@@ -685,7 +689,11 @@ static int sco_sock_recvmsg(struct kiocb
+@@ -676,7 +680,11 @@ static int sco_sock_recvmsg(struct kiocb
  	return bt_sock_recvmsg(iocb, sock, msg, len, flags);
  }
  

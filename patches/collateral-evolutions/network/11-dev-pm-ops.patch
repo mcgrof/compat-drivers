@@ -34,7 +34,7 @@ calls on compat code with only slight modifications.
  int __init bcma_host_pci_init(void)
 --- a/drivers/net/ethernet/atheros/atl1c/atl1c_main.c
 +++ b/drivers/net/ethernet/atheros/atl1c/atl1c_main.c
-@@ -2691,6 +2691,9 @@ static const struct pci_error_handlers a
+@@ -2690,6 +2690,9 @@ static const struct pci_error_handlers a
  	.resume = atl1c_io_resume,
  };
  
@@ -44,8 +44,8 @@ calls on compat code with only slight modifications.
  static SIMPLE_DEV_PM_OPS(atl1c_pm_ops, atl1c_suspend, atl1c_resume);
  
  static struct pci_driver atl1c_driver = {
-@@ -2700,7 +2703,12 @@ static struct pci_driver atl1c_driver =
- 	.remove   = __devexit_p(atl1c_remove),
+@@ -2699,7 +2702,12 @@ static struct pci_driver atl1c_driver =
+ 	.remove   = atl1c_remove,
  	.shutdown = atl1c_shutdown,
  	.err_handler = &atl1c_err_handler,
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
@@ -69,9 +69,9 @@ calls on compat code with only slight modifications.
  static SIMPLE_DEV_PM_OPS(atl1_pm_ops, atl1_suspend, atl1_resume);
  #define ATL1_PM_OPS	(&atl1_pm_ops)
  
-@@ -3148,7 +3151,12 @@ static struct pci_driver atl1_driver = {
+@@ -3147,7 +3150,12 @@ static struct pci_driver atl1_driver = {
  	.probe = atl1_probe,
- 	.remove = __devexit_p(atl1_remove),
+ 	.remove = atl1_remove,
  	.shutdown = atl1_shutdown,
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
  	.driver.pm = ATL1_PM_OPS,
@@ -184,7 +184,7 @@ calls on compat code with only slight modifications.
  
 --- a/drivers/net/wireless/iwlegacy/common.h
 +++ b/drivers/net/wireless/iwlegacy/common.h
-@@ -1843,7 +1843,14 @@ __le32 il_add_beacon_time(struct il_priv
+@@ -1835,7 +1835,14 @@ __le32 il_add_beacon_time(struct il_priv
  			  u32 beacon_interval);
  
  #ifdef CONFIG_PM
@@ -226,7 +226,7 @@ calls on compat code with only slight modifications.
  int __must_check iwl_pci_register_driver(void)
 --- a/drivers/net/wireless/libertas/if_spi.c
 +++ b/drivers/net/wireless/libertas/if_spi.c
-@@ -1249,6 +1249,7 @@ static int __devexit libertas_spi_remove
+@@ -1249,6 +1249,7 @@ static int libertas_spi_remove(struct sp
  	return 0;
  }
  

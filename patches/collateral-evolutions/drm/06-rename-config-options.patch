@@ -142,7 +142,7 @@
 +obj-$(CONFIG_COMPAT_DRM_MGAG200) += mgag200.o
 --- a/drivers/gpu/drm/nouveau/Makefile
 +++ b/drivers/gpu/drm/nouveau/Makefile
-@@ -187,6 +187,6 @@ nouveau-y += nouveau_mem.o
+@@ -217,6 +217,6 @@ nouveau-y += nouveau_mem.o
  # other random bits
  nouveau-$(CONFIG_COMPAT) += nouveau_ioc32.o
  nouveau-$(CONFIG_ACPI) += nouveau_acpi.o
