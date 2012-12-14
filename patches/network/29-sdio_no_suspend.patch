@@ -100,7 +100,7 @@ suspend and resume that are not backported.
  /*
   * SDIO suspend.
   *
-@@ -254,6 +257,7 @@ static int mwifiex_sdio_resume(struct de
+@@ -255,6 +258,7 @@ static int mwifiex_sdio_resume(struct de
  
  	return 0;
  }
@@ -108,7 +108,7 @@ suspend and resume that are not backported.
  
  /* Device ID for SD8786 */
  #define SDIO_DEVICE_ID_MARVELL_8786   (0x9116)
-@@ -272,10 +276,12 @@ static const struct sdio_device_id mwifi
+@@ -273,10 +277,12 @@ static const struct sdio_device_id mwifi
  
  MODULE_DEVICE_TABLE(sdio, mwifiex_ids);
  
@@ -121,7 +121,7 @@ suspend and resume that are not backported.
  
  static struct sdio_driver mwifiex_sdio = {
  	.name = "mwifiex_sdio",
-@@ -284,7 +290,9 @@ static struct sdio_driver mwifiex_sdio =
+@@ -285,7 +291,9 @@ static struct sdio_driver mwifiex_sdio =
  	.remove = mwifiex_sdio_remove,
  	.drv = {
  		.owner = THIS_MODULE,
