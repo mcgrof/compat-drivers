@@ -323,8 +323,7 @@ INCLUDE_NET_BT="hci_core.h
 		mgmt.h
 		sco.h
 		smp.h
-		a2mp.h
-		amp.h"
+		a2mp.h"
 
 # Required wlan headers from include/linux
 INCLUDE_LINUX_WLAN="ieee80211.h
