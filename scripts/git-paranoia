@@ -84,11 +84,16 @@ function __git_paranoia()
 }
 
 if [[ -z $GIT_DIRS ]]; then
-	echo -e "${RED}Error${NORMAL}:"
-	echo -e "Set the ${CYAN}GIT_DIRS${NORMAL} environment variable with your list of git trees"
-	echo
-	usage $0
-	exit 1
+	GIT_DIRS="${PWD}"
+	STAT="$(git status > /dev/null 2>&1 && echo $?)"
+	if [[ $STAT -ne 0 ]]; then
+		echo -e "${RED}Error${NORMAL}:"
+		echo -e "${PWD} not a git tree. Jump into one or set the "
+		echo -e "${CYAN}GIT_DIRS${NORMAL} environment variable with your list of git trees"
+		echo
+		usage $0
+		exit 1
+	fi
 fi
 
 while [ $# -ne 0 ]; do
