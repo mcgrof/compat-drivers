@@ -7,13 +7,13 @@ This should go into patches/01-netdev.patch
  	/* comoute mc addresses' hash value ,and put it into hash table */
  	netdev_for_each_mc_addr(ha, netdev)
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,35))
- 		alx_add_mc_addr(adpt, ha->addr);
+ 		alx_add_mc_addr(hw, ha->addr);
 +#else
-+		alx_add_mc_addr(adpt, ha->dmi_addr);
++		alx_add_mc_addr(hw, ha->dmi_addr);
 +#endif
  
- 	ALX_MEM_W32(adpt, ALX_HASH_TBL0, adpt->mc_hash[0]);
- 	ALX_MEM_W32(adpt, ALX_HASH_TBL1, adpt->mc_hash[1]);
+ 	ALX_MEM_W32(hw, ALX_HASH_TBL0, adpt->mc_hash[0]);
+ 	ALX_MEM_W32(hw, ALX_HASH_TBL1, adpt->mc_hash[1]);
 @@ -133,8 +137,10 @@ static int alx_set_mac_address(struct ne
  	if (!is_valid_ether_addr(addr->sa_data))
  		return -EADDRNOTAVAIL;
@@ -42,7 +42,7 @@ This should go into patches/01-netdev.patch
  /* alx_change_mtu - Change the Maximum Transfer Unit */
  static int alx_change_mtu(struct net_device *netdev, int new_mtu)
 @@ -1188,7 +1196,17 @@ static int alx_change_mtu(struct net_dev
- 		netdev->mtu = new_mtu;
+ 		adpt->hw.mtu = new_mtu;
  		adpt->rxbuf_size = new_mtu > ALX_DEF_RXBUF_SIZE ?
  				   ALIGN(max_frame, 8) : ALX_DEF_RXBUF_SIZE;
 +#if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,39))
@@ -56,7 +56,8 @@ This should go into patches/01-netdev.patch
 +#else
  		netdev_update_features(netdev);
 +#endif /* (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,39)) */
- 		alx_reinit(adpt);
+ 		if (netif_running(netdev))
+ 			alx_reinit(adpt);
  	}
  
 @@ -2476,8 +2494,10 @@ static const struct net_device_ops alx_n
