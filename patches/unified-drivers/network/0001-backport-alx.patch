@@ -12,8 +12,8 @@ This should go into patches/01-netdev.patch
 +		alx_add_mc_addr(hw, ha->dmi_addr);
 +#endif
  
- 	ALX_MEM_W32(hw, ALX_HASH_TBL0, adpt->mc_hash[0]);
- 	ALX_MEM_W32(hw, ALX_HASH_TBL1, adpt->mc_hash[1]);
+ 	ALX_MEM_W32(hw, ALX_HASH_TBL0, hw->mc_hash[0]);
+ 	ALX_MEM_W32(hw, ALX_HASH_TBL1, hw->mc_hash[1]);
 @@ -133,8 +137,10 @@ static int alx_set_mac_address(struct ne
  	if (!is_valid_ether_addr(addr->sa_data))
  		return -EADDRNOTAVAIL;
@@ -24,7 +24,7 @@ This should go into patches/01-netdev.patch
 +#endif
  
  	memcpy(netdev->dev_addr, addr->sa_data, netdev->addr_len);
- 	memcpy(adpt->mac_addr, addr->sa_data, netdev->addr_len);
+ 	memcpy(hw->mac_addr, addr->sa_data, netdev->addr_len);
 @@ -1130,6 +1136,7 @@ static int __devinit alx_init_sw(struct
  	return err;
  }
