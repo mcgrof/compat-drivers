@@ -2,7 +2,7 @@ This should go into patches/01-netdev.patch
 
 --- a/drivers/net/ethernet/atheros/alx/alx_main.c
 +++ b/drivers/net/ethernet/atheros/alx/alx_main.c
-@@ -102,7 +102,11 @@ static void __alx_set_rx_mode(struct net
+@@ -96,7 +96,11 @@ static void __alx_set_rx_mode(struct net
  
  	/* comoute mc addresses' hash value ,and put it into hash table */
  	netdev_for_each_mc_addr(ha, netdev)
@@ -14,7 +14,7 @@ This should go into patches/01-netdev.patch
  
  	ALX_MEM_W32(hw, ALX_HASH_TBL0, hw->mc_hash[0]);
  	ALX_MEM_W32(hw, ALX_HASH_TBL1, hw->mc_hash[1]);
-@@ -133,8 +137,10 @@ static int alx_set_mac_address(struct ne
+@@ -128,8 +132,10 @@ static int alx_set_mac_address(struct ne
  	if (!is_valid_ether_addr(addr->sa_data))
  		return -EADDRNOTAVAIL;
  
@@ -25,9 +25,9 @@ This should go into patches/01-netdev.patch
  
  	memcpy(netdev->dev_addr, addr->sa_data, netdev->addr_len);
  	memcpy(hw->mac_addr, addr->sa_data, netdev->addr_len);
-@@ -1130,6 +1136,7 @@ static int __devinit alx_init_sw(struct
- 	return err;
+@@ -1135,6 +1141,7 @@ static void alx_set_vlan_mode(struct alx
  }
+ 
  
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,39))
  static netdev_features_t alx_fix_features(struct net_device *netdev,
@@ -41,7 +41,7 @@ This should go into patches/01-netdev.patch
  
  /* alx_change_mtu - Change the Maximum Transfer Unit */
  static int alx_change_mtu(struct net_device *netdev, int new_mtu)
-@@ -1188,7 +1196,17 @@ static int alx_change_mtu(struct net_dev
+@@ -1191,7 +1199,17 @@ static int alx_change_mtu(struct net_dev
  		adpt->hw.mtu = new_mtu;
  		adpt->rxbuf_size = new_mtu > ALX_DEF_RXBUF_SIZE ?
  				   ALIGN(max_frame, 8) : ALX_DEF_RXBUF_SIZE;
