@@ -6,7 +6,7 @@
 # of their distribution. This can also help people who may
 # want to wireless-boot their systems.
 
-LSB_RED_ID=$(/usr/bin/lsb_release -i -s)
+LSB_RED_ID=$(/usr/bin/lsb_release -i -s &> /dev/null)
 
 KLIB=/lib/modules/$(uname -r)/build
 ver=$(echo $KLIB | awk -F "/lib/modules/" '{print $2}' | awk -F"/" '{print $1}')
