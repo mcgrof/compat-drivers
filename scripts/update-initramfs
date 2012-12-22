@@ -1,12 +1,10 @@
 #!/bin/bash
 # Copyright 2009        Luis R. Rodriguez <mcgrof@gmail.com>
 #
-# Since we provide ssb, the Ethernet module b44 some people may
-# rely on it to netboot, so update the initrafms for each
-# distribution.
-#
-# Note that in the future people may want to wireless-boot
-# so this will help with that as well.
+# Since we provide ssb, ethernet modules and most importantly
+# DRM drivers, people may want to update the initramfs image
+# of their distribution. This can also help people who may
+# want to wireless-boot their systems.
 
 LSB_RED_ID=$(/usr/bin/lsb_release -i -s)
 
@@ -29,7 +27,7 @@ case $LSB_RED_ID in
 	;;
 *)
 	echo "Warning:"
-	echo "You may or may not need to update your initframfs, you should if"
+	echo "You may or may not need to update your initramfs, you should if"
 	echo "any of the modules installed are part of your initramfs. To add"
 	echo "support for your distribution to do this automatically send a"
 	echo "patch against $0. If your distribution does not require this"
