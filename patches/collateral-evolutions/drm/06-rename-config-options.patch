@@ -174,7 +174,7 @@
  CFLAGS_radeon_trace_points.o := -I$(src)
 --- a/drivers/gpu/drm/radeon/radeon_drv.c
 +++ b/drivers/gpu/drm/radeon/radeon_drv.c
-@@ -229,7 +229,7 @@ static struct pci_device_id pciidlist[]
+@@ -230,7 +230,7 @@ static struct pci_device_id pciidlist[]
  	radeon_PCI_IDS
  };
  
@@ -183,7 +183,7 @@
  MODULE_DEVICE_TABLE(pci, pciidlist);
  #endif
  
-@@ -443,7 +443,7 @@ static int __init radeon_init(void)
+@@ -444,7 +444,7 @@ static int __init radeon_init(void)
  #endif
  	/* if enabled by default */
  	if (radeon_modeset == -1) {

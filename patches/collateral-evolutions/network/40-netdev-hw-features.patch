@@ -48,7 +48,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  void atl1c_set_ethtool_ops(struct net_device *netdev)
 --- a/drivers/net/ethernet/atheros/atl1c/atl1c_main.c
 +++ b/drivers/net/ethernet/atheros/atl1c/atl1c_main.c
-@@ -492,6 +492,7 @@ static void atl1c_set_rxbufsize(struct a
+@@ -491,6 +491,7 @@ static void atl1c_set_rxbufsize(struct a
  		roundup(mtu + ETH_HLEN + ETH_FCS_LEN + VLAN_HLEN, 8) : AT_RX_BUF_SIZE;
  }
  
@@ -56,7 +56,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  static netdev_features_t atl1c_fix_features(struct net_device *netdev,
  	netdev_features_t features)
  {
-@@ -520,6 +521,7 @@ static int atl1c_set_features(struct net
+@@ -519,6 +520,7 @@ static int atl1c_set_features(struct net
  
  	return 0;
  }
@@ -64,7 +64,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  
  /**
   * atl1c_change_mtu - Change the Maximum Transfer Unit
-@@ -552,8 +554,19 @@ static int atl1c_change_mtu(struct net_d
+@@ -551,8 +553,19 @@ static int atl1c_change_mtu(struct net_d
  		netdev->mtu = new_mtu;
  		adapter->hw.max_frame_size = new_mtu;
  		atl1c_set_rxbufsize(adapter, netdev);
@@ -84,7 +84,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  		atl1c_up(adapter);
  		clear_bit(__AT_RESETTING, &adapter->flags);
  	}
-@@ -2405,8 +2418,10 @@ static const struct net_device_ops atl1c
+@@ -2404,8 +2417,10 @@ static const struct net_device_ops atl1c
  	.ndo_set_mac_address	= atl1c_set_mac_addr,
  	.ndo_set_rx_mode	= atl1c_set_multi,
  	.ndo_change_mtu		= atl1c_change_mtu,
@@ -95,7 +95,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  	.ndo_do_ioctl		= atl1c_ioctl,
  	.ndo_tx_timeout		= atl1c_tx_timeout,
  	.ndo_get_stats		= atl1c_get_stats,
-@@ -2425,6 +2440,7 @@ static int atl1c_init_netdev(struct net_
+@@ -2424,6 +2439,7 @@ static int atl1c_init_netdev(struct net_
  	atl1c_set_ethtool_ops(netdev);
  
  	/* TODO: add when ready */
@@ -103,7 +103,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  	netdev->hw_features =	NETIF_F_SG	   |
  				NETIF_F_HW_CSUM	   |
  				NETIF_F_HW_VLAN_RX |
-@@ -2432,6 +2448,14 @@ static int atl1c_init_netdev(struct net_
+@@ -2431,6 +2447,14 @@ static int atl1c_init_netdev(struct net_
  				NETIF_F_TSO6;
  	netdev->features =	netdev->hw_features |
  				NETIF_F_HW_VLAN_TX;
@@ -315,7 +315,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  static void atl2_set_ethtool_ops(struct net_device *netdev)
 --- a/drivers/net/ethernet/atheros/atlx/atlx.c
 +++ b/drivers/net/ethernet/atheros/atlx/atlx.c
-@@ -255,6 +255,7 @@ static void atlx_restore_vlan(struct atl
+@@ -254,6 +254,7 @@ static void atlx_restore_vlan(struct atl
  	atlx_vlan_mode(adapter->netdev, adapter->netdev->features);
  }
  
@@ -323,7 +323,7 @@ Date:   Thu Apr 7 07:32:18 2011 +0000
  static netdev_features_t atlx_fix_features(struct net_device *netdev,
  	netdev_features_t features)
  {
-@@ -280,5 +281,6 @@ static int atlx_set_features(struct net_
+@@ -279,5 +280,6 @@ static int atlx_set_features(struct net_
  
  	return 0;
  }
