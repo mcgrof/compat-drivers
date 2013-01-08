@@ -22,7 +22,7 @@ calls on compat code with only slight modifications.
 @@ -285,7 +288,12 @@ static struct pci_driver bcma_pci_bridge
  	.id_table = bcma_pci_bridge_tbl,
  	.probe = bcma_host_pci_probe,
- 	.remove = bcma_host_pci_remove,
+ 	.remove = __devexit_p(bcma_host_pci_remove),
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
  	.driver.pm = BCMA_PM_OPS,
 +#elif defined(CONFIG_PM_SLEEP)
