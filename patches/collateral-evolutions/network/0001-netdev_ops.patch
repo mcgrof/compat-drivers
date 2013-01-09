@@ -69,6 +69,17 @@ Date:   Wed Nov 19 21:32:24 2008 -0800
  	dev->destructor = free_netdev;
  	dev->watchdog_timeo = ATH6KL_TX_TIMEOUT;
  
+--- a/drivers/net/wireless/ath/wil6210/netdev.c
++++ b/drivers/net/wireless/ath/wil6210/netdev.c
+@@ -104,7 +104,7 @@ void *wil_if_alloc(struct device *dev, v
+ 		goto out_priv;
+ 	}
+ 
+-	ndev->netdev_ops = &wil_netdev_ops;
++	netdev_attach_ops(ndev, &wil_netdev_ops);
+ 	ndev->ieee80211_ptr = wdev;
+ 	SET_NETDEV_DEV(ndev, wiphy_dev(wdev->wiphy));
+ 	wdev->netdev = ndev;
 --- a/drivers/net/wireless/rndis_wlan.c
 +++ b/drivers/net/wireless/rndis_wlan.c
 @@ -3442,7 +3442,7 @@ static int rndis_wlan_bind(struct usbnet
