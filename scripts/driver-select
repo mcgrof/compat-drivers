@@ -35,7 +35,7 @@ PURPLE="\033[35m"
 CYAN="\033[36m"
 UNDERLINE="\033[02m"
 
-SUPPORTED_80211_DRIVERS="ath5k ath9k ath9k_ap ath9k_htc carl9170 ath6kl b43 zd1211rw rt2x00 wl1251 wl12xx brcmsmac brcmfmac"
+SUPPORTED_80211_DRIVERS="ath5k ath9k ath9k_ap ath9k_htc carl9170 ath6kl wil6210 b43 zd1211rw rt2x00 wl1251 wl12xx brcmsmac brcmfmac"
 
 # b43 needs some more work for driver-select, the SSB stuff, plus
 # what if you update b44 but not b43? It will bust.
@@ -65,8 +65,8 @@ function usage {
 
 	# These should match the switch below.
 	echo -e "\nSupported group drivers:"
-	echo -e "\t${CYAN}atheros${NORMAL} < ${PURPLE} ath5k ath9k carl9170 zd1211rw ath6kl${NORMAL}>"
-	echo -e "\t${CYAN}ath${NORMAL} < ${PURPLE} ath5k ath9k carl9170 ath6kl${NORMAL}>"
+	echo -e "\t${CYAN}atheros${NORMAL} < ${PURPLE} ath5k ath9k carl9170 zd1211rw ath6kl wil6210${NORMAL}>"
+	echo -e "\t${CYAN}ath${NORMAL} < ${PURPLE} ath5k ath9k carl9170 ath6kl wil6210${NORMAL}>"
 	echo -e "\t${CYAN}brcm80211${NORMAL} < ${PURPLE} brcmsmac brcmfmac ${NORMAL}>"
 	echo -e "\t${CYAN}intel${NORMAL} < ${PURPLE} iwlwifi, iwlegacy ${NORMAL}>"
 	echo -e "\t${CYAN}rtl818x${NORMAL} < ${PURPLE} rtl8180 rtl8187 ${NORMAL}>"
@@ -446,6 +446,12 @@ case $1 in
 		disable_bt_usb_ethernet_var
 		select_drivers		CONFIG_ATH_COMMON
 		select_ath_driver	CONFIG_ATH6KL
+		;;
+	wil6210)
+		disable_staging
+		disable_bt_usb_ethernet_var
+		select_drivers		CONFIG_ATH_COMMON
+		select_ath_driver	CONFIG_WIL6210
 		;;
 	brcmsmac)
 		disable_staging

@@ -338,6 +338,7 @@ DRIVERS_WLAN="drivers/net/wireless/ath
 	      drivers/net/wireless/ath/ath5k
 	      drivers/net/wireless/ath/ath6kl
 	      drivers/net/wireless/ath/ath9k
+	      drivers/net/wireless/ath/wil6210
 	      drivers/ssb
 	      drivers/bcma
 	      drivers/net/wireless/b43
