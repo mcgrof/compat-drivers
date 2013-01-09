@@ -6,13 +6,15 @@ COMPAT_WIRELESS=$HOME/devel/compat-drivers/.git
 OLD_VER=7
 let VER="8"
 RC="-rc2"
-LOG="ChangeLog-3.${VER}${RC}"
+export GIT_DIR=${COMPAT_WIRELESS}
+CD_VER="$(git describe | sed -e 's|compat-drivers-||g')"
+LOG="ChangeLog-${CD_VER}"
 
 echo > $LOG
 
-echo -e "===============================================" >> $LOG
-echo -e "ChangeLog for compat-drivers for linux-3.${VER}${RC}" >> $LOG
-echo -e "===============================================" >> $LOG
+echo -e "================================================================" >> $LOG
+echo -e "ChangeLog for $(git describe) based on linux-3.${VER}${RC}" >> $LOG
+echo -e "================================================================" >> $LOG
 
 echo -e "
 This is the ChangeLog for the Linux kernel project compat-drivers.
