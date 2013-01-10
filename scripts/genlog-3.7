@@ -8,7 +8,7 @@ export GIT_DIR=${COMPAT_DRIVERS}
 OLD_VER=6
 let VER="7"
 RC="-rc1"
-LOG="ChangeLog-$(git describe| sed -e 's|compat-drivers-||')"
+LOG="ChangeLog-$(git describe| sed -e 's|compat-drivers-v||')"
 
 echo > $LOG
 
