@@ -7,7 +7,7 @@ OLD_VER=7
 let VER="8"
 RC="-rc2"
 export GIT_DIR=${COMPAT_WIRELESS}
-CD_VER="$(git describe | sed -e 's|compat-drivers-||g')"
+CD_VER="$(git describe | sed -e 's|compat-drivers-v||g')"
 LOG="ChangeLog-${CD_VER}"
 
 echo > $LOG
