@@ -1,6 +1,6 @@
 --- a/net/wireless/sysfs.c
 +++ b/net/wireless/sysfs.c
-@@ -122,12 +122,14 @@ static int wiphy_resume(struct device *d
+@@ -120,12 +120,14 @@ static int wiphy_resume(struct device *d
  	return ret;
  }
  
@@ -15,8 +15,8 @@
  
  struct class ieee80211_class = {
  	.name = "ieee80211",
-@@ -139,8 +141,10 @@ struct class ieee80211_class = {
- #endif
+@@ -135,8 +137,10 @@ struct class ieee80211_class = {
+ 	.dev_uevent = wiphy_uevent,
  	.suspend = wiphy_suspend,
  	.resume = wiphy_resume,
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,35))
