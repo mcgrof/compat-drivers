@@ -97,7 +97,7 @@ not < 3.3.0.
  #include <drm/drmP.h>
  
  #include "nouveau_drm.h"
-@@ -224,4 +225,4 @@ fail_detach:
+@@ -225,4 +226,4 @@ fail_detach:
  	dma_buf_detach(dma_buf, attach);
  	return ERR_PTR(ret);
  }
@@ -113,7 +113,7 @@ not < 3.3.0.
  #include <drm/drmP.h>
  
  #include "radeon.h"
-@@ -225,3 +226,4 @@ fail_detach:
+@@ -226,3 +227,4 @@ fail_detach:
  	dma_buf_detach(dma_buf, attach);
  	return ERR_PTR(ret);
  }
@@ -344,7 +344,7 @@ not < 3.3.0.
  #include <drm/drmP.h>
  #include "i915_drv.h"
  #include <linux/dma-buf.h>
-@@ -302,3 +303,4 @@ fail_detach:
+@@ -307,3 +308,4 @@ fail_detach:
  	dma_buf_detach(dma_buf, attach);
  	return ERR_PTR(ret);
  }
