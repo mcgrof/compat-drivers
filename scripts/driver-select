@@ -199,6 +199,7 @@ function disable_bt_usb_ethernet_var {
 	backup_file Makefile
 	disable_bt_usb_ethernet
 	disable_var_03
+	disable_drm
 }
 
 function enable_only_ethernet {
@@ -399,6 +400,7 @@ case $1 in
 		;;
 	ti)
 		select_drivers		CONFIG_WL_TI
+		disable_bt_usb_ethernet_var
 		disable_staging
 		disable_var_01
 		;;
