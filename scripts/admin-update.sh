@@ -716,7 +716,6 @@ unified_driver_linux_next_target() {
 unified_driver_get_linux_src() {
 	case $1 in
 	"alx")
-		make -C $DRV_SRC/ clean
 		make -C $DRV_SRC/ linux-src
 
 		TARGET_NEXT_DIR="$(unified_driver_linux_next_target $i)"
