@@ -268,6 +268,13 @@ function select_ath_driver
 	disable_var_01
 }
 
+function select_ath_no_common
+{
+	backup_file $ATH_MAKEFILE
+	perl -i -ne 'print if /'$1'/' $ATH_MAKEFILE
+	disable_var_01
+}
+
 function select_ath9k_driver
 {
 	select_ath_driver CONFIG_ATH9K_HW
@@ -347,7 +354,7 @@ case $1 in
 		;;
 # Group drivers
 	atheros)
-		select_drivers		CONFIG_ATH_COMMON \
+		select_drivers		CONFIG_ATH_CARDS \
 					CONFIG_COMPAT_ZD1211RW
 		disable_staging
 		disable_bt_usb_ethernet_var
@@ -355,7 +362,7 @@ case $1 in
 		;;
 	ath)
 		disable_bt_usb_ethernet_var
-		select_drivers		CONFIG_ATH_COMMON
+		select_drivers		CONFIG_ATH_CARDS
 		disable_var_01
 		;;
 	intel)
@@ -415,45 +422,45 @@ case $1 in
 	ath5k)
 		disable_staging
 		disable_bt_usb_ethernet_var
-		select_drivers		CONFIG_ATH_COMMON
+		select_drivers		CONFIG_ATH_CARDS
 		select_ath_driver	CONFIG_ATH5K
 		#patch -p1 < enable-older-kernels/enable-2.6.23.patch
 		;;
 	ath9k)
 		disable_staging
 		disable_bt_usb_ethernet_var
-		select_drivers		CONFIG_ATH_COMMON
+		select_drivers		CONFIG_ATH_CARDS
 		select_ath9k_driver
 		;;
 	ath9k_ap)
 		disable_staging
 		disable_bt_usb_ethernet_var
-		select_drivers		CONFIG_ATH_COMMON
+		select_drivers		CONFIG_ATH_CARDS
 		select_ath9k_driver_ap
 		;;
 	carl9170)
 		disable_staging
 		disable_bt_usb_ethernet_var
-		select_drivers		CONFIG_ATH_COMMON
+		select_drivers		CONFIG_ATH_CARDS
 		select_ath_driver	CONFIG_CARL9170
 		;;
 	ath9k_htc)
 		disable_staging
 		disable_bt_usb_ethernet_var
-		select_drivers		CONFIG_ATH_COMMON
+		select_drivers		CONFIG_ATH_CARDS
 		select_ath9k_driver
 		;;
 	ath6kl)
 		disable_staging
 		disable_bt_usb_ethernet_var
-		select_drivers		CONFIG_ATH_COMMON
+		select_drivers		CONFIG_ATH_CARDS
 		select_ath_driver	CONFIG_ATH6KL
 		;;
 	wil6210)
 		disable_staging
 		disable_bt_usb_ethernet_var
-		select_drivers		CONFIG_ATH_COMMON
-		select_ath_driver	CONFIG_WIL6210
+		select_drivers		CONFIG_ATH_CARDS
+		select_ath_no_common	CONFIG_WIL6210
 		;;
 	brcmsmac)
 		disable_staging
