@@ -35,7 +35,7 @@ was not done through a static inline helper.
  
 --- a/net/bluetooth/rfcomm/tty.c
 +++ b/net/bluetooth/rfcomm/tty.c
-@@ -873,7 +873,11 @@ static int rfcomm_tty_ioctl(struct tty_s
+@@ -868,7 +868,11 @@ static int rfcomm_tty_ioctl(struct tty_s
  
  static void rfcomm_tty_set_termios(struct tty_struct *tty, struct ktermios *old)
  {

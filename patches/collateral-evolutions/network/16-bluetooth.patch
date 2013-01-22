@@ -113,7 +113,7 @@ here still, but for now we keep this here.
  
 --- a/net/bluetooth/hci_sysfs.c
 +++ b/net/bluetooth/hci_sysfs.c
-@@ -71,7 +71,11 @@ static struct attribute_group bt_link_gr
+@@ -72,7 +72,11 @@ static struct attribute_group bt_link_gr
  	.attrs = bt_link_attrs,
  };
  
@@ -125,7 +125,7 @@ here still, but for now we keep this here.
  	&bt_link_group,
  	NULL
  };
-@@ -140,7 +144,11 @@ void hci_conn_del_sysfs(struct hci_conn
+@@ -141,7 +145,11 @@ void hci_conn_del_sysfs(struct hci_conn
  		dev = device_find_child(&conn->dev, NULL, __match_tty);
  		if (!dev)
  			break;
@@ -137,7 +137,7 @@ here still, but for now we keep this here.
  		put_device(dev);
  	}
  
-@@ -378,7 +386,11 @@ static struct attribute_group bt_host_gr
+@@ -379,7 +387,11 @@ static struct attribute_group bt_host_gr
  	.attrs = bt_host_attrs,
  };
  
@@ -399,7 +399,7 @@ here still, but for now we keep this here.
  	struct bt_security sec;
 --- a/net/bluetooth/rfcomm/tty.c
 +++ b/net/bluetooth/rfcomm/tty.c
-@@ -713,8 +713,12 @@ static int rfcomm_tty_open(struct tty_st
+@@ -708,8 +708,12 @@ static int rfcomm_tty_open(struct tty_st
  	remove_wait_queue(&dev->wait, &wait);
  
  	if (err == 0)
@@ -412,7 +412,7 @@ here still, but for now we keep this here.
  
  	rfcomm_tty_copy_pending(dev);
  
-@@ -738,7 +742,11 @@ static void rfcomm_tty_close(struct tty_
+@@ -733,7 +737,11 @@ static void rfcomm_tty_close(struct tty_
  	if (!--dev->port.count) {
  		spin_unlock_irqrestore(&dev->port.lock, flags);
  		if (dev->tty_dev->parent)
@@ -424,7 +424,7 @@ here still, but for now we keep this here.
  
  		/* Close DLC and dettach TTY */
  		rfcomm_dlc_close(dev->dlc, 0);
-@@ -814,7 +822,11 @@ static int rfcomm_tty_write_room(struct
+@@ -809,7 +817,11 @@ static int rfcomm_tty_write_room(struct
  	return room;
  }
  
@@ -436,7 +436,7 @@ here still, but for now we keep this here.
  {
  	BT_DBG("tty %p cmd 0x%02x", tty, cmd);
  
-@@ -1073,7 +1085,11 @@ static void rfcomm_tty_hangup(struct tty
+@@ -1068,7 +1080,11 @@ static void rfcomm_tty_hangup(struct tty
  	}
  }
  
@@ -448,7 +448,7 @@ here still, but for now we keep this here.
  {
  	struct rfcomm_dev *dev = (struct rfcomm_dev *) tty->driver_data;
  
-@@ -1082,7 +1098,11 @@ static int rfcomm_tty_tiocmget(struct tt
+@@ -1077,7 +1093,11 @@ static int rfcomm_tty_tiocmget(struct tt
  	return dev->modem_status;
  }
  

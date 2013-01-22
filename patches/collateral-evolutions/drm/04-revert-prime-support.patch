@@ -21,7 +21,7 @@ not < 3.3.0.
  	DRM_IOCTL_DEF(DRM_IOCTL_MODE_GETCRTC, drm_mode_getcrtc, DRM_CONTROL_ALLOW|DRM_UNLOCKED),
 --- a/drivers/gpu/drm/drm_fops.c
 +++ b/drivers/gpu/drm/drm_fops.c
-@@ -283,8 +283,10 @@ static int drm_open_helper(struct inode
+@@ -284,8 +284,10 @@ static int drm_open_helper(struct inode
  	if (dev->driver->driver_features & DRIVER_GEM)
  		drm_gem_open(dev, priv);
  
@@ -32,7 +32,7 @@ not < 3.3.0.
  
  	if (dev->driver->open) {
  		ret = dev->driver->open(dev, priv);
-@@ -537,8 +539,10 @@ int drm_release(struct inode *inode, str
+@@ -538,8 +540,10 @@ int drm_release(struct inode *inode, str
  	if (dev->driver->postclose)
  		dev->driver->postclose(dev, file_priv);
  
@@ -236,7 +236,7 @@ not < 3.3.0.
  	dev = drm->dev;
 --- a/drivers/gpu/drm/nouveau/nouveau_drm.c
 +++ b/drivers/gpu/drm/nouveau/nouveau_drm.c
-@@ -622,7 +622,10 @@ driver = {
+@@ -627,7 +627,10 @@ driver = {
  	.driver_features =
  		DRIVER_USE_AGP | DRIVER_PCI_DMA | DRIVER_SG |
  		DRIVER_HAVE_IRQ | DRIVER_IRQ_SHARED | DRIVER_GEM |
@@ -248,7 +248,7 @@ not < 3.3.0.
  
  	.load = nouveau_drm_load,
  	.unload = nouveau_drm_unload,
-@@ -643,10 +646,12 @@ driver = {
+@@ -648,10 +651,12 @@ driver = {
  	.ioctls = nouveau_ioctls,
  	.fops = &nouveau_driver_fops,
  
@@ -286,7 +286,7 @@ not < 3.3.0.
  
 --- a/drivers/gpu/drm/i915/i915_drv.c
 +++ b/drivers/gpu/drm/i915/i915_drv.c
-@@ -1016,7 +1016,11 @@ static struct drm_driver driver = {
+@@ -1018,7 +1018,11 @@ static struct drm_driver driver = {
  	 */
  	.driver_features =
  	    DRIVER_USE_AGP | DRIVER_REQUIRE_AGP | /* DRIVER_USE_MTRR |*/
@@ -298,7 +298,7 @@ not < 3.3.0.
  	.load = i915_driver_load,
  	.unload = i915_driver_unload,
  	.open = i915_driver_open,
-@@ -1039,10 +1043,12 @@ static struct drm_driver driver = {
+@@ -1041,10 +1045,12 @@ static struct drm_driver driver = {
  	.gem_free_object = i915_gem_free_object,
  	.gem_vm_ops = &i915_gem_vm_ops,
  
@@ -323,7 +323,7 @@ not < 3.3.0.
  
  static void i915_gem_object_flush_gtt_write_domain(struct drm_i915_gem_object *obj);
  static void i915_gem_object_flush_cpu_write_domain(struct drm_i915_gem_object *obj);
-@@ -3787,8 +3789,10 @@ void i915_gem_free_object(struct drm_gem
+@@ -3819,8 +3821,10 @@ void i915_gem_free_object(struct drm_gem
  
  	BUG_ON(obj->pages);
  
@@ -344,7 +344,7 @@ not < 3.3.0.
  #include <drm/drmP.h>
  #include "i915_drv.h"
  #include <linux/dma-buf.h>
-@@ -307,3 +308,4 @@ fail_detach:
+@@ -306,3 +307,4 @@ fail_detach:
  	dma_buf_detach(dma_buf, attach);
  	return ERR_PTR(ret);
  }

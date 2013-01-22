@@ -16,7 +16,7 @@ v2.6.36-rc1~571^2~104
 +#endif
  	}
  	memcpy(netdev->dev_addr, adapter->hw.mac_addr, netdev->addr_len);
- 	memcpy(netdev->perm_addr, adapter->hw.mac_addr, netdev->addr_len);
+ 	if (netif_msg_probe(adapter))
 --- a/drivers/net/ethernet/atheros/atlx/atl1.c
 +++ b/drivers/net/ethernet/atheros/atlx/atl1.c
 @@ -3060,7 +3060,9 @@ static int atl1_probe(struct pci_dev *pd
