@@ -149,7 +149,7 @@ calls on compat code with only slight modifications.
  static int __init
 --- a/drivers/net/wireless/iwlegacy/4965-mac.c
 +++ b/drivers/net/wireless/iwlegacy/4965-mac.c
-@@ -6776,7 +6776,12 @@ static struct pci_driver il4965_driver =
+@@ -6777,7 +6777,12 @@ static struct pci_driver il4965_driver =
  	.id_table = il4965_hw_card_ids,
  	.probe = il4965_pci_probe,
  	.remove = il4965_pci_remove,
@@ -164,7 +164,7 @@ calls on compat code with only slight modifications.
  static int __init
 --- a/drivers/net/wireless/iwlegacy/common.c
 +++ b/drivers/net/wireless/iwlegacy/common.c
-@@ -4942,8 +4942,17 @@ il_pci_resume(struct device *device)
+@@ -4935,8 +4935,17 @@ il_pci_resume(struct device *device)
  	return 0;
  }
  
