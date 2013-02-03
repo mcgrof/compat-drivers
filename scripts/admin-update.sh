@@ -353,6 +353,7 @@ DRIVERS_WLAN="drivers/net/wireless/ath
 	      drivers/net/wireless/iwlwifi
 	      drivers/net/wireless/iwlwifi/pcie
 	      drivers/net/wireless/iwlwifi/dvm
+	      drivers/net/wireless/iwlwifi/mvm
 	      drivers/net/wireless/rt2x00
 	      drivers/net/wireless/zd1211rw
 	      drivers/net/wireless/libertas
