@@ -49,7 +49,7 @@ Date:   Wed Nov 19 21:32:24 2008 -0800
  	if (unlikely(retval < 0)) {
 --- a/drivers/net/usb/usbnet.c
 +++ b/drivers/net/usb/usbnet.c
-@@ -1423,7 +1423,7 @@ usbnet_probe (struct usb_interface *udev
+@@ -1448,7 +1448,7 @@ usbnet_probe (struct usb_interface *udev
  		net->features |= NETIF_F_HIGHDMA;
  #endif
  
@@ -71,7 +71,7 @@ Date:   Wed Nov 19 21:32:24 2008 -0800
  
 --- a/drivers/net/wireless/ath/wil6210/netdev.c
 +++ b/drivers/net/wireless/ath/wil6210/netdev.c
-@@ -104,7 +104,7 @@ void *wil_if_alloc(struct device *dev, v
+@@ -79,7 +79,7 @@ void *wil_if_alloc(struct device *dev, v
  		goto out_priv;
  	}
  
