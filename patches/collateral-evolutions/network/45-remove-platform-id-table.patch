@@ -1,7 +1,7 @@
 --- a/drivers/net/wireless/ti/wl12xx/main.c
 +++ b/drivers/net/wireless/ti/wl12xx/main.c
-@@ -1725,16 +1725,20 @@ out:
- 	return ret;
+@@ -1813,16 +1813,20 @@ out:
+ 	return wlcore_remove(pdev);
  }
  
 +#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,30)
@@ -14,7 +14,7 @@
  
  static struct platform_driver wl12xx_driver = {
  	.probe		= wl12xx_probe,
- 	.remove		= wlcore_remove,
+ 	.remove		= wl12xx_remove,
 +#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,30)
  	.id_table	= wl12xx_id_table,
 +#endif
