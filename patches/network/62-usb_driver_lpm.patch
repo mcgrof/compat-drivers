@@ -48,7 +48,7 @@
  module_usb_driver(bpa10x_driver);
 --- a/drivers/bluetooth/btusb.c
 +++ b/drivers/bluetooth/btusb.c
-@@ -1223,7 +1223,9 @@ static struct usb_driver btusb_driver =
+@@ -1224,7 +1224,9 @@ static struct usb_driver btusb_driver =
  #endif
  	.id_table	= btusb_table,
  	.supports_autosuspend = 1,
@@ -60,7 +60,7 @@
  module_usb_driver(btusb_driver);
 --- a/drivers/net/usb/cdc_ether.c
 +++ b/drivers/net/usb/cdc_ether.c
-@@ -716,7 +716,9 @@ static struct usb_driver cdc_driver = {
+@@ -731,7 +731,9 @@ static struct usb_driver cdc_driver = {
  	.resume =	usbnet_resume,
  	.reset_resume =	usbnet_resume,
  	.supports_autosuspend = 1,
@@ -180,7 +180,7 @@
  module_usb_driver(orinoco_driver);
 --- a/drivers/net/wireless/p54/p54usb.c
 +++ b/drivers/net/wireless/p54/p54usb.c
-@@ -1142,7 +1142,9 @@ static struct usb_driver p54u_driver = {
+@@ -1146,7 +1146,9 @@ static struct usb_driver p54u_driver = {
  #if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,27))
  	.soft_unbind = 1,
  #endif

@@ -173,7 +173,7 @@ calls on compat code with only slight modifications.
  static int __init
 --- a/drivers/net/wireless/iwlegacy/common.c
 +++ b/drivers/net/wireless/iwlegacy/common.c
-@@ -4906,8 +4906,17 @@ il_pci_resume(struct device *device)
+@@ -4899,8 +4899,17 @@ il_pci_resume(struct device *device)
  	return 0;
  }
  
