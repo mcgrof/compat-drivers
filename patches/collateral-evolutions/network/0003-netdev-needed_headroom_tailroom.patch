@@ -22,7 +22,7 @@ could be used.
  		if (ret < 0) {
 --- a/drivers/net/wireless/orinoco/main.c
 +++ b/drivers/net/wireless/orinoco/main.c
-@@ -2285,7 +2285,11 @@ int orinoco_if_add(struct orinoco_privat
+@@ -2279,7 +2279,11 @@ int orinoco_if_add(struct orinoco_privat
  	/* we use the default eth_mac_addr for setting the MAC addr */
  
  	/* Reserve space in skb for the SNAP header */

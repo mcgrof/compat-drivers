@@ -84,7 +84,7 @@ here still, but for now we keep this here.
  	wake_up_process(session->task);
 --- a/net/bluetooth/hci_sock.c
 +++ b/net/bluetooth/hci_sock.c
-@@ -884,8 +884,13 @@ drop:
+@@ -879,8 +879,13 @@ drop:
  	goto done;
  }
  
@@ -98,7 +98,7 @@ here still, but for now we keep this here.
  {
  	struct hci_ufilter uf = { .opcode = 0 };
  	struct sock *sk = sock->sk;
-@@ -1059,8 +1064,12 @@ static struct proto hci_sk_proto = {
+@@ -1054,8 +1059,12 @@ static struct proto hci_sk_proto = {
  	.obj_size	= sizeof(struct hci_pinfo)
  };
  
@@ -371,7 +371,7 @@ here still, but for now we keep this here.
  }
 --- a/net/bluetooth/rfcomm/sock.c
 +++ b/net/bluetooth/rfcomm/sock.c
-@@ -306,8 +306,13 @@ static struct sock *rfcomm_sock_alloc(st
+@@ -304,8 +304,13 @@ static struct sock *rfcomm_sock_alloc(st
  	return sk;
  }
  
@@ -385,7 +385,7 @@ here still, but for now we keep this here.
  {
  	struct sock *sk;
  
-@@ -662,7 +667,11 @@ static int rfcomm_sock_setsockopt_old(st
+@@ -660,7 +665,11 @@ static int rfcomm_sock_setsockopt_old(st
  	return err;
  }
  
@@ -462,7 +462,7 @@ here still, but for now we keep this here.
  	struct rfcomm_dlc *dlc = dev->dlc;
 --- a/net/bluetooth/sco.c
 +++ b/net/bluetooth/sco.c
-@@ -424,8 +424,12 @@ static struct sock *sco_sock_alloc(struc
+@@ -422,8 +422,12 @@ static struct sock *sco_sock_alloc(struc
  	return sk;
  }
  
@@ -475,7 +475,7 @@ here still, but for now we keep this here.
  {
  	struct sock *sk;
  
-@@ -676,7 +680,11 @@ static int sco_sock_recvmsg(struct kiocb
+@@ -674,7 +678,11 @@ static int sco_sock_recvmsg(struct kiocb
  	return bt_sock_recvmsg(iocb, sock, msg, len, flags);
  }
  

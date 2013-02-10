@@ -49,7 +49,7 @@ Date:   Wed Nov 19 21:32:24 2008 -0800
  	if (unlikely(retval < 0)) {
 --- a/drivers/net/usb/usbnet.c
 +++ b/drivers/net/usb/usbnet.c
-@@ -1448,7 +1448,7 @@ usbnet_probe (struct usb_interface *udev
+@@ -1446,7 +1446,7 @@ usbnet_probe (struct usb_interface *udev
  		net->features |= NETIF_F_HIGHDMA;
  #endif
  
@@ -82,7 +82,7 @@ Date:   Wed Nov 19 21:32:24 2008 -0800
  	wdev->netdev = ndev;
 --- a/drivers/net/wireless/rndis_wlan.c
 +++ b/drivers/net/wireless/rndis_wlan.c
-@@ -3442,7 +3442,7 @@ static int rndis_wlan_bind(struct usbnet
+@@ -3439,7 +3439,7 @@ static int rndis_wlan_bind(struct usbnet
  	 * rndis_host wants to avoid all OID as much as possible
  	 * so do promisc/multicast handling in rndis_wlan.
  	 */
@@ -93,7 +93,7 @@ Date:   Wed Nov 19 21:32:24 2008 -0800
  	retval = rndis_set_oid(usbdev,
 --- a/drivers/net/ethernet/broadcom/b44.c
 +++ b/drivers/net/ethernet/broadcom/b44.c
-@@ -2173,7 +2173,7 @@ static int b44_init_one(struct ssb_devic
+@@ -2171,7 +2171,7 @@ static int b44_init_one(struct ssb_devic
  	bp->rx_pending = B44_DEF_RX_RING_PENDING;
  	bp->tx_pending = B44_DEF_TX_RING_PENDING;
  
@@ -104,7 +104,7 @@ Date:   Wed Nov 19 21:32:24 2008 -0800
  	dev->irq = sdev->irq;
 --- a/drivers/net/wireless/ipw2x00/ipw2100.c
 +++ b/drivers/net/wireless/ipw2x00/ipw2100.c
-@@ -6103,7 +6103,7 @@ static struct net_device *ipw2100_alloc_
+@@ -6100,7 +6100,7 @@ static struct net_device *ipw2100_alloc_
  	priv->ieee->perfect_rssi = -20;
  	priv->ieee->worst_rssi = -85;
  
@@ -190,7 +190,7 @@ Date:   Wed Nov 19 21:32:24 2008 -0800
  }
 --- a/drivers/net/ethernet/atheros/atl1e/atl1e_main.c
 +++ b/drivers/net/ethernet/atheros/atl1e/atl1e_main.c
-@@ -2211,7 +2211,7 @@ static int atl1e_init_netdev(struct net_
+@@ -2209,7 +2209,7 @@ static int atl1e_init_netdev(struct net_
  	SET_NETDEV_DEV(netdev, &pdev->dev);
  	pci_set_drvdata(pdev, netdev);
  
@@ -201,7 +201,7 @@ Date:   Wed Nov 19 21:32:24 2008 -0800
  	atl1e_set_ethtool_ops(netdev);
 --- a/drivers/net/ethernet/atheros/atl1c/atl1c_main.c
 +++ b/drivers/net/ethernet/atheros/atl1c/atl1c_main.c
-@@ -2415,7 +2415,7 @@ static int atl1c_init_netdev(struct net_
+@@ -2413,7 +2413,7 @@ static int atl1c_init_netdev(struct net_
  	SET_NETDEV_DEV(netdev, &pdev->dev);
  	pci_set_drvdata(pdev, netdev);
  
@@ -263,7 +263,7 @@ Date:   Wed Nov 19 21:32:24 2008 -0800
  		break;
 --- a/drivers/net/wireless/orinoco/main.c
 +++ b/drivers/net/wireless/orinoco/main.c
-@@ -2278,9 +2278,9 @@ int orinoco_if_add(struct orinoco_privat
+@@ -2272,9 +2272,9 @@ int orinoco_if_add(struct orinoco_privat
  #endif
  	/* Default to standard ops if not set */
  	if (ops)
