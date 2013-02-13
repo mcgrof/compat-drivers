@@ -82,26 +82,26 @@ not < 3.3.0.
  #include <linux/export.h>
  #include <linux/dma-buf.h>
  #include <drm/drmP.h>
-@@ -350,3 +352,4 @@ void drm_prime_remove_imported_buf_handl
+@@ -536,3 +538,4 @@ void drm_prime_remove_imported_buf_handl
  	mutex_unlock(&prime_fpriv->lock);
  }
  EXPORT_SYMBOL(drm_prime_remove_imported_buf_handle);
 +#endif /* (LINUX_VERSION_CODE >= KERNEL_VERSION(3,4,0)) */
 --- a/drivers/gpu/drm/nouveau/nouveau_prime.c
 +++ b/drivers/gpu/drm/nouveau/nouveau_prime.c
-@@ -24,6 +24,7 @@
- 
- #include <linux/dma-buf.h>
+@@ -22,6 +22,8 @@
+  * Authors: Dave Airlie
+  */
  
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,4,0))
++
  #include <drm/drmP.h>
  
  #include "nouveau_drm.h"
-@@ -225,4 +226,4 @@ fail_detach:
- 	dma_buf_detach(dma_buf, attach);
- 	return ERR_PTR(ret);
+@@ -93,3 +95,4 @@ int nouveau_gem_prime_pin(struct drm_gem
+ 
+ 	return 0;
  }
--
 +#endif /* (LINUX_VERSION_CODE >= KERNEL_VERSION(3,4,0)) */
 --- a/drivers/gpu/drm/radeon/radeon_prime.c
 +++ b/drivers/gpu/drm/radeon/radeon_prime.c
@@ -113,14 +113,14 @@ not < 3.3.0.
  #include <drm/drmP.h>
  
  #include "radeon.h"
-@@ -226,3 +227,4 @@ fail_detach:
- 	dma_buf_detach(dma_buf, attach);
- 	return ERR_PTR(ret);
+@@ -96,3 +97,4 @@ int radeon_gem_prime_pin(struct drm_gem_
+ 
+ 	return 0;
  }
 +#endif /* (LINUX_VERSION_CODE >= KERNEL_VERSION(3,4,0)) */
 --- a/drivers/gpu/drm/radeon/radeon_drv.c
 +++ b/drivers/gpu/drm/radeon/radeon_drv.c
-@@ -359,8 +359,10 @@ static const struct file_operations rade
+@@ -373,8 +373,10 @@ static const struct file_operations rade
  static struct drm_driver kms_driver = {
  	.driver_features =
  	    DRIVER_USE_AGP | DRIVER_USE_MTRR | DRIVER_PCI_DMA | DRIVER_SG |
@@ -133,15 +133,18 @@ not < 3.3.0.
  	.dev_priv_size = 0,
  	.load = radeon_driver_load_kms,
  	.firstopen = radeon_driver_firstopen_kms,
-@@ -395,10 +397,12 @@ static struct drm_driver kms_driver = {
+@@ -409,6 +411,7 @@ static struct drm_driver kms_driver = {
  	.dumb_destroy = radeon_mode_dumb_destroy,
  	.fops = &radeon_driver_kms_fops,
  
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,4,0))
  	.prime_handle_to_fd = drm_gem_prime_handle_to_fd,
  	.prime_fd_to_handle = drm_gem_prime_fd_to_handle,
- 	.gem_prime_export = radeon_gem_prime_export,
- 	.gem_prime_import = radeon_gem_prime_import,
+ 	.gem_prime_export = drm_gem_prime_export,
+@@ -418,6 +421,7 @@ static struct drm_driver kms_driver = {
+ 	.gem_prime_import_sg_table = radeon_gem_prime_import_sg_table,
+ 	.gem_prime_vmap = radeon_gem_prime_vmap,
+ 	.gem_prime_vunmap = radeon_gem_prime_vunmap,
 +#endif
  
  	.name = DRIVER_NAME,
@@ -236,7 +239,7 @@ not < 3.3.0.
  	dev = drm->dev;
 --- a/drivers/gpu/drm/nouveau/nouveau_drm.c
 +++ b/drivers/gpu/drm/nouveau/nouveau_drm.c
-@@ -627,7 +627,10 @@ driver = {
+@@ -630,7 +630,10 @@ driver = {
  	.driver_features =
  		DRIVER_USE_AGP | DRIVER_PCI_DMA | DRIVER_SG |
  		DRIVER_HAVE_IRQ | DRIVER_IRQ_SHARED | DRIVER_GEM |
@@ -248,32 +251,25 @@ not < 3.3.0.
  
  	.load = nouveau_drm_load,
  	.unload = nouveau_drm_unload,
-@@ -648,10 +651,12 @@ driver = {
+@@ -651,6 +654,7 @@ driver = {
  	.ioctls = nouveau_ioctls,
  	.fops = &nouveau_driver_fops,
  
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,4,0))
  	.prime_handle_to_fd = drm_gem_prime_handle_to_fd,
  	.prime_fd_to_handle = drm_gem_prime_fd_to_handle,
- 	.gem_prime_export = nouveau_gem_prime_export,
- 	.gem_prime_import = nouveau_gem_prime_import,
+ 	.gem_prime_export = drm_gem_prime_export,
+@@ -660,6 +664,7 @@ driver = {
+ 	.gem_prime_import_sg_table = nouveau_gem_prime_import_sg_table,
+ 	.gem_prime_vmap = nouveau_gem_prime_vmap,
+ 	.gem_prime_vunmap = nouveau_gem_prime_vunmap,
 +#endif
  
  	.gem_init_object = nouveau_gem_object_new,
  	.gem_free_object = nouveau_gem_object_del,
 --- a/drivers/gpu/drm/nouveau/nouveau_gem.c
 +++ b/drivers/gpu/drm/nouveau/nouveau_gem.c
-@@ -24,7 +24,9 @@
-  *
-  */
- 
-+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,4,0))
- #include <linux/dma-buf.h>
-+#endif
- 
- #include <subdev/fb.h>
- 
-@@ -57,8 +59,10 @@ nouveau_gem_object_del(struct drm_gem_ob
+@@ -55,8 +55,10 @@ nouveau_gem_object_del(struct drm_gem_ob
  		nouveau_bo_unpin(nvbo);
  	}
  
@@ -286,7 +282,7 @@ not < 3.3.0.
  
 --- a/drivers/gpu/drm/i915/i915_drv.c
 +++ b/drivers/gpu/drm/i915/i915_drv.c
-@@ -1018,7 +1018,11 @@ static struct drm_driver driver = {
+@@ -1022,7 +1022,11 @@ static struct drm_driver driver = {
  	 */
  	.driver_features =
  	    DRIVER_USE_AGP | DRIVER_REQUIRE_AGP | /* DRIVER_USE_MTRR |*/
@@ -298,7 +294,7 @@ not < 3.3.0.
  	.load = i915_driver_load,
  	.unload = i915_driver_unload,
  	.open = i915_driver_open,
-@@ -1041,10 +1045,12 @@ static struct drm_driver driver = {
+@@ -1045,10 +1049,12 @@ static struct drm_driver driver = {
  	.gem_free_object = i915_gem_free_object,
  	.gem_vm_ops = &i915_gem_vm_ops,
  
@@ -323,7 +319,7 @@ not < 3.3.0.
  
  static void i915_gem_object_flush_gtt_write_domain(struct drm_i915_gem_object *obj);
  static void i915_gem_object_flush_cpu_write_domain(struct drm_i915_gem_object *obj);
-@@ -3819,8 +3821,10 @@ void i915_gem_free_object(struct drm_gem
+@@ -3812,8 +3814,10 @@ void i915_gem_free_object(struct drm_gem
  
  	BUG_ON(obj->pages);
  

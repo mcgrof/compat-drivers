@@ -124,7 +124,7 @@
 +obj-$(CONFIG_COMPAT_DRM_I810)	+= i810.o
 --- a/drivers/gpu/drm/i915/Makefile
 +++ b/drivers/gpu/drm/i915/Makefile
-@@ -47,6 +47,6 @@ i915-$(CONFIG_COMPAT)   += i915_ioc32.o
+@@ -48,6 +48,6 @@ i915-$(CONFIG_COMPAT)   += i915_ioc32.o
  
  i915-$(CONFIG_ACPI)	+= intel_acpi.o
  
@@ -164,7 +164,7 @@
  #else
 --- a/drivers/gpu/drm/radeon/Makefile
 +++ b/drivers/gpu/drm/radeon/Makefile
-@@ -78,6 +78,6 @@ radeon-$(CONFIG_COMPAT) += radeon_ioc32.
+@@ -82,6 +82,6 @@ radeon-$(CONFIG_COMPAT) += radeon_ioc32.
  radeon-$(CONFIG_VGA_SWITCHEROO) += radeon_atpx_handler.o
  radeon-$(CONFIG_ACPI) += radeon_acpi.o
  
@@ -172,26 +172,6 @@
 +obj-$(CONFIG_COMPAT_DRM_RADEON)+= radeon.o
  
  CFLAGS_radeon_trace_points.o := -I$(src)
---- a/drivers/gpu/drm/radeon/radeon_drv.c
-+++ b/drivers/gpu/drm/radeon/radeon_drv.c
-@@ -231,7 +231,7 @@ static struct pci_device_id pciidlist[]
- 	radeon_PCI_IDS
- };
- 
--#if defined(CONFIG_DRM_RADEON_KMS)
-+#if defined(CONFIG_COMPAT_DRM_RADEON_KMS)
- MODULE_DEVICE_TABLE(pci, pciidlist);
- #endif
- 
-@@ -445,7 +445,7 @@ static int __init radeon_init(void)
- #endif
- 	/* if enabled by default */
- 	if (radeon_modeset == -1) {
--#ifdef CONFIG_DRM_RADEON_KMS
-+#ifdef CONFIG_COMPAT_DRM_RADEON_KMS
- 		DRM_INFO("radeon defaulting to kernel modesetting.\n");
- 		radeon_modeset = 1;
- #else
 --- a/drivers/gpu/drm/ttm/Makefile
 +++ b/drivers/gpu/drm/ttm/Makefile
 @@ -11,4 +11,4 @@ ifeq ($(CONFIG_SWIOTLB),y)

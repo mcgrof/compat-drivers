@@ -25,31 +25,17 @@ on kernels < 3.4.
  };
  
  struct dma_buf *i915_gem_prime_export(struct drm_device *dev,
---- a/drivers/gpu/drm/nouveau/nouveau_prime.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_prime.c
-@@ -132,9 +132,11 @@ static const struct dma_buf_ops nouveau_
- 	.kmap_atomic = nouveau_gem_kmap_atomic,
- 	.kunmap = nouveau_gem_kunmap,
- 	.kunmap_atomic = nouveau_gem_kunmap_atomic,
+--- a/drivers/gpu/drm/drm_prime.c
++++ b/drivers/gpu/drm/drm_prime.c
+@@ -152,9 +152,11 @@ static const struct dma_buf_ops drm_gem_
+ 	.kmap_atomic = drm_gem_dmabuf_kmap_atomic,
+ 	.kunmap = drm_gem_dmabuf_kunmap,
+ 	.kunmap_atomic = drm_gem_dmabuf_kunmap_atomic,
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,5,0))
- 	.mmap = nouveau_gem_prime_mmap,
- 	.vmap = nouveau_gem_prime_vmap,
- 	.vunmap = nouveau_gem_prime_vunmap,
+ 	.mmap = drm_gem_dmabuf_mmap,
+ 	.vmap = drm_gem_dmabuf_vmap,
+ 	.vunmap = drm_gem_dmabuf_vunmap,
 +#endif
  };
  
- static int
---- a/drivers/gpu/drm/radeon/radeon_prime.c
-+++ b/drivers/gpu/drm/radeon/radeon_prime.c
-@@ -133,9 +133,11 @@ const static struct dma_buf_ops radeon_d
- 	.kmap_atomic = radeon_gem_kmap_atomic,
- 	.kunmap = radeon_gem_kunmap,
- 	.kunmap_atomic = radeon_gem_kunmap_atomic,
-+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,5,0))
- 	.mmap = radeon_gem_prime_mmap,
- 	.vmap = radeon_gem_prime_vmap,
- 	.vunmap = radeon_gem_prime_vunmap,
-+#endif
- };
- 
- static int radeon_prime_create(struct drm_device *dev,
+ /**
