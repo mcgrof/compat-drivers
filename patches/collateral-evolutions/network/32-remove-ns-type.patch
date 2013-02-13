@@ -1,6 +1,6 @@
 --- a/net/wireless/sysfs.c
 +++ b/net/wireless/sysfs.c
-@@ -120,12 +120,14 @@ static int wiphy_resume(struct device *d
+@@ -118,12 +118,14 @@ static int wiphy_resume(struct device *d
  	return ret;
  }
  
@@ -15,7 +15,7 @@
  
  struct class ieee80211_class = {
  	.name = "ieee80211",
-@@ -135,8 +137,10 @@ struct class ieee80211_class = {
+@@ -133,8 +135,10 @@ struct class ieee80211_class = {
  	.dev_uevent = wiphy_uevent,
  	.suspend = wiphy_suspend,
  	.resume = wiphy_resume,

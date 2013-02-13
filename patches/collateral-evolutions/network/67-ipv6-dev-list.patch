@@ -11,7 +11,7 @@ Date:   Wed Mar 17 20:31:13 2010 +0000
 @@ -98,7 +98,11 @@ void iwl_mvm_ipv6_addr_change(struct iee
  	int idx = 0;
  
- 	read_lock(&idev->lock);
+ 	read_lock_bh(&idev->lock);
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,35))
  	list_for_each_entry(ifa, &idev->addr_list, if_list) {
 +#else
