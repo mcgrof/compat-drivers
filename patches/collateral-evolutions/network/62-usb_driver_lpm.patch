@@ -96,7 +96,7 @@
  static int __init at76_mod_init(void)
 --- a/drivers/net/wireless/ath/ath6kl/usb.c
 +++ b/drivers/net/wireless/ath/ath6kl/usb.c
-@@ -1201,7 +1201,9 @@ static struct usb_driver ath6kl_usb_driv
+@@ -1199,7 +1199,9 @@ static struct usb_driver ath6kl_usb_driv
  	.disconnect = ath6kl_usb_remove,
  	.id_table = ath6kl_usb_ids,
  	.supports_autosuspend = true,
