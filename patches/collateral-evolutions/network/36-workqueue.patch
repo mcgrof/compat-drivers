@@ -11,6 +11,6 @@ The rest is backported in include/linux/compat-2.6.37.h
 +	flush_scheduled_work();
 +#endif
 +
- 	if (mesh_allocated)
- 		ieee80211s_stop();
+ 	ieee80211s_stop();
  
+ 	ieee80211_iface_exit();

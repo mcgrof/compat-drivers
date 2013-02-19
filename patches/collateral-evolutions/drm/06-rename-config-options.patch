@@ -1,6 +1,6 @@
 --- a/drivers/gpu/drm/Makefile
 +++ b/drivers/gpu/drm/Makefile
-@@ -15,39 +15,39 @@ drm-y       :=	drm_auth.o drm_buffer.o d
+@@ -15,40 +15,40 @@ drm-y       :=	drm_auth.o drm_buffer.o d
  		drm_trace_points.o drm_global.o drm_prime.o
  
  drm-$(CONFIG_COMPAT) += drm_ioc32.o
@@ -43,6 +43,7 @@
 -obj-$(CONFIG_DRM_AST) += ast/
 -obj-$(CONFIG_DRM_SHMOBILE) +=shmobile/
 -obj-$(CONFIG_DRM_TEGRA) += tegra/
+-obj-$(CONFIG_DRM_OMAP)	+= omapdrm/
 +obj-$(CONFIG_COMPAT_DRM)	+= drm.o
 +obj-$(CONFIG_COMPAT_DRM_USB)   += drm_usb.o
 +obj-$(CONFIG_COMPAT_DRM_TTM)	+= ttm/
@@ -65,6 +66,7 @@
 +obj-$(CONFIG_COMPAT_DRM_AST) += ast/
 +obj-$(CONFIG_COMPAT_DRM_SHMOBILE) +=shmobile/
 +obj-$(CONFIG_COMPAT_DRM_TEGRA) += tegra/
++obj-$(CONFIG_COMPAT_DRM_OMAP)	+= omapdrm/
  obj-y			+= i2c/
 --- a/drivers/gpu/drm/ast/Makefile
 +++ b/drivers/gpu/drm/ast/Makefile
