@@ -1,0 +1,13 @@
+__sock_create() is not available on kernel version < 2.6.37.
+
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -7388,7 +7388,7 @@ static int nl80211_parse_wowlan_tcp(stru
+ 		port = nla_get_u16(tb[NL80211_WOWLAN_TCP_SRC_PORT]);
+ 	else
+ 		port = 0;
+-#ifdef CONFIG_INET
++#if defined(CONFIG_INET) && (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,37))
+ 	/* allocate a socket and port for it and use it */
+ 	err = __sock_create(wiphy_net(&rdev->wiphy), PF_INET, SOCK_STREAM,
+ 			    IPPROTO_TCP, &cfg->sock, 1);
