@@ -1,6 +1,6 @@
 --- a/drivers/gpu/drm/Makefile
 +++ b/drivers/gpu/drm/Makefile
-@@ -15,40 +15,40 @@ drm-y       :=	drm_auth.o drm_buffer.o d
+@@ -15,41 +15,41 @@ drm-y       :=	drm_auth.o drm_buffer.o d
  		drm_trace_points.o drm_global.o drm_prime.o
  
  drm-$(CONFIG_COMPAT) += drm_ioc32.o
@@ -44,6 +44,7 @@
 -obj-$(CONFIG_DRM_SHMOBILE) +=shmobile/
 -obj-$(CONFIG_DRM_TEGRA) += tegra/
 -obj-$(CONFIG_DRM_OMAP)	+= omapdrm/
+-obj-$(CONFIG_DRM_TILCDC)	+= tilcdc/
 +obj-$(CONFIG_COMPAT_DRM)	+= drm.o
 +obj-$(CONFIG_COMPAT_DRM_USB)   += drm_usb.o
 +obj-$(CONFIG_COMPAT_DRM_TTM)	+= ttm/
@@ -67,6 +68,7 @@
 +obj-$(CONFIG_COMPAT_DRM_SHMOBILE) +=shmobile/
 +obj-$(CONFIG_COMPAT_DRM_TEGRA) += tegra/
 +obj-$(CONFIG_COMPAT_DRM_OMAP)	+= omapdrm/
++obj-$(CONFIG_COMPAT_DRM_TILCDC)	+= tilcdc/
  obj-y			+= i2c/
 --- a/drivers/gpu/drm/ast/Makefile
 +++ b/drivers/gpu/drm/ast/Makefile
@@ -106,7 +108,7 @@
 +obj-$(CONFIG_COMPAT_DRM_GMA500) += gma500_gfx.o
 --- a/drivers/gpu/drm/i2c/Makefile
 +++ b/drivers/gpu/drm/i2c/Makefile
-@@ -1,7 +1,7 @@
+@@ -1,10 +1,10 @@
  ccflags-y := -Iinclude/drm
  
  ch7006-y := ch7006_drv.o ch7006_mode.o
@@ -116,6 +118,10 @@
  sil164-y := sil164_drv.o
 -obj-$(CONFIG_DRM_I2C_SIL164) += sil164.o
 +obj-$(CONFIG_COMPAT_DRM_I2C_SIL164) += sil164.o
+ 
+ tda998x-y := tda998x_drv.o
+-obj-$(CONFIG_DRM_I2C_NXP_TDA998X) += tda998x.o
++obj-$(CONFIG_COMPAT_DRM_I2C_NXP_TDA998X) += tda998x.o
 --- a/drivers/gpu/drm/i810/Makefile
 +++ b/drivers/gpu/drm/i810/Makefile
 @@ -5,4 +5,4 @@
@@ -144,18 +150,19 @@
 +obj-$(CONFIG_COMPAT_DRM_MGAG200) += mgag200.o
 --- a/drivers/gpu/drm/nouveau/Makefile
 +++ b/drivers/gpu/drm/nouveau/Makefile
-@@ -217,6 +217,6 @@ nouveau-y += nouveau_mem.o
- # other random bits
- nouveau-$(CONFIG_COMPAT) += nouveau_ioc32.o
+@@ -241,7 +241,7 @@ nouveau-$(CONFIG_COMPAT) += nouveau_ioc3
+ ifdef CONFIG_X86
  nouveau-$(CONFIG_ACPI) += nouveau_acpi.o
+ endif
 -nouveau-$(CONFIG_DRM_NOUVEAU_BACKLIGHT) += nouveau_backlight.o
 +nouveau-$(CONFIG_COMPAT_DRM_NOUVEAU_BACKLIGHT) += nouveau_backlight.o
+ nouveau-$(CONFIG_DEBUG_FS) += nouveau_debugfs.o
  
 -obj-$(CONFIG_DRM_NOUVEAU)+= nouveau.o
 +obj-$(CONFIG_COMPAT_DRM_NOUVEAU)+= nouveau.o
 --- a/drivers/gpu/drm/nouveau/nouveau_display.h
 +++ b/drivers/gpu/drm/nouveau/nouveau_display.h
-@@ -76,7 +76,7 @@ int  nouveau_display_dumb_destroy(struct
+@@ -73,7 +73,7 @@ int  nouveau_display_dumb_destroy(struct
  
  void nouveau_hdmi_mode_set(struct drm_encoder *, struct drm_display_mode *);
  

@@ -239,7 +239,7 @@ not < 3.3.0.
  	dev = drm->dev;
 --- a/drivers/gpu/drm/nouveau/nouveau_drm.c
 +++ b/drivers/gpu/drm/nouveau/nouveau_drm.c
-@@ -630,7 +630,10 @@ driver = {
+@@ -662,7 +662,10 @@ driver = {
  	.driver_features =
  		DRIVER_USE_AGP | DRIVER_PCI_DMA | DRIVER_SG |
  		DRIVER_HAVE_IRQ | DRIVER_IRQ_SHARED | DRIVER_GEM |
@@ -251,7 +251,7 @@ not < 3.3.0.
  
  	.load = nouveau_drm_load,
  	.unload = nouveau_drm_unload,
-@@ -651,6 +654,7 @@ driver = {
+@@ -688,6 +691,7 @@ driver = {
  	.ioctls = nouveau_ioctls,
  	.fops = &nouveau_driver_fops,
  
@@ -259,7 +259,7 @@ not < 3.3.0.
  	.prime_handle_to_fd = drm_gem_prime_handle_to_fd,
  	.prime_fd_to_handle = drm_gem_prime_fd_to_handle,
  	.gem_prime_export = drm_gem_prime_export,
-@@ -660,6 +664,7 @@ driver = {
+@@ -697,6 +701,7 @@ driver = {
  	.gem_prime_import_sg_table = nouveau_gem_prime_import_sg_table,
  	.gem_prime_vmap = nouveau_gem_prime_vmap,
  	.gem_prime_vunmap = nouveau_gem_prime_vunmap,

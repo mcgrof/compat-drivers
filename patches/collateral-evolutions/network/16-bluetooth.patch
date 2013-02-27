@@ -31,7 +31,7 @@ here still, but for now we keep this here.
  
 --- a/net/bluetooth/af_bluetooth.c
 +++ b/net/bluetooth/af_bluetooth.c
-@@ -112,8 +112,12 @@ int bt_sock_unregister(int proto)
+@@ -103,8 +103,12 @@ void bt_sock_unregister(int proto)
  }
  EXPORT_SYMBOL(bt_sock_unregister);
  
@@ -44,7 +44,7 @@ here still, but for now we keep this here.
  {
  	int err;
  
-@@ -131,7 +135,11 @@ static int bt_sock_create(struct net *ne
+@@ -122,7 +126,11 @@ static int bt_sock_create(struct net *ne
  	read_lock(&bt_proto_lock);
  
  	if (bt_proto[proto] && try_module_get(bt_proto[proto]->owner)) {
@@ -56,7 +56,7 @@ here still, but for now we keep this here.
  		if (!err)
  			bt_sock_reclassify_lock(sock->sk, proto);
  		module_put(bt_proto[proto]->owner);
-@@ -464,7 +472,11 @@ int bt_sock_ioctl(struct socket *sock, u
+@@ -455,7 +463,11 @@ int bt_sock_ioctl(struct socket *sock, u
  		if (sk->sk_state == BT_LISTEN)
  			return -EINVAL;
  
@@ -151,7 +151,7 @@ here still, but for now we keep this here.
  };
 --- a/net/bluetooth/hidp/core.c
 +++ b/net/bluetooth/hidp/core.c
-@@ -380,6 +380,7 @@ err:
+@@ -383,6 +383,7 @@ err:
  	return ret;
  }
  
@@ -159,7 +159,7 @@ here still, but for now we keep this here.
  static int hidp_output_raw_report(struct hid_device *hid, unsigned char *data, size_t count,
  		unsigned char report_type)
  {
-@@ -438,6 +439,16 @@ err:
+@@ -441,6 +442,16 @@ err:
  	mutex_unlock(&session->report_mutex);
  	return ret;
  }
@@ -176,7 +176,7 @@ here still, but for now we keep this here.
  
  static void hidp_idle_timeout(unsigned long arg)
  {
-@@ -739,8 +750,14 @@ static int hidp_session(void *arg)
+@@ -743,8 +754,14 @@ static int hidp_session(void *arg)
  	}
  
  	if (session->hid) {
@@ -191,7 +191,7 @@ here still, but for now we keep this here.
  	}
  
  	/* Wakeup user-space polling for socket errors */
-@@ -851,6 +868,70 @@ static void hidp_close(struct hid_device
+@@ -855,6 +872,70 @@ static void hidp_close(struct hid_device
  {
  }
  
@@ -262,7 +262,7 @@ here still, but for now we keep this here.
  static int hidp_parse(struct hid_device *hid)
  {
  	struct hidp_session *session = hid->driver_data;
-@@ -942,7 +1023,9 @@ static int hidp_setup_hid(struct hidp_se
+@@ -946,7 +1027,9 @@ static int hidp_setup_hid(struct hidp_se
  	hid->dev.parent = &session->conn->dev;
  	hid->ll_driver = &hidp_hid_driver;
  
@@ -272,7 +272,7 @@ here still, but for now we keep this here.
  	hid->hid_output_raw_report = hidp_output_raw_report;
  
  	/* True if device is blacklisted in drivers/hid/hid-core.c */
-@@ -960,6 +1043,7 @@ fault:
+@@ -964,6 +1047,7 @@ fault:
  
  	return err;
  }
@@ -280,7 +280,7 @@ here still, but for now we keep this here.
  
  int hidp_add_connection(struct hidp_connadd_req *req, struct socket *ctrl_sock, struct socket *intr_sock)
  {
-@@ -975,6 +1059,39 @@ int hidp_add_connection(struct hidp_conn
+@@ -979,6 +1063,39 @@ int hidp_add_connection(struct hidp_conn
  
  	BT_DBG("rd_data %p rd_size %d", req->rd_data, req->rd_size);
  
@@ -320,7 +320,7 @@ here still, but for now we keep this here.
  	down_write(&hidp_session_sem);
  
  	s = __hidp_get_session(&bt_sk(ctrl_sock->sk)->dst);
-@@ -1022,6 +1139,7 @@ int hidp_add_connection(struct hidp_conn
+@@ -1026,6 +1143,7 @@ int hidp_add_connection(struct hidp_conn
  
  	__hidp_link_session(session);
  
@@ -328,7 +328,7 @@ here still, but for now we keep this here.
  	if (req->rd_size > 0) {
  		err = hidp_setup_hid(session, req);
  		if (err && err != -ENODEV)
-@@ -1033,6 +1151,16 @@ int hidp_add_connection(struct hidp_conn
+@@ -1037,6 +1155,16 @@ int hidp_add_connection(struct hidp_conn
  		if (err < 0)
  			goto purge;
  	}
@@ -345,7 +345,7 @@ here still, but for now we keep this here.
  
  	hidp_set_timer(session);
  
-@@ -1091,6 +1219,7 @@ unlink:
+@@ -1095,6 +1223,7 @@ unlink:
  		session->input = NULL;
  	}
  
@@ -353,7 +353,7 @@ here still, but for now we keep this here.
  	if (session->hid) {
  		hid_destroy_device(session->hid);
  		session->hid = NULL;
-@@ -1104,10 +1233,15 @@ purge:
+@@ -1108,10 +1237,15 @@ purge:
  
  	skb_queue_purge(&session->ctrl_transmit);
  	skb_queue_purge(&session->intr_transmit);

@@ -25,7 +25,7 @@ CONFIG_COMPAT_*.
  #endif
 --- a/drivers/gpu/drm/nouveau/core/include/core/device.h
 +++ b/drivers/gpu/drm/nouveau/core/include/core/device.h
-@@ -96,7 +96,7 @@ nv_device(void *obj)
+@@ -97,7 +97,7 @@ nv_device(void *obj)
  	if (device->parent)
  		device = device->parent;
  
@@ -111,8 +111,8 @@ CONFIG_COMPAT_*.
  #endif
 --- a/drivers/gpu/drm/nouveau/core/include/core/printk.h
 +++ b/drivers/gpu/drm/nouveau/core/include/core/printk.h
-@@ -18,7 +18,7 @@ struct nouveau_object;
- void nv_printk_(struct nouveau_object *, const char *, int, const char *, ...);
+@@ -19,7 +19,7 @@ void __printf(4, 5)
+ nv_printk_(struct nouveau_object *, const char *, int, const char *, ...);
  
  #define nv_printk(o,l,f,a...) do {                                             \
 -	if (NV_DBG_##l <= CONFIG_NOUVEAU_DEBUG)                                \
@@ -120,7 +120,7 @@ CONFIG_COMPAT_*.
  		nv_printk_(nv_object(o), NV_PRINTK_##l, NV_DBG_##l, f, ##a);   \
  } while(0)
  
-@@ -31,7 +31,7 @@ void nv_printk_(struct nouveau_object *,
+@@ -32,7 +32,7 @@ nv_printk_(struct nouveau_object *, cons
  #define nv_spam(o,f,a...) nv_printk((o), SPAM, f, ##a)
  
  #define nv_assert(f,a...) do {                                                 \

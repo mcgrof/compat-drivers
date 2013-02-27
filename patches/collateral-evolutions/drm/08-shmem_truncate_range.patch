@@ -27,10 +27,10 @@ Date:   Mon Jun 27 16:18:19 2011 -0700
 
 --- a/drivers/gpu/drm/i915/i915_gem.c
 +++ b/drivers/gpu/drm/i915/i915_gem.c
-@@ -1628,7 +1628,14 @@ i915_gem_object_truncate(struct drm_i915
+@@ -1628,7 +1628,13 @@ i915_gem_object_truncate(struct drm_i915
  	 * backing pages, *now*.
  	 */
- 	inode = obj->base.filp->f_path.dentry->d_inode;
+ 	inode = file_inode(obj->base.filp);
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,0,0))
  	shmem_truncate_range(inode, 0, (loff_t)-1);
 +#else
@@ -38,7 +38,6 @@ Date:   Mon Jun 27 16:18:19 2011 -0700
 +	if (inode->i_op->truncate_range)
 +		inode->i_op->truncate_range(inode, 0, (loff_t)-1);
 +#endif
-+
  
  	obj->madv = __I915_MADV_PURGED;
  }
