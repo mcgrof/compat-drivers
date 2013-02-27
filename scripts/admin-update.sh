@@ -704,7 +704,7 @@ UNIFIED_DRIVERS+="alx"
 unified_driver_git_tree() {
 	case $1 in
 	"alx")
-		echo "git://github.com/mcgrof/alx.git"
+		echo "git://github.com/erikarn/alx.git"
 		;;
 	*)
 		;;
