@@ -444,7 +444,8 @@ mkdir -p include/net/bluetooth \
 	 $DRIVERS_WLAN \
 	 $DRIVERS_ETH \
 	 $DRIVERS_BT \
-	 $DRIVERS_DRM
+	 $DRIVERS_DRM \
+	 drivers/video
 
 
 
@@ -677,8 +678,14 @@ if [[ "$ENABLE_DRM" == "1" ]]; then
 
 	# Finally get the DRM top-level makefile
 	cp $GIT_TREE/drivers/gpu/drm/Makefile drivers/gpu/drm
+
+	DIR="drivers/video"
+	cp $GIT_TREE/$DIR/hdmi.c $DIR
+	echo "obj-\$(CONFIG_COMPAT_HDMI) += hdmi.o" > $DIR/Makefile
+	cp $GIT_TREE/include/linux/hdmi.h include/linux/hdmi.h
 else
 	touch drivers/gpu/drm/Makefile
+	touch drivers/video/Makefile
 fi
 
 # Staging drivers in their own directory
