@@ -1,0 +1,16 @@
+For new kernels this is dealt with in drivers/pci/quirks.c
+Since older kernels will not have this we add a hack to the
+driver to deal with the PCI quirk.
+
+--- a/drivers/net/ethernet/atheros/alx/alx_main.c
++++ b/drivers/net/ethernet/atheros/alx/alx_main.c
+@@ -1026,6 +1026,9 @@ static int alx_identify_hw(struct alx_adapter *adpt)
+ 		if (rev < ALX_REV_C0) {
+ 			hw->ptrn_ofs = 0x600;
+ 			hw->max_ptrns = 8;
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,24)
++			pdev->dev_flags |= PCI_DEV_FLAGS_MSI_INTX_DISABLE_BUG;
++#endif
+ 		} else {
+ 			hw->ptrn_ofs = 0x14000;
+ 			hw->max_ptrns = 16;
