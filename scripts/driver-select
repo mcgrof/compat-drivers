@@ -20,9 +20,6 @@ SSB_MAKEFILE="drivers/ssb/Makefile"
 BCMA_MAKEFILE="drivers/bcma/Makefile"
 
 # used to backup files from foo to foo.${BACKUP_EXT}
-# If you change this also modify restore_compat() and
-# restore_file() below I couldn't find a way to use
-# the $BACKUP_EXT there.
 BACKUP_EXT="bk"
 
 # Pretty colors
@@ -90,7 +87,7 @@ function backup_file {
 		return
 	fi
 	echo -e "Backing up makefile: ${CYAN}${1}.${BACKUP_EXT}${NORMAL}"
-	cp $1 $1.bk
+	cp "${1}" "${1}.${BACKUP_EXT}"
 }
 
 function disable_makefile
@@ -301,16 +298,14 @@ function select_brcm80211_driver
 }
 
 function restore_file {
-	#ORIG=$(shell ${1%%.${BACKUP_EXT}})
-	ORIG=${1%%.bk}
+	local ORIG="${1%%.${BACKUP_EXT}}"
 	cp $1 $ORIG
 	rm -f $1
 	echo -e "Restored makefile: ${CYAN}${ORIG}${NORMAL} (and removed backup)"
 }
 
 function restore_compat {
-	#FILES=$(find ./ -type f -name *.$BACKUP_EXT)
-	FILES=$(find ./ -type f -name *.bk)
+	local FILES=$(find ./ -type f -name *\."${BACKUP_EXT}")
 	for i in $FILES; do
 		restore_file $i
 	done
