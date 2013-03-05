@@ -4,7 +4,7 @@ driver to deal with the PCI quirk.
 
 --- a/drivers/net/ethernet/atheros/alx/alx_main.c
 +++ b/drivers/net/ethernet/atheros/alx/alx_main.c
-@@ -1026,6 +1026,9 @@ static int alx_identify_hw(struct alx_adapter *adpt)
+@@ -1032,6 +1032,9 @@ static int alx_identify_hw(struct alx_ad
  		if (rev < ALX_REV_C0) {
  			hw->ptrn_ofs = 0x600;
  			hw->max_ptrns = 8;
