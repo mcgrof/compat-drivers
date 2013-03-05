@@ -30,7 +30,7 @@ in compat.
 
 --- a/net/mac80211/tx.c
 +++ b/net/mac80211/tx.c
-@@ -1502,6 +1502,10 @@ void ieee80211_xmit(struct ieee80211_sub
+@@ -1508,6 +1508,10 @@ void ieee80211_xmit(struct ieee80211_sub
  		}
  	}
  

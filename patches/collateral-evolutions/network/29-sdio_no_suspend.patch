@@ -52,7 +52,7 @@ suspend and resume that are not backported.
  static int __init ath6kl_sdio_init(void)
 --- a/drivers/net/wireless/libertas/if_sdio.c
 +++ b/drivers/net/wireless/libertas/if_sdio.c
-@@ -1341,6 +1341,7 @@ static void if_sdio_remove(struct sdio_f
+@@ -1345,6 +1345,7 @@ static void if_sdio_remove(struct sdio_f
  	lbs_deb_leave(LBS_DEB_SDIO);
  }
  
@@ -60,7 +60,7 @@ suspend and resume that are not backported.
  static int if_sdio_suspend(struct device *dev)
  {
  	struct sdio_func *func = dev_to_sdio_func(dev);
-@@ -1399,15 +1400,18 @@ static const struct dev_pm_ops if_sdio_p
+@@ -1403,15 +1404,18 @@ static const struct dev_pm_ops if_sdio_p
  	.suspend	= if_sdio_suspend,
  	.resume		= if_sdio_resume,
  };
