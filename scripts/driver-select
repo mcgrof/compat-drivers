@@ -32,7 +32,7 @@ PURPLE="\033[35m"
 CYAN="\033[36m"
 UNDERLINE="\033[02m"
 
-SUPPORTED_80211_DRIVERS="ath5k ath9k ath9k_ap ath9k_htc carl9170 ath6kl wil6210 b43 zd1211rw rt2x00 wl1251 wl12xx brcmsmac brcmfmac"
+SUPPORTED_80211_DRIVERS="ath5k ath9k ath9k_ap ath9k_htc carl9170 ath6kl wil6210 b43 zd1211rw rt2x00 wl1251 wl12xx brcmsmac brcmfmac mac80211_hwsim"
 
 # b43 needs some more work for driver-select, the SSB stuff, plus
 # what if you update b44 but not b43? It will bust.
@@ -501,6 +501,11 @@ case $1 in
 		select_ti_drivers	CONFIG_WL18XX
 		disable_staging
 		disable_var_01
+		;;
+	mac80211_hwsim)
+		select_drivers		CONFIG_COMPAT_MAC80211_HWSIM
+		disable_staging
+		disable_bt_usb_ethernet_var
 		;;
 # Ethernet and Bluetooth drivers
 	atl1)
