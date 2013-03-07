@@ -84,7 +84,7 @@ here still, but for now we keep this here.
  	wake_up_process(session->task);
 --- a/net/bluetooth/hci_sock.c
 +++ b/net/bluetooth/hci_sock.c
-@@ -879,8 +879,13 @@ drop:
+@@ -884,8 +884,13 @@ drop:
  	goto done;
  }
  
@@ -98,7 +98,7 @@ here still, but for now we keep this here.
  {
  	struct hci_ufilter uf = { .opcode = 0 };
  	struct sock *sk = sock->sk;
-@@ -1054,8 +1059,12 @@ static struct proto hci_sk_proto = {
+@@ -1059,8 +1064,12 @@ static struct proto hci_sk_proto = {
  	.obj_size	= sizeof(struct hci_pinfo)
  };
  
