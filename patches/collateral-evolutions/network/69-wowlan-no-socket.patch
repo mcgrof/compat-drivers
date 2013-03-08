@@ -2,7 +2,7 @@ __sock_create() is not available on kernel version < 2.6.37.
 
 --- a/net/wireless/nl80211.c
 +++ b/net/wireless/nl80211.c
-@@ -7333,7 +7333,7 @@ static int nl80211_parse_wowlan_tcp(stru
+@@ -7388,7 +7388,7 @@ static int nl80211_parse_wowlan_tcp(stru
  		port = nla_get_u16(tb[NL80211_WOWLAN_TCP_SRC_PORT]);
  	else
  		port = 0;
