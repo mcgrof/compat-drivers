@@ -909,7 +909,7 @@ if [[ "$GET_STABLE_PENDING" = y ]]; then
 		get_stable_patches drm
 	fi
 
-	rm -f .network_stable .drm_stable
+	rm -f ${STABLE_PREFIX}network ${STABLE_PREFIX}drm
 	cd $LAST_DIR
 
 fi
