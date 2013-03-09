@@ -26,6 +26,9 @@ UNDERLINE="\033[02m"
 # File in which code metrics will be written
 CODE_METRICS=code-metrics.txt
 
+STABLE_PREFIX=".stable_"
+PENDING_STABLE_DIR="patches/pending-stable"
+
 # The GIT URL's for linux-next and compat trees
 GIT_URL="git://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git"
 GIT_COMPAT_URL="git://github.com/mcgrof/compat.git"
@@ -784,7 +787,7 @@ refresh_compat
 find -type f -name "*.mod.c" -exec rm -f {} \;
 
 # files we suck in for wireless drivers
-export WSTABLE="
+export NETWORK_STABLE="
 	net/wireless/
 	net/mac80211/
 	net/rfkill/
@@ -794,7 +797,6 @@ export WSTABLE="
 	drivers/net/ethernet/atheros/atl1c/
 	drivers/net/ethernet/atheros/atl1e/
 	drivers/net/ethernet/atheros/atlx/
-	include/uapi/drm
 	include/uapi/linux/nl80211.h
 	include/uapi/linux/rfkill.h
 	include/linux/rfkill.h
@@ -805,6 +807,57 @@ export WSTABLE="
 	include/net/bluetooth/hci_core.h
 	include/net/bluetooth/mgmt.h
 	include/net/cfg80211.h"
+
+export DRM_STABLE="
+	include/uapi/drm
+	include/drm/
+	drivers/gpu/drm/
+	"
+
+get_stable_patches() {
+	SUBSYS=$1
+	STABLE_TARGET="${PENDING_STABLE_DIR}/${SUBSYS}"
+	STABLE_FILE_LIST="${STABLE_PREFIX}${SUBSYS}"
+	STABLE_FILES=$(cat ${STABLE_FILE_LIST})
+
+	rm -rf $STABLE_TARGET
+	mkdir -p $STABLE_TARGET
+
+	echo -e "${GREEN}Generating stable cherry picks for ${SUBSYS}... ${NORMAL}"
+	echo -e "\nUsing command on directory $PWD:"
+
+	echo -e "\ngit format-patch --grep=\"stable@vger.kernel.org\" -o "
+	echo -e "\t$STABLE_TARGET ${LAST_STABLE_UPDATE}.. "
+	for i in $STABLE_FILES; do
+		echo -e "\t$i"
+	done
+
+	git format-patch --grep="stable@vger.kernel.org" -o \
+		$STABLE_TARGET ${LAST_STABLE_UPDATE}.. \
+		$STABLE_FILES
+
+	if [ ! -d ${LAST_DIR}/${STABLE_TARGET} ]; then
+		echo -e "Assumption that ${LAST_DIR}/${STABLE_TARGET} directory exists failed"
+		exit 1
+	fi
+
+	echo -e "${GREEN}Purging old stable cherry picks... ${NORMAL}"
+	rm -f ${LAST_DIR}/${STABLE_TARGET}/*.patch
+
+	if [ -f ${STABLE_TARGET}/*.patch ]; then
+		cp ${STABLE_TARGET}/*.patch ${LAST_DIR}/${STABLE_TARGET}/
+	else
+		echo "No stable pending-stable $SUBSYS patches found on linux-next"
+	fi
+	if [ -f ${LAST_DIR}/${STABLE_TARGET}/.ignore ]; then
+		for i in $(cat ${LAST_DIR}/${STABLE_TARGET}/.ignore) ; do
+			echo -e "Skipping $i from generated stable patches..."
+			rm -f ${LAST_DIR}/${STABLE_TARGET}/*$i*
+		done
+	fi
+	echo -e "${GREEN}Updated stable cherry picks, review with git diff "
+	echo -e "and update hunks with ./scripts/admin-update.sh -s refresh${NORMAL}"
+}
 
 # Stable pending, if -n was passed
 if [[ "$GET_STABLE_PENDING" = y ]]; then
@@ -836,7 +889,6 @@ if [[ "$GET_STABLE_PENDING" = y ]]; then
 	cd $GIT_TREE
 	LAST_STABLE_UPDATE=$(git describe --abbrev=0)
 	cd $NEXT_TREE
-	PENDING_STABLE_DIR="pending-stable/"
 
 	rm -rf $PENDING_STABLE_DIR
 
@@ -845,25 +897,21 @@ if [[ "$GET_STABLE_PENDING" = y ]]; then
 		echo -e "${BLUE}Tag $LAST_STABLE_UPDATE not found on $NEXT_TREE tree: bailing out${NORMAL}"
 		exit 1
 	fi
-	echo -e "${GREEN}Generating stable cherry picks... ${NORMAL}"
-	echo -e "\nUsing command on directory $PWD:"
-	echo -e "\ngit format-patch --grep=\"stable@vger.kernel.org\" -o $PENDING_STABLE_DIR ${LAST_STABLE_UPDATE}.. $WSTABLE"
-	git format-patch --grep="stable@vger.kernel.org" -o $PENDING_STABLE_DIR ${LAST_STABLE_UPDATE}.. $WSTABLE
-	if [ ! -d ${LAST_DIR}/${PENDING_STABLE_DIR} ]; then
-		echo -e "Assumption that ${LAST_DIR}/${PENDING_STABLE_DIR} directory exists failed"
-		exit 1
+
+	echo $NETWORK_STABLE > ${STABLE_PREFIX}network
+	echo $DRM_STABLE > ${STABLE_PREFIX}drm
+
+	if [[ "$ENABLE_NETWORK" == "1" ]]; then
+		get_stable_patches network
 	fi
-	echo -e "${GREEN}Purging old stable cherry picks... ${NORMAL}"
-	rm -f ${LAST_DIR}/${PENDING_STABLE_DIR}/*.patch
-	cp ${PENDING_STABLE_DIR}/*.patch ${LAST_DIR}/${PENDING_STABLE_DIR}/
-	if [ -f ${LAST_DIR}/${PENDING_STABLE_DIR}/.ignore ]; then
-		for i in $(cat ${LAST_DIR}/${PENDING_STABLE_DIR}/.ignore) ; do
-			echo -e "Skipping $i from generated stable patches..."
-			rm -f ${LAST_DIR}/${PENDING_STABLE_DIR}/*$i*
-		done
+
+	if [[ "$ENABLE_DRM" == "1" ]]; then
+		get_stable_patches drm
 	fi
-	echo -e "${GREEN}Updated stable cherry picks, review with git diff and update hunks with ./scripts/admin-update.sh -s refresh${NORMAL}"
+
+	rm -f .network_stable .drm_stable
 	cd $LAST_DIR
+
 fi
 
 ORIG_CODE=$(find ./ -type f -name  \*.[ch] |
