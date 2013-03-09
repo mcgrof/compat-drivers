@@ -852,7 +852,8 @@ get_stable_patches() {
 	echo -e "${GREEN}Purging old stable cherry picks... ${NORMAL}"
 	rm -f ${LAST_DIR}/${STABLE_TARGET}/*.patch
 
-	if [ -f ${STABLE_TARGET}/*.patch ]; then
+	FOUND=$(find ${STABLE_TARGET}/ -maxdepth 1 -name \*.patch | wc -l)
+	if [ $FOUND -ne 0 ]; then
 		cp ${STABLE_TARGET}/*.patch ${LAST_DIR}/${STABLE_TARGET}/
 	else
 		echo "No stable pending-stable $SUBSYS patches found on linux-next"
