@@ -120,7 +120,7 @@ not < 3.3.0.
 +#endif /* (LINUX_VERSION_CODE >= KERNEL_VERSION(3,4,0)) */
 --- a/drivers/gpu/drm/radeon/radeon_drv.c
 +++ b/drivers/gpu/drm/radeon/radeon_drv.c
-@@ -373,8 +373,10 @@ static const struct file_operations rade
+@@ -374,8 +374,10 @@ static const struct file_operations rade
  static struct drm_driver kms_driver = {
  	.driver_features =
  	    DRIVER_USE_AGP | DRIVER_USE_MTRR | DRIVER_PCI_DMA | DRIVER_SG |
@@ -133,7 +133,7 @@ not < 3.3.0.
  	.dev_priv_size = 0,
  	.load = radeon_driver_load_kms,
  	.firstopen = radeon_driver_firstopen_kms,
-@@ -409,6 +411,7 @@ static struct drm_driver kms_driver = {
+@@ -410,6 +412,7 @@ static struct drm_driver kms_driver = {
  	.dumb_destroy = radeon_mode_dumb_destroy,
  	.fops = &radeon_driver_kms_fops,
  
@@ -141,7 +141,7 @@ not < 3.3.0.
  	.prime_handle_to_fd = drm_gem_prime_handle_to_fd,
  	.prime_fd_to_handle = drm_gem_prime_fd_to_handle,
  	.gem_prime_export = drm_gem_prime_export,
-@@ -418,6 +421,7 @@ static struct drm_driver kms_driver = {
+@@ -419,6 +422,7 @@ static struct drm_driver kms_driver = {
  	.gem_prime_import_sg_table = radeon_gem_prime_import_sg_table,
  	.gem_prime_vmap = radeon_gem_prime_vmap,
  	.gem_prime_vunmap = radeon_gem_prime_vunmap,
@@ -282,7 +282,7 @@ not < 3.3.0.
  
 --- a/drivers/gpu/drm/i915/i915_drv.c
 +++ b/drivers/gpu/drm/i915/i915_drv.c
-@@ -1025,7 +1025,11 @@ static struct drm_driver driver = {
+@@ -1036,7 +1036,11 @@ static struct drm_driver driver = {
  	 */
  	.driver_features =
  	    DRIVER_USE_AGP | DRIVER_REQUIRE_AGP | /* DRIVER_USE_MTRR |*/
@@ -294,7 +294,7 @@ not < 3.3.0.
  	.load = i915_driver_load,
  	.unload = i915_driver_unload,
  	.open = i915_driver_open,
-@@ -1048,10 +1052,12 @@ static struct drm_driver driver = {
+@@ -1059,10 +1063,12 @@ static struct drm_driver driver = {
  	.gem_free_object = i915_gem_free_object,
  	.gem_vm_ops = &i915_gem_vm_ops,
  
