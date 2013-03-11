@@ -945,6 +945,34 @@ for subsystem in $SUBSYSTEMS; do
 		fi
 
 		for i in $(ls $PATCHDIR/*.patch); do
+			# GNU Patch does not yet support giving a different
+			# error return value for patches detected as reversed or
+			# already applied. We can add that support but for now
+			# we distinguish this by grep'ing the results. We nuke
+			# already applied patches, this typically would come from
+			# linux-next, on linux-stable branches given that there is
+			# no linearity between the two.
+			#
+			# To support this change however it means we now have
+			# the double amount of time it takes to apply patches
+			# given that we now need a dry run first. The algorithm
+			# for checking if a patch is reversed only works by
+			# analyzing the first hunk of a patch though so perhaps
+			# what we need on GNU Patch is a check for asking if
+			# a patch is reversed, that would not cause much
+			# overhead here, it would just dry run on the first
+			# hunk by reducing the search space considerably.
+			patch --dry-run -p1 -N -t < $i > /dev/null 2>&1
+			RET=$?
+			if [[ $RET -ne 0 ]]; then
+				patch --dry-run -p1 -N -t < $i | grep "Reversed" > /dev/null 2>&1
+				if [[ $? -eq 0 ]]; then
+					echo -e "${CYAN}Deleting${NORMAL} ${GREEN}already applied ${NORMAL}${BLUE}${i}"
+					rm -f $i
+					continue
+				fi
+			fi
+
 			echo -e "${GREEN}Applying backport patch${NORMAL}: ${BLUE}$i${NORMAL}"
 			patch -p1 -N -t < $i
 			RET=$?
