@@ -1,1 +1,2 @@
 drm-udl-make-usage-as-a-console-safer.patch
+drm-udl-disable-fb_defio-by-default.patch
