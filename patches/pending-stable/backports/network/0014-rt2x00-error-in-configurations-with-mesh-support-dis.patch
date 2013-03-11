@@ -1,0 +1,47 @@
+From 6ef9e2f6d12ce9e2120916804d2ddd46b954a70b Mon Sep 17 00:00:00 2001
+From: Felix Fietkau <nbd@openwrt.org>
+Date: Tue, 26 Feb 2013 16:09:55 +0100
+Subject: [PATCH 14/16] rt2x00: error in configurations with mesh support
+ disabled
+
+Backported for v3.8 by Luis
+
+If CONFIG_MAC80211_MESH is not set, cfg80211 will now allow advertising
+interface combinations with NL80211_IFTYPE_MESH_POINT present.
+Add appropriate ifdefs to avoid running into errors.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Luis R. Rodriguez <mcgrof@do-not-panic.com>
+Signed-off-by: Felix Fietkau <nbd@openwrt.org>
+Acked-by: Gertjan van Wingerde <gwingerde@gmail.com>
+Signed-off-by: John W. Linville <linville@tuxdriver.com>
+---
+ drivers/net/wireless/rt2x00/rt2x00dev.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/wireless/rt2x00/rt2x00dev.c b/drivers/net/wireless/rt2x00/rt2x00dev.c
+index 1031db6..189744d 100644
+--- a/drivers/net/wireless/rt2x00/rt2x00dev.c
++++ b/drivers/net/wireless/rt2x00/rt2x00dev.c
+@@ -1139,7 +1139,10 @@ static inline void rt2x00lib_set_if_comb
+ 	 */
+ 	if_limit = &rt2x00dev->if_limits_ap;
+ 	if_limit->max = rt2x00dev->ops->max_ap_intf;
+-	if_limit->types = BIT(NL80211_IFTYPE_AP);
++	if_limit->types = BIT(NL80211_IFTYPE_AP);                               
++#ifdef CONFIG_MAC80211_MESH
++	if_limit->types |= BIT(NL80211_IFTYPE_MESH_POINT);
++#endif
+ 
+ 	/*
+ 	 * Build up AP interface combinations structure.
+@@ -1209,7 +1212,9 @@ int rt2x00lib_probe_dev(struct rt2x00_de
+ 		rt2x00dev->hw->wiphy->interface_modes |=
+ 		    BIT(NL80211_IFTYPE_ADHOC) |
+ 		    BIT(NL80211_IFTYPE_AP) |
++#ifdef CONFIG_MAC80211_MESH
+ 		    BIT(NL80211_IFTYPE_MESH_POINT) |
++#endif
+ 		    BIT(NL80211_IFTYPE_WDS);
+ 
+ 	rt2x00dev->hw->wiphy->flags |= WIPHY_FLAG_IBSS_RSN;
