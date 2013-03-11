@@ -1,0 +1,67 @@
+From 499218595a2e8296b7492af32fcca141b7b8184a Mon Sep 17 00:00:00 2001
+From: Ben Greear <greearb@candelatech.com>
+Date: Wed, 20 Feb 2013 09:41:09 -0800
+Subject: [PATCH 1/2] mac80211: Fix crash due to un-canceled work-items
+
+Some mlme work structs are not cancelled on disassociation
+nor interface deletion, which leads to them running after
+the memory has been freed
+
+There is not a clean way to cancel these in the disassociation
+logic because they must be canceled outside of the ifmgd->mtx
+lock, so just cancel them in mgd_stop logic that tears down
+the station.
+
+This fixes the crashes we see in 3.7.9+.  The crash stack
+trace itself isn't so helpful, but this warning gives
+more useful info:
+
+WARNING: at /home/greearb/git/linux-3.7.dev.y/lib/debugobjects.c:261 debug_print_object+0x7c/0x8d()
+ODEBUG: free active (active state 0) object type: work_struct hint: ieee80211_sta_monitor_work+0x0/0x14 [mac80211]
+Modules linked in: [...]
+Pid: 14743, comm: iw Tainted: G         C O 3.7.9+ #11
+Call Trace:
+ [<ffffffff81087ef8>] warn_slowpath_common+0x80/0x98
+ [<ffffffff81087fa4>] warn_slowpath_fmt+0x41/0x43
+ [<ffffffff812a2608>] debug_print_object+0x7c/0x8d
+ [<ffffffff812a2bca>] debug_check_no_obj_freed+0x95/0x1c3
+ [<ffffffff8114cc69>] slab_free_hook+0x70/0x79
+ [<ffffffff8114ea3e>] kfree+0x62/0xb7
+ [<ffffffff8149f465>] netdev_release+0x39/0x3e
+ [<ffffffff8136ad67>] device_release+0x52/0x8a
+ [<ffffffff812937db>] kobject_release+0x121/0x158
+ [<ffffffff81293612>] kobject_put+0x4c/0x50
+ [<ffffffff8148f0d7>] netdev_run_todo+0x25c/0x27e
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Ben Greear <greearb@candelatech.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+---
+ net/mac80211/mlme.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index 6044c6d..b756d29 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -4319,6 +4319,17 @@ void ieee80211_mgd_stop(struct ieee80211_sub_if_data *sdata)
+ {
+ 	struct ieee80211_if_managed *ifmgd = &sdata->u.mgd;
+ 
++	/*
++	 * Make sure some work items will not run after this,
++	 * they will not do anything but might not have been
++	 * cancelled when disconnecting.
++	 */
++	cancel_work_sync(&ifmgd->monitor_work);
++	cancel_work_sync(&ifmgd->beacon_connection_loss_work);
++	cancel_work_sync(&ifmgd->request_smps_work);
++	cancel_work_sync(&ifmgd->csa_connection_drop_work);
++	cancel_work_sync(&ifmgd->chswitch_work);
++
+ 	mutex_lock(&ifmgd->mtx);
+ 	if (ifmgd->assoc_data)
+ 		ieee80211_destroy_assoc_data(sdata, false);
+-- 
+1.7.10.4
+
