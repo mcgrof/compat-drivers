@@ -1,0 +1,34 @@
+From a3d63cadbad97671d740a9698acc2c95d1ca6e79 Mon Sep 17 00:00:00 2001
+From: Felix Fietkau <nbd@openwrt.org>
+Date: Fri, 22 Feb 2013 21:09:17 +0100
+Subject: [PATCH 10/16] ath9k: fix RSSI dummy marker value
+
+RSSI is being stored internally as s8 in several places. The indication
+of an unset RSSI value, ATH_RSSI_DUMMY_MARKER, was supposed to have been
+set to 127, but ended up being set to 0x127 because of a code cleanup
+mistake. This could lead to invalid signal strength values in a few
+places.
+
+Signed-off-by: Felix Fietkau <nbd@openwrt.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: John W. Linville <linville@tuxdriver.com>
+---
+ drivers/net/wireless/ath/ath9k/common.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/ath/ath9k/common.h b/drivers/net/wireless/ath/ath9k/common.h
+index 5f845be..050ca4a 100644
+--- a/drivers/net/wireless/ath/ath9k/common.h
++++ b/drivers/net/wireless/ath/ath9k/common.h
+@@ -27,7 +27,7 @@
+ #define WME_MAX_BA              WME_BA_BMP_SIZE
+ #define ATH_TID_MAX_BUFS        (2 * WME_MAX_BA)
+ 
+-#define ATH_RSSI_DUMMY_MARKER   0x127
++#define ATH_RSSI_DUMMY_MARKER   127
+ #define ATH_RSSI_LPF_LEN 		10
+ #define RSSI_LPF_THRESHOLD		-20
+ #define ATH_RSSI_EP_MULTIPLIER     (1<<7)
+-- 
+1.7.10.4
+

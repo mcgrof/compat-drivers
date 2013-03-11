@@ -1,0 +1,34 @@
+From 3e7a4ff7c5b6423ddb644df9c41b8b6d2fb79d30 Mon Sep 17 00:00:00 2001
+From: Avinash Patil <patila@marvell.com>
+Date: Mon, 25 Feb 2013 16:01:34 -0800
+Subject: [PATCH 13/16] mwifiex: correct sleep delay counter
+
+Maximum delay for waking up card is 50 ms. Because of typo in
+counter, this delay goes to 500ms. This patch fixes the bug.
+
+Cc: <stable@vger.kernel.org> # 3.2+
+Signed-off-by: Avinash Patil <patila@marvell.com>
+Signed-off-by: Amitkumar Karwar <akarwar@marvell.com>
+Signed-off-by: Yogesh Ashok Powar <yogeshp@marvell.com>
+Signed-off-by: Bing Zhao <bzhao@marvell.com>
+Signed-off-by: John W. Linville <linville@tuxdriver.com>
+---
+ drivers/net/wireless/mwifiex/pcie.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/mwifiex/pcie.c b/drivers/net/wireless/mwifiex/pcie.c
+index 35c7972..5c395e2 100644
+--- a/drivers/net/wireless/mwifiex/pcie.c
++++ b/drivers/net/wireless/mwifiex/pcie.c
+@@ -302,7 +302,7 @@ static int mwifiex_pm_wakeup_card(struct mwifiex_adapter *adapter)
+ 		i++;
+ 		usleep_range(10, 20);
+ 		/* 50ms max wait */
+-		if (i == 50000)
++		if (i == 5000)
+ 			break;
+ 	}
+ 
+-- 
+1.7.10.4
+
