@@ -5,7 +5,7 @@ COMPAT_WIRELESS=$HOME/devel/compat-drivers/.git
 
 OLD_VER=8
 let VER="9"
-RC="-rc1"
+RC="-rc2"
 export GIT_DIR=${COMPAT_WIRELESS}
 CD_VER="$(git describe | sed -e 's|compat-drivers-v||g')"
 LOG="ChangeLog-${CD_VER}"
