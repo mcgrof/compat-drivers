@@ -8,7 +8,7 @@ Date:   Wed Mar 17 20:31:13 2010 +0000
 
 --- a/drivers/net/wireless/iwlwifi/mvm/d3.c
 +++ b/drivers/net/wireless/iwlwifi/mvm/d3.c
-@@ -99,7 +99,11 @@ void iwl_mvm_ipv6_addr_change(struct iee
+@@ -101,7 +101,11 @@ void iwl_mvm_ipv6_addr_change(struct iee
  	int idx = 0;
  
  	read_lock_bh(&idev->lock);

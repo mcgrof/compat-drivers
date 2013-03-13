@@ -75,7 +75,7 @@ thread in process context as well.
  /**
 --- a/drivers/net/wireless/iwlwifi/pcie/trans.c
 +++ b/drivers/net/wireless/iwlwifi/pcie/trans.c
-@@ -759,12 +759,21 @@ void iwl_trans_pcie_free(struct iwl_tran
+@@ -760,12 +760,21 @@ void iwl_trans_pcie_free(struct iwl_tran
  {
  	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
  
@@ -97,7 +97,7 @@ thread in process context as well.
  	iwl_pcie_free_ict(trans);
  
  	pci_disable_msi(trans_pcie->pci_dev);
-@@ -1570,9 +1579,16 @@ struct iwl_trans *iwl_trans_pcie_alloc(s
+@@ -1553,9 +1562,16 @@ struct iwl_trans *iwl_trans_pcie_alloc(s
  	if (iwl_pcie_alloc_ict(trans))
  		goto out_free_cmd_pool;
  
@@ -116,7 +116,7 @@ thread in process context as well.
  	}
 --- a/drivers/net/wireless/ti/wlcore/main.c
 +++ b/drivers/net/wireless/ti/wlcore/main.c
-@@ -5994,14 +5994,25 @@ static void wlcore_nvs_cb(const struct f
+@@ -5995,14 +5995,25 @@ static void wlcore_nvs_cb(const struct f
  	wl->platform_quirks = pdata->platform_quirks;
  	wl->if_ops = pdev_data->if_ops;
  
@@ -142,7 +142,7 @@ thread in process context as well.
  	if (ret < 0) {
  		wl1271_error("request_irq() failed: %d", ret);
  		goto out_free_nvs;
-@@ -6076,7 +6087,11 @@ out_unreg:
+@@ -6077,7 +6088,11 @@ out_unreg:
  	wl1271_unregister_hw(wl);
  
  out_irq:
@@ -154,7 +154,7 @@ thread in process context as well.
  
  out_free_nvs:
  	kfree(wl->nvs);
-@@ -6122,7 +6137,12 @@ int wlcore_remove(struct platform_device
+@@ -6123,7 +6138,12 @@ int wlcore_remove(struct platform_device
  		disable_irq_wake(wl->irq);
  	}
  	wl1271_unregister_hw(wl);

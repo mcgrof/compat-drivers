@@ -5,7 +5,7 @@ the message is printed and traced.
 
 --- a/drivers/net/wireless/iwlwifi/iwl-debug.c
 +++ b/drivers/net/wireless/iwlwifi/iwl-debug.c
-@@ -75,13 +75,16 @@ void __iwl_ ##fn(struct device *dev, con
+@@ -76,13 +76,16 @@ void __iwl_ ##fn(struct device *dev, con
  	struct va_format vaf = {				\
  		.fmt = fmt,					\
  	};							\
@@ -26,7 +26,7 @@ the message is printed and traced.
  }
  
  __iwl_fn(warn)
-@@ -100,13 +103,18 @@ void __iwl_err(struct device *dev, bool
+@@ -101,13 +104,18 @@ void __iwl_err(struct device *dev, bool
  	va_list args;
  
  	va_start(args, fmt);
@@ -46,7 +46,7 @@ the message is printed and traced.
  	trace_iwlwifi_err(&vaf);
  	va_end(args);
  }
-@@ -123,13 +131,19 @@ void __iwl_dbg(struct device *dev,
+@@ -124,13 +132,19 @@ void __iwl_dbg(struct device *dev,
  	va_list args;
  
  	va_start(args, fmt);
