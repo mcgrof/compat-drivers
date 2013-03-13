@@ -289,6 +289,15 @@ this one should other drivers / subsystem need this change.
  	list_add(&nreg->list, &rdev->beacon_registrations);
  
  	spin_unlock_bh(&rdev->beacon_registrations_lock);
+@@ -8164,7 +8164,7 @@ static int nl80211_get_protocol_features
+ 	if (!msg)
+ 		return -ENOMEM;
+ 
+-	hdr = nl80211hdr_put(msg, info->snd_portid, info->snd_seq, 0,
++	hdr = nl80211hdr_put(msg, genl_info_snd_portid(info), info->snd_seq, 0,
+ 			     NL80211_CMD_GET_PROTOCOL_FEATURES);
+ 	if (!hdr)
+ 		goto nla_put_failure;
 @@ -10563,12 +10563,12 @@ static int nl80211_netlink_notify(struct
  
  	list_for_each_entry_rcu(rdev, &cfg80211_rdev_list, list) {
