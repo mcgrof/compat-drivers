@@ -28,19 +28,19 @@ Date:   Fri Mar 1 14:03:49 2013 +0100
 
 --- a/net/wireless/nl80211.c
 +++ b/net/wireless/nl80211.c
-@@ -1321,6 +1321,7 @@ static int nl80211_dump_wiphy(struct sk_
- 					 cb->nlh->nlmsg_seq, NLM_F_MULTI,
- 					 dev);
- 		if (ret < 0) {
+@@ -1600,6 +1600,7 @@ static int nl80211_dump_wiphy(struct sk_
+ 						 &cb->args[2],
+ 						 &cb->args[3]);
+ 			if (ret < 0) {
 +#if LINUX_VERSION_CODE >= KERNEL_VERSION(3,1,0)
- 			/*
- 			 * If sending the wiphy data didn't fit (ENOBUFS or
- 			 * EMSGSIZE returned), this SKB is still empty (so
-@@ -1340,6 +1341,7 @@ static int nl80211_dump_wiphy(struct sk_
- 				mutex_unlock(&cfg80211_mutex);
- 				return 1;
- 			}
+ 				/*
+ 				 * If sending the wiphy data didn't fit (ENOBUFS
+ 				 * or EMSGSIZE returned), this SKB is still
+@@ -1620,6 +1621,7 @@ static int nl80211_dump_wiphy(struct sk_
+ 					mutex_unlock(&cfg80211_mutex);
+ 					return 1;
+ 				}
 +#endif
- 			idx--;
- 			break;
- 		}
+ 				idx--;
+ 				break;
+ 			}
