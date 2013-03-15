@@ -2,7 +2,7 @@ This should go into patches/01-netdev.patch
 
 --- a/drivers/net/ethernet/atheros/alx/alx_main.c
 +++ b/drivers/net/ethernet/atheros/alx/alx_main.c
-@@ -96,7 +96,11 @@ static void __alx_set_rx_mode(struct net
+@@ -98,7 +98,11 @@ static void __alx_set_rx_mode(struct net
  
  	/* comoute mc addresses' hash value ,and put it into hash table */
  	netdev_for_each_mc_addr(ha, netdev)
@@ -14,7 +14,7 @@ This should go into patches/01-netdev.patch
  
  	ALX_MEM_W32(hw, ALX_HASH_TBL0, hw->mc_hash[0]);
  	ALX_MEM_W32(hw, ALX_HASH_TBL1, hw->mc_hash[1]);
-@@ -128,8 +132,10 @@ static int alx_set_mac_address(struct ne
+@@ -130,8 +134,10 @@ static int alx_set_mac_address(struct ne
  	if (!is_valid_ether_addr(addr->sa_data))
  		return -EADDRNOTAVAIL;
  
@@ -25,7 +25,7 @@ This should go into patches/01-netdev.patch
  
  	memcpy(netdev->dev_addr, addr->sa_data, netdev->addr_len);
  	memcpy(hw->mac_addr, addr->sa_data, netdev->addr_len);
-@@ -1137,6 +1143,7 @@ static void alx_set_vlan_mode(struct alx
+@@ -1138,6 +1144,7 @@ static void alx_set_vlan_mode(struct alx
  }
  
  
@@ -33,7 +33,7 @@ This should go into patches/01-netdev.patch
  static netdev_features_t alx_fix_features(struct net_device *netdev,
  					  netdev_features_t features)
  {
-@@ -1169,6 +1176,7 @@ static int alx_set_features(struct net_d
+@@ -1170,6 +1177,7 @@ static int alx_set_features(struct net_d
  
  	return 0;
  }
@@ -41,7 +41,7 @@ This should go into patches/01-netdev.patch
  
  /* alx_change_mtu - Change the Maximum Transfer Unit */
  static int alx_change_mtu(struct net_device *netdev, int new_mtu)
-@@ -1193,7 +1201,17 @@ static int alx_change_mtu(struct net_dev
+@@ -1194,7 +1202,17 @@ static int alx_change_mtu(struct net_dev
  		adpt->hw.mtu = new_mtu;
  		adpt->rxbuf_size = new_mtu > ALX_DEF_RXBUF_SIZE ?
  				   ALIGN(max_frame, 8) : ALX_DEF_RXBUF_SIZE;
@@ -57,9 +57,9 @@ This should go into patches/01-netdev.patch
  		netdev_update_features(netdev);
 +#endif /* (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,39)) */
  		if (netif_running(netdev))
- 			alx_reinit(adpt);
+ 			alx_reinit(adpt, false);
  	}
-@@ -2458,8 +2476,10 @@ static const struct net_device_ops alx_n
+@@ -2460,8 +2478,10 @@ static const struct net_device_ops alx_n
  	.ndo_change_mtu         = alx_change_mtu,
  	.ndo_do_ioctl           = alx_ioctl,
  	.ndo_tx_timeout         = alx_tx_timeout,
@@ -70,7 +70,7 @@ This should go into patches/01-netdev.patch
  #ifdef CONFIG_NET_POLL_CONTROLLER
  	.ndo_poll_controller    = alx_poll_controller,
  #endif
-@@ -2561,7 +2581,7 @@ alx_probe(struct pci_dev *pdev, const st
+@@ -2563,7 +2583,7 @@ alx_probe(struct pci_dev *pdev, const st
  		goto err_iomap;
  	}
  
@@ -79,7 +79,7 @@ This should go into patches/01-netdev.patch
  	alx_set_ethtool_ops(netdev);
  	netdev->irq  = pdev->irq;
  	netdev->watchdog_timeo = ALX_WATCHDOG_TIME;
-@@ -2606,12 +2626,21 @@ alx_probe(struct pci_dev *pdev, const st
+@@ -2608,12 +2628,21 @@ alx_probe(struct pci_dev *pdev, const st
  		}
  	}
  
@@ -101,7 +101,7 @@ This should go into patches/01-netdev.patch
  
  	/* read permanent mac addr from register or eFuse */
  	if (alx_get_perm_macaddr(hw, hw->perm_addr)) {
-@@ -2787,6 +2816,8 @@ static struct pci_error_handlers alx_err
+@@ -2789,6 +2818,8 @@ static struct pci_error_handlers alx_err
  };
  
  #ifdef CONFIG_PM_SLEEP
@@ -110,8 +110,8 @@ This should go into patches/01-netdev.patch
  static SIMPLE_DEV_PM_OPS(alx_pm_ops, alx_suspend, alx_resume);
  #define ALX_PM_OPS      (&alx_pm_ops)
  #else
-@@ -2800,7 +2831,12 @@ static struct pci_driver alx_driver = {
- 	.remove      = __devexit_p(alx_remove),
+@@ -2802,7 +2833,12 @@ static struct pci_driver alx_driver = {
+ 	.remove      = alx_remove,
  	.shutdown    = alx_shutdown,
  	.err_handler = &alx_err_handler,
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,29))
