@@ -71,7 +71,7 @@ Date:   Wed Nov 19 21:32:24 2008 -0800
  
 --- a/drivers/net/wireless/ath/wil6210/netdev.c
 +++ b/drivers/net/wireless/ath/wil6210/netdev.c
-@@ -79,7 +79,7 @@ void *wil_if_alloc(struct device *dev, v
+@@ -76,7 +76,7 @@ void *wil_if_alloc(struct device *dev, v
  		goto out_priv;
  	}
  

@@ -289,7 +289,7 @@ this one should other drivers / subsystem need this change.
  	list_add(&nreg->list, &rdev->beacon_registrations);
  
  	spin_unlock_bh(&rdev->beacon_registrations_lock);
-@@ -8164,7 +8164,7 @@ static int nl80211_get_protocol_features
+@@ -8158,7 +8158,7 @@ static int nl80211_get_protocol_features
  	if (!msg)
  		return -ENOMEM;
  
