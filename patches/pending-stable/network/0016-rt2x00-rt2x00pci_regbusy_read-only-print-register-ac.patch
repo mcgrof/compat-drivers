@@ -1,7 +1,7 @@
 From 3a703ab5fba5b00292c1e7e964783c304f43fef7 Mon Sep 17 00:00:00 2001
 From: Tim Gardner <tim.gardner@canonical.com>
 Date: Mon, 18 Feb 2013 12:56:28 -0700
-Subject: [PATCH 16/16] rt2x00: rt2x00pci_regbusy_read() - only print register
+Subject: [PATCH 16/19] rt2x00: rt2x00pci_regbusy_read() - only print register
  access failure once
 
 BugLink: http://bugs.launchpad.net/bugs/1128840

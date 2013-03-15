@@ -1,3 +1,4 @@
 drm-udl-make-usage-as-a-console-safer.patch
 drm-udl-disable-fb_defio-by-default.patch
 drm-i915-inverted-brightness-quirk-for-Acer-Aspire-4.patch
+drm-i915-Don-t-clobber-crtc-fb-when-queue_flip-fails.patch
