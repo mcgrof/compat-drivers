@@ -1,0 +1,53 @@
+From 3daf162301cdee6ad8f5eaeebec9322ca6523612 Mon Sep 17 00:00:00 2001
+From: Felix Fietkau <nbd@openwrt.org>
+Date: Fri, 15 Mar 2013 11:39:05 -0700
+Subject: [PATCH 3/3] ath9k_hw: revert chainmask to user configuration after
+ calibration
+
+The commit 'ath9k_hw: fix calibration issues on chainmask that don't
+include chain 0' changed the hardware chainmask to the chip chainmask
+for the duration of the calibration, but the revert to user
+configuration in the reset path runs too early.
+
+That causes some issues with limiting the number of antennas (including
+spurious failure in hardware-generated packets).
+
+Fix this by reverting the chainmask after the essential parts of the
+calibration that need the workaround, and before NF calibration is run.
+
+Backported to v3.8 by Luis.
+
+Signed-off-by: Felix Fietkau <nbd@openwrt.org>
+Reported-by: Wojciech Dubowik <Wojciech.Dubowik@neratec.com>
+Tested-by: Wojciech Dubowik <Wojciech.Dubowik@neratec.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Luis R. Rodriguez <mcgrof@do-not-panic.com>
+---
+ drivers/net/wireless/ath/ath9k/ar9003_calib.c |    4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/drivers/net/wireless/ath/ath9k/ar9003_calib.c b/drivers/net/wireless/ath/ath9k/ar9003_calib.c
+index 56317b0..e99f481 100644
+--- a/drivers/net/wireless/ath/ath9k/ar9003_calib.c
++++ b/drivers/net/wireless/ath/ath9k/ar9003_calib.c
+@@ -976,6 +976,7 @@ static bool ar9003_hw_init_cal(struct ath_hw *ah,
+ 					  AR_PHY_CL_TAB_1,
+ 					  AR_PHY_CL_TAB_2 };
+ 
++	/* Use chip chainmask only for calibration */
+ 	ar9003_hw_set_chain_masks(ah, ah->caps.rx_chainmask, ah->caps.tx_chainmask);
+ 
+ 	if (rtt) {
+@@ -1131,6 +1132,9 @@ skip_tx_iqcal:
+ 		ar9003_hw_rtt_disable(ah);
+ 	}
+ 
++	/* Revert chainmask to runtime parameters */
++	ar9003_hw_set_chain_masks(ah, ah->rxchainmask, ah->txchainmask);
++
+ 	/* Initialize list pointers */
+ 	ah->cal_list = ah->cal_list_last = ah->cal_list_curr = NULL;
+ 	ah->supp_cals = IQ_MISMATCH_CAL;
+-- 
+1.7.10.4
+

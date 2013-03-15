@@ -1,0 +1,58 @@
+From 428264dd2d9048a5e44954da85bacbc4da9e8d37 Mon Sep 17 00:00:00 2001
+From: Felix Fietkau <nbd@openwrt.org>
+Date: Fri, 15 Mar 2013 16:18:44 +0100
+Subject: [PATCH 2/3] ath9k: limit tx path hang check to normal data queues
+
+The beacon and multicast-buffer queues are managed by the beacon
+tasklet, and the generic tx path hang check does not help in any way
+here. Running it on those queues anyway can introduce some race
+conditions leading to unnecessary chip resets.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Felix Fietkau <nbd@openwrt.org>
+---
+ drivers/net/wireless/ath/ath9k/link.c |   26 +++++++++++++-------------
+ 1 file changed, 13 insertions(+), 13 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath9k/link.c b/drivers/net/wireless/ath/ath9k/link.c
+index ade3afb..39c84ec 100644
+--- a/drivers/net/wireless/ath/ath9k/link.c
++++ b/drivers/net/wireless/ath/ath9k/link.c
+@@ -28,21 +28,21 @@ void ath_tx_complete_poll_work(struct work_struct *work)
+ 	int i;
+ 	bool needreset = false;
+ 
+-	for (i = 0; i < ATH9K_NUM_TX_QUEUES; i++)
+-		if (ATH_TXQ_SETUP(sc, i)) {
+-			txq = &sc->tx.txq[i];
+-			ath_txq_lock(sc, txq);
+-			if (txq->axq_depth) {
+-				if (txq->axq_tx_inprogress) {
+-					needreset = true;
+-					ath_txq_unlock(sc, txq);
+-					break;
+-				} else {
+-					txq->axq_tx_inprogress = true;
+-				}
++	for (i = 0; i < IEEE80211_NUM_ACS; i++) {
++		txq = sc->tx.txq_map[i];
++
++		ath_txq_lock(sc, txq);
++		if (txq->axq_depth) {
++			if (txq->axq_tx_inprogress) {
++				needreset = true;
++				ath_txq_unlock(sc, txq);
++				break;
++			} else {
++				txq->axq_tx_inprogress = true;
+ 			}
+-			ath_txq_unlock_complete(sc, txq);
+ 		}
++		ath_txq_unlock_complete(sc, txq);
++	}
+ 
+ 	if (needreset) {
+ 		ath_dbg(ath9k_hw_common(sc->sc_ah), RESET,
+-- 
+1.7.10.4
+
