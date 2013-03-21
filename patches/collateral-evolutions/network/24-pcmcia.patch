@@ -982,7 +982,7 @@
  
  	/*
  	 * Most of the libertas cards can do unaligned register access, but some
-@@ -1002,7 +1077,13 @@ MODULE_DEVICE_TABLE(pcmcia, if_cs_ids);
+@@ -1001,7 +1076,13 @@ MODULE_DEVICE_TABLE(pcmcia, if_cs_ids);
  
  static struct pcmcia_driver lbs_driver = {
  	.owner		= THIS_MODULE,

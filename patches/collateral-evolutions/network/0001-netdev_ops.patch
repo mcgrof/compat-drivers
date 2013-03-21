@@ -60,7 +60,7 @@ Date:   Wed Nov 19 21:32:24 2008 -0800
  
 --- a/drivers/net/wireless/ath/ath6kl/main.c
 +++ b/drivers/net/wireless/ath/ath6kl/main.c
-@@ -1322,7 +1322,7 @@ static const struct net_device_ops ath6k
+@@ -1289,7 +1289,7 @@ static const struct net_device_ops ath6k
  
  void init_netdev(struct net_device *dev)
  {

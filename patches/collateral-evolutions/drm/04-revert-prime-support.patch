@@ -82,7 +82,7 @@ not < 3.3.0.
  #include <linux/export.h>
  #include <linux/dma-buf.h>
  #include <drm/drmP.h>
-@@ -536,3 +538,4 @@ void drm_prime_remove_imported_buf_handl
+@@ -532,3 +534,4 @@ void drm_prime_remove_imported_buf_handl
  	mutex_unlock(&prime_fpriv->lock);
  }
  EXPORT_SYMBOL(drm_prime_remove_imported_buf_handle);
@@ -282,7 +282,7 @@ not < 3.3.0.
  
 --- a/drivers/gpu/drm/i915/i915_drv.c
 +++ b/drivers/gpu/drm/i915/i915_drv.c
-@@ -1036,7 +1036,11 @@ static struct drm_driver driver = {
+@@ -1025,7 +1025,11 @@ static struct drm_driver driver = {
  	 */
  	.driver_features =
  	    DRIVER_USE_AGP | DRIVER_REQUIRE_AGP | /* DRIVER_USE_MTRR |*/
@@ -294,7 +294,7 @@ not < 3.3.0.
  	.load = i915_driver_load,
  	.unload = i915_driver_unload,
  	.open = i915_driver_open,
-@@ -1059,10 +1063,12 @@ static struct drm_driver driver = {
+@@ -1048,10 +1052,12 @@ static struct drm_driver driver = {
  	.gem_free_object = i915_gem_free_object,
  	.gem_vm_ops = &i915_gem_vm_ops,
  
@@ -319,7 +319,7 @@ not < 3.3.0.
  
  static void i915_gem_object_flush_gtt_write_domain(struct drm_i915_gem_object *obj);
  static void i915_gem_object_flush_cpu_write_domain(struct drm_i915_gem_object *obj);
-@@ -3819,8 +3821,10 @@ void i915_gem_free_object(struct drm_gem
+@@ -3824,8 +3826,10 @@ void i915_gem_free_object(struct drm_gem
  
  	BUG_ON(obj->pages);
  
@@ -340,7 +340,7 @@ not < 3.3.0.
  #include <drm/drmP.h>
  #include "i915_drv.h"
  #include <linux/dma-buf.h>
-@@ -306,3 +307,4 @@ fail_detach:
+@@ -307,3 +308,4 @@ fail_detach:
  	dma_buf_detach(dma_buf, attach);
  	return ERR_PTR(ret);
  }

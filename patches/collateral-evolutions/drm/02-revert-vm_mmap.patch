@@ -73,7 +73,7 @@ These can't be backported as they rely on non-exported symbols.
  
 --- a/drivers/gpu/drm/i915/i915_gem.c
 +++ b/drivers/gpu/drm/i915/i915_gem.c
-@@ -1302,10 +1302,17 @@ i915_gem_mmap_ioctl(struct drm_device *d
+@@ -1294,10 +1294,17 @@ i915_gem_mmap_ioctl(struct drm_device *d
  		drm_gem_object_unreference_unlocked(obj);
  		return -EINVAL;
  	}

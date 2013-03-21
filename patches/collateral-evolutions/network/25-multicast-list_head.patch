@@ -782,7 +782,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  
 --- a/drivers/net/wireless/ath/ath6kl/main.c
 +++ b/drivers/net/wireless/ath/ath6kl/main.c
-@@ -1238,7 +1238,11 @@ static void ath6kl_set_multicast_list(st
+@@ -1205,7 +1205,11 @@ static void ath6kl_set_multicast_list(st
  	list_for_each_entry_safe(mc_filter, tmp, &vif->mc_filter, list) {
  		found = false;
  		netdev_for_each_mc_addr(ha, ndev) {
@@ -794,7 +794,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  				   ATH6KL_MCAST_FILTER_MAC_ADDR_SIZE) == 0) {
  				found = true;
  				break;
-@@ -1272,7 +1276,11 @@ static void ath6kl_set_multicast_list(st
+@@ -1239,7 +1243,11 @@ static void ath6kl_set_multicast_list(st
  	netdev_for_each_mc_addr(ha, ndev) {
  		found = false;
  		list_for_each_entry(mc_filter, &vif->mc_filter, list) {
@@ -806,7 +806,7 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  				   ATH6KL_MCAST_FILTER_MAC_ADDR_SIZE) == 0) {
  				found = true;
  				break;
-@@ -1287,7 +1295,11 @@ static void ath6kl_set_multicast_list(st
+@@ -1254,7 +1262,11 @@ static void ath6kl_set_multicast_list(st
  				goto out;
  			}
  
