@@ -6,7 +6,7 @@ thread in process context as well.
 
 --- a/drivers/net/wireless/b43/main.c
 +++ b/drivers/net/wireless/b43/main.c
-@@ -4244,8 +4244,13 @@ redo:
+@@ -4241,8 +4241,13 @@ redo:
  	if (b43_bus_host_is_sdio(dev->dev)) {
  		b43_sdio_free_irq(dev);
  	} else {
@@ -20,7 +20,7 @@ thread in process context as well.
  	}
  	mutex_lock(&wl->mutex);
  	dev = wl->current_dev;
-@@ -4291,9 +4296,17 @@ static int b43_wireless_core_start(struc
+@@ -4288,9 +4293,17 @@ static int b43_wireless_core_start(struc
  			goto out;
  		}
  	} else {
@@ -38,7 +38,7 @@ thread in process context as well.
  		if (err) {
  			b43err(dev->wl, "Cannot request IRQ-%d\n",
  			       dev->dev->irq);
-@@ -5116,6 +5129,10 @@ static int b43_setup_bands(struct b43_wl
+@@ -5113,6 +5126,10 @@ static int b43_setup_bands(struct b43_wl
  
  static void b43_wireless_core_detach(struct b43_wldev *dev)
  {
@@ -116,7 +116,7 @@ thread in process context as well.
  	}
 --- a/drivers/net/wireless/ti/wlcore/main.c
 +++ b/drivers/net/wireless/ti/wlcore/main.c
-@@ -6054,11 +6054,22 @@ static void wlcore_nvs_cb(const struct f
+@@ -6054,13 +6054,24 @@ static void wlcore_nvs_cb(const struct f
  	wl->platform_quirks = pdata->platform_quirks;
  	wl->if_ops = pdev_data->if_ops;
  
@@ -139,7 +139,9 @@ thread in process context as well.
  				   irqflags, pdev->name, wl);
 +#endif
  	if (ret < 0) {
-@@ -6135,7 +6145,11 @@ out_unreg:
+ 		wl1271_error("request_irq() failed: %d", ret);
+ 		goto out_free_nvs;
+@@ -6135,7 +6146,11 @@ out_unreg:
  	wl1271_unregister_hw(wl);
  
  out_irq:
@@ -151,7 +153,7 @@ thread in process context as well.
  
  out_free_nvs:
  	kfree(wl->nvs);
-@@ -6181,7 +6195,12 @@ int wlcore_remove(struct platform_device
+@@ -6181,7 +6196,12 @@ int wlcore_remove(struct platform_device
  		disable_irq_wake(wl->irq);
  	}
  	wl1271_unregister_hw(wl);

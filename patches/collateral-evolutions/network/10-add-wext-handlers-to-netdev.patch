@@ -18,7 +18,7 @@ CONFIG_WIRELESS_EXT in compat-drivers.
 
 --- a/net/wireless/core.c
 +++ b/net/wireless/core.c
-@@ -339,10 +339,6 @@ struct wiphy *wiphy_new(const struct cfg
+@@ -373,10 +373,6 @@ struct wiphy *wiphy_new(const struct cfg
  	INIT_WORK(&rdev->sched_scan_results_wk, __cfg80211_sched_scan_results);
  	INIT_DELAYED_WORK(&rdev->dfs_update_channels_wk,
  			  cfg80211_dfs_channels_update_work);
@@ -29,7 +29,7 @@ CONFIG_WIRELESS_EXT in compat-drivers.
  	device_initialize(&rdev->wiphy.dev);
  	rdev->wiphy.dev.class = &ieee80211_class;
  	rdev->wiphy.dev.platform_data = rdev;
-@@ -919,6 +915,15 @@ static int cfg80211_netdev_notifier_call
+@@ -947,6 +943,15 @@ static int cfg80211_netdev_notifier_call
  		wdev->sme_state = CFG80211_SME_IDLE;
  		mutex_unlock(&rdev->devlist_mtx);
  #ifdef CONFIG_CFG80211_WEXT

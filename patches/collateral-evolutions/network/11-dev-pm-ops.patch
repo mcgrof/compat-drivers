@@ -164,7 +164,7 @@ calls on compat code with only slight modifications.
  static int __init
 --- a/drivers/net/wireless/iwlegacy/common.c
 +++ b/drivers/net/wireless/iwlegacy/common.c
-@@ -4936,8 +4936,17 @@ il_pci_resume(struct device *device)
+@@ -4935,8 +4935,17 @@ il_pci_resume(struct device *device)
  	return 0;
  }
  

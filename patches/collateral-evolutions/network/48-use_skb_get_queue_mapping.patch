@@ -4,7 +4,7 @@ function always returns something.
 
 --- a/drivers/net/wireless/b43/main.c
 +++ b/drivers/net/wireless/b43/main.c
-@@ -3457,11 +3457,11 @@ static void b43_op_tx(struct ieee80211_h
+@@ -3454,11 +3454,11 @@ static void b43_op_tx(struct ieee80211_h
  	}
  	B43_WARN_ON(skb_shinfo(skb)->nr_frags);
  

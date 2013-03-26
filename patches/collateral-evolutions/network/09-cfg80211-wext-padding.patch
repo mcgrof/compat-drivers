@@ -42,7 +42,7 @@ moved due to struct enlargements.
  	u8 addr_mask[ETH_ALEN];
 --- a/net/wireless/core.c
 +++ b/net/wireless/core.c
-@@ -282,6 +282,17 @@ struct wiphy *wiphy_new(const struct cfg
+@@ -316,6 +316,17 @@ struct wiphy *wiphy_new(const struct cfg
  	struct cfg80211_registered_device *rdev;
  	int alloc_size;
  
