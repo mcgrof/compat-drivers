@@ -818,3 +818,70 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
  			       ATH6KL_MCAST_FILTER_MAC_ADDR_SIZE);
  			/* Set the multicast filter */
  			ath6kl_dbg(ATH6KL_DBG_TRC,
+--- a/include/net/mac80211.h
++++ b/include/net/mac80211.h
+@@ -2613,9 +2613,15 @@ struct ieee80211_ops {
+ 				 unsigned int changed_flags,
+ 				 unsigned int *total_flags,
+ 				 u64 multicast);
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,35))
+ 	void (*set_multicast_list)(struct ieee80211_hw *hw,
+ 				   struct ieee80211_vif *vif, bool allmulti,
+ 				   struct netdev_hw_addr_list *mc_list);
++#else
++	void (*set_multicast_list)(struct ieee80211_hw *hw,
++				   struct ieee80211_vif *vif, bool allmulti,
++				   int mc_count, struct dev_addr_list *ha);
++#endif
+ 
+ 	int (*set_tim)(struct ieee80211_hw *hw, struct ieee80211_sta *sta,
+ 		       bool set);
+--- a/net/mac80211/driver-ops.h
++++ b/net/mac80211/driver-ops.h
+@@ -255,6 +255,7 @@ static inline u64 drv_prepare_multicast(
+ 	return ret;
+ }
+ 
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,35))
+ static inline void drv_set_multicast_list(struct ieee80211_local *local,
+ 					  struct ieee80211_sub_if_data *sdata,
+ 					  struct netdev_hw_addr_list *mc_list)
+@@ -270,6 +271,23 @@ static inline void drv_set_multicast_lis
+ 					       allmulti, mc_list);
+ 	trace_drv_return_void(local);
+ }
++#else
++static inline void drv_set_multicast_list(struct ieee80211_local *local,
++					  struct ieee80211_sub_if_data *sdata,
++					  int mc_count, struct dev_addr_list *ha)
++{
++	bool allmulti = sdata->flags & IEEE80211_SDATA_ALLMULTI;
++
++	trace_drv_set_multicast_list(local, sdata, mc_count);
++
++	check_sdata_in_driver(sdata);
++
++	if (local->ops->set_multicast_list)
++		local->ops->set_multicast_list(&local->hw, &sdata->vif,
++					       allmulti, mc_count, ha);
++	trace_drv_return_void(local);
++}
++#endif
+ 
+ static inline void drv_configure_filter(struct ieee80211_local *local,
+ 					unsigned int changed_flags,
+--- a/net/mac80211/iface.c
++++ b/net/mac80211/iface.c
+@@ -932,7 +932,12 @@ static void ieee80211_set_multicast_list
+ 	if (sdata->vif.type != NL80211_IFTYPE_MONITOR &&
+ 	    sdata->vif.type != NL80211_IFTYPE_AP_VLAN &&
+ 	    sdata->vif.type != NL80211_IFTYPE_AP)
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,35))
+ 		drv_set_multicast_list(local, sdata, &dev->mc);
++#else
++		drv_set_multicast_list(local, sdata, &dev->mc_count,
++				       &dev->mc_list);
++#endif
+ 
+ 	spin_lock_bh(&local->filter_lock);
+ #if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,35))
