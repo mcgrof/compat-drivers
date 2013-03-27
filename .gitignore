@@ -21,3 +21,5 @@ code-metrics.txt
 MAINTAINERS
 modules
 modules.order
+*.o.d
+*.o
