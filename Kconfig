@@ -1,0 +1,25 @@
+#
+# For a description of the syntax of this configuration file,
+# see Documentation/kbuild/kconfig-language.txt.
+#
+
+mainmenu "$VERSION $BASE $BASE_TREE $BASE_TREE_VERSION"
+
+comment "Linux kernel backport configuration"
+
+source Kconfig.env
+
+config COMPAT_VIDEO_MODULES
+	bool "Video drivers"
+	help
+	  This enables compilation of Video DRM drivers.
+
+config COMPAT_WIRELESS
+	bool "Wireless drivers"
+	help
+	  This enables compilation of Wireless drivers.
+
+config COMPAT_BLUETOOTH
+	bool "Bluetooth drivers"
+	help
+	  This enables compilation of Bluetooth drivers.

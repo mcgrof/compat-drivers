@@ -75,11 +75,12 @@ $(error "The path to this compat-drivers directory has spaces in it." \
 	"Please put it somewhere where there is no space")
 endif
 
+# For C code
 export CFLAGS += \
         -DCOMPAT_BASE="\"$(shell cat $(PWD)/.compat_base)\"" \
         -DCOMPAT_BASE_TREE="\"$(shell cat $(PWD)/.compat_base_tree)\"" \
         -DCOMPAT_BASE_TREE_VERSION="\"$(shell cat $(PWD)/.compat_base_tree_version)\"" \
-        -DCOMPAT_PROJECT="\"Compat-drivers\"" \
+        -DCOMPAT_PROJECT="\"compat-drivers\"" \
         -DCOMPAT_VERSION="\"$(shell cat $(PWD)/.compat_version)\""
 
 # These exported as they are used by the scripts
@@ -95,6 +96,13 @@ export CREL_CHECK:=$(PWD)/$(CREL_PRE)$(CREL)
 all: modules
 
 $(COMPAT_CONFIG): ;
+
+menuconfig:
+	@echo "Not yet supported, still under development"
+	@echo "If you want to hack on this start testing with:"
+	@echo "    make -f scripts/kconfig/Makefile menuconfig "
+	@exit 1
+	make -f scripts/kconfig/Makefile menuconfig
 
 modules: $(CREL_CHECK)
 	+@./scripts/check_config.sh
