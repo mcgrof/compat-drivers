@@ -1,0 +1,28 @@
+--- a/drivers/net/wireless/ath/ath9k/debug.c
++++ b/drivers/net/wireless/ath/ath9k/debug.c
+@@ -1217,7 +1217,11 @@ static const struct file_operations fops
+ 
+ static struct dentry *create_buf_file_handler(const char *filename,
+ 					      struct dentry *parent,
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,3,0))
+ 					      umode_t mode,
++#else
++					      int mode,
++#endif
+ 					      struct rchan_buf *buf,
+ 					      int *is_global)
+ {
+--- a/drivers/gpu/drm/drm_sysfs.c
++++ b/drivers/gpu/drm/drm_sysfs.c
+@@ -72,7 +72,11 @@ static int drm_class_resume(struct devic
+ 	return 0;
+ }
+ 
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,3,0))
+ static char *drm_devnode(struct device *dev, umode_t *mode)
++#else
++static char *drm_devnode(struct device *dev, mode_t *mode)
++#endif
+ {
+ 	return kasprintf(GFP_KERNEL, "dri/%s", dev_name(dev));
+ }
