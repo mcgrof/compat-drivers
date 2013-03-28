@@ -792,8 +792,8 @@ This also backport commit 2f787b0b76bf5de2eaa3ca3a29d89123ae03c856
 +#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,35))
  		drv_set_multicast_list(local, sdata, &dev->mc);
 +#else
-+		drv_set_multicast_list(local, sdata, &dev->mc_count,
-+				       &dev->mc_list);
++		drv_set_multicast_list(local, sdata, dev->mc_count,
++				       dev->mc_list);
 +#endif
  
  	spin_lock_bh(&local->filter_lock);
