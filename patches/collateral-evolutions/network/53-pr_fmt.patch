@@ -218,7 +218,7 @@ compiler warnings. This is going to be sent upstream.
  
 --- a/drivers/net/wireless/brcm80211/brcmsmac/mac80211_if.c
 +++ b/drivers/net/wireless/brcm80211/brcmsmac/mac80211_if.c
-@@ -15,8 +15,10 @@
+@@ -16,8 +16,10 @@
   */
  
  #define __UNDEF_NO_VERSION__
@@ -231,7 +231,7 @@ compiler warnings. This is going to be sent upstream.
  #include <linux/firmware.h>
 --- a/drivers/net/wireless/brcm80211/brcmsmac/main.c
 +++ b/drivers/net/wireless/brcm80211/brcmsmac/main.c
-@@ -14,8 +14,10 @@
+@@ -15,8 +15,10 @@
   * CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
   */
  

@@ -180,7 +180,7 @@ calls on compat code with only slight modifications.
 +EXPORT_SYMBOL(il_pci_resume_compat);
 +#endif
  
- #endif /* CONFIG_PM */
+ #endif /* CONFIG_PM_SLEEP */
  
 --- a/drivers/net/wireless/iwlegacy/common.h
 +++ b/drivers/net/wireless/iwlegacy/common.h
