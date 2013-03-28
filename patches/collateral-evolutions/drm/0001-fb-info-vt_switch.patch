@@ -8,23 +8,7 @@ pm_vt_switch_unregister() would not have been made.
 This patch cannot be broken down further so I'm pegging
 this as the first one with 4 digits under the DRM folder
 for collateral evolutions. This reflects its as atomic as
-is possible. As we'll see on the next commit, these type
-of collateral evolutions can best be backported not by
-keeping ifdef's as below but instead by using a wrapper
-caller, to help reduce with the amount of lines of code
-we need. If a static inline is added upstream for these
-changes, then no code is required for backporting, at all,
-we'd just implement the static inline later upstream as
-a no-op.
-
-The tradeoffs to consider for this is if we can live with
-these practices upstream, we may be able to support full
-subsystems only with a compat module, and no need for
-patches. This also means less code and likely less bugs
-on the distribution front when backporting is required.
-At least IMHO this may be worthy to consider at least to
-support kernels listed as supported on kernel.org. We could
-just leave the ifdef hell to older unsupported kernels.
+is possible.
 
 Relevant commits below, starting with the first one that
 added this new collateral evolution.
@@ -60,14 +44,13 @@ Date:   Tue Mar 26 09:25:45 2013 -0700
 
 --- a/drivers/gpu/drm/i915/intel_fb.c
 +++ b/drivers/gpu/drm/i915/intel_fb.c
-@@ -150,8 +150,10 @@ static int intelfb_create(struct drm_fb_
+@@ -150,8 +150,8 @@ static int intelfb_create(struct drm_fb_
  	}
  	info->screen_size = size;
  
-+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,10,0))
  	/* This driver doesn't need a VT switch to restore the mode on resume */
- 	info->skip_vt_switch = true;
-+#endif
+- 	info->skip_vt_switch = true;
++ 	fb_enable_skip_vt_switch(info);
  
  	drm_fb_helper_fill_fix(info, fb->pitches[0], fb->depth);
  	drm_fb_helper_fill_var(info, &ifbdev->helper, sizes->fb_width, sizes->fb_height);
