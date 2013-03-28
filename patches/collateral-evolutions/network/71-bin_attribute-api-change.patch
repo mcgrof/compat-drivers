@@ -1,0 +1,14 @@
+--- a/drivers/net/wireless/ti/wlcore/main.c
++++ b/drivers/net/wireless/ti/wlcore/main.c
+@@ -5518,7 +5518,11 @@ static ssize_t wl1271_sysfs_show_hw_pg_v
+ static DEVICE_ATTR(hw_pg_ver, S_IRUGO,
+ 		   wl1271_sysfs_show_hw_pg_ver, NULL);
+ 
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,35))
+ static ssize_t wl1271_sysfs_read_fwlog(struct file *filp, struct kobject *kobj,
++#else
++static ssize_t wl1271_sysfs_read_fwlog(struct kobject *kobj,
++#endif
+ 				       struct bin_attribute *bin_attr,
+ 				       char *buffer, loff_t pos, size_t count)
+ {
