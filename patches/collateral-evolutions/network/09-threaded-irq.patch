@@ -63,7 +63,7 @@ thread in process context as well.
  /* Data structure for the WLAN parts (802.11 cores) of the b43 chip. */
 --- a/drivers/net/wireless/iwlwifi/pcie/internal.h
 +++ b/drivers/net/wireless/iwlwifi/pcie/internal.h
-@@ -295,6 +295,9 @@ struct iwl_trans_pcie {
+@@ -311,6 +311,9 @@ struct iwl_trans_pcie {
  
  	/*protect hw register */
  	spinlock_t reg_lock;
