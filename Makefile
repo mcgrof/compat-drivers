@@ -44,6 +44,9 @@ obj-$(CONFIG_COMPAT_RFKILL) += net/rfkill/
 obj-$(CONFIG_COMPAT_VIDEO_MODULES) += drivers/gpu/drm/
 obj-$(CONFIG_COMPAT_VIDEO_MODULES) += drivers/video/
 
+obj-$(CONFIG_COMPAT_MEDIA_MODULES) += drivers/media/v4l2-core/
+obj-$(CONFIG_COMPAT_MEDIA_MODULES) += drivers/media/usb/uvc/
+
 ifeq ($(BT),)
 obj-$(CONFIG_COMPAT_WIRELESS) += net/wireless/ net/mac80211/
 obj-$(CONFIG_COMPAT_WIRELESS_MODULES) += drivers/net/wireless/
@@ -163,6 +166,8 @@ install-modules: modules
 	$(MAKE) -C $(KLIB_BUILD) M=$(PWD) $(KMODDIR_ARG) $(KMODPATH_ARG) \
 		modules_install
 	@./scripts/update-initramfs
+	@./scripts/blacklist.sh $(KLIB)/ $(KLIB)/$(KMODDIR)
+	@/sbin/depmod -a
 
 install-scripts:
 	@# All the scripts we can use

@@ -85,7 +85,7 @@ patchRefresh() {
 ###
 usage() {
 	printf "Usage: $0 [refresh] [ --help | -h | -b | -s | -n | -p | -c [ -u ] [subsystems]
-       where subsystems can be network, drm or both. Network is enabled by default.\n\n"
+       where subsystems can be network, drm, media or all. Network is enabled by default.\n\n"
 
 	printf "${GREEN}%10s${NORMAL} - Update all your patch offsets using quilt\n" "refresh"
 	printf "${GREEN}%10s${NORMAL} - Only copy over compat code, do not copy driver code\n" "-b"
@@ -227,6 +227,7 @@ copyDirectories() {
 # fetched in by default.
 ENABLE_NETWORK=1
 ENABLE_DRM=1
+ENABLE_MEDIA=1
 ENABLE_UNIFIED=0
 SUBSYSTEMS=
 UNIFIED_DRIVERS=
@@ -418,10 +419,61 @@ DRIVERS_DRM="drivers/gpu/drm/ast
 	     drivers/gpu/drm/radeon
 	     drivers/gpu/drm/ttm
 	     drivers/gpu/drm/via
-	     drivers/gpu/drm/vmwgfx"
+	     drivers/gpu/drm/vmwgfx
+	     drivers/media/usb/uvc/"
 
 # UDL uses the new dma-buf API, let's disable this for now
 #DRIVERS="$DRIVERS drivers/gpu/drm/udl"
+
+# Required media headers from include/linux/media
+INCLUDE_MEDIA="
+v4l2-chip-ident.h
+v4l2-common.h
+v4l2-ctrls.h
+v4l2-dev.h
+v4l2-device.h
+v4l2-event.h
+v4l2-fh.h
+v4l2-image-sizes.h
+v4l2-int-device.h
+v4l2-ioctl.h
+v4l2-mediabus.h
+v4l2-mem2mem.h
+v4l2-subdev.h
+videobuf2-core.h
+videobuf2-dma-contig.h
+videobuf2-dma-sg.h
+videobuf2-memops.h
+videobuf2-vmalloc.h
+videobuf-core.h
+videobuf-dma-contig.h
+videobuf-dma-sg.h
+videobuf-dvb.h
+videobuf-vmalloc.h
+"
+
+# Required media headers from include/linux
+INCLUDE_LINUX_MEDIA="
+videodev2.h
+video_output.h
+dma-buf.h
+"
+
+# Required media headers from include/uapi/linux
+INCLUDE_UAPI_LINUX_MEDIA="
+v4l2-common.h
+v4l2-controls.h
+v4l2-dv-timings.h
+v4l2-mediabus.h
+v4l2-subdev.h
+videodev2.h
+"
+
+# Media drivers
+DRIVERS_MEDIA="
+		drivers/media/v4l2-core/
+		drivers/media/usb/uvc/
+		"
 
 rm -rf drivers/
 rm -f code-metrics.txt
@@ -433,6 +485,7 @@ mkdir -p include/net/bluetooth \
 	 include/trace \
 	 include/pcmcia \
 	 include/crypto \
+	 include/media/ \
 	 include/uapi \
 	 include/uapi/linux \
 	 drivers/bcma \
@@ -448,6 +501,7 @@ mkdir -p include/net/bluetooth \
 	 $DRIVERS_ETH \
 	 $DRIVERS_BT \
 	 $DRIVERS_DRM \
+	 $DRIVERS_MEDIA \
 	 drivers/video
 
 
@@ -582,10 +636,15 @@ if [ $# -ge 1 ]; then
 			"network")
 				ENABLE_NETWORK=1
 				ENABLE_DRM=0
+				ENABLE_MEDIA=0
 				shift
 				;;
 			"drm")
 				ENABLE_DRM=1
+				shift
+				;;
+			"media")
+				ENABLE_MEDIA=1
 				shift
 				;;
 			"-h" | "--help")
@@ -610,6 +669,11 @@ fi
 if [[ "$ENABLE_DRM" == "1" ]]; then
 	SUBSYSTEMS+=" drm"
 fi
+
+if [[ "$ENABLE_MEDIA" == "1" ]]; then
+	SUBSYSTEMS+=" media"
+fi
+
 
 if [[ "$ENABLE_NETWORK" == "1" ]]; then
 	# WLAN and bluetooth files
@@ -690,6 +754,15 @@ else
 	touch drivers/gpu/drm/Makefile
 	touch drivers/video/Makefile
 fi
+
+if [[ "$ENABLE_MEDIA" == "1" ]]; then
+	copyFiles "$INCLUDE_LINUX_MEDIA" "include/linux/"
+	copyFiles "$INCLUDE_MEDIA" "include/media"
+	copyFiles "$INCLUDE_UAPI_LINUX_MEDIA"	"include/uapi/linux"
+	copyDirectories "$DRIVERS_MEDIA"
+	perl -pi -e 's|CONFIG_|CONFIG_COMPAT_|g' drivers/media/v4l2-core/Makefile
+fi
+
 
 # Staging drivers in their own directory
 for i in $STAGING_DRIVERS; do
@@ -821,6 +894,9 @@ export DRM_STABLE="
 	include/drm/
 	drivers/gpu/drm/
 	"
+export MEDIA_STABLE="
+	$DRIVERS_MEDIA
+	"
 
 get_stable_patches() {
 	SUBSYS=$1
@@ -909,6 +985,7 @@ if [[ "$GET_STABLE_PENDING" = y ]]; then
 
 	echo $NETWORK_STABLE > ${STABLE_PREFIX}network
 	echo $DRM_STABLE > ${STABLE_PREFIX}drm
+	echo $MEDIA_STABLE > ${STABLE_PREFIX}media
 
 	if [[ "$ENABLE_NETWORK" == "1" ]]; then
 		get_stable_patches network
@@ -918,7 +995,11 @@ if [[ "$GET_STABLE_PENDING" = y ]]; then
 		get_stable_patches drm
 	fi
 
-	rm -f ${STABLE_PREFIX}network ${STABLE_PREFIX}drm
+	if [[ "$ENABLE_MEDIA" == "1" ]]; then
+		get_stable_patches media
+	fi
+
+	rm -f ${STABLE_PREFIX}network ${STABLE_PREFIX}drm ${STABLE_PREFIX}media
 	cd $LAST_DIR
 
 fi

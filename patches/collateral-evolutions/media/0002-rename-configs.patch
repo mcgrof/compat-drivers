@@ -1,0 +1,10 @@
+Used to allow us to build USB_VIDEO_CLASS even if your kernel had it disabled.
+
+--- a/drivers/media/usb/uvc/Makefile
++++ b/drivers/media/usb/uvc/Makefile
+@@ -3,4 +3,4 @@ uvcvideo-objs  := uvc_driver.o uvc_queue
+ ifeq ($(CONFIG_MEDIA_CONTROLLER),y)
+ uvcvideo-objs  += uvc_entity.o
+ endif
+-obj-$(CONFIG_USB_VIDEO_CLASS) += uvcvideo.o
++obj-$(CONFIG_COMPAT_USB_VIDEO_CLASS) += uvcvideo.o

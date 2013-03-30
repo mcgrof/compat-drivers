@@ -1,0 +1,57 @@
+Patch fa5034c6 added a name to a union part of struct media_entity.
+We can use the same values in older kernels, we just can't access
+them via the union name.
+
+mcgrof@frijol ~/linux-next (git::master)$ git describe --contains fa5034c6
+v3.3-rc1~48^2~416
+
+commit fa5034c667c224be48db31a0d043dba305e8e7a8
+Author: Clemens Ladisch <clemens@ladisch.de>
+Date:   Sat Nov 5 18:42:01 2011 -0300
+
+    [media] media: fix truncated entity specification
+    
+    When enumerating an entity, assign the entire entity specification
+    instead of only the first two words. (This requires giving the
+    specification union a name.)
+    
+    So far, no driver actually uses more than two words, but this will
+    be needed for ALSA entities.
+    
+    Signed-off-by: Clemens Ladisch <clemens@ladisch.de>
+    [laurent.pinchart@ideasonboard.com: Rename specification to info]
+    Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+    Signed-off-by: Mauro Carvalho Chehab <mchehab@redhat.com>
+
+--- a/drivers/media/v4l2-core/v4l2-dev.c
++++ b/drivers/media/v4l2-core/v4l2-dev.c
+@@ -924,8 +924,13 @@ int __video_register_device(struct video
+ 	    vdev->vfl_type != VFL_TYPE_SUBDEV) {
+ 		vdev->entity.type = MEDIA_ENT_T_DEVNODE_V4L;
+ 		vdev->entity.name = vdev->name;
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,3,0))
+ 		vdev->entity.info.v4l.major = VIDEO_MAJOR;
+ 		vdev->entity.info.v4l.minor = vdev->minor;
++#else
++		vdev->entity.v4l.major = VIDEO_MAJOR;
++		vdev->entity.v4l.minor = vdev->minor;
++#endif
+ 		ret = media_device_register_entity(vdev->v4l2_dev->mdev,
+ 			&vdev->entity);
+ 		if (ret < 0)
+--- a/drivers/media/v4l2-core/v4l2-device.c
++++ b/drivers/media/v4l2-core/v4l2-device.c
+@@ -232,8 +232,13 @@ int v4l2_device_register_subdev_nodes(st
+ 			goto clean_up;
+ 		}
+ #if defined(CONFIG_MEDIA_CONTROLLER)
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,3,0))
+ 		sd->entity.info.v4l.major = VIDEO_MAJOR;
+ 		sd->entity.info.v4l.minor = vdev->minor;
++#else
++		sd->entity.v4l.major = VIDEO_MAJOR;
++		sd->entity.v4l.minor = vdev->minor;
++#endif
+ #endif
+ 		sd->devnode = vdev;
+ 	}
