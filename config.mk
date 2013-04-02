@@ -728,7 +728,6 @@ endif #CONFIG_COMPAT_KERNEL_2_6_31
 # tests have only started on 3.2.
 ifndef CONFIG_COMPAT_KERNEL_3_2
 # Basic DRM support
-export CONFIG_COMPAT_HDMI=m
 export CONFIG_COMPAT_VIDEO_MODULES=y
 export CONFIG_COMPAT_DRM=m
 export CONFIG_COMPAT_DRM_TTM=m

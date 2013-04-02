@@ -42,7 +42,6 @@ obj-y := compat/
 
 obj-$(CONFIG_COMPAT_RFKILL) += net/rfkill/
 obj-$(CONFIG_COMPAT_VIDEO_MODULES) += drivers/gpu/drm/
-obj-$(CONFIG_COMPAT_VIDEO_MODULES) += drivers/video/
 
 obj-$(CONFIG_COMPAT_MEDIA_MODULES) += drivers/media/v4l2-core/
 obj-$(CONFIG_COMPAT_MEDIA_MODULES) += drivers/media/usb/uvc/
