@@ -237,6 +237,15 @@ uninstall:
 	@rm -f $(KLIB)/$(KMODDIR)/drivers/misc/eeprom/eeprom_93cx6.ko*
 	@rm -f $(KLIB)/$(KMODDIR)/drivers/misc/eeprom_93cx6.ko*
 	@rm -f $(KLIB)/$(KMODDIR)/drivers/net/b44.ko*
+	@rm -f $(KLIB)/$(KMODDIR)/drivers/net/ethernet/broadcom/b44.ko*
+	@rm -f $(KLIB)/$(KMODDIR)/drivers/bcma/bcma.ko*
+	@rm -f $(KLIB)/$(KMODDIR)/drivers/gpu/drm/drm_kms_helper.ko*
+	@rm -f $(KLIB)/$(KMODDIR)/drivers/gpu/drm/drm.ko*
+	@rm -f $(KLIB)/$(KMODDIR)/drivers/gpu/drm/i915/i915.ko*
+	@rm -f $(KLIB)/$(KMODDIR)/drivers/gpu/drm/nouveau/nouveau.ko*
+	@rm -f $(KLIB)/$(KMODDIR)/drivers/gpu/drm/radeon/radeon.ko*
+	@rm -f $(KLIB)/$(KMODDIR)/drivers/gpu/drm/ttm/ttm.ko*
+	@rm -f $(KLIB)/$(KMODDIR)/drivers/video/hdmi.ko*
 	@/sbin/depmod -a
 	@./scripts/update-initramfs
 	@echo 
